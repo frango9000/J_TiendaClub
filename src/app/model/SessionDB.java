@@ -129,7 +129,7 @@ public final class SessionDB implements Globals{
         setProps(new File(filedir));
     }
     public static void setProps(){
-        setProps("J_TiendaClub/src/app/config.ini");
+        setProps("src/app/config.ini");
     }
     
     /**
