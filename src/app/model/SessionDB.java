@@ -1,10 +1,6 @@
 package app.model;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -120,11 +116,11 @@ public final class SessionDB implements Globals{
             
             user = props.getProperty("user");
             password = props.getProperty("password");
-            
+            setDbUrl();
         } catch (IOException ex) {
             Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-    };
+    }
     public static void setProps(String filedir){
         setProps(new File(filedir));
     }
@@ -213,35 +209,12 @@ public final class SessionDB implements Globals{
     }
 
     /**
-     * Devuelve el numero de tablas en una DB
-     *
-     * @return integer: el numero de tablas en la base de datos
-     */
-    public static int numOfTables() {
-        String sql = "SELECT name FROM sqlite_master  WHERE type ='table' AND name NOT LIKE 'sqlite_%';";
-        int count = 0;
-        connect();
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
-            count = rs.getInt(1);
-            if (SQL_DEBUG) {
-                System.out.println(sql);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close();
-        }
-        return count;
-    }
-
-    /**
      * Devuelve Una lista con los nombres de las tablas en una DB
      *
      * @return
      */
     public static ArrayList<String> listTables() {
-        String sql = "SELECT name FROM  sqlite_master  WHERE type ='table' AND name NOT LIKE 'sqlite_%';";
+        String sql = "SHOW TABLES";
         ArrayList<String> tableNames = new ArrayList<>();
         connect();
         try (Statement stmt = conn.createStatement()) {
@@ -260,17 +233,53 @@ public final class SessionDB implements Globals{
         return tableNames;
     }
 
-    /**
-     * println de la lista de tablas de una DB
-     */
+    public static int numOfTables() {
+        return listTables().size();
+    }
+
     public static void printTables() {
         ArrayList<String> tablenames = listTables();
         tablenames.forEach((name) -> System.out.println(name));
     }
 
+    /**
+     * Devuelve Una lista con los nombres de las tablas en una DB
+     *
+     * @return
+     */
+    public static ArrayList<String> listDBs() {
+        String sql = "SHOW DATABASES";
+        ArrayList<String> dbNames = new ArrayList<>();
+        connect();
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                dbNames.add(rs.getString(1));
+            }
+            if (SQL_DEBUG) {
+                System.out.println(sql);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close();
+        }
+        return dbNames;
+    }
+
+    public static int numOfDBs() {
+        return listDBs().size();
+    }
+
+    public static void printDBs() {
+        ArrayList<String> tablenames = listTables();
+        tablenames.forEach((name) -> System.out.println(name));
+    }
+
+
     public static int crearTablas() {
         int rows = 0;
-        File sqlFile = new File("src/app/model/Tables.sql");
+        File sqlFile = new File("src/app/model/tables.sql");
         StringBuilder sqlcmd = new StringBuilder();
         try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
             while (scan.hasNext()) {
@@ -334,11 +343,22 @@ public final class SessionDB implements Globals{
         ArrayList<String> tables = listTables();
         StringBuilder tablesString = new StringBuilder();
         tables.forEach(cnsmr -> tablesString.append(cnsmr).append("\n"));
-        String model = "categorias\n"
-                + "ordenes\n"
-                + "mesas\n"
-                + "productos\n"
-                + "servidos\n";
+        String model = "accesos\n" +
+                "cajas\n" +
+                "categorias\n" +
+                "comprados\n" +
+                "compras\n" +
+                "productos\n" +
+                "proveedores\n" +
+                "sedes\n" +
+                "socios\n" +
+                "stock\n" +
+                "usuarios\n" +
+                "vendidos\n" +
+                "ventas\n" +
+                "zs\n";
+        //System.out.println(tablesString.toString());
+        System.out.println("Valid DB: " + model.matches(tablesString.toString()));
         return model.matches(tablesString.toString());
     }
 }

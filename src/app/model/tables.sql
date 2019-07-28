@@ -1,4 +1,4 @@
-CREATE TABLE `accesos`
+CREATE TABLE IF NOT EXISTS `accesos`
 (
     `id`    TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nivel` VARCHAR(12)         NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE `accesos`
     UNIQUE INDEX `nivel` (`nivel`)
 );
 
-CREATE TABLE `usuarios`
+CREATE TABLE IF NOT EXISTS `usuarios`
 (
     `id`          TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
     `user`        CHAR(40)            NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE `usuarios`
     CONSTRAINT `idAcceso` FOREIGN KEY (`idAcceso`) REFERENCES `accesos` (`id`)
 );
 
-CREATE TABLE `proveedores`
+CREATE TABLE IF NOT EXISTS `proveedores`
 (
     `id`          SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nif`         CHAR(10)             NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `proveedores`
     UNIQUE INDEX `nif` (`nif`)
 );
 
-CREATE TABLE `socios`
+CREATE TABLE IF NOT EXISTS `socios`
 (
     `id`             SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
     `dni`            CHAR(10)             NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE `socios`
     UNIQUE INDEX `dni` (`dni`)
 );
 
-CREATE TABLE `sedes`
+CREATE TABLE IF NOT EXISTS `sedes`
 (
     `id`        TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nombre`    VARCHAR(50)         NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE `sedes`
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `cajas`
+CREATE TABLE IF NOT EXISTS `cajas`
 (
     `id`     SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
     `idSede` TINYINT(3) UNSIGNED  NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE `cajas`
     CONSTRAINT `FK_cajas_sedes` FOREIGN KEY (`idSede`) REFERENCES `sedes` (`id`)
 );
 
-CREATE TABLE `zs`
+CREATE TABLE IF NOT EXISTS `zs`
 (
     `id`       INT(10) UNSIGNED     NOT NULL AUTO_INCREMENT,
     `idCaja`   SMALLINT(5) UNSIGNED NOT NULL,
@@ -78,19 +78,19 @@ CREATE TABLE `zs`
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `categorias`
+CREATE TABLE IF NOT EXISTS `categorias`
 (
     `id`     TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(20)         NOT NULL,
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `productos`
+CREATE TABLE IF NOT EXISTS `productos`
 (
     `id`           SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nombre`       VARCHAR(50)          NOT NULL,
     `descripcion`  VARCHAR(100)         NULL     DEFAULT NULL,
-    `precio_venta` DECIMAL(6, 2)        NOT NULL,
+    `precio_venta` INT(6)               NOT NULL,
     `iva`          TINYINT(3) UNSIGNED  NOT NULL DEFAULT 0,
     `idCategoria`  TINYINT(3) UNSIGNED  NOT NULL,
     PRIMARY KEY (`id`),
@@ -98,13 +98,13 @@ CREATE TABLE `productos`
     CONSTRAINT `FK_productos_categorias` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`)
 );
 
-CREATE TABLE `compras`
+CREATE TABLE IF NOT EXISTS `compras`
 (
     `id`          MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
     `idUsuario`   TINYINT(3) UNSIGNED   NOT NULL,
     `idSede`      TINYINT(3) UNSIGNED   NOT NULL,
     `idProveedor` SMALLINT(5) UNSIGNED  NOT NULL,
-    `fecha`       DATETIME              NOT NULL DEFAULT current_timestamp(),
+    `fechahora`   DATETIME              NOT NULL DEFAULT current_timestamp(),
     PRIMARY KEY (`id`),
     INDEX `FK_compras_usuarios` (`idUsuario`),
     INDEX `FK_compras_proveedores` (`idProveedor`),
@@ -114,13 +114,13 @@ CREATE TABLE `compras`
     CONSTRAINT `FK_compras_usuarios` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`)
 );
 
-CREATE TABLE `comprados`
+CREATE TABLE IF NOT EXISTS `comprados`
 (
-    `id`            INT(10) UNSIGNED       NOT NULL AUTO_INCREMENT,
-    `idCompra`      MEDIUMINT(8) UNSIGNED  NOT NULL,
-    `idProducto`    SMALLINT(5) UNSIGNED   NOT NULL,
-    `cantidad`      DECIMAL(5, 1) UNSIGNED NOT NULL,
-    `precio_unidad` DECIMAL(6, 2) UNSIGNED NOT NULL,
+    `id`            INT(10) UNSIGNED      NOT NULL AUTO_INCREMENT,
+    `idCompra`      MEDIUMINT(8) UNSIGNED NOT NULL,
+    `idProducto`    SMALLINT(5) UNSIGNED  NOT NULL,
+    `cantidad`      INT(6) UNSIGNED       NOT NULL,
+    `precio_unidad` INT(6) UNSIGNED       NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `FK_comprados_productos` (`idProducto`),
     INDEX `FK_comprados_compras` (`idCompra`),
@@ -128,13 +128,13 @@ CREATE TABLE `comprados`
     CONSTRAINT `FK_comprados_productos` FOREIGN KEY (`idProducto`) REFERENCES `productos` (`id`)
 );
 
-CREATE TABLE `ventas`
+CREATE TABLE IF NOT EXISTS `ventas`
 (
     `id`        MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
     `idUsuario` TINYINT(3) UNSIGNED   NOT NULL,
     `idCaja`    SMALLINT(5) UNSIGNED  NOT NULL,
     `idSocio`   SMALLINT(5) UNSIGNED  NOT NULL,
-    `fecha`     DATETIME              NOT NULL DEFAULT current_timestamp(),
+    `fechahora` DATETIME              NOT NULL DEFAULT current_timestamp(),
     PRIMARY KEY (`id`),
     INDEX `FK_compras_usuarios` (`idUsuario`),
     INDEX `FK_compras_proveedores` (`idSocio`),
@@ -144,13 +144,13 @@ CREATE TABLE `ventas`
     CONSTRAINT `ventas_ibfk_3` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`)
 );
 
-CREATE TABLE `vendidos`
+CREATE TABLE IF NOT EXISTS `vendidos`
 (
-    `id`            INT(10) UNSIGNED       NOT NULL AUTO_INCREMENT,
-    `idVenta`       MEDIUMINT(8) UNSIGNED  NOT NULL,
-    `idProducto`    SMALLINT(5) UNSIGNED   NOT NULL,
-    `cantidad`      DECIMAL(5, 1) UNSIGNED NOT NULL,
-    `precio_unidad` DECIMAL(6, 2) UNSIGNED NOT NULL,
+    `id`            INT(10) UNSIGNED      NOT NULL AUTO_INCREMENT,
+    `idVenta`       MEDIUMINT(8) UNSIGNED NOT NULL,
+    `idProducto`    SMALLINT(5) UNSIGNED  NOT NULL,
+    `cantidad`      INT(6) UNSIGNED       NOT NULL,
+    `precio_unidad` INT(6) UNSIGNED       NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `FK_vendidos_productos` (`idProducto`),
     INDEX `FK_vendidos_ventas` (`idVenta`),
@@ -158,13 +158,13 @@ CREATE TABLE `vendidos`
     CONSTRAINT `FK_vendidos_ventas` FOREIGN KEY (`idVenta`) REFERENCES `ventas` (`id`)
 );
 
-CREATE TABLE `stock`
+CREATE TABLE IF NOT EXISTS `stock`
 (
     `idSede`     TINYINT(3) UNSIGNED  NOT NULL,
     `idProducto` SMALLINT(5) UNSIGNED NOT NULL,
-    `cantidad`   DECIMAL(5, 1)        NOT NULL,
+    `cantidad`   INT(6)               NOT NULL,
     PRIMARY KEY (`idSede`, `idProducto`),
     INDEX `FK_stock_productos` (`idProducto`, `idSede`),
     CONSTRAINT `FK_stock_productos` FOREIGN KEY (`idProducto`) REFERENCES `productos` (`id`),
     CONSTRAINT `FK_stock_sedes` FOREIGN KEY (`idSede`) REFERENCES `sedes` (`id`)
-);
+)

@@ -20,8 +20,8 @@ public class NewMain {
     public static void main(String[] args) {
         
         SessionDB.setProps();
-        SessionDB.connect();
-                
+        SessionDB.crearTablas();
+        SessionDB.isValid();
                
     }
     
