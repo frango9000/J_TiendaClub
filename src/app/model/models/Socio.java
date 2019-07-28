@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Socio extends AbstractSocio implements IPersistible {
     private HashMap<Integer, Venta> ventas = new HashMap<>();
 
-    public Socio(short id, String dni, String nombre, LocalDateTime fechaIn, LocalDateTime fechaActive, LocalDateTime fechaInactive) {
+    public Socio(int id, String dni, String nombre, LocalDateTime fechaIn, LocalDateTime fechaActive, LocalDateTime fechaInactive) {
         super(id, dni, nombre, fechaIn, fechaActive, fechaInactive);
     }
 

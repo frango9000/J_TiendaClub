@@ -3,11 +3,11 @@ package app.model.models.abstracts;
 public abstract class AbstractVendido {
     protected int id;
     protected int idVenta;
-    protected short idProducto;
+    protected int idProducto;
     protected int cantidad;
     protected int precioUnidad;
 
-    public AbstractVendido(int id, int idVenta, short idProducto, int cantidad, int precioUnidad) {
+    public AbstractVendido(int id, int idVenta, int idProducto, int cantidad, int precioUnidad) {
         this.id = id;
         this.idVenta = idVenta;
         this.idProducto = idProducto;
@@ -15,7 +15,7 @@ public abstract class AbstractVendido {
         this.precioUnidad = precioUnidad;
     }
 
-    public AbstractVendido(int idVenta, short idProducto, int cantidad, int precioUnidad) {
+    public AbstractVendido(int idVenta, int idProducto, int cantidad, int precioUnidad) {
         this.idVenta = idVenta;
         this.idProducto = idProducto;
         this.cantidad = cantidad;
@@ -38,11 +38,11 @@ public abstract class AbstractVendido {
         this.idVenta = idVenta;
     }
 
-    public short getIdProducto() {
+    public int getIdProducto() {
         return idProducto;
     }
 
-    public void setIdProducto(short idProducto) {
+    public void setIdProducto(int idProducto) {
         this.idProducto = idProducto;
     }
 

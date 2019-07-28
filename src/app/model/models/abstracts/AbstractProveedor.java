@@ -1,7 +1,7 @@
 package app.model.models.abstracts;
 
 public abstract class AbstractProveedor {
-    protected short id;
+    protected int id;
     protected String nif;
     protected String nombre;
     protected String telefono;
@@ -9,7 +9,7 @@ public abstract class AbstractProveedor {
     protected String direccion;
     protected String descripcion;
 
-    public AbstractProveedor(short id, String nif, String nombre) {
+    public AbstractProveedor(int id, String nif, String nombre) {
         this.id = id;
         this.nif = nif;
         this.nombre = nombre;
@@ -24,7 +24,7 @@ public abstract class AbstractProveedor {
         return id;
     }
 
-    public void setId(short id) {
+    public void setId(int id) {
         this.id = id;
     }
 

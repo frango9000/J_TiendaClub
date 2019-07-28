@@ -162,18 +162,22 @@ CREATE TABLE IF NOT EXISTS `vendidos`
 
 CREATE TABLE IF NOT EXISTS `transferencias`
 (
-    `id`            INT(11)              NOT NULL AUTO_INCREMENT,
+    `id`            INT(11) UNSIGNED     NOT NULL AUTO_INCREMENT,
+    `idUsuario`     TINYINT(3) UNSIGNED  NOT NULL,
     `idSedeOrigen`  TINYINT(3) UNSIGNED  NOT NULL,
     `idSedeDestino` TINYINT(3) UNSIGNED  NOT NULL,
     `idProducto`    SMALLINT(6) UNSIGNED NOT NULL,
-    `Cantidad`      INT(6)               NOT NULL,
+    `Cantidad`      INT(6) UNSIGNED      NOT NULL,
+    `fechahora`     DATETIME             NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `FK_transferencias_sedes` (`idSedeOrigen`),
     INDEX `FK_transferencias_sedes_2` (`idSedeDestino`),
     INDEX `FK_transferencias_productos` (`idProducto`),
+    INDEX `FK_transferencias_usuarios` (`idUsuario`),
     CONSTRAINT `FK_transferencias_productos` FOREIGN KEY (`idProducto`) REFERENCES `productos` (`id`),
     CONSTRAINT `FK_transferencias_sedes` FOREIGN KEY (`idSedeOrigen`) REFERENCES `sedes` (`id`),
-    CONSTRAINT `FK_transferencias_sedes_2` FOREIGN KEY (`idSedeDestino`) REFERENCES `sedes` (`id`)
+    CONSTRAINT `FK_transferencias_sedes_2` FOREIGN KEY (`idSedeDestino`) REFERENCES `sedes` (`id`),
+    CONSTRAINT `FK_transferencias_usuarios` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`)
 )
 
 # CREATE TABLE IF NOT EXISTS `stock`

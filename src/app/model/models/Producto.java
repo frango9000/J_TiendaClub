@@ -7,19 +7,20 @@ public class Producto extends AbstractProducto implements IPersistible {
     private Categoria categoria;
 
     //private HashMap<Integer, Comprado> comprados = new HashMap<>(); //No Use
+    //private HashMap<Integer, Transferencia> transferencias = new HashMap<>(); //No Use
 
-    public Producto(short id, String nombre, int precioVenta, int iva, byte idCategoria) {
+    public Producto(int id, String nombre, int precioVenta, int iva, int idCategoria) {
         super(id, nombre, precioVenta, iva, idCategoria);
         updateCategoria();
     }
 
-    public Producto(String nombre, int precioVenta, int iva, byte idCategoria) {
+    public Producto(String nombre, int precioVenta, int iva, int idCategoria) {
         super(nombre, precioVenta, iva, idCategoria);
         updateCategoria();
     }
 
     @Override
-    public void setIdCategoria(byte idCategoria) {
+    public void setIdCategoria(int idCategoria) {
         super.setIdCategoria(idCategoria);
         updateCategoria();
     }
@@ -32,8 +33,12 @@ public class Producto extends AbstractProducto implements IPersistible {
         this.categoria = categoria;
     }
 
-    public void updateCategoria() {
+    private void updateCategoria() {
+        if (categoria != null)
+            categoria.getProductos().remove(id);
         //TODO DAO
+        //categoria = DAO categoria . get ( idCategoria );
+        categoria.getProductos().put(id, this);
     }
 
     @Override

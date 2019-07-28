@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 
 public abstract class AbstractCompra {
     protected int id;
-    protected byte idUsuario;
-    protected byte idSede;
-    protected short idProveedor;
+    protected int idUsuario;
+    protected int idSede;
+    protected int idProveedor;
     protected LocalDateTime fechahora;
 
-    public AbstractCompra(int id, byte idUsuario, byte idSede, short idProveedor, LocalDateTime fechahora) {
+    public AbstractCompra(int id, int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.idSede = idSede;
@@ -17,7 +17,7 @@ public abstract class AbstractCompra {
         this.fechahora = fechahora;
     }
 
-    public AbstractCompra(byte idUsuario, byte idSede, short idProveedor, LocalDateTime fechahora) {
+    public AbstractCompra(int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
         this.idUsuario = idUsuario;
         this.idSede = idSede;
         this.idProveedor = idProveedor;
@@ -32,27 +32,27 @@ public abstract class AbstractCompra {
         this.id = id;
     }
 
-    public byte getIdUsuario() {
+    public int getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(byte idUsuario) {
+    public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public byte getIdSede() {
+    public int getIdSede() {
         return idSede;
     }
 
-    public void setIdSede(byte idSede) {
+    public void setIdSede(int idSede) {
         this.idSede = idSede;
     }
 
-    public short getIdProveedor() {
+    public int getIdProveedor() {
         return idProveedor;
     }
 
-    public void setIdProveedor(short idProveedor) {
+    public void setIdProveedor(int idProveedor) {
         this.idProveedor = idProveedor;
     }
 

@@ -2,10 +2,10 @@ package app.model.models.abstracts;
 
 public abstract class AbstractCategoria {
 
-    protected byte id;
+    protected int id;
     protected String nombre;
 
-    public AbstractCategoria(byte id, String nombre) {
+    public AbstractCategoria(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
@@ -18,7 +18,7 @@ public abstract class AbstractCategoria {
         return id;
     }
 
-    public void setId(byte id) {
+    public void setId(int id) {
         this.id = id;
     }
 

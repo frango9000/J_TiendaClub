@@ -13,14 +13,14 @@ public class Compra extends AbstractCompra implements IPersistible {
 
     private HashMap<Integer, Comprado> comprados = new HashMap<>();
 
-    public Compra(int id, byte idUsuario, byte idSede, short idProveedor, LocalDateTime fechahora) {
+    public Compra(int id, int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
         super(id, idUsuario, idSede, idProveedor, fechahora);
         updateUsuario();
         updateProveedor();
         updateSede();
     }
 
-    public Compra(byte idUsuario, byte idSede, short idProveedor, LocalDateTime fechahora) {
+    public Compra(int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
         super(idUsuario, idSede, idProveedor, fechahora);
         updateUsuario();
         updateProveedor();
@@ -28,7 +28,7 @@ public class Compra extends AbstractCompra implements IPersistible {
     }
 
     @Override
-    public void setIdUsuario(byte idUsuario) {
+    public void setIdUsuario(int idUsuario) {
         super.setIdUsuario(idUsuario);
         updateUsuario();
     }
@@ -42,14 +42,15 @@ public class Compra extends AbstractCompra implements IPersistible {
     }
 
     private void updateUsuario() {
-        usuario.getCompras().remove(id);
+        if (usuario != null)
+            usuario.getCompras().remove(id);
         //TODO DAO
         //usuario = DAO usuario . get ( idUsuario );
         usuario.getCompras().put(id, this);
     }
 
     @Override
-    public void setIdProveedor(short idProveedor) {
+    public void setIdProveedor(int idProveedor) {
         super.setIdProveedor(idProveedor);
         updateProveedor();
     }
@@ -63,14 +64,15 @@ public class Compra extends AbstractCompra implements IPersistible {
     }
 
     private void updateProveedor() {
-        proveedor.getCompras().remove(id);
+        if (proveedor != null)
+            proveedor.getCompras().remove(id);
         //TODO DAO
         //proveedor = DAO proveedor . get ( idProveedor );
         proveedor.getCompras().put(id, this);
     }
 
     @Override
-    public void setIdSede(byte idSede) {
+    public void setIdSede(int idSede) {
         super.setIdSede(idSede);
         updateSede();
     }
@@ -84,7 +86,8 @@ public class Compra extends AbstractCompra implements IPersistible {
     }
 
     private void updateSede() {
-        sede.getCompras().remove(id);
+        if (sede != null)
+            sede.getCompras().remove(id);
         //TODO DAO
         //sede = DAO sede . get( idSede );
         sede.getCompras().put(id, this);

@@ -8,18 +8,18 @@ import java.time.LocalDateTime;
 public class CierreZ extends AbstractCierreZ implements IPersistible {
     private Caja caja;
 
-    public CierreZ(int id, short idCaja, LocalDateTime apertura) {
+    public CierreZ(int id, int idCaja, LocalDateTime apertura) {
         super(id, idCaja, apertura);
         updateCaja();
     }
 
-    public CierreZ(short idCaja, LocalDateTime apertura) {
+    public CierreZ(int idCaja, LocalDateTime apertura) {
         super(idCaja, apertura);
         updateCaja();
     }
 
     @Override
-    public void setIdCaja(short idCaja) {
+    public void setIdCaja(int idCaja) {
         super.setIdCaja(idCaja);
         updateCaja();
     }
@@ -33,7 +33,11 @@ public class CierreZ extends AbstractCierreZ implements IPersistible {
     }
 
     private void updateCaja() {
+        if (caja != null)
+            caja.getCierresZs().remove(id);
         //TODO DAO
+        //caja = DAO caja . get ( idCaja );
+        caja.getCierresZs().put(id, this);
     }
 
     @Override

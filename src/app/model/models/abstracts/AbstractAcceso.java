@@ -1,10 +1,10 @@
 package app.model.models.abstracts;
 
 public abstract class AbstractAcceso {
-    protected byte id;
+    protected int id;
     protected String nivel;
 
-    public AbstractAcceso(byte id, String nivel) {
+    public AbstractAcceso(int id, String nivel) {
         this.id = id;
         this.nivel = nivel;
     }
@@ -17,7 +17,7 @@ public abstract class AbstractAcceso {
         return id;
     }
 
-    public void setId(byte id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -2,7 +2,7 @@ package app.model.models.abstracts;
 
 public abstract class AbstractUsuario {
 
-    protected byte id;
+    protected int id;
     protected String user;
     protected String pass;
     protected String nombre;
@@ -10,9 +10,9 @@ public abstract class AbstractUsuario {
     protected String email;
     protected String direccion;
     protected String descripcion;
-    protected byte idAcceso;
+    protected int idAcceso;
 
-    public AbstractUsuario(byte id, String user, String pass, String nombre, byte idAcceso) {
+    public AbstractUsuario(int id, String user, String pass, String nombre, int idAcceso) {
         this.id = id;
         this.user = user;
         this.pass = pass;
@@ -20,7 +20,7 @@ public abstract class AbstractUsuario {
         this.idAcceso = idAcceso;
     }
 
-    public AbstractUsuario(String user, String pass, String nombre, byte idAcceso) {
+    public AbstractUsuario(String user, String pass, String nombre, int idAcceso) {
         this.user = user;
         this.pass = pass;
         this.nombre = nombre;
@@ -31,7 +31,7 @@ public abstract class AbstractUsuario {
         return id;
     }
 
-    public void setId(byte id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -91,11 +91,11 @@ public abstract class AbstractUsuario {
         this.descripcion = descripcion;
     }
 
-    public byte getIdAcceso() {
+    public int getIdAcceso() {
         return idAcceso;
     }
 
-    public void setIdAcceso(byte idAcceso) {
+    public void setIdAcceso(int idAcceso) {
         this.idAcceso = idAcceso;
     }
 

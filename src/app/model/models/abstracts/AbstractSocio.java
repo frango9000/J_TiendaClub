@@ -3,7 +3,7 @@ package app.model.models.abstracts;
 import java.time.LocalDateTime;
 
 public abstract class AbstractSocio {
-    protected short id;
+    protected int id;
     protected String dni;
     protected String nombre;
     protected String telefono;
@@ -15,7 +15,7 @@ public abstract class AbstractSocio {
     protected LocalDateTime fechaActive;
     protected LocalDateTime fechaInactive;
 
-    public AbstractSocio(short id, String dni, String nombre, LocalDateTime fechaIn, LocalDateTime fechaActive, LocalDateTime fechaInactive) {
+    public AbstractSocio(int id, String dni, String nombre, LocalDateTime fechaIn, LocalDateTime fechaActive, LocalDateTime fechaInactive) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
@@ -33,7 +33,7 @@ public abstract class AbstractSocio {
         return id;
     }
 
-    public void setId(short id) {
+    public void setId(int id) {
         this.id = id;
     }
 

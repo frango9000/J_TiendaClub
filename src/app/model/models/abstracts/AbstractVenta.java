@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 
 public abstract class AbstractVenta {
     protected int id;
-    protected byte idUsuario;
-    protected byte idCaja;
-    protected short idSocio;
+    protected int idUsuario;
+    protected int idCaja;
+    protected int idSocio;
     protected LocalDateTime fechahora;
 
-    public AbstractVenta(int id, byte idUsuario, byte idCaja, short idSocio, LocalDateTime fechahora) {
+    public AbstractVenta(int id, int idUsuario, int idCaja, int idSocio, LocalDateTime fechahora) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.idCaja = idCaja;
@@ -17,7 +17,7 @@ public abstract class AbstractVenta {
         this.fechahora = fechahora;
     }
 
-    public AbstractVenta(byte idUsuario, byte idCaja, short idSocio, LocalDateTime fechahora) {
+    public AbstractVenta(int idUsuario, int idCaja, int idSocio, LocalDateTime fechahora) {
         this.idUsuario = idUsuario;
         this.idCaja = idCaja;
         this.idSocio = idSocio;
@@ -32,27 +32,27 @@ public abstract class AbstractVenta {
         this.id = id;
     }
 
-    public byte getIdUsuario() {
+    public int getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(byte idUsuario) {
+    public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public byte getIdCaja() {
+    public int getIdCaja() {
         return idCaja;
     }
 
-    public void setIdCaja(byte idCaja) {
+    public void setIdCaja(int idCaja) {
         this.idCaja = idCaja;
     }
 
-    public short getIdSocio() {
+    public int getIdSocio() {
         return idSocio;
     }
 
-    public void setIdSocio(short idSocio) {
+    public void setIdSocio(int idSocio) {
         this.idSocio = idSocio;
     }
 

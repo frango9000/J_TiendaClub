@@ -4,20 +4,23 @@ import app.model.IPersistible;
 import app.model.models.abstracts.AbstractVenta;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 public class Venta extends AbstractVenta implements IPersistible {
     private Usuario usuario;
     private Caja caja;
     private Socio socio;
 
-    public Venta(int id, byte idUsuario, byte idCaja, short idSocio, LocalDateTime fechahora) {
+    private HashMap<Integer, Vendido> vendidos = new HashMap<>();
+
+    public Venta(int id, int idUsuario, int idCaja, int idSocio, LocalDateTime fechahora) {
         super(id, idUsuario, idCaja, idSocio, fechahora);
         updateUsuario();
         updateCaja();
         updateSocio();
     }
 
-    public Venta(byte idUsuario, byte idCaja, short idSocio, LocalDateTime fechahora) {
+    public Venta(int idUsuario, int idCaja, int idSocio, LocalDateTime fechahora) {
         super(idUsuario, idCaja, idSocio, fechahora);
         updateUsuario();
         updateCaja();
@@ -25,7 +28,7 @@ public class Venta extends AbstractVenta implements IPersistible {
     }
 
     @Override
-    public void setIdUsuario(byte idUsuario) {
+    public void setIdUsuario(int idUsuario) {
         super.setIdUsuario(idUsuario);
         updateUsuario();
     }
@@ -39,11 +42,15 @@ public class Venta extends AbstractVenta implements IPersistible {
     }
 
     private void updateUsuario() {
-
+        if (usuario != null)
+            usuario.getVentas().remove(id);
+        //TODO DAO
+        //usuario = DAO usuario . get ( idUsuario );
+        usuario.getVentas().put(id, this);
     }
 
     @Override
-    public void setIdCaja(byte idCaja) {
+    public void setIdCaja(int idCaja) {
         super.setIdCaja(idCaja);
         updateCaja();
     }
@@ -57,11 +64,15 @@ public class Venta extends AbstractVenta implements IPersistible {
     }
 
     private void updateCaja() {
-
+        if (caja != null)
+            caja.getVentas().remove(id);
+        //TODO DAO
+        //caja = DAO caja . get ( idCaja );
+        caja.getVentas().put(id, this);
     }
 
     @Override
-    public void setIdSocio(short idSocio) {
+    public void setIdSocio(int idSocio) {
         super.setIdSocio(idSocio);
         updateSocio();
     }
@@ -75,7 +86,15 @@ public class Venta extends AbstractVenta implements IPersistible {
     }
 
     private void updateSocio() {
+        if (socio != null)
+            socio.getVentas().remove(id);
+        //TODO DAO
+        //socio = DAO socio . get ( idSocio );
+        socio.getVentas().put(id, this);
+    }
 
+    public HashMap<Integer, Vendido> getVendidos() {
+        return vendidos;
     }
 
     @Override

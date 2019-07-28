@@ -1,12 +1,12 @@
 package app.model.models.abstracts;
 
 public abstract class AbstractSede {
-    protected byte id;
+    protected int id;
     protected String nombre;
     protected String telefono;
     protected String direccion;
 
-    public AbstractSede(byte id, String nombre, String telefono, String direccion) {
+    public AbstractSede(int id, String nombre, String telefono, String direccion) {
         this.id = id;
         this.nombre = nombre;
         this.telefono = telefono;
@@ -23,7 +23,7 @@ public abstract class AbstractSede {
         return id;
     }
 
-    public void setId(byte id) {
+    public void setId(int id) {
         this.id = id;
     }
 

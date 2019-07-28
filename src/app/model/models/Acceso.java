@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Acceso extends AbstractAcceso implements IPersistible {
     private HashMap<Integer, Usuario> usuarios = new HashMap<>();
 
-    public Acceso(byte id, String nivel) {
+    public Acceso(int id, String nivel) {
         super(id, nivel);
     }
 

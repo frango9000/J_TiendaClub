@@ -7,13 +7,13 @@ public class Comprado extends AbstractComprado implements IPersistible {
     private Compra compra;
     private Producto producto;
 
-    public Comprado(int id, int idCompra, short idProducto, int cantidad, int precioUnidad) {
+    public Comprado(int id, int idCompra, int idProducto, int cantidad, int precioUnidad) {
         super(id, idCompra, idProducto, cantidad, precioUnidad);
         updateCompra();
         updateProducto();
     }
 
-    public Comprado(int idCompra, short idProducto, int cantidad, int precioUnidad) {
+    public Comprado(int idCompra, int idProducto, int cantidad, int precioUnidad) {
         super(idCompra, idProducto, cantidad, precioUnidad);
         updateCompra();
         updateProducto();
@@ -34,14 +34,15 @@ public class Comprado extends AbstractComprado implements IPersistible {
     }
 
     public void updateCompra() {
-        compra.getComprados().remove(id);
+        if (compra != null)
+            compra.getComprados().remove(id);
         //TODO DAO
         //compra = DAO compra . get( idCompra );
         compra.getComprados().put(id, this);
     }
 
     @Override
-    public void setIdProducto(short idProducto) {
+    public void setIdProducto(int idProducto) {
         super.setIdProducto(idProducto);
         updateProducto();
     }
@@ -55,7 +56,8 @@ public class Comprado extends AbstractComprado implements IPersistible {
     }
 
     public void updateProducto() {
-        //producto.getComprados().remove(id); //No Use
+        //if(producto!=null)
+        //  producto.getComprados().remove(id); //No Use
 
         //TODO DAO
         //compra = DAO compra . get( idCompra );

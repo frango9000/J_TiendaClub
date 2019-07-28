@@ -11,18 +11,18 @@ public class Caja extends AbstractCaja implements IPersistible {
     private HashMap<Integer, CierreZ> cierresZs = new HashMap<>();
     private HashMap<Integer, Venta> ventas = new HashMap<>();
 
-    public Caja(short id, byte idSede, String nombre) {
+    public Caja(int id, int idSede, String nombre) {
         super(id, idSede, nombre);
         updateSede();
     }
 
-    public Caja(byte idSede, String nombre) {
+    public Caja(int idSede, String nombre) {
         super(idSede, nombre);
         updateSede();
     }
 
     @Override
-    public void setIdSede(byte idSede) {
+    public void setIdSede(int idSede) {
         super.setIdSede(idSede);
         updateSede();
     }
@@ -35,6 +35,14 @@ public class Caja extends AbstractCaja implements IPersistible {
         this.sede = sede;
     }
 
+    private void updateSede() {
+        if (sede != null)
+            sede.getCajas().remove(id);
+        //TODO DAO
+        //sede = DAO sede . get ( idSede );
+        sede.getCajas().put(id, this);
+    }
+
     public HashMap<Integer, CierreZ> getCierresZs() {
         return cierresZs;
     }
@@ -43,9 +51,6 @@ public class Caja extends AbstractCaja implements IPersistible {
         return ventas;
     }
 
-    private void updateSede() {
-        //TODO DAO
-    }
 
     @Override
     public int updateOnDb() {

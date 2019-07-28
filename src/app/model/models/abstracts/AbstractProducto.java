@@ -1,14 +1,14 @@
 package app.model.models.abstracts;
 
 public abstract class AbstractProducto {
-    protected short id;
+    protected int id;
     protected String nombre;
     protected String descripcion;
     protected int precioVenta;
     protected int iva;
-    protected byte idCategoria;
+    protected int idCategoria;
 
-    public AbstractProducto(short id, String nombre, int precioVenta, int iva, byte idCategoria) {
+    public AbstractProducto(int id, String nombre, int precioVenta, int iva, int idCategoria) {
         this.id = id;
         this.nombre = nombre;
         this.precioVenta = precioVenta;
@@ -16,7 +16,7 @@ public abstract class AbstractProducto {
         this.idCategoria = idCategoria;
     }
 
-    public AbstractProducto(String nombre, int precioVenta, int iva, byte idCategoria) {
+    public AbstractProducto(String nombre, int precioVenta, int iva, int idCategoria) {
         this.nombre = nombre;
         this.precioVenta = precioVenta;
         this.iva = iva;
@@ -27,7 +27,7 @@ public abstract class AbstractProducto {
         return id;
     }
 
-    public void setId(short id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -63,11 +63,11 @@ public abstract class AbstractProducto {
         this.iva = iva;
     }
 
-    public byte getIdCategoria() {
+    public int getIdCategoria() {
         return idCategoria;
     }
 
-    public void setIdCategoria(byte idCategoria) {
+    public void setIdCategoria(int idCategoria) {
         this.idCategoria = idCategoria;
     }
 

@@ -10,19 +10,20 @@ public class Usuario extends AbstractUsuario implements IPersistible {
 
     private HashMap<Integer, Compra> compras = new HashMap<>();
     private HashMap<Integer, Venta> ventas = new HashMap<>();
+    private HashMap<Integer, Transferencia> transferencias = new HashMap<>();
 
-    public Usuario(byte id, String user, String pass, String nombre, byte idAcceso) {
+    public Usuario(int id, String user, String pass, String nombre, int idAcceso) {
         super(id, user, pass, nombre, idAcceso);
         updateAcceso();
     }
 
-    public Usuario(String user, String pass, String nombre, byte idAcceso) {
+    public Usuario(String user, String pass, String nombre, int idAcceso) {
         super(user, pass, nombre, idAcceso);
         updateAcceso();
     }
 
     @Override
-    public void setIdAcceso(byte idAcceso) {
+    public void setIdAcceso(int idAcceso) {
         super.setIdAcceso(idAcceso);
         updateAcceso();
     }
@@ -36,7 +37,11 @@ public class Usuario extends AbstractUsuario implements IPersistible {
     }
 
     private void updateAcceso() {
+        if (acceso != null)
+            acceso.getUsuarios().remove(id);
         //TODO DAO
+        //usuario = DAO usuario . get ( idUsuario );
+        acceso.getUsuarios().put(id, this);
     }
 
     public HashMap<Integer, Compra> getCompras() {
@@ -45,6 +50,10 @@ public class Usuario extends AbstractUsuario implements IPersistible {
 
     public HashMap<Integer, Venta> getVentas() {
         return ventas;
+    }
+
+    public HashMap<Integer, Transferencia> getTransferencias() {
+        return transferencias;
     }
 
     @Override

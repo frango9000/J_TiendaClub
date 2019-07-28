@@ -4,17 +4,17 @@ import java.time.LocalDateTime;
 
 public abstract class AbstractCierreZ {
     protected int id;
-    protected short idCaja;
+    protected int idCaja;
     protected LocalDateTime apertura;
     protected LocalDateTime cierre;
 
-    public AbstractCierreZ(int id, short idCaja, LocalDateTime apertura) {
+    public AbstractCierreZ(int id, int idCaja, LocalDateTime apertura) {
         this.id = id;
         this.idCaja = idCaja;
         this.apertura = apertura;
     }
 
-    public AbstractCierreZ(short idCaja, LocalDateTime apertura) {
+    public AbstractCierreZ(int idCaja, LocalDateTime apertura) {
         this.idCaja = idCaja;
         this.apertura = apertura;
     }
@@ -27,11 +27,11 @@ public abstract class AbstractCierreZ {
         this.id = id;
     }
 
-    public short getIdCaja() {
+    public int getIdCaja() {
         return idCaja;
     }
 
-    public void setIdCaja(short idCaja) {
+    public void setIdCaja(int idCaja) {
         this.idCaja = idCaja;
     }
 

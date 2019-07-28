@@ -1,17 +1,17 @@
 package app.model.models.abstracts;
 
 public abstract class AbstractCaja {
-    protected short id;
-    protected byte idSede;
+    protected int id;
+    protected int idSede;
     protected String nombre;
 
-    public AbstractCaja(short id, byte idSede, String nombre) {
+    public AbstractCaja(int id, int idSede, String nombre) {
         this.id = id;
         this.idSede = idSede;
         this.nombre = nombre;
     }
 
-    public AbstractCaja(byte idSede, String nombre) {
+    public AbstractCaja(int idSede, String nombre) {
         this.idSede = idSede;
         this.nombre = nombre;
     }
@@ -20,15 +20,15 @@ public abstract class AbstractCaja {
         return id;
     }
 
-    public void setId(short id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public byte getIdSede() {
+    public int getIdSede() {
         return idSede;
     }
 
-    public void setIdSede(byte idSede) {
+    public void setIdSede(int idSede) {
         this.idSede = idSede;
     }
 

@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Categoria extends AbstractCategoria implements IPersistible {
     private HashMap<Integer, Producto> productos = new HashMap<>();
 
-    public Categoria(byte id, String nombre) {
+    public Categoria(int id, String nombre) {
         super(id, nombre);
     }
 

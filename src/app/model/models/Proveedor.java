@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Proveedor extends AbstractProveedor implements IPersistible {
     private HashMap<Integer, Compra> compras = new HashMap<>();
 
-    public Proveedor(short id, String nif, String nombre) {
+    public Proveedor(int id, String nif, String nombre) {
         super(id, nif, nombre);
     }
 
