@@ -4,11 +4,14 @@ import app.model.IPersistible;
 import app.model.models.abstracts.AbstractCompra;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 public class Compra extends AbstractCompra implements IPersistible {
     private Usuario usuario;
     private Proveedor proveedor;
     private Sede sede;
+
+    private HashMap<Integer, Comprado> comprados = new HashMap<>();
 
     public Compra(int id, byte idUsuario, byte idSede, short idProveedor, LocalDateTime fechahora) {
         super(id, idUsuario, idSede, idProveedor, fechahora);
@@ -85,6 +88,10 @@ public class Compra extends AbstractCompra implements IPersistible {
         //TODO DAO
         //sede = DAO sede . get( idSede );
         sede.getCompras().put(id, this);
+    }
+
+    public HashMap<Integer, Comprado> getComprados() {
+        return comprados;
     }
 
     @Override

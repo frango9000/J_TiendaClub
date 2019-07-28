@@ -6,6 +6,8 @@ import app.model.models.abstracts.AbstractProducto;
 public class Producto extends AbstractProducto implements IPersistible {
     private Categoria categoria;
 
+    //private HashMap<Integer, Comprado> comprados = new HashMap<>(); //No Use
+
     public Producto(short id, String nombre, int precioVenta, int iva, byte idCategoria) {
         super(id, nombre, precioVenta, iva, idCategoria);
         updateCategoria();

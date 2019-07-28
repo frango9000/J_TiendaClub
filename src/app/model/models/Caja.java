@@ -9,6 +9,7 @@ public class Caja extends AbstractCaja implements IPersistible {
     private Sede sede;
 
     private HashMap<Integer, CierreZ> cierresZs = new HashMap<>();
+    private HashMap<Integer, Venta> ventas = new HashMap<>();
 
     public Caja(short id, byte idSede, String nombre) {
         super(id, idSede, nombre);
@@ -36,6 +37,10 @@ public class Caja extends AbstractCaja implements IPersistible {
 
     public HashMap<Integer, CierreZ> getCierresZs() {
         return cierresZs;
+    }
+
+    public HashMap<Integer, Venta> getVentas() {
+        return ventas;
     }
 
     private void updateSede() {

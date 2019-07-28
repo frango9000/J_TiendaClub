@@ -9,6 +9,7 @@ public class Usuario extends AbstractUsuario implements IPersistible {
     private Acceso acceso;
 
     private HashMap<Integer, Compra> compras = new HashMap<>();
+    private HashMap<Integer, Venta> ventas = new HashMap<>();
 
     public Usuario(byte id, String user, String pass, String nombre, byte idAcceso) {
         super(id, user, pass, nombre, idAcceso);
@@ -40,6 +41,10 @@ public class Usuario extends AbstractUsuario implements IPersistible {
 
     public HashMap<Integer, Compra> getCompras() {
         return compras;
+    }
+
+    public HashMap<Integer, Venta> getVentas() {
+        return ventas;
     }
 
     @Override
