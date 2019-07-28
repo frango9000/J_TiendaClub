@@ -1,15 +1,20 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public class AbstractCierreZ {
-    private int id;
-    private short idCaja;
-    private LocalDateTime apertura;
-    private LocalDateTime cierre;
+public abstract class AbstractCierreZ {
+    protected int id;
+    protected short idCaja;
+    protected LocalDateTime apertura;
+    protected LocalDateTime cierre;
 
     public AbstractCierreZ(int id, short idCaja, LocalDateTime apertura) {
         this.id = id;
+        this.idCaja = idCaja;
+        this.apertura = apertura;
+    }
+
+    public AbstractCierreZ(short idCaja, LocalDateTime apertura) {
         this.idCaja = idCaja;
         this.apertura = apertura;
     }

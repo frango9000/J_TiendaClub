@@ -75,7 +75,9 @@ CREATE TABLE IF NOT EXISTS `zs`
     `idCaja`   SMALLINT(5) UNSIGNED NOT NULL,
     `apertura` DATETIME             NOT NULL,
     `cierre`   DATETIME             NULL DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `FK_zs_cajas` (`idCaja`),
+    CONSTRAINT `FK_zs_cajas` FOREIGN KEY (`idCaja`) REFERENCES `cajas` (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `categorias`
@@ -158,13 +160,31 @@ CREATE TABLE IF NOT EXISTS `vendidos`
     CONSTRAINT `FK_vendidos_ventas` FOREIGN KEY (`idVenta`) REFERENCES `ventas` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `stock`
+CREATE TABLE IF NOT EXISTS `transferencias`
 (
-    `idSede`     TINYINT(3) UNSIGNED  NOT NULL,
-    `idProducto` SMALLINT(5) UNSIGNED NOT NULL,
-    `cantidad`   INT(6)               NOT NULL,
-    PRIMARY KEY (`idSede`, `idProducto`),
-    INDEX `FK_stock_productos` (`idProducto`, `idSede`),
-    CONSTRAINT `FK_stock_productos` FOREIGN KEY (`idProducto`) REFERENCES `productos` (`id`),
-    CONSTRAINT `FK_stock_sedes` FOREIGN KEY (`idSede`) REFERENCES `sedes` (`id`)
+    `id`            INT(11)              NOT NULL AUTO_INCREMENT,
+    `idSedeOrigen`  TINYINT(3) UNSIGNED  NOT NULL,
+    `idSedeDestino` TINYINT(3) UNSIGNED  NOT NULL,
+    `idProducto`    SMALLINT(6) UNSIGNED NOT NULL,
+    `Cantidad`      INT(6)               NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `FK_transferencias_sedes` (`idSedeOrigen`),
+    INDEX `FK_transferencias_sedes_2` (`idSedeDestino`),
+    INDEX `FK_transferencias_productos` (`idProducto`),
+    CONSTRAINT `FK_transferencias_productos` FOREIGN KEY (`idProducto`) REFERENCES `productos` (`id`),
+    CONSTRAINT `FK_transferencias_sedes` FOREIGN KEY (`idSedeOrigen`) REFERENCES `sedes` (`id`),
+    CONSTRAINT `FK_transferencias_sedes_2` FOREIGN KEY (`idSedeDestino`) REFERENCES `sedes` (`id`)
 )
+
+# CREATE TABLE IF NOT EXISTS `stock`
+# (
+#     `id`         MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+#     `idSede`     TINYINT(3) UNSIGNED   NOT NULL,
+#     `idProducto` SMALLINT(5) UNSIGNED  NOT NULL,
+#     `cantidad`   INT(6)                NOT NULL,
+#     PRIMARY KEY (`id`),
+#     UNIQUE INDEX `idSede_idProducto` (`idSede`, `idProducto`),
+#     INDEX `FK_stock_productos` (`idProducto`, `idSede`),
+#     CONSTRAINT `FK_stock_productos` FOREIGN KEY (`idProducto`) REFERENCES `productos` (`id`),
+#     CONSTRAINT `FK_stock_sedes` FOREIGN KEY (`idSede`) REFERENCES `sedes` (`id`)
+# )

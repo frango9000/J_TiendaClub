@@ -1,16 +1,20 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
-public class AbstractCategoria {
+public abstract class AbstractCategoria {
 
-    private byte id;
-    private String nombre;
+    protected byte id;
+    protected String nombre;
 
     public AbstractCategoria(byte id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
 
-    public byte getId() {
+    public AbstractCategoria(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getId() {
         return id;
     }
 

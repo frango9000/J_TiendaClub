@@ -1,14 +1,21 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
-public class AbstractVendidos {
-    private int id;
-    private int idVenta;
-    private short idProducto;
-    private int cantidad;
-    private int precioUnidad;
+public abstract class AbstractVendido {
+    protected int id;
+    protected int idVenta;
+    protected short idProducto;
+    protected int cantidad;
+    protected int precioUnidad;
 
-    public AbstractVendidos(int id, int idVenta, short idProducto, int cantidad, int precioUnidad) {
+    public AbstractVendido(int id, int idVenta, short idProducto, int cantidad, int precioUnidad) {
         this.id = id;
+        this.idVenta = idVenta;
+        this.idProducto = idProducto;
+        this.cantidad = cantidad;
+        this.precioUnidad = precioUnidad;
+    }
+
+    public AbstractVendido(int idVenta, short idProducto, int cantidad, int precioUnidad) {
         this.idVenta = idVenta;
         this.idProducto = idProducto;
         this.cantidad = cantidad;
@@ -60,7 +67,7 @@ public class AbstractVendidos {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractVendidos that = (AbstractVendidos) o;
+        AbstractVendido that = (AbstractVendido) o;
 
         return id == that.id;
     }

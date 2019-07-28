@@ -10,9 +10,9 @@ package app.model;
  * @author NarF
  */
 public interface Globals {
-    
-    public static boolean DEBUG = true;
-    public static boolean SQL_DEBUG = true;
-    public static boolean SQL_CONN = true;
+
+    boolean DEBUG = true;
+    boolean SQL_DEBUG = true;
+    boolean SQL_CONN = true;
     
 }

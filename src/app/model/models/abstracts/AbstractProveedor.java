@@ -1,51 +1,39 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
-public class AbstractUsuario {
+public abstract class AbstractProveedor {
+    protected short id;
+    protected String nif;
+    protected String nombre;
+    protected String telefono;
+    protected String email;
+    protected String direccion;
+    protected String descripcion;
 
-    private byte id;
-    private String user;
-    private String pass;
-    private String nombre;
-    private String telefono;
-    private String email;
-    private String direccion;
-    private String descripcion;
-    private byte idAcceso;
-
-    public AbstractUsuario(byte id, String user, String pass, String nombre, String telefono, String email, String direccion, String descripcion, byte idAcceso) {
+    public AbstractProveedor(short id, String nif, String nombre) {
         this.id = id;
-        this.user = user;
-        this.pass = pass;
+        this.nif = nif;
         this.nombre = nombre;
-        this.telefono = telefono;
-        this.email = email;
-        this.direccion = direccion;
-        this.descripcion = descripcion;
-        this.idAcceso = idAcceso;
     }
 
-    public byte getId() {
+    public AbstractProveedor(String nif, String nombre) {
+        this.nif = nif;
+        this.nombre = nombre;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(byte id) {
+    public void setId(short id) {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
+    public String getNif() {
+        return nif;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setNif(String nif) {
+        this.nif = nif;
     }
 
     public String getNombre() {
@@ -88,22 +76,14 @@ public class AbstractUsuario {
         this.descripcion = descripcion;
     }
 
-    public byte getIdAcceso() {
-        return idAcceso;
-    }
-
-    public void setIdAcceso(byte idAcceso) {
-        this.idAcceso = idAcceso;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractUsuario usuario = (AbstractUsuario) o;
+        AbstractProveedor that = (AbstractProveedor) o;
 
-        return id == usuario.id;
+        return id == that.id;
     }
 
     @Override
@@ -113,16 +93,14 @@ public class AbstractUsuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
+        return "AbstractProveedor{" +
                 "id=" + id +
-                ", user='" + user + '\'' +
-                ", pass='" + pass + '\'' +
+                ", nif='" + nif + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", email='" + email + '\'' +
                 ", direccion='" + direccion + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", idAcceso=" + idAcceso +
                 '}';
     }
 }

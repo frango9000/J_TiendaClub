@@ -1,23 +1,29 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
-public class AbstractProducto {
-    private short id;
-    private String nombre;
-    private String descripcion;
-    private int precioVenta;
-    private int iva;
-    private byte idCategoria;
+public abstract class AbstractProducto {
+    protected short id;
+    protected String nombre;
+    protected String descripcion;
+    protected int precioVenta;
+    protected int iva;
+    protected byte idCategoria;
 
-    public AbstractProducto(short id, String nombre, String descripcion, int precioVenta, int iva, byte idCategoria) {
+    public AbstractProducto(short id, String nombre, int precioVenta, int iva, byte idCategoria) {
         this.id = id;
         this.nombre = nombre;
-        this.descripcion = descripcion;
         this.precioVenta = precioVenta;
         this.iva = iva;
         this.idCategoria = idCategoria;
     }
 
-    public short getId() {
+    public AbstractProducto(String nombre, int precioVenta, int iva, byte idCategoria) {
+        this.nombre = nombre;
+        this.precioVenta = precioVenta;
+        this.iva = iva;
+        this.idCategoria = idCategoria;
+    }
+
+    public int getId() {
         return id;
     }
 

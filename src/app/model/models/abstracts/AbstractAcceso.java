@@ -1,15 +1,19 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
-public class AbstractAcceso {
-    private byte id;
-    private String nivel;
+public abstract class AbstractAcceso {
+    protected byte id;
+    protected String nivel;
 
     public AbstractAcceso(byte id, String nivel) {
         this.id = id;
         this.nivel = nivel;
     }
 
-    public byte getId() {
+    public AbstractAcceso(String nivel) {
+        this.nivel = nivel;
+    }
+
+    public int getId() {
         return id;
     }
 

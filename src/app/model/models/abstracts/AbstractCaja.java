@@ -1,9 +1,9 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
-public class AbstractCaja {
-    private short id;
-    private byte idSede;
-    private String nombre;
+public abstract class AbstractCaja {
+    protected short id;
+    protected byte idSede;
+    protected String nombre;
 
     public AbstractCaja(short id, byte idSede, String nombre) {
         this.id = id;
@@ -11,7 +11,12 @@ public class AbstractCaja {
         this.nombre = nombre;
     }
 
-    public short getId() {
+    public AbstractCaja(byte idSede, String nombre) {
+        this.idSede = idSede;
+        this.nombre = nombre;
+    }
+
+    public int getId() {
         return id;
     }
 

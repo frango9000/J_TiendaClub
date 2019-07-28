@@ -1,10 +1,10 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
-public class AbstractSede {
-    private byte id;
-    private String nombre;
-    private String telefono;
-    private String direccion;
+public abstract class AbstractSede {
+    protected byte id;
+    protected String nombre;
+    protected String telefono;
+    protected String direccion;
 
     public AbstractSede(byte id, String nombre, String telefono, String direccion) {
         this.id = id;
@@ -13,7 +13,13 @@ public class AbstractSede {
         this.direccion = direccion;
     }
 
-    public byte getId() {
+    public AbstractSede(String nombre, String telefono, String direccion) {
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.direccion = direccion;
+    }
+
+    public int getId() {
         return id;
     }
 

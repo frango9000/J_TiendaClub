@@ -1,33 +1,35 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public class AbstractSocio {
-    private short id;
-    private String dni;
-    private String nombre;
-    private String telefono;
-    private String direccion;
-    private String descripcion;
+public abstract class AbstractSocio {
+    protected short id;
+    protected String dni;
+    protected String nombre;
+    protected String telefono;
+    protected String direccion;
+    protected String descripcion;
 
-    private boolean isActive;
-    private LocalDateTime fechaIn;
-    private LocalDateTime fechaActive;
-    private LocalDateTime fechaInactive;
+    protected boolean isActive;
+    protected LocalDateTime fechaIn;
+    protected LocalDateTime fechaActive;
+    protected LocalDateTime fechaInactive;
 
-    public AbstractSocio(short id, String dni, String nombre, String telefono, String direccion, String descripcion, LocalDateTime fechaIn) {
+    public AbstractSocio(short id, String dni, String nombre, LocalDateTime fechaIn, LocalDateTime fechaActive, LocalDateTime fechaInactive) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
-        this.telefono = telefono;
-        this.direccion = direccion;
-        this.descripcion = descripcion;
-        this.isActive = true;
         this.fechaIn = fechaIn;
-        this.fechaActive = fechaIn;
+        this.fechaActive = fechaActive;
+        this.fechaInactive = fechaInactive;
     }
 
-    public short getId() {
+    public AbstractSocio(String dni, String nombre) {
+        this.dni = dni;
+        this.nombre = nombre;
+    }
+
+    public int getId() {
         return id;
     }
 

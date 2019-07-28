@@ -1,9 +1,9 @@
-package app.model.abstractmodel;
+package trash;
 
-public class AbstractStock {
-    private byte idSede;
-    private short idProducto;
-    private int cantidad;
+public abstract class AbstractStock {
+    protected byte idSede;
+    protected short idProducto;
+    protected int cantidad;
 
     public AbstractStock(byte idSede, short idProducto, int cantidad) {
         this.idSede = idSede;

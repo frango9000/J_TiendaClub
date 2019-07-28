@@ -1,19 +1,26 @@
-package app.model.abstractmodel;
+package app.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public class AbstractCompra {
-    private int id;
-    private byte idUsuario;
-    private byte idSede;
-    private short idProveedor;
-    private LocalDateTime fechahora;
+public abstract class AbstractVenta {
+    protected int id;
+    protected byte idUsuario;
+    protected byte idCaja;
+    protected short idSocio;
+    protected LocalDateTime fechahora;
 
-    public AbstractCompra(int id, byte idUsuario, byte idSede, short idProveedor, LocalDateTime fechahora) {
+    public AbstractVenta(int id, byte idUsuario, byte idCaja, short idSocio, LocalDateTime fechahora) {
         this.id = id;
         this.idUsuario = idUsuario;
-        this.idSede = idSede;
-        this.idProveedor = idProveedor;
+        this.idCaja = idCaja;
+        this.idSocio = idSocio;
+        this.fechahora = fechahora;
+    }
+
+    public AbstractVenta(byte idUsuario, byte idCaja, short idSocio, LocalDateTime fechahora) {
+        this.idUsuario = idUsuario;
+        this.idCaja = idCaja;
+        this.idSocio = idSocio;
         this.fechahora = fechahora;
     }
 
@@ -33,20 +40,20 @@ public class AbstractCompra {
         this.idUsuario = idUsuario;
     }
 
-    public byte getIdSede() {
-        return idSede;
+    public byte getIdCaja() {
+        return idCaja;
     }
 
-    public void setIdSede(byte idSede) {
-        this.idSede = idSede;
+    public void setIdCaja(byte idCaja) {
+        this.idCaja = idCaja;
     }
 
-    public short getIdProveedor() {
-        return idProveedor;
+    public short getIdSocio() {
+        return idSocio;
     }
 
-    public void setIdProveedor(short idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setIdSocio(short idSocio) {
+        this.idSocio = idSocio;
     }
 
     public LocalDateTime getFechahora() {
@@ -62,7 +69,7 @@ public class AbstractCompra {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractCompra that = (AbstractCompra) o;
+        AbstractVenta that = (AbstractVenta) o;
 
         return id == that.id;
     }
@@ -74,11 +81,11 @@ public class AbstractCompra {
 
     @Override
     public String toString() {
-        return "AbstractCompra{" +
+        return "AbstractVenta{" +
                 "id=" + id +
                 ", idUsuario=" + idUsuario +
-                ", idSede=" + idSede +
-                ", idProveedor=" + idProveedor +
+                ", idCaja=" + idCaja +
+                ", idSocio=" + idSocio +
                 ", fechahora=" + fechahora +
                 '}';
     }

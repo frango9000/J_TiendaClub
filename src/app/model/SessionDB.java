@@ -279,7 +279,7 @@ public final class SessionDB implements Globals{
 
     public static int crearTablas() {
         int rows = 0;
-        File sqlFile = new File("src/app/model/tables.sql");
+        File sqlFile = new File("src/app/model/sql/tables.sql");
         StringBuilder sqlcmd = new StringBuilder();
         try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
             while (scan.hasNext()) {
@@ -307,7 +307,7 @@ public final class SessionDB implements Globals{
 
     public static int insertarDemoData() {
         int rows = 0;
-        File sqlFile = new File("src/src/model/DemoData.sql");
+        File sqlFile = new File("src/src/model/sql/demodata.sql");
         StringBuilder sqlcmd = new StringBuilder();
         try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
             while (scan.hasNext()) {
@@ -352,7 +352,7 @@ public final class SessionDB implements Globals{
                 "proveedores\n" +
                 "sedes\n" +
                 "socios\n" +
-                "stock\n" +
+                "transferencias\n" +
                 "usuarios\n" +
                 "vendidos\n" +
                 "ventas\n" +
