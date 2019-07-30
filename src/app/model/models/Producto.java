@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractProducto;
 
@@ -62,16 +63,16 @@ public class Producto extends AbstractProducto implements IPersistible {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setCategoria(Categoria categoria2) {
+        if (categoria != null)
+            categoria.getProductos().remove(id);
+        this.categoria = categoria2;
+        if (categoria != null)
+            categoria.getProductos().put(id, this);
     }
 
     private void updateCategoria() {
-        if (categoria != null)
-            categoria.getProductos().remove(id);
-        //TODO DAO
-        //categoria = DAO categoria . get ( idCategoria );
-        categoria.getProductos().put(id, this);
+        setCategoria(DataStore.getCategorias().get(idCategoria));
     }
 
     @Override

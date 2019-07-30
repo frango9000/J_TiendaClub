@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractCompra;
 import app.model.utils.DateUtils;
@@ -67,16 +68,16 @@ public class Compra extends AbstractCompra implements IPersistible {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario(Usuario usuario2) {
+        if (usuario != null)
+            usuario.getCompras().remove(id);
+        this.usuario = usuario2;
+        if (usuario != null)
+            usuario.getCompras().put(id, this);
     }
 
     private void updateUsuario() {
-        if (usuario != null)
-            usuario.getCompras().remove(id);
-        //TODO DAO
-        //usuario = DAO usuario . get ( idUsuario );
-        usuario.getCompras().put(id, this);
+        setUsuario(DataStore.getUsuarios().get(idUsuario));
     }
 
     @Override
@@ -89,16 +90,16 @@ public class Compra extends AbstractCompra implements IPersistible {
         return proveedor;
     }
 
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
+    public void setProveedor(Proveedor proveedor2) {
+        if (proveedor != null)
+            proveedor.getCompras().remove(id);
+        this.proveedor = proveedor2;
+        if (proveedor != null)
+            proveedor.getCompras().put(id, this);
     }
 
     private void updateProveedor() {
-        if (proveedor != null)
-            proveedor.getCompras().remove(id);
-        //TODO DAO
-        //proveedor = DAO proveedor . get ( idProveedor );
-        proveedor.getCompras().put(id, this);
+        setProveedor(DataStore.getProveedores().get(idProveedor));
     }
 
     @Override
@@ -111,16 +112,16 @@ public class Compra extends AbstractCompra implements IPersistible {
         return sede;
     }
 
-    public void setSede(Sede sede) {
-        this.sede = sede;
+    public void setSede(Sede sede2) {
+        if (sede != null)
+            sede.getCompras().remove(id);
+        this.sede = sede2;
+        if (sede != null)
+            sede.getCompras().put(id, this);
     }
 
     private void updateSede() {
-        if (sede != null)
-            sede.getCompras().remove(id);
-        //TODO DAO
-        //sede = DAO sede . get( idSede );
-        sede.getCompras().put(id, this);
+        setSede(DataStore.getSedes().get(idSede));
     }
 
     public HashMap<Integer, Comprado> getComprados() {

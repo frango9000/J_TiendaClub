@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractVenta;
 import app.model.utils.DateUtils;
@@ -67,16 +68,16 @@ public class Venta extends AbstractVenta implements IPersistible {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario(Usuario usuario2) {
+        if (usuario != null)
+            usuario.getVentas().remove(id);
+        this.usuario = usuario2;
+        if (usuario != null)
+            usuario.getVentas().put(id, this);
     }
 
     private void updateUsuario() {
-        if (usuario != null)
-            usuario.getVentas().remove(id);
-        //TODO DAO
-        //usuario = DAO usuario . get ( idUsuario );
-        usuario.getVentas().put(id, this);
+        setUsuario(DataStore.getUsuarios().get(idUsuario));
     }
 
     @Override
@@ -89,16 +90,16 @@ public class Venta extends AbstractVenta implements IPersistible {
         return caja;
     }
 
-    public void setCaja(Caja caja) {
-        this.caja = caja;
+    public void setCaja(Caja caja2) {
+        if (caja != null)
+            caja.getVentas().remove(id);
+        this.caja = caja2;
+        if (caja != null)
+            caja.getVentas().put(id, this);
     }
 
     private void updateCaja() {
-        if (caja != null)
-            caja.getVentas().remove(id);
-        //TODO DAO
-        //caja = DAO caja . get ( idCaja );
-        caja.getVentas().put(id, this);
+        setCaja(DataStore.getCajas().get(idCaja));
     }
 
     @Override
@@ -111,16 +112,16 @@ public class Venta extends AbstractVenta implements IPersistible {
         return socio;
     }
 
-    public void setSocio(Socio socio) {
-        this.socio = socio;
+    public void setSocio(Socio socio2) {
+        if (socio != null)
+            socio.getVentas().remove(id);
+        this.socio = socio2;
+        if (socio != null)
+            socio.getVentas().put(id, this);
     }
 
     private void updateSocio() {
-        if (socio != null)
-            socio.getVentas().remove(id);
-        //TODO DAO
-        //socio = DAO socio . get ( idSocio );
-        socio.getVentas().put(id, this);
+        setSocio(DataStore.getSocios().get(idSocio));
     }
 
     public HashMap<Integer, Vendido> getVendidos() {

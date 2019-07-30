@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractUsuario;
 
@@ -81,16 +82,16 @@ public class Usuario extends AbstractUsuario implements IPersistible {
         return acceso;
     }
 
-    public void setAcceso(Acceso acceso) {
-        this.acceso = acceso;
+    public void setAcceso(Acceso acceso2) {
+        if (acceso != null)
+            acceso.getUsuarios().remove(id);
+        this.acceso = acceso2;
+        if (acceso != null)
+            acceso.getUsuarios().put(id, this);
     }
 
     private void updateAcceso() {
-        if (acceso != null)
-            acceso.getUsuarios().remove(id);
-        //TODO DAO
-        //usuario = DAO usuario . get ( idUsuario );
-        acceso.getUsuarios().put(id, this);
+        setAcceso(DataStore.getAccesos().get(idAcceso));
     }
 
     public HashMap<Integer, Compra> getCompras() {

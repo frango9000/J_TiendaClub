@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractComprado;
 
@@ -59,16 +60,16 @@ public class Comprado extends AbstractComprado implements IPersistible {
         return compra;
     }
 
-    public void setCompra(Compra compra) {
-        this.compra = compra;
+    public void setCompra(Compra compra2) {
+        if (compra != null)
+            compra.getComprados().remove(id);
+        this.compra = compra2;
+        if (compra != null)
+            compra.getComprados().put(id, this);
     }
 
     public void updateCompra() {
-        if (compra != null)
-            compra.getComprados().remove(id);
-        //TODO DAO
-        //compra = DAO compra . get( idCompra );
-        compra.getComprados().put(id, this);
+        setCompra(DataStore.getCompras().get(idCompra));
     }
 
     @Override
@@ -81,18 +82,16 @@ public class Comprado extends AbstractComprado implements IPersistible {
         return producto;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setProducto(Producto producto2) {
+        //if(producto!=null)
+        //  producto.getComprados().remove(id); //No Use
+        this.producto = producto2;
+        //if(producto!=null)
+        //  producto.getComprados().put(id, this); //No Use
     }
 
     public void updateProducto() {
-        //if(producto!=null)
-        //  producto.getComprados().remove(id); //No Use
-
-        //TODO DAO
-        //compra = DAO compra . get( idCompra );
-
-        //producto.getComprados().put(id, this); //No Use
+        setProducto(DataStore.getProductos().get(idProducto));
     }
 
     @Override

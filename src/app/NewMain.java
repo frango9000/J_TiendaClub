@@ -25,6 +25,9 @@ public class NewMain {
 
 
         DataStore.getAccesos().queryAll();
+        DataStore.getSedes().queryAll();
+
+        System.out.println(DataStore.getCompras().get(1).toString());
     }
 
 }

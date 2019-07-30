@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractVendido;
 
@@ -59,17 +60,16 @@ public class Vendido extends AbstractVendido implements IPersistible {
         return venta;
     }
 
-    public void setVenta(Venta venta) {
-        this.venta = venta;
+    public void setVenta(Venta venta2) {
+        if (venta != null)
+            venta.getVendidos().remove(id);
+        this.venta = venta2;
+        if (venta != null)
+            venta.getVendidos().put(id, this);
     }
 
     private void updateVenta() {
-        if (venta != null)
-            venta.getVendidos().remove(id);
-        //TODO DAO
-        //venta = DAO venta . get( idVenta );
-        venta.getVendidos().put(id, this);
-
+        setVenta(DataStore.getVentas().get(idVenta));
     }
 
     @Override
@@ -82,18 +82,16 @@ public class Vendido extends AbstractVendido implements IPersistible {
         return producto;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setProducto(Producto producto2) {
+        //if(producto!=null)
+        //  producto.getComprados().remove(id); //No Use
+        this.producto = producto2;
+        //if(producto!=null)
+        //  producto.getComprados().put(id, this); //No Use
     }
 
     private void updateProducto() {
-        //if(producto!=null)
-        //  producto.getComprados().remove(id); //No Use
-
-        //TODO DAO
-        //compra = DAO compra . get( idCompra );
-
-        //producto.getComprados().put(id, this); //No Use
+        setProducto(DataStore.getProductos().get(idProducto));
     }
 
     @Override

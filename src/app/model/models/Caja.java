@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractCaja;
 
@@ -66,16 +67,16 @@ public class Caja extends AbstractCaja implements IPersistible {
         return sede;
     }
 
-    public void setSede(Sede sede) {
-        this.sede = sede;
+    public void setSede(Sede sede2) {
+        if (sede != null)
+            sede.getCajas().remove(id);
+        this.sede = sede2;
+        if (sede != null)
+            sede.getCajas().putIfAbsent(id, this);
     }
 
     private void updateSede() {
-        if (sede != null)
-            sede.getCajas().remove(id);
-        //TODO DAO
-        //sede = DAO sede . get ( idSede );
-        sede.getCajas().put(id, this);
+        setSede(DataStore.getSedes().get(idSede));
     }
 
     public HashMap<Integer, CierreZ> getCierresZs() {

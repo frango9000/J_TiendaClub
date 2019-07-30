@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractTransferencia;
 import app.model.utils.DateUtils;
@@ -71,16 +72,16 @@ public class Transferencia extends AbstractTransferencia implements IPersistible
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario(Usuario usuario2) {
+        if (usuario != null)
+            usuario.getTransferencias().remove(id);
+        this.usuario = usuario2;
+        if (usuario != null)
+            usuario.getTransferencias().put(id, this);
     }
 
     private void updateUsuario() {
-        if (usuario != null)
-            usuario.getTransferencias().remove(id);
-        //TODO DAO
-        //usuario = DAO usuario . get ( idUsuario );
-        usuario.getTransferencias().put(id, this);
+        setUsuario(DataStore.getUsuarios().get(idUsuario));
     }
 
     @Override
@@ -93,16 +94,16 @@ public class Transferencia extends AbstractTransferencia implements IPersistible
         return sedeOrigen;
     }
 
-    public void setSedeOrigen(Sede sedeOrigen) {
-        this.sedeOrigen = sedeOrigen;
+    public void setSedeOrigen(Sede sedeOrigen2) {
+        if (sedeOrigen != null)
+            sedeOrigen.getTransferIn().remove(id);
+        this.sedeOrigen = sedeOrigen2;
+        if (sedeOrigen != null)
+            sedeOrigen.getTransferIn().put(id, this);
     }
 
     private void updateSedeOrigen() {
-        if (sedeOrigen != null)
-            sedeOrigen.getTransferIn().remove(id);
-        //TODO DAO
-        //sedeOrigen = DAO sede . get ( idSedeOrigen );
-        sedeOrigen.getTransferIn().put(id, this);
+        setSedeOrigen(DataStore.getSedes().get(idSedeOrigen));
     }
 
 
@@ -116,16 +117,16 @@ public class Transferencia extends AbstractTransferencia implements IPersistible
         return sedeDestino;
     }
 
-    public void setSedeDestino(Sede sedeDestino) {
-        this.sedeDestino = sedeDestino;
+    public void setSedeDestino(Sede sedeDestino2) {
+        if (sedeDestino != null)
+            sedeDestino.getTransferIn().remove(id);
+        this.sedeDestino = sedeDestino2;
+        if (sedeDestino != null)
+            sedeDestino.getTransferIn().put(id, this);
     }
 
     private void updateSedeDestino() {
-        if (sedeDestino != null)
-            sedeDestino.getTransferIn().remove(id);
-        //TODO DAO
-        //sedeDestinp = DAO sede . get ( idSedeDestino );
-        sedeDestino.getTransferIn().put(id, this);
+        setSedeDestino(DataStore.getSedes().get(idSedeDestino));
     }
 
 
@@ -139,18 +140,16 @@ public class Transferencia extends AbstractTransferencia implements IPersistible
         return producto;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setProducto(Producto producto2) {
+        //if(producto!=null)
+        //  producto.getComprados().remove(id); //No Use
+        this.producto = producto2;
+        //if(producto!=null)
+        //  producto.getComprados().put(id, this); //No Use
     }
 
     private void updateProducto() {
-        //if(producto!=null)
-        //  producto.getComprados().remove(id); //No Use
-
-        //TODO DAO
-        //compra = DAO compra . get( idCompra );
-
-        //producto.getComprados().put(id, this); //No Use
+        setProducto(DataStore.getProductos().get(idProducto));
     }
 
     @Override

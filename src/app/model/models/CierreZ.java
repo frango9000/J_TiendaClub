@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractCierreZ;
 import app.model.utils.DateUtils;
@@ -57,16 +58,16 @@ public class CierreZ extends AbstractCierreZ implements IPersistible {
         return caja;
     }
 
-    public void setCaja(Caja caja) {
-        this.caja = caja;
+    public void setCaja(Caja caja2) {
+        if (caja != null)
+            caja.getCierresZs().remove(id);
+        this.caja = caja2;
+        if (caja != null)
+            caja.getCierresZs().putIfAbsent(id, this);
     }
 
     private void updateCaja() {
-        if (caja != null)
-            caja.getCierresZs().remove(id);
-        //TODO DAO
-        //caja = DAO caja . get ( idCaja );
-        caja.getCierresZs().put(id, this);
+        setCaja(DataStore.getCajas().get(idCaja));
     }
 
     @Override
