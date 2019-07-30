@@ -108,11 +108,11 @@ public class Usuario extends AbstractUsuario implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getUsuarios().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getUsuarios().updateObject(this);
     }
 }

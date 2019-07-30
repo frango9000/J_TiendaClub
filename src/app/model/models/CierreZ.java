@@ -72,12 +72,12 @@ public class CierreZ extends AbstractCierreZ implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getCierreZs().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getCierreZs().updateObject(this);
     }
 
     @Override

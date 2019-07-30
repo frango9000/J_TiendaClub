@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractSocio;
 import app.model.utils.DateUtils;
@@ -64,12 +65,12 @@ public class Socio extends AbstractSocio implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getSocios().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getSocios().updateObject(this);
     }
 
     @Override

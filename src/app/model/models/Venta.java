@@ -130,12 +130,12 @@ public class Venta extends AbstractVenta implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getVentas().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getVentas().updateObject(this);
     }
 
     @Override

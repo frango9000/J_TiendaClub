@@ -96,12 +96,12 @@ public class Comprado extends AbstractComprado implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getComprados().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getComprados().updateObject(this);
     }
 
     @Override

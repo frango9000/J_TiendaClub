@@ -130,12 +130,12 @@ public class Compra extends AbstractCompra implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getCompras().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getCompras().updateObject(this);
     }
 
     @Override

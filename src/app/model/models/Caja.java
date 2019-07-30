@@ -90,11 +90,11 @@ public class Caja extends AbstractCaja implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getCajas().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getCajas().updateObject(this);
     }
 }

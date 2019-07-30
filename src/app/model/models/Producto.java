@@ -77,12 +77,12 @@ public class Producto extends AbstractProducto implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getProductos().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getProductos().updateObject(this);
     }
 
     @Override

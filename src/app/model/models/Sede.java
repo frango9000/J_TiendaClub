@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractSede;
 
@@ -64,12 +65,12 @@ public class Sede extends AbstractSede implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getSedes().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getSedes().updateObject(this);
     }
 
     @Override

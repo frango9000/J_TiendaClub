@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractAcceso;
 
@@ -55,11 +56,11 @@ public class Acceso extends AbstractAcceso implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getAccesos().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getAccesos().updateObject(this);
     }
 }

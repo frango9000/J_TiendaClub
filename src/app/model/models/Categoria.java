@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractCategoria;
 
@@ -46,12 +47,12 @@ public class Categoria extends AbstractCategoria implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getCategorias().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getCategorias().updateObject(this);
     }
 
     @Override

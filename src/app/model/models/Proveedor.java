@@ -1,5 +1,6 @@
 package app.model.models;
 
+import app.model.DataStore;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractProveedor;
 
@@ -67,11 +68,11 @@ public class Proveedor extends AbstractProveedor implements IPersistible {
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getProveedores().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getProveedores().updateObject(this);
     }
 }

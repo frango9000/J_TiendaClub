@@ -154,12 +154,12 @@ public class Transferencia extends AbstractTransferencia implements IPersistible
 
     @Override
     public int updateOnDb() {
-        return 0;
+        return DataStore.getTransferencias().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return 0;
+        return DataStore.getTransferencias().updateObject(this);
     }
 
     @Override
