@@ -1,5 +1,6 @@
 package app;
 
+import app.model.DataStore;
 import app.model.SessionDB;
 
 /*
@@ -22,7 +23,9 @@ public class NewMain {
         SessionDB.setProps();
         //SessionDB.crearTablas();
         SessionDB.isValid();
-               
+
+
+        DataStore.getAccesos().queryAll();
     }
     
 }

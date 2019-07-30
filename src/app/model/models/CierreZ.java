@@ -2,10 +2,19 @@ package app.model.models;
 
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractCierreZ;
+import app.model.utils.DateUtils;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CierreZ extends AbstractCierreZ implements IPersistible {
+    public static final String TABLE_NAME = "zs";
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idCaja", "apertura", "cierre"));
+
     private Caja caja;
 
     public CierreZ(int id, int idCaja, LocalDateTime apertura) {
@@ -16,6 +25,21 @@ public class CierreZ extends AbstractCierreZ implements IPersistible {
     public CierreZ(int idCaja, LocalDateTime apertura) {
         super(idCaja, apertura);
         updateCaja();
+    }
+
+    public CierreZ(ResultSet rs) throws SQLException {
+        this(rs.getInt(1), rs.getInt(2), DateUtils.toLocalDateTime(rs.getDate(3)));
+        cierre = DateUtils.toLocalDateTime(rs.getDate(4));
+    }
+
+    @Override
+    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
+
+    }
+
+    @Override
+    public void updateObject(ResultSet rs) throws SQLException {
+
     }
 
     @Override
@@ -48,5 +72,15 @@ public class CierreZ extends AbstractCierreZ implements IPersistible {
     @Override
     public int refreshFromDb() {
         return 0;
+    }
+
+    @Override
+    public String insertString() {
+        return IPersistible.buildInsertString(TABLE_NAME, COL_NAMES);
+    }
+
+    @Override
+    public String updateString() {
+        return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }

@@ -3,9 +3,17 @@ package app.model.models;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractUsuario;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Usuario extends AbstractUsuario implements IPersistible {
+    public static final String TABLE_NAME = "usuarios";
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("user", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso"));
+
     private Acceso acceso;
 
     private HashMap<Integer, Compra> compras = new HashMap<>();
@@ -20,6 +28,47 @@ public class Usuario extends AbstractUsuario implements IPersistible {
     public Usuario(String user, String pass, String nombre, int idAcceso) {
         super(user, pass, nombre, idAcceso);
         updateAcceso();
+    }
+
+    public Usuario(ResultSet rs) throws SQLException {
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(9));
+        setTelefono(rs.getString(5));
+        setEmail(rs.getString(6));
+        setDireccion(rs.getString(7));
+        setDescripcion(rs.getString(8));
+    }
+
+    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, user);
+        preparedStatement.setString(2, pass);
+        preparedStatement.setString(3, nombre);
+        preparedStatement.setString(4, telefono);
+        preparedStatement.setString(5, email);
+        preparedStatement.setString(6, direccion);
+        preparedStatement.setString(7, descripcion);
+        preparedStatement.setInt(8, idAcceso);
+    }
+
+    public void updateObject(ResultSet rs) throws SQLException {
+        //setId(rs.getInt(1));
+        setUser(rs.getString(2));
+        setPass(rs.getString(3));
+        setNombre(rs.getString(4));
+        setTelefono(rs.getString(5));
+        setEmail(rs.getString(6));
+        setDireccion(rs.getString(7));
+        setDescripcion(rs.getString(8));
+        setIdAcceso(rs.getInt(9));
+    }
+
+    @Override
+    public String insertString() {
+        return IPersistible.buildInsertString(TABLE_NAME, COL_NAMES);
+    }
+
+    @Override
+    public String updateString() {
+        return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 
     @Override

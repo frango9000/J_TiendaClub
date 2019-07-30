@@ -3,7 +3,16 @@ package app.model.models;
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractComprado;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Comprado extends AbstractComprado implements IPersistible {
+    public static final String TABLE_NAME = "comprados";
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idCompra", "idProducto", "cantidad", "precio_unidad"));
+
     private Compra compra;
     private Producto producto;
 
@@ -17,6 +26,20 @@ public class Comprado extends AbstractComprado implements IPersistible {
         super(idCompra, idProducto, cantidad, precioUnidad);
         updateCompra();
         updateProducto();
+    }
+
+    public Comprado(ResultSet rs) throws SQLException {
+        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5));
+    }
+
+    @Override
+    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
+
+    }
+
+    @Override
+    public void updateObject(ResultSet rs) throws SQLException {
+
     }
 
     @Override
@@ -73,5 +96,15 @@ public class Comprado extends AbstractComprado implements IPersistible {
     @Override
     public int refreshFromDb() {
         return 0;
+    }
+
+    @Override
+    public String insertString() {
+        return IPersistible.buildInsertString(TABLE_NAME, COL_NAMES);
+    }
+
+    @Override
+    public String updateString() {
+        return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }

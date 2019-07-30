@@ -2,10 +2,19 @@ package app.model.models;
 
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractTransferencia;
+import app.model.utils.DateUtils;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Transferencia extends AbstractTransferencia implements IPersistible {
+    public static final String TABLE_NAME = "transferencias";
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idSedeOrigen", "idSedeDestino", "idProducto", "Cantidad", "fechahora"));
+
     private Usuario usuario;
     private Sede sedeOrigen;
     private Sede sedeDestino;
@@ -25,6 +34,20 @@ public class Transferencia extends AbstractTransferencia implements IPersistible
         updateSedeOrigen();
         updateSedeDestino();
         updateProducto();
+    }
+
+    public Transferencia(ResultSet rs) throws SQLException {
+        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), DateUtils.toLocalDateTime(rs.getDate(7)));
+    }
+
+    @Override
+    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
+
+    }
+
+    @Override
+    public void updateObject(ResultSet rs) throws SQLException {
+
     }
 
     @Override
@@ -127,5 +150,15 @@ public class Transferencia extends AbstractTransferencia implements IPersistible
     @Override
     public int refreshFromDb() {
         return 0;
+    }
+
+    @Override
+    public String insertString() {
+        return IPersistible.buildInsertString(TABLE_NAME, COL_NAMES);
+    }
+
+    @Override
+    public String updateString() {
+        return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }

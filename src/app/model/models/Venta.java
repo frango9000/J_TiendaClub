@@ -2,11 +2,20 @@ package app.model.models;
 
 import app.model.IPersistible;
 import app.model.models.abstracts.AbstractVenta;
+import app.model.utils.DateUtils;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Venta extends AbstractVenta implements IPersistible {
+    public static final String TABLE_NAME = "ventas";
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idCaja", "idSocio", "fechahora"));
+
     private Usuario usuario;
     private Caja caja;
     private Socio socio;
@@ -25,6 +34,20 @@ public class Venta extends AbstractVenta implements IPersistible {
         updateUsuario();
         updateCaja();
         updateSocio();
+    }
+
+    public Venta(ResultSet rs) throws SQLException {
+        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), DateUtils.toLocalDateTime(rs.getDate(5)));
+    }
+
+    @Override
+    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
+
+    }
+
+    @Override
+    public void updateObject(ResultSet rs) throws SQLException {
+
     }
 
     @Override
@@ -105,5 +128,15 @@ public class Venta extends AbstractVenta implements IPersistible {
     @Override
     public int refreshFromDb() {
         return 0;
+    }
+
+    @Override
+    public String insertString() {
+        return IPersistible.buildInsertString(TABLE_NAME, COL_NAMES);
+    }
+
+    @Override
+    public String updateString() {
+        return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }

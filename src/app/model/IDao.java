@@ -3,7 +3,7 @@ package app.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface IDao<T extends IPersistible> extends Globals {
+public interface IDao<T> extends Globals {
     T query(int id);
 
     HashMap<Integer, T> query(ArrayList<Integer> ids);
@@ -22,7 +22,7 @@ public interface IDao<T extends IPersistible> extends Globals {
 
     int update(T objecT);
 
-    int updateDao(T objectT);
+    int updateObject(T objectT);
 
     int delete(T objecT);
 

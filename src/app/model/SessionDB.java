@@ -352,6 +352,7 @@ public final class SessionDB implements Globals{
                 "proveedores\n" +
                 "sedes\n" +
                 "socios\n" +
+                "stock\n" +
                 "transferencias\n" +
                 "usuarios\n" +
                 "vendidos\n" +

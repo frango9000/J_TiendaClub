@@ -2,7 +2,7 @@ package app.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public class AbstractTransferencia {
+public abstract class AbstractTransferencia {
     protected int id;
     protected int idUsuario;
     protected int idSedeOrigen;
