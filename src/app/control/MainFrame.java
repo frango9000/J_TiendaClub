@@ -8,12 +8,9 @@ package app.control;
 import javax.swing.*;
 
 /**
- *
  * @author NarF
  */
-public class MainFrame extends JFrame{
-    
-    
+public class MainFrame extends JFrame {
 
-    
+
 }

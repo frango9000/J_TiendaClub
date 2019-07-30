@@ -33,13 +33,20 @@ public class Vendido extends AbstractVendido implements IPersistible {
     }
 
     @Override
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setInt(1, idVenta);
+        pst.setInt(2, idProducto);
+        pst.setInt(3, cantidad);
+        pst.setInt(4, precioUnidad);
     }
 
     @Override
     public void updateObject(ResultSet rs) throws SQLException {
-
+        //setId(rs.getInt(1));
+        setIdVenta(rs.getInt(2));
+        setIdProducto(rs.getInt(3));
+        setCantidad(rs.getInt(4));
+        setPrecioUnidad(rs.getInt(5));
     }
 
     @Override

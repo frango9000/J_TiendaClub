@@ -29,8 +29,8 @@ public class Acceso extends AbstractAcceso implements IPersistible {
     }
 
     @Override
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, nivel);
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setString(1, nivel);
     }
 
     @Override

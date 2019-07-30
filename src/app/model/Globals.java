@@ -6,7 +6,6 @@
 package app.model;
 
 /**
- *
  * @author NarF
  */
 public interface Globals {
@@ -14,5 +13,5 @@ public interface Globals {
     boolean DEBUG = true;
     boolean SQL_DEBUG = true;
     boolean SQL_CONN = true;
-    
+
 }

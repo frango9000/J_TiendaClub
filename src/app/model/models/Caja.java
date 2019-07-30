@@ -34,9 +34,9 @@ public class Caja extends AbstractCaja implements IPersistible {
     }
 
     @Override
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setInt(1, idSede);
-        preparedStatement.setString(2, nombre);
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setInt(1, idSede);
+        pst.setString(2, nombre);
     }
 
     @Override

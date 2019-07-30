@@ -28,18 +28,23 @@ public class CierreZ extends AbstractCierreZ implements IPersistible {
     }
 
     public CierreZ(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), DateUtils.toLocalDateTime(rs.getDate(3)));
+        this(rs.getInt(1), rs.getInt(2), DateUtils.toLocalDateTime(rs.getTimestamp(3)));
         cierre = DateUtils.toLocalDateTime(rs.getDate(4));
     }
 
     @Override
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setInt(1, id);
+        pst.setTimestamp(2, DateUtils.toTimestamp(apertura));
+        pst.setTimestamp(3, DateUtils.toTimestamp(cierre));
     }
 
     @Override
     public void updateObject(ResultSet rs) throws SQLException {
-
+        //setId(rs.getInt(1));
+        setIdCaja(rs.getInt(2));
+        setApertura(DateUtils.toLocalDateTime(rs.getTimestamp(3)));
+        setCierre(DateUtils.toLocalDateTime(rs.getTimestamp(4)));
     }
 
     @Override

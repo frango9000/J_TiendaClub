@@ -15,26 +15,26 @@ import java.util.logging.Logger;
  *
  * @author fsancheztemprano
  */
-public final class SessionDB implements Globals{
+public final class SessionDB implements Globals {
 
     private static Connection conn;
-    
+
     private static String jdbcString = "jdbc:mysql://";
     private static String jdbcIP = "localhost";
     private static String jdbcPort = "3306";
     private static String jdbcDbName = "mv";
-    
+
     private static String user = "narf";
     private static String password = "narff";
-    
-    
+
+
     private static String dbUrl = setDbUrl();
-        
+
     private static boolean autoclose = true;
 
     private SessionDB() {
     }
-    
+
     /**
      * Getter para la clase Conexion
      *
@@ -94,26 +94,26 @@ public final class SessionDB implements Globals{
         SessionDB.password = password;
     }
 
-    
+
     public static String getDbUrl() {
         return dbUrl;
     }
-    
-    public static String setDbUrl(){
-        return dbUrl = jdbcString + jdbcIP+":"+jdbcPort+"/"+jdbcDbName;
+
+    public static String setDbUrl() {
+        return dbUrl = jdbcString + jdbcIP + ":" + jdbcPort + "/" + jdbcDbName;
     }
 
-    public static void setProps(File file){
+    public static void setProps(File file) {
         System.out.println(file.getAbsolutePath());
         System.out.println(file.exists());
-        try(FileInputStream f = new FileInputStream(file)){
+        try (FileInputStream f = new FileInputStream(file)) {
             Properties props = new Properties();
             props.load(f);
-            
-            jdbcIP= props.getProperty("ip");
-            jdbcPort=props.getProperty("port");
+
+            jdbcIP = props.getProperty("ip");
+            jdbcPort = props.getProperty("port");
             jdbcDbName = props.getProperty("dbname");
-            
+
             user = props.getProperty("user");
             password = props.getProperty("password");
             setDbUrl();
@@ -121,13 +121,15 @@ public final class SessionDB implements Globals{
             Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public static void setProps(String filedir){
+
+    public static void setProps(String filedir) {
         setProps(new File(filedir));
     }
-    public static void setProps(){
+
+    public static void setProps() {
         setProps("src/app/config.ini");
     }
-    
+
     /**
      * establece la conexion a la DB
      *
@@ -181,16 +183,16 @@ public final class SessionDB implements Globals{
      * este metodo es para consultas en secuencia, al ejecutarlo
      * [setAutoclose(false)] se conecta a la DB y despues de todos los accesos a
      * la BD debe ser llamado nuevamente para asegurar la desconexion.
-     *
+     * <p>
      * Ejemplo SessionDB.setAutoclose(false);
-     *
+     * <p>
      * CategoriaDao.getInstance().queryAll();
      * ProductoDao.getInstance().queryAll(); categorizarProductos();
      * ArrayList<Orden> ordenesActivas =
      * MesaDao.getInstance().getOrdenesActivas();
      * ServidoDao.getInstance().queryByOrden(ordenesActivas);
      * MesaDao.getInstance().queryAll();
-     *
+     * <p>
      * SessionDB.setAutoclose(true);
      *
      * @param autoclose

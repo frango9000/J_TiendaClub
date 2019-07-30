@@ -32,13 +32,18 @@ public class Sede extends AbstractSede implements IPersistible {
     }
 
     @Override
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setString(1, nombre);
+        pst.setString(2, telefono);
+        pst.setString(3, direccion);
     }
 
     @Override
     public void updateObject(ResultSet rs) throws SQLException {
-
+        //setId(rs.getInt(1));
+        setNombre(rs.getString(2));
+        setTelefono(rs.getString(3));
+        setDireccion(rs.getString(4));
     }
 
     public HashMap<Integer, Caja> getCajas() {

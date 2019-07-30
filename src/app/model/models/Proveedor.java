@@ -32,13 +32,13 @@ public class Proveedor extends AbstractProveedor implements IPersistible {
         setDescripcion(rs.getString(7));
     }
 
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, nif);
-        preparedStatement.setString(2, nombre);
-        preparedStatement.setString(3, telefono);
-        preparedStatement.setString(4, email);
-        preparedStatement.setString(5, direccion);
-        preparedStatement.setString(6, descripcion);
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setString(1, nif);
+        pst.setString(2, nombre);
+        pst.setString(3, telefono);
+        pst.setString(4, email);
+        pst.setString(5, direccion);
+        pst.setString(6, descripcion);
     }
 
     public void updateObject(ResultSet rs) throws SQLException {
@@ -51,6 +51,10 @@ public class Proveedor extends AbstractProveedor implements IPersistible {
         setDescripcion(rs.getString(7));
     }
 
+    public HashMap<Integer, Compra> getCompras() {
+        return compras;
+    }
+
     @Override
     public String insertString() {
         return IPersistible.buildInsertString(TABLE_NAME, COL_NAMES);
@@ -59,10 +63,6 @@ public class Proveedor extends AbstractProveedor implements IPersistible {
     @Override
     public String updateString() {
         return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
-    }
-
-    public HashMap<Integer, Compra> getCompras() {
-        return compras;
     }
 
     @Override

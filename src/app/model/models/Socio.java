@@ -34,13 +34,28 @@ public class Socio extends AbstractSocio implements IPersistible {
     }
 
     @Override
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setString(1, dni);
+        pst.setString(2, nombre);
+        pst.setString(3, telefono);
+        pst.setString(4, direccion);
+        pst.setString(5, descripcion);
+        pst.setTimestamp(6, DateUtils.toTimestamp(fechaIn));
+        pst.setTimestamp(7, DateUtils.toTimestamp(fechaActive));
+        pst.setTimestamp(8, DateUtils.toTimestamp(fechaInactive));
     }
 
     @Override
     public void updateObject(ResultSet rs) throws SQLException {
-
+        //setId(rs.getInt(1));
+        setDni(rs.getString(2));
+        setNombre(rs.getString(3));
+        setTelefono(rs.getString(4));
+        setDireccion(rs.getString(5));
+        setDescripcion(rs.getString(6));
+        setFechaIn(DateUtils.toLocalDateTime(rs.getTimestamp(7)));
+        setFechaActive(DateUtils.toLocalDateTime(rs.getTimestamp(8)));
+        setFechaInactive(DateUtils.toLocalDateTime(rs.getTimestamp(9)));
     }
 
     public HashMap<Integer, Venta> getVentas() {

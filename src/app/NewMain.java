@@ -10,7 +10,6 @@ import app.model.SessionDB;
  */
 
 /**
- *
  * @author NarF
  */
 public class NewMain {
@@ -19,7 +18,7 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
         SessionDB.setProps();
         //SessionDB.crearTablas();
         SessionDB.isValid();
@@ -27,5 +26,5 @@ public class NewMain {
 
         DataStore.getAccesos().queryAll();
     }
-    
+
 }

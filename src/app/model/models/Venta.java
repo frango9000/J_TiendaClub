@@ -41,13 +41,20 @@ public class Venta extends AbstractVenta implements IPersistible {
     }
 
     @Override
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setInt(1, idUsuario);
+        pst.setInt(2, idCaja);
+        pst.setInt(3, idSocio);
+        pst.setTimestamp(4, DateUtils.toTimestamp(fechahora));
     }
 
     @Override
     public void updateObject(ResultSet rs) throws SQLException {
-
+        //setId(rs.getInt(1));
+        setIdUsuario(rs.getInt(2));
+        setIdCaja(rs.getInt(3));
+        setIdSocio(rs.getInt(4));
+        setFechahora(DateUtils.toLocalDateTime(rs.getTimestamp(5)));
     }
 
     @Override

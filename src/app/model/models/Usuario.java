@@ -38,15 +38,15 @@ public class Usuario extends AbstractUsuario implements IPersistible {
         setDescripcion(rs.getString(8));
     }
 
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, user);
-        preparedStatement.setString(2, pass);
-        preparedStatement.setString(3, nombre);
-        preparedStatement.setString(4, telefono);
-        preparedStatement.setString(5, email);
-        preparedStatement.setString(6, direccion);
-        preparedStatement.setString(7, descripcion);
-        preparedStatement.setInt(8, idAcceso);
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setString(1, user);
+        pst.setString(2, pass);
+        pst.setString(3, nombre);
+        pst.setString(4, telefono);
+        pst.setString(5, email);
+        pst.setString(6, direccion);
+        pst.setString(7, descripcion);
+        pst.setInt(8, idAcceso);
     }
 
     public void updateObject(ResultSet rs) throws SQLException {

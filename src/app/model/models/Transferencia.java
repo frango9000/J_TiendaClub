@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class Transferencia extends AbstractTransferencia implements IPersistible {
     public static final String TABLE_NAME = "transferencias";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idSedeOrigen", "idSedeDestino", "idProducto", "Cantidad", "fechahora"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idSedeOrigen", "idSedeDestino", "idProducto", "cantidad", "fechahora"));
 
     private Usuario usuario;
     private Sede sedeOrigen;
@@ -41,13 +41,24 @@ public class Transferencia extends AbstractTransferencia implements IPersistible
     }
 
     @Override
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setInt(1, idUsuario);
+        pst.setInt(2, idSedeDestino);
+        pst.setInt(3, idSedeDestino);
+        pst.setInt(4, idProducto);
+        pst.setInt(5, cantidad);
+        pst.setTimestamp(6, DateUtils.toTimestamp(fechahora));
     }
 
     @Override
     public void updateObject(ResultSet rs) throws SQLException {
-
+        //setId(rs.getInt(1));
+        setIdUsuario(rs.getInt(2));
+        setIdSedeOrigen(rs.getInt(3));
+        setIdSedeDestino(rs.getInt(4));
+        setIdProducto(rs.getInt(5));
+        setCantidad(rs.getInt(6));
+        setFechahora(DateUtils.toLocalDateTime(rs.getTimestamp(7)));
     }
 
     @Override

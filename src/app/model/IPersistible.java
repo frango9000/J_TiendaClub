@@ -18,7 +18,7 @@ public interface IPersistible {
 
     int refreshFromDb();
 
-    void buildStatement(PreparedStatement preparedStatement) throws SQLException;
+    void buildStatement(PreparedStatement pst) throws SQLException;
 
     void updateObject(ResultSet rs) throws SQLException;
 

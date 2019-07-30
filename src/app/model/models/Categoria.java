@@ -29,12 +29,14 @@ public class Categoria extends AbstractCategoria implements IPersistible {
     }
 
     @Override
-    public void buildStatement(PreparedStatement preparedStatement) throws SQLException {
-
+    public void buildStatement(PreparedStatement pst) throws SQLException {
+        pst.setString(1, nombre);
     }
 
     @Override
     public void updateObject(ResultSet rs) throws SQLException {
+        //setId(rs.getInt(1));
+        setNombre(rs.getString(2));
 
     }
 

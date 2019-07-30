@@ -1,5 +1,6 @@
 package app.model.utils;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,12 +9,12 @@ import java.util.Date;
 
 public class DateUtils {
 
-    public static Date toDate(LocalDate localDate) {
-        return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    public static Date toTimestamp(LocalDate localDate) {
+        return Timestamp.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    public static Date toDate(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    public static Timestamp toTimestamp(LocalDateTime localDateTime) {
+        return Timestamp.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static LocalDate toLocalDate(Date date) {
