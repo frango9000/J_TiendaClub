@@ -1,6 +1,7 @@
 package app;
 
-import app.control.InitialConfig;
+import app.control.PropsLoader;
+import app.control.LoginControl;
 import app.model.DataStore;
 import app.model.SessionDB;
 
@@ -20,15 +21,17 @@ public class NewMain {
      */
     public static void main(String[] args) {
 
-        InitialConfig.setProps();
+        PropsLoader.setProps();
+        
+        //InitialConfig.init();
         //SessionDB.crearTablas();
-        SessionDB.isValid();
+        //SessionDB.isValid();
+        
+        
+        LoginControl lc = new LoginControl();
+        lc.setVisible(true);
 
 
-        DataStore.getAccesos().queryAll();
-        DataStore.getSedes().queryAll();
-
-        System.out.println(DataStore.getCompras().get(1).toString());
     }
 
 }

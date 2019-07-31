@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,12 +23,12 @@ public final class SessionDB implements Globals {
     private static Connection conn;
 
     private static String jdbcString = "jdbc:mysql://";
-    private static String jdbcIP;// = "localhost";
-    private static String jdbcPort;// = "3306";
-    private static String jdbcDbName;// = "mv";
+    private static String jdbcIP = "";// = "localhost";
+    private static String jdbcPort = "";// = "3306";
+    private static String jdbcDbName = "";// = "mv";
 
-    private static String user;// = "narf";
-    private static String password;// = "narff";
+    private static String user = "";// = "narf";
+    private static String password = "";// = "narff";
 
 
     private static String dbUrl = setDbUrl();
@@ -193,19 +194,20 @@ public final class SessionDB implements Globals {
     public static ArrayList<String> listTables() {
         String sql = "SHOW TABLES";
         ArrayList<String> tableNames = new ArrayList<>();
-        connect();
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                tableNames.add(rs.getString(1));
+        if(connect()){
+            try (Statement stmt = conn.createStatement()) {
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    tableNames.add(rs.getString(1));
+                }
+                if (SQL_DEBUG) {
+                    System.out.println(sql);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                close();
             }
-            if (SQL_DEBUG) {
-                System.out.println(sql);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close();
         }
         return tableNames;
     }
