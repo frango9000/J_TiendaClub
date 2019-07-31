@@ -1,9 +1,11 @@
 package app.model;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,12 +22,12 @@ public final class SessionDB implements Globals {
     private static Connection conn;
 
     private static String jdbcString = "jdbc:mysql://";
-    private static String jdbcIP = "localhost";
-    private static String jdbcPort = "3306";
-    private static String jdbcDbName = "mv";
+    private static String jdbcIP;// = "localhost";
+    private static String jdbcPort;// = "3306";
+    private static String jdbcDbName;// = "mv";
 
-    private static String user = "narf";
-    private static String password = "narff";
+    private static String user;// = "narf";
+    private static String password;// = "narff";
 
 
     private static String dbUrl = setDbUrl();
@@ -101,33 +103,6 @@ public final class SessionDB implements Globals {
 
     public static String setDbUrl() {
         return dbUrl = jdbcString + jdbcIP + ":" + jdbcPort + "/" + jdbcDbName;
-    }
-
-    public static void setProps(File file) {
-        System.out.println(file.getAbsolutePath());
-        System.out.println(file.exists());
-        try (FileInputStream f = new FileInputStream(file)) {
-            Properties props = new Properties();
-            props.load(f);
-
-            jdbcIP = props.getProperty("ip");
-            jdbcPort = props.getProperty("port");
-            jdbcDbName = props.getProperty("dbname");
-
-            user = props.getProperty("user");
-            password = props.getProperty("password");
-            setDbUrl();
-        } catch (IOException ex) {
-            Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static void setProps(String filedir) {
-        setProps(new File(filedir));
-    }
-
-    public static void setProps() {
-        setProps("src/app/config.ini");
     }
 
     /**
@@ -350,6 +325,7 @@ public final class SessionDB implements Globals {
                 "categorias\n" +
                 "comprados\n" +
                 "compras\n" +
+                "monedero\n" +
                 "productos\n" +
                 "proveedores\n" +
                 "sedes\n" +

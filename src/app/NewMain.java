@@ -1,5 +1,6 @@
 package app;
 
+import app.control.InitialConfig;
 import app.model.DataStore;
 import app.model.SessionDB;
 
@@ -19,7 +20,7 @@ public class NewMain {
      */
     public static void main(String[] args) {
 
-        SessionDB.setProps();
+        InitialConfig.setProps();
         //SessionDB.crearTablas();
         SessionDB.isValid();
 
