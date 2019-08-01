@@ -1,9 +1,7 @@
 package app;
 
-import app.control.PropsLoader;
 import app.control.LoginControl;
-import app.model.DataStore;
-import app.model.SessionDB;
+import app.control.PropsLoader;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,12 +20,12 @@ public class NewMain {
     public static void main(String[] args) {
 
         PropsLoader.setProps();
-        
+
         //InitialConfig.init();
         //SessionDB.crearTablas();
         //SessionDB.isValid();
-        
-        
+
+
         LoginControl lc = new LoginControl();
         lc.setVisible(true);
 

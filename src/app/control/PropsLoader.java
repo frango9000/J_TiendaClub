@@ -11,9 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PropsLoader {
-    
+
     private static String ini = "src/app/config.ini";
-    
+
     public static void setProps(File file) {
         System.out.println(file.getAbsolutePath());
         System.out.println(file.exists());
@@ -23,7 +23,7 @@ public class PropsLoader {
 
             SessionDB.setJdbcIP(props.getProperty("ip"));
             SessionDB.setJdbcPort(props.getProperty("port"));
-            SessionDB.setJdbcDb(props.getProperty("dbname"));
+            SessionDB.setJdbcCatalog(props.getProperty("dbname"));
 
             SessionDB.setUser(props.getProperty("user"));
             SessionDB.setPassword(props.getProperty("password"));
@@ -40,24 +40,24 @@ public class PropsLoader {
     public static void setProps() {
         setProps(ini);
     }
-    
-    public static void saveProps(File file){
+
+    public static void saveProps(File file) {
         Properties props = new Properties();
         props.put("ip", SessionDB.getJdbcIP());
-        props.put("port",SessionDB.getJdbcPort());
-        props.put("dbname", SessionDB.getJdbcDb());
+        props.put("port", SessionDB.getJdbcPort());
+        props.put("dbname", SessionDB.getJdbcCatalog());
         props.put("user", SessionDB.getUser());
         props.put("password", SessionDB.getPassword());
-        try(FileOutputStream f = new FileOutputStream(file)){
+        try (FileOutputStream f = new FileOutputStream(file)) {
             props.store(f, "ini");
         } catch (IOException ex) {
             Logger.getLogger(PropsLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void saveProps(){
+
+    public static void saveProps() {
         saveProps(new File(ini));
     }
-    
+
 
 }

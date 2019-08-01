@@ -13,14 +13,18 @@ import java.util.logging.Logger;
 
 public class GenericDao<T extends IPersistible> implements IDao<T> {
 
-    protected String TABLE_NAME;
-
     protected final String ID_COL_NAME = "id";
-
     protected final HashMap<Integer, T> table = new HashMap<>();
+    protected String TABLE_NAME;
 
     public GenericDao(String TABLE_NAME) {
         this.TABLE_NAME = TABLE_NAME;
+    }
+
+    protected static void printSql(String sql) {
+        if (SQL_DEBUG) {
+            System.out.println(sql);
+        }
     }
 
     @Override
@@ -108,7 +112,6 @@ public class GenericDao<T extends IPersistible> implements IDao<T> {
             return null;
         }
     }
-
 
     @Override
     public ArrayList<T> getList(ArrayList<Integer> ids) {
@@ -268,12 +271,6 @@ public class GenericDao<T extends IPersistible> implements IDao<T> {
             }
         }
         return rows;
-    }
-
-    protected static void printSql(String sql) {
-        if (SQL_DEBUG) {
-            System.out.println(sql);
-        }
     }
 
 

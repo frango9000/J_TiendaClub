@@ -14,4 +14,6 @@ public interface Globals {
     boolean SQL_DEBUG = true;
     boolean SQL_CONN = true;
 
+    String DB_PREFIX = "tdc_";
+
 }
