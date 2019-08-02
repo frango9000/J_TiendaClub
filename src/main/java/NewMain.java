@@ -1,4 +1,3 @@
-import control.LoginControl;
 import control.PropsLoader;
 
 /*
@@ -24,8 +23,9 @@ public class NewMain {
         //SessionDB.isValid();
 
 
-        LoginControl lc = new LoginControl();
-        lc.setVisible(true);
+//        LoginFrameControl lc = new LoginFrameControl();
+//        lc.setVisible(true);
+
 
 
     }

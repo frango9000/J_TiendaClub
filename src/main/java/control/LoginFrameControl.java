@@ -17,9 +17,9 @@ import java.util.ArrayList;
 /**
  * @author NarF
  */
-public class LoginControl extends LoginFrame {
+public class LoginFrameControl extends LoginFrame {
 
-    public LoginControl() {
+    public LoginFrameControl() {
 
 
         jTextFieldUser.setText(SessionDB.getUser());
