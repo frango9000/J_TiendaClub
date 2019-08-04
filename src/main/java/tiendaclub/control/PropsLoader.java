@@ -12,9 +12,12 @@ import java.util.logging.Logger;
 
 public class PropsLoader {
 
-    private static String ini = "src/main/java/tiendaclub/config.ini";
+    public static final String defaultDir = "src/main/java/tiendaclub/";
+    public static final String defaultFile = "config.ini";
+    public static final String ini = defaultDir + defaultFile;
 
-    public static void setProps(File file) {
+
+    public static boolean loadProps(File file) {
         System.out.println(file.getAbsolutePath());
         System.out.println(file.exists());
         try (FileInputStream f = new FileInputStream(file)) {
@@ -28,35 +31,42 @@ public class PropsLoader {
             SessionDB.setUser(props.getProperty("user"));
             SessionDB.setPassword(props.getProperty("password"));
             SessionDB.setDbUrl();
+            return true;
         } catch (IOException ex) {
             Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
-    public static void setProps(String filedir) {
-        setProps(new File(filedir));
+    public static boolean loadProps(String filedir) {
+        return loadProps(new File(filedir));
     }
 
-    public static void setProps() {
-        setProps(ini);
+    public static boolean loadProps() {
+        return loadProps(ini);
     }
 
-    public static void saveProps(File file) {
+    public static boolean saveProps(File file) {
         Properties props = new Properties();
         props.put("ip", SessionDB.getJdbcIP());
         props.put("port", SessionDB.getJdbcPort());
-        props.put("dbname", SessionDB.getJdbcCatalog());
-        props.put("user", SessionDB.getUser());
-        props.put("password", SessionDB.getPassword());
+        if (SessionDB.getJdbcCatalog().length() > 0)
+            props.put("dbname", SessionDB.getJdbcCatalog());
+        if (SessionDB.getUser().length() > 0)
+            props.put("user", SessionDB.getUser());
+        if (SessionDB.getPassword().length() > 0)
+            props.put("password", SessionDB.getPassword());
         try (FileOutputStream f = new FileOutputStream(file)) {
             props.store(f, "ini");
+            return true;
         } catch (IOException ex) {
             Logger.getLogger(PropsLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
-    public static void saveProps() {
-        saveProps(new File(ini));
+    public static boolean saveProps() {
+        return saveProps(new File(ini));
     }
 
 

@@ -18,7 +18,7 @@ public class NewMain {
      */
     public static void main(String[] args) {
 
-        PropsLoader.setProps();
+        PropsLoader.loadProps();
 
         //InitialConfig.init();
         //SessionDB.crearTablas();
@@ -27,7 +27,6 @@ public class NewMain {
 
 //        LoginFrameControl lc = new LoginFrameControl();
 //        lc.setVisible(true);
-
 
 
     }

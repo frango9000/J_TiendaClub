@@ -2,15 +2,23 @@ package tiendaclub.control;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import tiendaclub.control.misc.StaticHelpers;
+import tiendaclub.model.Globals;
 import tiendaclub.model.SessionDB;
 import tiendaclub.view.FxDialogs;
 
-public class LoginPaneControl {
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+public class LoginPaneControl implements Initializable {
 
     @FXML
     private MenuItem menuLoad;
@@ -39,8 +47,30 @@ public class LoginPaneControl {
     @FXML
     private PasswordField passwordField;
 
+    public static String pickDb() {
+        ArrayList<String> dbslist = SessionDB.listDBs();
+        return FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", dbslist.get(0), dbslist);
+    }
+
+    public static boolean createDB() {
+        ArrayList<String> list = SessionDB.listDBs();
+        FxDialogs.showInfo("DB Wizard", "Creating new DB");
+        String name = "";
+        do {
+            name = FxDialogs.showTextInput("DB Name", "Enter DB name");
+        } while (name.length() < 1 || name == null || list.contains("tdc_" + name));
+
+        FxDialogs.showInfo("DB Wizard", "Creating DB name: " + name);
+        SessionDB.createCatalog(name);
+        if (SessionDB.hasCatalog(name)) {
+            SessionDB.setJdbcCatalog(Globals.DB_PREFIX + name);
+            return true;
+        } else return false;
+    }
+
     @FXML
     void menuCloseAct(ActionEvent event) {
+        System.exit(0);
 
     }
 
@@ -66,68 +96,66 @@ public class LoginPaneControl {
 
     @FXML
     void menuLoadAct(ActionEvent event) {
-
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(PropsLoader.defaultDir));
+        File file = fileChooser.showOpenDialog(null);
+        try {
+            if (PropsLoader.loadProps(file))
+                FxDialogs.showInfo("Loading config.ini", "Config loaded from " + file.getAbsolutePath());
+            else
+                FxDialogs.showError("Loading config.ini", "Config failed to load from " + file.getAbsolutePath());
+        } catch (NullPointerException ex) {
+            FxDialogs.showException("titl", "msg", ex);
+        }
+        textFieldUser.setText(SessionDB.getUser());
+        passwordField.setText(SessionDB.getPassword());
     }
 
     @FXML
     void menuSaveAct(ActionEvent event) {
-
+        if (PropsLoader.saveProps())
+            FxDialogs.showMessage("Saving config.ini", "Config saved to config.ini");
+        else
+            FxDialogs.showError("Saving config.ini", "Config failed to save to config.ini");
     }
 
     @FXML
     void menuTestAct(ActionEvent event) {
-//        SessionDB.setUser(jTextFieldUser.getText().trim());
-//        SessionDB.setPassword(new String(jPasswordField1.getPassword()).trim());
-//        if (SessionDB.isValid()) {
-//            buttonEnter.setStyle("-fx-background-color: Yellow");
-//            System.out.println(SessionDB.numOfDBs());
-//            if (SessionDB.numOfDBs() == 0) {
-//                if (!SessionDB.isRoot())
-//                    JOptionPane.showMessageDialog(null, "No valid DBs and no access to create.", "DB Wizard", JOptionPane.PLAIN_MESSAGE, null);
-//                else {
-//                    if (createDB()) {
-//                        JOptionPane.showMessageDialog(null, "DB creation Success", "DB Wizard", JOptionPane.PLAIN_MESSAGE, null);
-//                        System.out.println(SessionDB.createFullStructure());
-//                        if (SessionDB.isSchemaValid()) {
-//                            jButtonTest.setBackground(Color.green);
-//                            JOptionPane.showMessageDialog(null, "Structure creation Success", "DB Wizard", JOptionPane.PLAIN_MESSAGE, null);
-//                        } else {
-//                            jButtonTest.setBackground(Color.yellow);
-//                            JOptionPane.showMessageDialog(null, "Structure creation Fail", "DB Wizard", JOptionPane.PLAIN_MESSAGE, null);
-//                        }
-//                    } else {
-//                        JOptionPane.showMessageDialog(null, "DB Creation Fail", "DB Wizard", JOptionPane.PLAIN_MESSAGE, null);
-//                        jButtonTest.setBackground(Color.red);
-//                    }
-//                }
-//            } else {
-//                SessionDB.setJdbcCatalog(pickDb());
-//                if (SessionDB.isSchemaValid())
-//                    buttonEnter.setStyle("-fx-background-color: green");
-//            }
-//        } else buttonEnter.setStyle("-fx-background-color: red");
+        SessionDB.setUser(textFieldUser.getText().trim());
+        SessionDB.setPassword(passwordField.getText().trim());
+        if (SessionDB.isValid()) {
+            buttonEnter.setStyle("-fx-background-color: Yellow");
+            System.out.println(SessionDB.numOfDBs());
+            if (SessionDB.numOfDBs() == 0) {
+                if (!SessionDB.isRoot())
+                    FxDialogs.showWarning("DB Wizard", "No valid DBs and no access to create.");
+                else {
+                    if (createDB()) {
+                        FxDialogs.showInfo("DB Wizard", "DB creation Success");
+                        System.out.println("Creation : " + SessionDB.createFullStructure());
+                        if (SessionDB.isSchemaValid()) {
+                            buttonEnter.setStyle("-fx-background-color: green");
+                            FxDialogs.showInfo("DB Wizard", "Structure creation Success");
+                        } else {
+                            buttonEnter.setStyle("-fx-background-color: Yellow");
+                            FxDialogs.showWarning("DB Wizard", "Structure creation Fail");
+                        }
+                    } else {
+                        FxDialogs.showError("DB Wizard", "DB Creation Fail");
+                        buttonEnter.setStyle("-fx-background-color: red");
+                    }
+                }
+            } else {
+                SessionDB.setJdbcCatalog(pickDb());
+                if (SessionDB.isSchemaValid())
+                    buttonEnter.setStyle("-fx-background-color: green");
+            }
+        } else buttonEnter.setStyle("-fx-background-color: red");
     }
 
-    public static String pickDb() {
-//        String[] dbslist = SessionDB.listDBs().toArray(new String[0]);
-//        return JOptionPane.showInputDialog(null, "Pick a DB", "Pick a DB", JOptionPane.PLAIN_MESSAGE, null, dbslist, null).toString();
-        return "";
-    }
-
-    public static boolean createDB() {
-//        ArrayList<String> list = SessionDB.listDBs();
-//        JOptionPane.showMessageDialog(null, "Creating new DB", "DB Wizard", JOptionPane.PLAIN_MESSAGE, null);
-//        String name = "";
-//        do {
-//            name = JOptionPane.showInputDialog(new JFrame(), "Enter DB name", "DB Name", JOptionPane.PLAIN_MESSAGE, null, null, "").toString().trim();
-//        } while (name.length() < 1 || name == null || list.contains("tdc_" + name));
-//
-//        JOptionPane.showMessageDialog(null, "Creating DB name: " + name, "DB Wizard", JOptionPane.PLAIN_MESSAGE, null);
-//        SessionDB.createCatalog(name);
-//        if (SessionDB.hasCatalog(name)) {
-//            SessionDB.setJdbcCatalog(Globals.DB_PREFIX + name);
-//            return true;
-//        } else return false;
-        return true;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        textFieldUser.setText(SessionDB.getUser());
+        passwordField.setText(SessionDB.getPassword());
     }
 }

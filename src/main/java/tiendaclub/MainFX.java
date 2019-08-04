@@ -1,6 +1,7 @@
 package tiendaclub;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,7 +16,7 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        PropsLoader.setProps();
+        PropsLoader.loadProps();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPane.fxml"));
         primaryStage.setTitle("MainFX Test");
 
@@ -23,11 +24,6 @@ public class MainFX extends Application {
         primaryStage.setScene(new Scene(root, 300, 300));
         root.requestFocus();
         primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-
     }
 
     public MainFX() {
@@ -41,8 +37,18 @@ public class MainFX extends Application {
         root = node;
     }
 
+    public static void main(String[] args) {
+        launch(args);
+
+    }
+
     public static void setRoot(Parent node) {
         root = node;
+    }
+
+    public static void initializeToolkit() {
+        Platform.startup(() -> {
+        });
     }
 
     public void go() {
@@ -52,10 +58,5 @@ public class MainFX extends Application {
     public void go(Parent node) {
         setRoot(node);
         go();
-    }
-
-    public static void initializeToolkit() {
-//        Platform.startup(() -> {
-//        });
     }
 }
