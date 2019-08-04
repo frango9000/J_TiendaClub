@@ -13,17 +13,23 @@ public class MainFX extends Application {
 
     private static Parent root;
 
+    private static Stage loginStage;
+    private static Stage mainStage;
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         PropsLoader.loadProps();
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPane.fxml"));
-        primaryStage.setTitle("MainFX Test");
+        mainStage = primaryStage;
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPane.fxml"));
+        primaryStage.setTitle("Main Screen");
 
 
-        primaryStage.setScene(new Scene(root, 300, 300));
+        primaryStage.setScene(new Scene(root, 600, 400));
         root.requestFocus();
-        primaryStage.show();
+//        primaryStage.show();
+
+        loginScreen();
     }
 
     public MainFX() {
@@ -46,6 +52,26 @@ public class MainFX extends Application {
         root = node;
     }
 
+    public static Parent getRoot() {
+        return root;
+    }
+
+    public static Stage getLoginStage() {
+        return loginStage;
+    }
+
+    public static void setLoginStage(Stage loginStage) {
+        MainFX.loginStage = loginStage;
+    }
+
+    public static Stage getMainStage() {
+        return mainStage;
+    }
+
+    public static void setMainStage(Stage mainStage) {
+        MainFX.mainStage = mainStage;
+    }
+
     public static void initializeToolkit() {
         Platform.startup(() -> {
         });
@@ -59,4 +85,17 @@ public class MainFX extends Application {
         setRoot(node);
         go();
     }
+
+    public void loginScreen() throws Exception {
+        loginStage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPane.fxml"));
+        loginStage.setTitle("Login Screen");
+
+
+        loginStage.setScene(new Scene(root, 300, 300));
+        root.requestFocus();
+        loginStage.show();
+    }
+
+
 }

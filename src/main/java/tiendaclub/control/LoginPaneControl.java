@@ -8,9 +8,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import tiendaclub.MainFX;
 import tiendaclub.control.misc.StaticHelpers;
+import tiendaclub.model.DataStore;
 import tiendaclub.model.Globals;
 import tiendaclub.model.SessionDB;
+import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FxDialogs;
 
 import java.io.File;
@@ -160,27 +163,31 @@ public class LoginPaneControl implements Initializable {
         passwordField.setText(SessionDB.getPassword());
     }
 
+    @FXML
     public void buttonEnterAct(ActionEvent actionEvent) {
         SessionDB.setUser(textFieldUser.getText().trim());
         SessionDB.setPassword(passwordField.getText().trim());
         if (SessionDB.isValid()) {
             ArrayList<String> catalogList = SessionDB.listValidCatalogs();
             if (catalogList.size() > 0) {
-                String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", "", catalogList);
+                String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", null, catalogList);
                 if (catalog != null && !catalog.equals("")) {
                     SessionDB.setJdbcCatalog(catalog);
                     if (SessionDB.isValid()) {
+                        Usuario user;
+                        if (SessionDB.isRoot()) {
+                            user = new Usuario(SessionDB.getUser(), SessionDB.getPassword(), "root", 1);
+                        } else {
+                            user = DataStore.getUsuarios().query("user", SessionDB.getUser());
+                        }
+                        DataStore.setUser(user);
+                        System.out.println(DataStore.getUser().toString());
                         //Start
+                        MainFX.getLoginStage().close();
+                        MainFX.getMainStage().show();
                     } else FxDialogs.showError("Error", "Invalid Conn");//??
                 }
             } else FxDialogs.showError("Error", "No Valid Catalog");
         } else FxDialogs.showError("Error", "Invalid Conn");
-    }
-
-    public static String pickCatalog() {
-        ArrayList<String> catalogList = SessionDB.listValidCatalogs();
-        if (catalogList.size() > 0)
-            return FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", catalogList.get(0), catalogList);
-        else return null;
     }
 }

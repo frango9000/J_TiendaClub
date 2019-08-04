@@ -9,6 +9,14 @@ public class DataStore {
 
     public static Usuario user;
 
+    public static Usuario getUser() {
+        return user;
+    }
+
+    public static void setUser(Usuario user) {
+        DataStore.user = user;
+    }
+
     private static GenericDao<Acceso> accesos = new GenericDao<>(Acceso.TABLE_NAME);
     private static GenericDao<Sede> sedes = new GenericDao<>(Sede.TABLE_NAME);
     private static GenericDao<Caja> cajas = new GenericDao<>(Caja.TABLE_NAME);
