@@ -14,8 +14,17 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>10.0.2</source>
-                    <target>10.0.2</target>
+                    <source>11.0.4</source>
+                    <target>11.0.4</target>
+                    <release>11.0.4</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.1</version>
+                <configuration>
+                    <mainClass>tiendaclub.MainFX</mainClass>
                 </configuration>
             </plugin>
         </plugins>
@@ -27,10 +36,21 @@
             <version>2.4.2</version>
         </dependency>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>11.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>11.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
-            <version>9.0.0</version>
+            <version>11.0.0</version>
         </dependency>
+
 
     </dependencies>
 
