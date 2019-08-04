@@ -6,7 +6,11 @@ import java.util.HashMap;
 public interface IDao<T> extends Globals {
     T query(int id);
 
+    T query(String colName, String unique);
+
     HashMap<Integer, T> query(ArrayList<Integer> ids);
+
+//    HashMap<Integer, T> query(String colName, ArrayList<String> search);
 
     HashMap<Integer, T> queryAll();
 

@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11"
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="tiendaclub.control.LoginPaneControl">
     <children>
         <MenuBar>
@@ -67,8 +67,8 @@
                     <children>
                         <Label text="User"/>
                         <Label text="Pass" GridPane.rowIndex="1"/>
-                        <Button fx:id="buttonEnter" defaultButton="true" mnemonicParsing="false" text="Enter"
-                                GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Button fx:id="buttonEnter" defaultButton="true" mnemonicParsing="false"
+                                onAction="#buttonEnterAct" text="Enter" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                         <TextField fx:id="textFieldUser" GridPane.columnIndex="1"/>
                         <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                     </children>

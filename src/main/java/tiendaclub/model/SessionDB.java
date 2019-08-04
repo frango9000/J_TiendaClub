@@ -227,7 +227,7 @@ public final class SessionDB implements Globals {
      *
      * @return
      */
-    public static ArrayList<String> listDBs() {
+    public static ArrayList<String> listCatalogs() {
         String sql = "SHOW DATABASES like '" + DB_PREFIX + "%'";
         ArrayList<String> dbNames = new ArrayList<>();
         if (connect()) {
@@ -248,8 +248,20 @@ public final class SessionDB implements Globals {
         return dbNames;
     }
 
+    public static ArrayList<String> listValidCatalogs() {
+        setAutoclose(false);
+        ArrayList<String> list = listCatalogs();
+        ArrayList<String> validList = new ArrayList<>();
+        for (String catalog : list) {
+            if (isSchemaValid(catalog))
+                validList.add(catalog);
+        }
+        setAutoclose(true);
+        return validList;
+    }
+
     public static int numOfDBs() {
-        return listDBs().size();
+        return listCatalogs().size();
     }
 
     public static void printDBs() {
@@ -356,7 +368,7 @@ public final class SessionDB implements Globals {
         boolean valid = false;
         if (connect()) {
             try {
-                valid = conn.isValid(10);
+                valid = conn.isValid(30);
             } catch (SQLException ex) {
                 Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
@@ -374,7 +386,8 @@ public final class SessionDB implements Globals {
      *
      * @return true si es valida
      */
-    public static boolean isSchemaValid() {
+    public static boolean isSchemaValid(String catalog) {
+        setJdbcCatalog(catalog);
         ArrayList<String> tables = listTables();
         StringBuilder tablesString = new StringBuilder();
         tables.forEach(cnsmr -> tablesString.append(cnsmr).append("\n"));
@@ -395,8 +408,12 @@ public final class SessionDB implements Globals {
                 "ventas\n" +
                 "zs\n";
         //System.out.println(tablesString.toString());
-        System.out.println("Valid Schema: " + model.matches(tablesString.toString()));
+        System.out.println("Valid Schema: " + catalog + "->" + model.matches(tablesString.toString()));
         return model.matches(tablesString.toString());
+    }
+
+    public static boolean isSchemaValid() {
+        return isSchemaValid(getJdbcCatalog());
     }
 
     public static boolean createCatalog(String dbname) {

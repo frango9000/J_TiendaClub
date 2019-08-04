@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 public class DataStore {
 
+    public static Usuario user;
+
     private static GenericDao<Acceso> accesos = new GenericDao<>(Acceso.TABLE_NAME);
     private static GenericDao<Sede> sedes = new GenericDao<>(Sede.TABLE_NAME);
     private static GenericDao<Caja> cajas = new GenericDao<>(Caja.TABLE_NAME);

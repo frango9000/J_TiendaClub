@@ -193,7 +193,9 @@ public class FxDialogs {
         dialog.setContentText(message);
 
         Optional<T> result = dialog.showAndWait();
-        return result.orElse(defaultChoice);
+        if (result.isEmpty())
+            return null;
+        else return result.get();
     }
 
     public static <T> T showChoices(String header, String message, T defaultChoice, Collection<T> choices) {

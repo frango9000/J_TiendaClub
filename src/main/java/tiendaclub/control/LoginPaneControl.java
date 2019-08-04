@@ -47,13 +47,8 @@ public class LoginPaneControl implements Initializable {
     @FXML
     private PasswordField passwordField;
 
-    public static String pickDb() {
-        ArrayList<String> dbslist = SessionDB.listDBs();
-        return FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", dbslist.get(0), dbslist);
-    }
-
     public static boolean createDB() {
-        ArrayList<String> list = SessionDB.listDBs();
+        ArrayList<String> list = SessionDB.listCatalogs();
         FxDialogs.showInfo("DB Wizard", "Creating new DB");
         String name = "";
         do {
@@ -126,7 +121,8 @@ public class LoginPaneControl implements Initializable {
         if (SessionDB.isValid()) {
             buttonEnter.setStyle("-fx-background-color: Yellow");
             System.out.println(SessionDB.numOfDBs());
-            if (SessionDB.numOfDBs() == 0) {
+            ArrayList<String> catalogList = SessionDB.listValidCatalogs();
+            if (catalogList.size() == 0) {//TODO move db creation to DB section inside main prog
                 if (!SessionDB.isRoot())
                     FxDialogs.showWarning("DB Wizard", "No valid DBs and no access to create.");
                 else {
@@ -134,7 +130,7 @@ public class LoginPaneControl implements Initializable {
                         FxDialogs.showInfo("DB Wizard", "DB creation Success");
                         System.out.println("Creation : " + SessionDB.createFullStructure());
                         if (SessionDB.isSchemaValid()) {
-                            buttonEnter.setStyle("-fx-background-color: green");
+                            buttonEnter.setStyle("-fx-background-color: #75ff8a");
                             FxDialogs.showInfo("DB Wizard", "Structure creation Success");
                         } else {
                             buttonEnter.setStyle("-fx-background-color: Yellow");
@@ -146,16 +142,45 @@ public class LoginPaneControl implements Initializable {
                     }
                 }
             } else {
-                SessionDB.setJdbcCatalog(pickDb());
-                if (SessionDB.isSchemaValid())
-                    buttonEnter.setStyle("-fx-background-color: green");
+                String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", "", catalogList);
+                if (catalog != null && !catalog.equals("")) {
+                    SessionDB.setJdbcCatalog(catalog);
+                    if (SessionDB.isValid()) {
+                        buttonEnter.setStyle("-fx-background-color: #75ff8a");
+                    } else buttonEnter.setStyle("-fx-background-color: Yellow");
+                } else buttonEnter.setStyle("-fx-background-color: Yellow");
             }
         } else buttonEnter.setStyle("-fx-background-color: red");
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         textFieldUser.setText(SessionDB.getUser());
         passwordField.setText(SessionDB.getPassword());
+    }
+
+    public void buttonEnterAct(ActionEvent actionEvent) {
+        SessionDB.setUser(textFieldUser.getText().trim());
+        SessionDB.setPassword(passwordField.getText().trim());
+        if (SessionDB.isValid()) {
+            ArrayList<String> catalogList = SessionDB.listValidCatalogs();
+            if (catalogList.size() > 0) {
+                String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", "", catalogList);
+                if (catalog != null && !catalog.equals("")) {
+                    SessionDB.setJdbcCatalog(catalog);
+                    if (SessionDB.isValid()) {
+                        //Start
+                    } else FxDialogs.showError("Error", "Invalid Conn");//??
+                }
+            } else FxDialogs.showError("Error", "No Valid Catalog");
+        } else FxDialogs.showError("Error", "Invalid Conn");
+    }
+
+    public static String pickCatalog() {
+        ArrayList<String> catalogList = SessionDB.listValidCatalogs();
+        if (catalogList.size() > 0)
+            return FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", catalogList.get(0), catalogList);
+        else return null;
     }
 }

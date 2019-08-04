@@ -49,6 +49,27 @@ public class GenericDao<T extends IPersistible> implements IDao<T> {
     }
 
     @Override
+    public T query(String colName, String unique) {
+        T t = null;
+        if (SessionDB.connect()) {
+            String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, unique);
+            try (Statement ps = SessionDB.getConn().createStatement();
+                 ResultSet rs = ps.executeQuery(sql)) {
+                if (rs.next()) {
+                    t = DataStore.buildObject(rs);
+                    table.putIfAbsent(t.getId(), t);
+                }
+                printSql(sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+            } finally {
+                SessionDB.close();
+            }
+        }
+        return t;
+    }
+
+    @Override
     public HashMap<Integer, T> query(ArrayList<Integer> ids) {
         HashMap<Integer, T> returnMap = new HashMap<>();
         if (SessionDB.connect() && ids.size() > 0) {
