@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<VBox xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tiendaclub.control.ConfigPaneControl">
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem fx:id="menuLoad" mnemonicParsing="false" onAction="#menuLoadAct" text="Load"/>
+                        <MenuItem fx:id="menuSave" mnemonicParsing="false" onAction="#menuSaveAct" text="Save"/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#menuCloseAct" text="Close"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem fx:id="menuDbConfig" mnemonicParsing="false" onAction="#menuDbConfigAct"
+                                  text="DB Config"/>
+                        <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#menuTestAct" text="Test"/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <BorderPane>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0"/>
+            </padding>
+            <top>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true"/>
+                        <Label text=" Title ">
+                            <font>
+                                <Font size="33.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                    <BorderPane.margin>
+                        <Insets/>
+                    </BorderPane.margin>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0"/>
+                    </padding>
+                </HBox>
+            </top>
+            <center>
+                <GridPane hgap="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                          minWidth="-Infinity" prefHeight="96.0" prefWidth="230.0" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="35.0"/>
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0"
+                                           prefWidth="189.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label text="User"/>
+                        <Label text="Pass" GridPane.rowIndex="1"/>
+                        <Button fx:id="buttonEnter" defaultButton="true" mnemonicParsing="false"
+                                onAction="#buttonEnterAct" text="Enter" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <TextField fx:id="textFieldUser" GridPane.columnIndex="1"/>
+                        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <BorderPane.margin>
+                        <Insets/>
+                    </BorderPane.margin>
+                </GridPane>
+            </center>
+        </BorderPane>
+    </children>
+</VBox>

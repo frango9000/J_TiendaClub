@@ -1,6 +1,6 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.DataStore;
+import tiendaclub.data.DataStore;
 import tiendaclub.model.IPersistible;
 import tiendaclub.model.models.abstracts.AbstractAcceso;
 
@@ -62,5 +62,10 @@ public class Acceso extends AbstractAcceso implements IPersistible {
     @Override
     public int refreshFromDb() {
         return DataStore.getAccesos().updateObject(this);
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + nivel;
     }
 }

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `accesos`
 CREATE TABLE IF NOT EXISTS `usuarios`
 (
     `id`          TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `user`        CHAR(40)            NOT NULL,
+    `username`    CHAR(40)            NOT NULL,
     `pass`        CHAR(41)            NOT NULL,
     `nombre`      VARCHAR(50)         NOT NULL,
     `telefono`    VARCHAR(20)         NULL DEFAULT NULL,

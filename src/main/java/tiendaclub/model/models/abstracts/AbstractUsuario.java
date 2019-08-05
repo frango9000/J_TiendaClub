@@ -1,9 +1,8 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractUsuario {
+public abstract class AbstractUsuario extends AbstractIdentifiable {
 
-    protected int id;
-    protected String user;
+    protected String username;
     protected String pass;
     protected String nombre;
     protected String telefono;
@@ -12,35 +11,27 @@ public abstract class AbstractUsuario {
     protected String descripcion;
     protected int idAcceso;
 
-    public AbstractUsuario(int id, String user, String pass, String nombre, int idAcceso) {
+    public AbstractUsuario(int id, String username, String pass, String nombre, int idAcceso) {
         this.id = id;
-        this.user = user;
+        this.username = username;
         this.pass = pass;
         this.nombre = nombre;
         this.idAcceso = idAcceso;
     }
 
-    public AbstractUsuario(String user, String pass, String nombre, int idAcceso) {
-        this.user = user;
+    public AbstractUsuario(String username, String pass, String nombre, int idAcceso) {
+        this.username = username;
         this.pass = pass;
         this.nombre = nombre;
         this.idAcceso = idAcceso;
     }
 
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPass() {
@@ -118,7 +109,7 @@ public abstract class AbstractUsuario {
     public String toString() {
         return "Usuario{" +
                 "id=" + id +
-                ", user='" + user + '\'' +
+                ", user='" + username + '\'' +
                 ", pass='" + pass + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", telefono='" + telefono + '\'' +

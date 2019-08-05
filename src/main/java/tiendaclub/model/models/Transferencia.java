@@ -1,6 +1,6 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.DataStore;
+import tiendaclub.data.DataStore;
 import tiendaclub.model.IPersistible;
 import tiendaclub.model.models.abstracts.AbstractTransferencia;
 import tiendaclub.model.utils.DateUtils;

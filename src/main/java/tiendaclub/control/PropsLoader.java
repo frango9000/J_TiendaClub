@@ -16,6 +16,11 @@ public class PropsLoader {
     public static final String defaultFile = "config.ini";
     public static final String ini = defaultDir + defaultFile;
 
+    private static boolean quickstart = false;
+
+    public static boolean isQuickstart() {
+        return quickstart;
+    }
 
     public static boolean loadProps(File file) {
         System.out.println(file.getAbsolutePath());
@@ -28,9 +33,12 @@ public class PropsLoader {
             SessionDB.setJdbcPort(props.getProperty("port"));
             SessionDB.setJdbcCatalog(props.getProperty("dbname"));
 
-            SessionDB.setUser(props.getProperty("user"));
-            SessionDB.setPassword(props.getProperty("password"));
+            SessionDB.setJdbcUser(props.getProperty("user"));
+            SessionDB.setJdbcPassword(props.getProperty("password"));
             SessionDB.setDbUrl();
+
+            quickstart = Boolean.parseBoolean(props.getProperty("quickstart", "false"));
+
             return true;
         } catch (IOException ex) {
             Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,10 +60,12 @@ public class PropsLoader {
         props.put("port", SessionDB.getJdbcPort());
         if (SessionDB.getJdbcCatalog().length() > 0)
             props.put("dbname", SessionDB.getJdbcCatalog());
-        if (SessionDB.getUser().length() > 0)
-            props.put("user", SessionDB.getUser());
-        if (SessionDB.getPassword().length() > 0)
-            props.put("password", SessionDB.getPassword());
+        if (SessionDB.getJdbcUser().length() > 0)
+            props.put("user", SessionDB.getJdbcUser());
+        if (SessionDB.getJdbcPassword().length() > 0)
+            props.put("password", SessionDB.getJdbcPassword());
+
+        props.put("quickstart", quickstart ? "true" : "false");
         try (FileOutputStream f = new FileOutputStream(file)) {
             props.store(f, "ini");
             return true;

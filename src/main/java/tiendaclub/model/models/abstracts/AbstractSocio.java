@@ -2,8 +2,7 @@ package tiendaclub.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public abstract class AbstractSocio {
-    protected int id;
+public abstract class AbstractSocio extends AbstractIdentifiable {
     protected String dni;
     protected String nombre;
     protected String telefono;
@@ -15,26 +14,16 @@ public abstract class AbstractSocio {
     protected LocalDateTime fechaActive;
     protected LocalDateTime fechaInactive;
 
-    public AbstractSocio(int id, String dni, String nombre, LocalDateTime fechaIn, LocalDateTime fechaActive, LocalDateTime fechaInactive) {
+    public AbstractSocio(int id, String dni, String nombre, LocalDateTime fechaIn) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.fechaIn = fechaIn;
-        this.fechaActive = fechaActive;
-        this.fechaInactive = fechaInactive;
     }
 
     public AbstractSocio(String dni, String nombre) {
         this.dni = dni;
         this.nombre = nombre;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getDni() {

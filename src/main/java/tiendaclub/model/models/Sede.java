@@ -1,6 +1,6 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.DataStore;
+import tiendaclub.data.DataStore;
 import tiendaclub.model.IPersistible;
 import tiendaclub.model.models.abstracts.AbstractSede;
 
@@ -81,5 +81,10 @@ public class Sede extends AbstractSede implements IPersistible {
     @Override
     public String updateString() {
         return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + nombre;
     }
 }

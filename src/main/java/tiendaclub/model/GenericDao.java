@@ -1,6 +1,8 @@
 package tiendaclub.model;
 
 
+import tiendaclub.data.DataStore;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,6 +55,27 @@ public class GenericDao<T extends IPersistible> implements IDao<T> {
         T t = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, unique);
+            try (Statement ps = SessionDB.getConn().createStatement();
+                 ResultSet rs = ps.executeQuery(sql)) {
+                if (rs.next()) {
+                    t = DataStore.buildObject(rs);
+                    table.putIfAbsent(t.getId(), t);
+                }
+                printSql(sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+            } finally {
+                SessionDB.close();
+            }
+        }
+        return t;
+    }
+
+    @Override
+    public T query(String col1Name, String uni, String col2Name, String que) {
+        T t = null;
+        if (SessionDB.connect()) {
+            String sql = String.format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", TABLE_NAME, col1Name, uni, col2Name, que);
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {

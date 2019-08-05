@@ -1,7 +1,6 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractProveedor {
-    protected int id;
+public abstract class AbstractProveedor extends AbstractIdentifiable {
     protected String nif;
     protected String nombre;
     protected String telefono;
@@ -18,14 +17,6 @@ public abstract class AbstractProveedor {
     public AbstractProveedor(String nif, String nombre) {
         this.nif = nif;
         this.nombre = nombre;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNif() {

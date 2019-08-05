@@ -1,7 +1,6 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractAcceso {
-    protected int id;
+public abstract class AbstractAcceso extends AbstractIdentifiable {
     protected String nivel;
 
     public AbstractAcceso(int id, String nivel) {
@@ -11,14 +10,6 @@ public abstract class AbstractAcceso {
 
     public AbstractAcceso(String nivel) {
         this.nivel = nivel;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNivel() {

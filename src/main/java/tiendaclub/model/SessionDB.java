@@ -20,17 +20,18 @@ import java.util.logging.Logger;
 public final class SessionDB implements Globals {
 
     private static Connection conn;
+    private static boolean valid = false;
 
     private static String jdbcString = "jdbc:mysql://";
-    private static String jdbcIP = "";// = "localhost";
-    private static String jdbcPort = "";// = "3306";
-    private static String jdbcCatalog = "";// = "mv";
+    private static String jdbcIP = "";
+    private static String jdbcPort = "";
+    private static String jdbcCatalog = "";
 
-    private static String user = "";// = "narf";
-    private static String password = "";// = "narff";
+    private static String jdbcUser = "";
+    private static String jdbcPassword = "";
 
+    private static String jdbcUrl = setDbUrl();
 
-    private static String dbUrl = setDbUrl();
 
     private static boolean autoclose = true;
 
@@ -81,29 +82,37 @@ public final class SessionDB implements Globals {
         setDbUrl();
     }
 
-    public static String getUser() {
-        return user;
+    public static String getJdbcUser() {
+        return jdbcUser;
     }
 
-    public static void setUser(String user) {
-        SessionDB.user = user;
+    public static void setJdbcUser(String jdbcUser) {
+        SessionDB.jdbcUser = jdbcUser;
     }
 
-    public static String getPassword() {
-        return password;
+    public static String getJdbcPassword() {
+        return jdbcPassword;
     }
 
-    public static void setPassword(String password) {
-        SessionDB.password = password;
+    public static void setJdbcPassword(String jdbcPassword) {
+        SessionDB.jdbcPassword = jdbcPassword;
     }
 
 
-    public static String getDbUrl() {
-        return dbUrl;
+    public static String getJdbcUrl() {
+        return jdbcUrl;
     }
 
     public static String setDbUrl() {
-        return dbUrl = jdbcString + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog;
+        return jdbcUrl = jdbcString + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog;
+    }
+
+    public static boolean isValid() {
+        return valid;
+    }
+
+    public static void setValid(boolean valid) {
+        SessionDB.valid = valid;
     }
 
     /**
@@ -115,7 +124,7 @@ public final class SessionDB implements Globals {
         boolean success = false;
         try {
             if (conn == null || conn.isClosed()) {
-                conn = DriverManager.getConnection(dbUrl, user, password);
+                conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
                 if (SQL_CONN) {
                     System.out.println("Connection to " + conn.getMetaData().getDriverName() + " has been established. DB: " + conn.getCatalog());
                 }
@@ -137,7 +146,7 @@ public final class SessionDB implements Globals {
     public static void close() {
         try {
             if (autoclose) {
-                if (conn != null || !conn.isClosed()) {
+                if (conn != null && !conn.isClosed()) {
                     conn.close();
                     if (SQL_CONN) {
                         System.out.println("Connection has been closed.");
@@ -148,10 +157,11 @@ public final class SessionDB implements Globals {
                     }
                 }
             } else {
-                System.out.println("Keeping conection alive.");
+                if (SQL_CONN)
+                    System.out.println("Keeping conection alive.");
             }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -364,7 +374,7 @@ public final class SessionDB implements Globals {
         return rows;
     }
 
-    public static boolean isValid() {
+    public static boolean isConnValid() {
         boolean valid = false;
         if (connect()) {
             try {

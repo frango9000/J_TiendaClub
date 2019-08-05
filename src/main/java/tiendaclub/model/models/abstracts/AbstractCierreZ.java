@@ -2,8 +2,7 @@ package tiendaclub.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public abstract class AbstractCierreZ {
-    protected int id;
+public abstract class AbstractCierreZ extends AbstractIdentifiable {
     protected int idCaja;
     protected LocalDateTime apertura;
     protected LocalDateTime cierre;
@@ -17,14 +16,6 @@ public abstract class AbstractCierreZ {
     public AbstractCierreZ(int idCaja, LocalDateTime apertura) {
         this.idCaja = idCaja;
         this.apertura = apertura;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getIdCaja() {

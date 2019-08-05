@@ -1,6 +1,6 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.DataStore;
+import tiendaclub.data.DataStore;
 import tiendaclub.model.IPersistible;
 import tiendaclub.model.models.abstracts.AbstractCaja;
 
@@ -87,7 +87,6 @@ public class Caja extends AbstractCaja implements IPersistible {
         return ventas;
     }
 
-
     @Override
     public int updateOnDb() {
         return DataStore.getCajas().update(this);
@@ -96,5 +95,10 @@ public class Caja extends AbstractCaja implements IPersistible {
     @Override
     public int refreshFromDb() {
         return DataStore.getCajas().updateObject(this);
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + nombre;
     }
 }

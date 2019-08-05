@@ -1,6 +1,6 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.DataStore;
+import tiendaclub.data.DataStore;
 import tiendaclub.model.IPersistible;
 import tiendaclub.model.models.abstracts.AbstractSocio;
 import tiendaclub.model.utils.DateUtils;
@@ -19,8 +19,8 @@ public class Socio extends AbstractSocio implements IPersistible {
 
     private HashMap<Integer, Venta> ventas = new HashMap<>();
 
-    public Socio(int id, String dni, String nombre, LocalDateTime fechaIn, LocalDateTime fechaActive, LocalDateTime fechaInactive) {
-        super(id, dni, nombre, fechaIn, fechaActive, fechaInactive);
+    public Socio(int id, String dni, String nombre, LocalDateTime fechaIn) {
+        super(id, dni, nombre, fechaIn);
     }
 
     public Socio(String dni, String nombre) {
@@ -28,7 +28,9 @@ public class Socio extends AbstractSocio implements IPersistible {
     }
 
     public Socio(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), DateUtils.toLocalDateTime(rs.getDate(7)), DateUtils.toLocalDateTime(rs.getDate(8)), DateUtils.toLocalDateTime(rs.getDate(9)));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), DateUtils.toLocalDateTime(rs.getTimestamp(7)));
+        setFechaActive(DateUtils.toLocalDateTime(rs.getTimestamp(8)));
+        setFechaInactive(DateUtils.toLocalDateTime(rs.getTimestamp(9)));
         setTelefono(rs.getString(4));
         setDireccion(rs.getString(5));
         setDescripcion(rs.getString(6));

@@ -1,5 +1,8 @@
-package tiendaclub.model;
+package tiendaclub.data;
 
+import tiendaclub.model.GenericDao;
+import tiendaclub.model.IPersistible;
+import tiendaclub.model.SessionDB;
 import tiendaclub.model.models.*;
 
 import java.sql.ResultSet;
@@ -7,15 +10,6 @@ import java.sql.SQLException;
 
 public class DataStore {
 
-    public static Usuario user;
-
-    public static Usuario getUser() {
-        return user;
-    }
-
-    public static void setUser(Usuario user) {
-        DataStore.user = user;
-    }
 
     private static GenericDao<Acceso> accesos = new GenericDao<>(Acceso.TABLE_NAME);
     private static GenericDao<Sede> sedes = new GenericDao<>(Sede.TABLE_NAME);
@@ -88,7 +82,7 @@ public class DataStore {
         return ventas;
     }
 
-    static <T extends IPersistible> T buildObject(ResultSet rs) throws SQLException {
+    public static <T extends IPersistible> T buildObject(ResultSet rs) throws SQLException {
         switch (rs.getMetaData().getTableName(1)) {
             case Acceso.TABLE_NAME:
                 return (T) new Acceso(rs);
@@ -123,5 +117,19 @@ public class DataStore {
         }
     }
 
+
+    public static void firstQuery() {
+        SessionDB.setAutoclose(false);
+        DataStore.getAccesos().queryAll();
+        DataStore.getUsuarios().queryAll();
+        DataStore.getProveedores().queryAll();
+        DataStore.getSocios().queryAll();
+        DataStore.getSedes().queryAll();
+        DataStore.getCajas().queryAll();
+        DataStore.getCategorias().queryAll();
+        DataStore.getProductos().queryAll();
+        SessionDB.setAutoclose(true);
+
+    }
 
 }

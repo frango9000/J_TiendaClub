@@ -9,7 +9,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import tiendaclub.model.DataStore;
+import tiendaclub.data.DataStore;
+import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
 
 import java.net.URL;
@@ -30,16 +31,16 @@ public class UsuariosPaneControl implements Initializable {
     @FXML
     private TableColumn<Usuario, String> tableColumnName;
     @FXML
-    private TableColumn<Usuario, Integer> tableColumnLevel;
+    private TableColumn<Usuario, Acceso> tableColumnLevel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tableColumnID.setCellValueFactory(new PropertyValueFactory<Usuario, Integer>("id"));
-        tableColumnUser.setCellValueFactory(new PropertyValueFactory<Usuario, String>("user"));
+        tableColumnUser.setCellValueFactory(new PropertyValueFactory<Usuario, String>("username"));
         tableColumnName.setCellValueFactory(new PropertyValueFactory<Usuario, String>("nombre"));
-        tableColumnLevel.setCellValueFactory(new PropertyValueFactory<Usuario, Integer>("idAcceso"));
+        tableColumnLevel.setCellValueFactory(new PropertyValueFactory<Usuario, Acceso>("acceso"));
         usuariosTable.setItems(usuarios);
-        usuarios.addAll(DataStore.getUsuarios().queryAll().values());
+        usuarios.addAll(DataStore.getUsuarios().getCache().values());
     }
 
 

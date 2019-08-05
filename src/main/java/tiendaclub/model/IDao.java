@@ -8,6 +8,8 @@ public interface IDao<T> extends Globals {
 
     T query(String colName, String unique);
 
+    T query(String col1Name, String uni, String col2Name, String que);
+
     HashMap<Integer, T> query(ArrayList<Integer> ids);
 
 //    HashMap<Integer, T> query(String colName, ArrayList<String> search);

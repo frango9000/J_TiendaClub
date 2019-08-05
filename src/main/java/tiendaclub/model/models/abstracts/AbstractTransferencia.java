@@ -2,8 +2,7 @@ package tiendaclub.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public abstract class AbstractTransferencia {
-    protected int id;
+public abstract class AbstractTransferencia extends AbstractIdentifiable {
     protected int idUsuario;
     protected int idSedeOrigen;
     protected int idSedeDestino;
@@ -27,14 +26,6 @@ public abstract class AbstractTransferencia {
         this.idSedeDestino = idSedeDestino;
         this.idProducto = idProducto;
         this.cantidad = cantidad;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getIdUsuario() {

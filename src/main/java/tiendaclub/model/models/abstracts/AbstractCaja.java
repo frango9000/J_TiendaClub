@@ -1,7 +1,6 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractCaja {
-    protected int id;
+public abstract class AbstractCaja extends AbstractIdentifiable {
     protected int idSede;
     protected String nombre;
 
@@ -14,14 +13,6 @@ public abstract class AbstractCaja {
     public AbstractCaja(int idSede, String nombre) {
         this.idSede = idSede;
         this.nombre = nombre;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getIdSede() {

@@ -1,7 +1,6 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractComprado {
-    protected int id;
+public abstract class AbstractComprado extends AbstractIdentifiable {
     protected int idCompra;
     protected int idProducto;
     protected int cantidad;
@@ -20,14 +19,6 @@ public abstract class AbstractComprado {
         this.idProducto = idProducto;
         this.cantidad = cantidad;
         this.precioUnidad = precioUnidad;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getIdCompra() {

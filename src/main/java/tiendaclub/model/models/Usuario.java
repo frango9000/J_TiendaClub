@@ -1,6 +1,6 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.DataStore;
+import tiendaclub.data.DataStore;
 import tiendaclub.model.IPersistible;
 import tiendaclub.model.models.abstracts.AbstractUsuario;
 
@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class Usuario extends AbstractUsuario implements IPersistible {
     public static final String TABLE_NAME = "usuarios";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("user", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso"));
+    public static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso"));
 
     private Acceso acceso;
 
@@ -40,7 +40,7 @@ public class Usuario extends AbstractUsuario implements IPersistible {
     }
 
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setString(1, user);
+        pst.setString(1, username);
         pst.setString(2, pass);
         pst.setString(3, nombre);
         pst.setString(4, telefono);
@@ -52,7 +52,7 @@ public class Usuario extends AbstractUsuario implements IPersistible {
 
     public void updateObject(ResultSet rs) throws SQLException {
         //setId(rs.getInt(1));
-        setUser(rs.getString(2));
+        setUsername(rs.getString(2));
         setPass(rs.getString(3));
         setNombre(rs.getString(4));
         setTelefono(rs.getString(5));
