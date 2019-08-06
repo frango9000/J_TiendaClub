@@ -1,8 +1,8 @@
 package tiendaclub.model.models;
 
 import tiendaclub.data.DataStore;
-import tiendaclub.model.IPersistible;
 import tiendaclub.model.models.abstracts.AbstractVendido;
+import tiendaclub.model.models.abstracts.Persistible;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Vendido extends AbstractVendido implements IPersistible {
+public class Vendido extends AbstractVendido {
     public static final String TABLE_NAME = "vendidos";
     private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idVenta", "idProducto", "cantidad", "precio_unidad"));
 
@@ -106,11 +106,11 @@ public class Vendido extends AbstractVendido implements IPersistible {
 
     @Override
     public String insertString() {
-        return IPersistible.buildInsertString(TABLE_NAME, COL_NAMES);
+        return Persistible.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
     public String updateString() {
-        return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
+        return Persistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }

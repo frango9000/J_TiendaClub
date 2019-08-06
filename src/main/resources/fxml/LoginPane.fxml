@@ -6,8 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.textfield.CustomPasswordField?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="tiendaclub.control.LoginPaneControl">
     <center>
         <GridPane hgap="5.0" vgap="3.0" BorderPane.alignment="CENTER">
@@ -35,8 +35,8 @@
     <bottom>
         <BorderPane BorderPane.alignment="CENTER">
             <right>
-                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginOnAct" text="Login"
-                        BorderPane.alignment="CENTER">
+                <Button fx:id="loginButton" defaultButton="true" mnemonicParsing="false" onAction="#loginOnAct"
+                        text="Login" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets top="10.0"/>
                     </BorderPane.margin>

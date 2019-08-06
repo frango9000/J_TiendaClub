@@ -1,6 +1,6 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractUsuario extends AbstractIdentifiable {
+public abstract class AbstractUsuario extends Persistible {
 
     protected String username;
     protected String pass;

@@ -1,6 +1,6 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractProveedor extends AbstractIdentifiable {
+public abstract class AbstractProveedor extends Persistible {
     protected String nif;
     protected String nombre;
     protected String telefono;

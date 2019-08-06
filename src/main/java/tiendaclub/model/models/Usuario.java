@@ -1,8 +1,8 @@
 package tiendaclub.model.models;
 
 import tiendaclub.data.DataStore;
-import tiendaclub.model.IPersistible;
 import tiendaclub.model.models.abstracts.AbstractUsuario;
+import tiendaclub.model.models.abstracts.Persistible;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Usuario extends AbstractUsuario implements IPersistible {
+public class Usuario extends AbstractUsuario {
     public static final String TABLE_NAME = "usuarios";
     public static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso"));
 
@@ -64,12 +64,12 @@ public class Usuario extends AbstractUsuario implements IPersistible {
 
     @Override
     public String insertString() {
-        return IPersistible.buildInsertString(TABLE_NAME, COL_NAMES);
+        return Persistible.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
     public String updateString() {
-        return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
+        return Persistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 
     @Override

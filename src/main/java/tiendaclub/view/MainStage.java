@@ -4,17 +4,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import tiendaclub.model.models.Caja;
-import tiendaclub.model.models.Sede;
-import tiendaclub.model.models.Usuario;
 
 import java.io.IOException;
 
 public class MainStage extends Stage {
-
-    private static Caja caja;
-    private static Sede sede;
-    private static Usuario user;
 
     public MainStage() {
         try {
@@ -22,34 +15,11 @@ public class MainStage extends Stage {
             setTitle("Main Screen");
 
 
-            setScene(new Scene(root, 600, 400));
+            setScene(new Scene(root));
             root.requestFocus();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static Caja getCaja() {
-        return caja;
-    }
-
-    public static void setCaja(Caja caja) {
-        MainStage.caja = caja;
-    }
-
-    public static Sede getSede() {
-        return sede;
-    }
-
-    public static void setSede(Sede sede) {
-        MainStage.sede = sede;
-    }
-
-    public static Usuario getUser() {
-        return user;
-    }
-
-    public static void setUser(Usuario user) {
-        MainStage.user = user;
-    }
 }

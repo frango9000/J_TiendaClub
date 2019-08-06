@@ -1,4 +1,6 @@
-package tiendaclub.model;
+package tiendaclub.data;
+
+import tiendaclub.model.Globals;
 
 import java.io.BufferedInputStream;
 import java.io.File;

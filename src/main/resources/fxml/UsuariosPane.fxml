@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane fx:id="usersPane" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="usersPane" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="tiendaclub.control.UsuariosPaneControl">
     <center>
         <TableView fx:id="usuariosTable" BorderPane.alignment="CENTER">
@@ -22,16 +22,17 @@
     <right>
         <BorderPane BorderPane.alignment="CENTER">
             <bottom>
-                <Button mnemonicParsing="false" onAction="#usersBackAct" prefWidth="80.0" text="Volver"
+                <Button mnemonicParsing="false" onAction="#fxButtonBackAct" prefWidth="80.0" text="Volver"
                         BorderPane.alignment="CENTER"/>
             </bottom>
             <top>
                 <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Button mnemonicParsing="false" prefWidth="80.0" text="Agregar"/>
-                        <Button mnemonicParsing="false" prefWidth="80.0" text="Editar"/>
-                        <Button mnemonicParsing="false" prefWidth="80.0" text="Eliminar"/>
-                        <Button mnemonicParsing="false" prefWidth="80.0" text="Refrescar"/>
+                        <Button mnemonicParsing="false" onAction="#fxButtonAddAct" prefWidth="80.0" text="Agregar"/>
+                        <Button mnemonicParsing="false" onAction="#fxButtonEditAct" prefWidth="80.0" text="Editar"/>
+                        <Button mnemonicParsing="false" onAction="#fxButtonDeleteAct" prefWidth="80.0" text="Eliminar"/>
+                        <Button mnemonicParsing="false" onAction="#fxButtonRefreshAct" prefWidth="80.0"
+                                text="Refrescar"/>
                     </children>
                     <BorderPane.margin>
                         <Insets/>

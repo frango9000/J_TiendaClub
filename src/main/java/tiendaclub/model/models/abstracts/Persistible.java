@@ -1,16 +1,17 @@
-package tiendaclub.model;
+package tiendaclub.model.models.abstracts;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public interface IPersistible {
+public abstract class Persistible implements IPersistible {
 
-    String ID_COL_NAME = "id";
+    protected static String TABLE_NAME = "";
+    protected static String ID_COL_NAME = "id";
+    protected static ArrayList<String> COL_NAMES = new ArrayList<>();
 
-    static String buildInsertString(String TABLE_NAME, ArrayList<String> COL_NAMES) {
+    protected int id;
+
+    public static String buildInsertString(String TABLE_NAME, ArrayList<String> COL_NAMES) {
         final StringBuilder sql = new StringBuilder(String.format("INSERT INTO %s VALUES(NULL, ", TABLE_NAME));
         int i = COL_NAMES.size();
         while (i > 0) {
@@ -22,7 +23,7 @@ public interface IPersistible {
         return sql.append(")").toString();
     }
 
-    static String buildUpdateString(String TABLE_NAME, String ID_COL_NAME, ArrayList<String> COL_NAMES, int id) {
+    public static String buildUpdateString(String TABLE_NAME, String ID_COL_NAME, ArrayList<String> COL_NAMES, int id) {
         final StringBuilder sql = new StringBuilder(String.format("UPDATE %s SET ", TABLE_NAME));
         Iterator<String> iterator = COL_NAMES.iterator();
         while (iterator.hasNext()) {
@@ -34,19 +35,14 @@ public interface IPersistible {
         return sql.toString();
     }
 
-    int getId();
+    @Override
+    public int getId() {
+        return id;
+    }
 
-    void setId(int id);
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    int updateOnDb();
-
-    int refreshFromDb();
-
-    void buildStatement(PreparedStatement pst) throws SQLException;
-
-    void updateObject(ResultSet rs) throws SQLException;
-
-    String insertString();
-
-    String updateString();
 }

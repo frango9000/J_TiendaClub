@@ -7,11 +7,15 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import tiendaclub.control.PropsLoader;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.SessionDB;
+import tiendaclub.data.SessionDB;
+import tiendaclub.model.models.Caja;
+import tiendaclub.model.models.Sede;
 import tiendaclub.view.ConfigStage;
 import tiendaclub.view.FxDialogs;
 import tiendaclub.view.LoginStage;
 import tiendaclub.view.MainStage;
+
+import java.util.Collection;
 
 public class MainFX extends Application {
 
@@ -21,28 +25,6 @@ public class MainFX extends Application {
     private static Stage loginStage;
     private static Stage mainStage;
 
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        PropsLoader.loadProps();
-        mainStage = primaryStage;
-
-        if (!SessionDB.isConnValid() || !PropsLoader.isQuickstart()) {
-            configStage = new ConfigStage();
-            configStage.showAndWait();
-        }
-        if (SessionDB.isSchemaValid()) {
-            loginStage = new LoginStage();
-            loginStage.showAndWait();
-
-            DataStore.firstQuery();
-            mainStage = new MainStage();
-            mainStage.show();
-
-            MainStage.setSede(FxDialogs.showChoices("Sede:", "Sede:", null, DataStore.getSedes().getCache().values()));
-            MainStage.setCaja(FxDialogs.showChoices("Caja:", "Caja", null, MainStage.getSede().getCajas().values()));
-        }
-    }
 
     public MainFX() {
         if (root == null)
@@ -60,12 +42,12 @@ public class MainFX extends Application {
 
     }
 
-    public static void setRoot(Parent node) {
-        root = node;
-    }
-
     public static Parent getRoot() {
         return root;
+    }
+
+    public static void setRoot(Parent node) {
+        root = node;
     }
 
     public static Stage getLoginStage() {
@@ -95,6 +77,41 @@ public class MainFX extends Application {
     public static void initializeToolkit() {
         Platform.startup(() -> {
         });
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        PropsLoader.loadProps();
+        mainStage = primaryStage;
+
+        if (!SessionDB.isConnValid() || !PropsLoader.isQuickstart()) {
+            configStage = new ConfigStage();
+            configStage.showAndWait();
+        }
+        if (SessionDB.isSchemaValid()) {
+            loginStage = new LoginStage();
+            loginStage.showAndWait();
+
+            DataStore.firstQuery();
+            mainStage = new MainStage();
+            mainStage.show();
+
+            Collection<Sede> sedes = DataStore.getSedes().getCache().values();
+            if (sedes.size() == 0)
+                FxDialogs.showWarning("No Sede", "Debes crear una sede");
+            else if (sedes.size() == 1)
+                DataStore.setSede(sedes.iterator().next());
+            else
+                DataStore.setSede(FxDialogs.showChoices("Sede:", "Sedes:", null, sedes));
+
+            Collection<Caja> cajas = DataStore.getSede().getCajas().values();
+            if (cajas.size() == 0)
+                FxDialogs.showWarning("No caja", "Debes crear una caja");
+            else if (cajas.size() == 1)
+                DataStore.setCaja(cajas.iterator().next());
+            else
+                DataStore.setCaja(FxDialogs.showChoices("Caja:", "Cajas:", null, cajas));
+        }
     }
 
     public void go() {

@@ -1,6 +1,6 @@
 package tiendaclub.control;
 
-import tiendaclub.model.SessionDB;
+import tiendaclub.data.SessionDB;
 
 import java.io.File;
 import java.io.FileInputStream;

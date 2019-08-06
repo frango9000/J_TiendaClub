@@ -2,24 +2,22 @@ package tiendaclub.control;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import tiendaclub.MainFX;
+import tiendaclub.data.SessionDB;
 import tiendaclub.model.Globals;
-import tiendaclub.model.SessionDB;
 import tiendaclub.model.misc.StaticHelpers;
 import tiendaclub.view.FxDialogs;
 
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-public class ConfigPaneControl implements Initializable {
+public class ConfigPaneControl extends VBox {
 
     @FXML
     private MenuItem menuLoad;
@@ -155,8 +153,8 @@ public class ConfigPaneControl implements Initializable {
     }
 
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         textFieldUser.setText(SessionDB.getJdbcUser());
         passwordField.setText(SessionDB.getJdbcPassword());
     }

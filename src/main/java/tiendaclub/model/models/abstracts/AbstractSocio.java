@@ -2,7 +2,7 @@ package tiendaclub.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public abstract class AbstractSocio extends AbstractIdentifiable {
+public abstract class AbstractSocio extends Persistible {
     protected String dni;
     protected String nombre;
     protected String telefono;

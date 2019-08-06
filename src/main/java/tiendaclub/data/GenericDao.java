@@ -1,7 +1,7 @@
-package tiendaclub.model;
+package tiendaclub.data;
 
 
-import tiendaclub.data.DataStore;
+import tiendaclub.model.models.abstracts.Persistible;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,11 +13,11 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GenericDao<T extends IPersistible> implements IDao<T> {
+public class GenericDao<T extends Persistible> implements IDao<T> {
 
     protected final String ID_COL_NAME = "id";
     protected final HashMap<Integer, T> table = new HashMap<>();
-    protected String TABLE_NAME;
+    public String TABLE_NAME;
 
     public GenericDao(String TABLE_NAME) {
         this.TABLE_NAME = TABLE_NAME;
@@ -37,7 +37,7 @@ public class GenericDao<T extends IPersistible> implements IDao<T> {
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    t = DataStore.buildObject(rs);
+                    t = (T) DataFactory.buildObject(rs);
                     table.putIfAbsent(t.getId(), t);
                 }
                 printSql(sql);
@@ -58,7 +58,7 @@ public class GenericDao<T extends IPersistible> implements IDao<T> {
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    t = DataStore.buildObject(rs);
+                    t = (T) DataFactory.buildObject(rs);
                     table.putIfAbsent(t.getId(), t);
                 }
                 printSql(sql);
@@ -79,7 +79,7 @@ public class GenericDao<T extends IPersistible> implements IDao<T> {
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    t = DataStore.buildObject(rs);
+                    t = (T) DataFactory.buildObject(rs);
                     table.putIfAbsent(t.getId(), t);
                 }
                 printSql(sql);
@@ -108,7 +108,7 @@ public class GenericDao<T extends IPersistible> implements IDao<T> {
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
-                    T t = DataStore.buildObject(rs);
+                    T t = (T) DataFactory.buildObject(rs);
                     table.putIfAbsent(t.getId(), t);
                     returnMap.put(t.getId(), t);
                 }
@@ -130,7 +130,7 @@ public class GenericDao<T extends IPersistible> implements IDao<T> {
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
                 while (rs.next()) {
-                    T t = DataStore.buildObject(rs);
+                    T t = (T) DataFactory.buildObject(rs);
                     System.out.println(t.toString());
                     table.put(t.getId(), t);
                 }

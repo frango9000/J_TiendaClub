@@ -1,8 +1,8 @@
 package tiendaclub.model.models;
 
 import tiendaclub.data.DataStore;
-import tiendaclub.model.IPersistible;
 import tiendaclub.model.models.abstracts.AbstractSocio;
+import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.model.utils.DateUtils;
 
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Socio extends AbstractSocio implements IPersistible {
+public class Socio extends AbstractSocio {
     public static final String TABLE_NAME = "socios";
     private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("dni", "nombre", "telefono", "direccion", "descripcion", "fecha_in", "fecha_active", "fecha_inactive"));
 
@@ -77,11 +77,11 @@ public class Socio extends AbstractSocio implements IPersistible {
 
     @Override
     public String insertString() {
-        return IPersistible.buildInsertString(TABLE_NAME, COL_NAMES);
+        return Persistible.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
     public String updateString() {
-        return IPersistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
+        return Persistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }
