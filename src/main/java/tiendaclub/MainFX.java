@@ -2,18 +2,19 @@ package tiendaclub;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import tiendaclub.control.MainPaneControl;
 import tiendaclub.control.PropsLoader;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionDB;
 import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Sede;
-import tiendaclub.view.ConfigStage;
 import tiendaclub.view.FxDialogs;
-import tiendaclub.view.LoginStage;
-import tiendaclub.view.MainStage;
+import tiendaclub.view.FxmlStage;
 
 import java.util.Collection;
 
@@ -21,9 +22,8 @@ public class MainFX extends Application {
 
     private static Parent root;
 
-    private static Stage configStage;
-    private static Stage loginStage;
     private static Stage mainStage;
+    private static MainPaneControl mainPaneControl;
 
 
     public MainFX() {
@@ -50,14 +50,6 @@ public class MainFX extends Application {
         root = node;
     }
 
-    public static Stage getLoginStage() {
-        return loginStage;
-    }
-
-    public static void setLoginStage(Stage loginStage) {
-        MainFX.loginStage = loginStage;
-    }
-
     public static Stage getMainStage() {
         return mainStage;
     }
@@ -66,12 +58,12 @@ public class MainFX extends Application {
         MainFX.mainStage = mainStage;
     }
 
-    public static Stage getConfigStage() {
-        return configStage;
+    public static MainPaneControl getMainPaneControl() {
+        return mainPaneControl;
     }
 
-    public static void setConfigStage(Stage configStage) {
-        MainFX.configStage = configStage;
+    public static void setMainPaneControl(MainPaneControl mainPaneControl) {
+        MainFX.mainPaneControl = mainPaneControl;
     }
 
     public static void initializeToolkit() {
@@ -81,20 +73,26 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        PropsLoader.loadProps();
         mainStage = primaryStage;
 
+        PropsLoader.loadProps();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainPane.fxml"));
+        mainPaneControl = loader.getController();
+
+        Parent root = loader.load();
+        primaryStage.setScene(new Scene(root));
+
         if (!SessionDB.isConnValid() || !PropsLoader.isQuickstart()) {
-            configStage = new ConfigStage();
+            Stage configStage = new FxmlStage("/fxml/ConfigPane.fxml", "Config Stage");
             configStage.showAndWait();
         }
         if (SessionDB.isSchemaValid()) {
-            loginStage = new LoginStage();
+            Stage loginStage = new FxmlStage("/fxml/LoginPane.fxml", "Login Stage");
             loginStage.showAndWait();
 
             DataStore.firstQuery();
-            mainStage = new MainStage();
-            mainStage.show();
+            primaryStage.show();
 
             Collection<Sede> sedes = DataStore.getSedes().getCache().values();
             if (sedes.size() == 0)

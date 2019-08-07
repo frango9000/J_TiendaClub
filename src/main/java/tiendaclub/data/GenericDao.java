@@ -110,7 +110,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                 while (rs.next()) {
                     T t = (T) DataFactory.buildObject(rs);
                     table.putIfAbsent(t.getId(), t);
-                    returnMap.put(t.getId(), t);
+                    returnMap.putIfAbsent(t.getId(), t);
                 }
                 printSql(sql.toString());
             } catch (SQLException ex) {
@@ -132,7 +132,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                 while (rs.next()) {
                     T t = (T) DataFactory.buildObject(rs);
                     System.out.println(t.toString());
-                    table.put(t.getId(), t);
+                    table.putIfAbsent(t.getId(), t);
                 }
                 printSql(sql);
             } catch (SQLException ex) {
@@ -183,7 +183,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
         if (ids.size() > 0) {
             ArrayList<T> objs = getList(ids);
             for (T t : objs) {
-                filteredHashMap.put(t.getId(), t);
+                filteredHashMap.putIfAbsent(t.getId(), t);
             }
         }
         return filteredHashMap;
@@ -198,7 +198,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
     public int insert(T objectT) {
         int rows = 0;
         if (SessionDB.connect()) {
-            String sql = objectT.insertString();
+            String sql = objectT.getInsertString();
             try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 objectT.buildStatement(pstmt);
                 rows = pstmt.executeUpdate();
@@ -206,7 +206,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
                     if (rs.next()) {
                         objectT.setId(rs.getInt(1));
-                        table.put(objectT.getId(), objectT);
+                        table.putIfAbsent(objectT.getId(), objectT);
                     }
                 }
                 printSql(sql);
@@ -223,7 +223,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
     public int update(T objectT) {
         int rows = 0;
         if (SessionDB.connect()) {
-            String sql = objectT.updateString();
+            String sql = objectT.getUpdateString();
             try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql)) {
                 objectT.buildStatement(pstmt);
                 rows = pstmt.executeUpdate();
@@ -248,7 +248,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                     if (rs.next()) {
                         objectT.updateObject(rs);
                         rows++;
-                        table.put(objectT.getId(), objectT);
+                        table.putIfAbsent(objectT.getId(), objectT);
                     }
                     printSql(sql);
                 } catch (SQLException ex) {

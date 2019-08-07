@@ -2,13 +2,13 @@ package tiendaclub.control;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import tiendaclub.MainFX;
 import tiendaclub.data.SessionDB;
 import tiendaclub.model.Globals;
 import tiendaclub.model.misc.StaticHelpers;
@@ -170,19 +170,9 @@ public class ConfigPaneControl extends VBox {
                 if (catalog != null && !catalog.equals("")) {
                     SessionDB.setJdbcCatalog(catalog);
                     if (SessionDB.isConnValid()) {
-//                        Usuario user;
-//                        if (SessionDB.isRoot()) {
-//                            user = new Usuario(SessionDB.getJdbcUser(), SessionDB.getJdbcPassword(), "root", 1);
-//                        } else {
-//                            user = DataStore.getUsuarios().query("user", SessionDB.getJdbcUser());
-//                        }
-//                        DataStore.setUser(user);
-//                        System.out.println(DataStore.getUser().toString());
                         //Start
                         SessionDB.setValid(true);
-                        MainFX.getConfigStage().close();
-
-
+                        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
                     } else FxDialogs.showError("Error", "Invalid Conn");//??
                 }
             } else FxDialogs.showError("Error", "No Valid Catalog");

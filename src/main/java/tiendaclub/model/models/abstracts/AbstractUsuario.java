@@ -11,18 +11,16 @@ public abstract class AbstractUsuario extends Persistible {
     protected String descripcion;
     protected int idAcceso;
 
-    public AbstractUsuario(int id, String username, String pass, String nombre, int idAcceso) {
+    public AbstractUsuario(int id, String username, String pass, int idAcceso) {
         this.id = id;
         this.username = username;
         this.pass = pass;
-        this.nombre = nombre;
         this.idAcceso = idAcceso;
     }
 
-    public AbstractUsuario(String username, String pass, String nombre, int idAcceso) {
+    public AbstractUsuario(String username, String pass, int idAcceso) {
         this.username = username;
         this.pass = pass;
-        this.nombre = nombre;
         this.idAcceso = idAcceso;
     }
 

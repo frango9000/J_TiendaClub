@@ -153,6 +153,11 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     @Override
+    public int insertIntoDB() {
+        return 0;
+    }
+
+    @Override
     public int updateOnDb() {
         return DataStore.getTransferencias().update(this);
     }
@@ -163,12 +168,17 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     @Override
-    public String insertString() {
+    public int deleteFromDb() {
+        return 0;
+    }
+
+    @Override
+    public String getInsertString() {
         return Persistible.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
-    public String updateString() {
+    public String getUpdateString() {
         return Persistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }

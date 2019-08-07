@@ -2,12 +2,12 @@ package tiendaclub.control;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
-import tiendaclub.MainFX;
 import tiendaclub.data.DataStore;
 
 public class LoginPaneControl extends BorderPane {
@@ -46,7 +46,6 @@ public class LoginPaneControl extends BorderPane {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("Acces Denied");
 
-        } else MainFX.getLoginStage().close();
-
+        } else ((Node) actionEvent.getSource()).getScene().getWindow().hide();
     }
 }

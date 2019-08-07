@@ -48,12 +48,12 @@ public class Caja extends AbstractCaja {
     }
 
     @Override
-    public String insertString() {
+    public String getInsertString() {
         return Persistible.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
-    public String updateString() {
+    public String getUpdateString() {
         return Persistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 
@@ -88,6 +88,11 @@ public class Caja extends AbstractCaja {
     }
 
     @Override
+    public int insertIntoDB() {
+        return 0;
+    }
+
+    @Override
     public int updateOnDb() {
         return DataStore.getCajas().update(this);
     }
@@ -95,6 +100,11 @@ public class Caja extends AbstractCaja {
     @Override
     public int refreshFromDb() {
         return DataStore.getCajas().updateObject(this);
+    }
+
+    @Override
+    public int deleteFromDb() {
+        return 0;
     }
 
     @Override

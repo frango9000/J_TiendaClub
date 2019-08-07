@@ -6,68 +6,135 @@ package tiendaclub.control.editor;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import tiendaclub.data.DataStore;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
+import tiendaclub.view.FxDialogs;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class UserEditorPaneControl extends BorderPane {
+public class UserEditorPaneControl extends Stage {
 
     private Usuario usuario;
-    @FXML // ResourceBundle that was given to the FXMLLoader
+    @FXML
     private ResourceBundle resources;
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
+    @FXML
     private URL location;
-    @FXML // fx:id="txUsername"
-    private TextField txUsername; // Value injected by FXMLLoader
-    @FXML // fx:id="txNombre"
-    private TextField txNombre; // Value injected by FXMLLoader
-    @FXML // fx:id="txTelefono"
-    private TextField txTelefono; // Value injected by FXMLLoader
-    @FXML // fx:id="txEmail"
-    private TextField txEmail; // Value injected by FXMLLoader
-    @FXML // fx:id="cbAcceso"
-    private ComboBox<Acceso> cbAcceso; // Value injected by FXMLLoader
-    @FXML // fx:id="txDireccion"
-    private TextArea txDireccion; // Value injected by FXMLLoader
-    @FXML // fx:id="txDescrippcion"
-    private TextArea txDescripcion; // Value injected by FXMLLoader
-    @FXML // fx:id="txId"
-    private TextField txId; // Value injected by FXMLLoader
-
-    public UserEditorPaneControl(Usuario usuario) {
-        this.usuario = usuario;
-    }
+    @FXML
+    private TextField txUsername;
+    @FXML
+    private TextField txNombre;
+    @FXML
+    private TextField txTelefono;
+    @FXML
+    private TextField txEmail;
+    @FXML
+    private ComboBox<Acceso> cbAcceso;
+    @FXML
+    private TextArea txDireccion;
+    @FXML
+    private TextArea txDescripcion;
+    @FXML
+    private TextField txId;
+    @FXML
+    private Button txButtonPassword;
 
     @FXML
     void SaveOnAct(ActionEvent event) {
+        if (txId.getText().length() < 1) {
+            if (validFields()) {
+                String pass = askPass();
+                Usuario usuario = new Usuario(txUsername.getText().trim(), pass, cbAcceso.getSelectionModel().getSelectedItem());
+                usuario.setNombre(txUsername.getText().trim());
+                usuario.setTelefono(txTelefono.getText().trim());
+                usuario.setEmail(txEmail.getText().trim());
+                usuario.setDireccion(txDireccion.getText().trim());
+                usuario.setDescripcion(txDescripcion.getText().trim());
+                if (usuario.insertIntoDB() > 0) {
+                    FxDialogs.showInfo("Success", "Usuario insertado");
+                    ((Node) event.getSource()).getScene().getWindow().hide();
+                } else {
+                    FxDialogs.showError("Fail!", "Insercion rechazada");
+                }
+            }
+        } else {
+            usuario.setNombre((txUsername.getText() + "").trim());
+            usuario.setTelefono((txTelefono.getText() + "").trim());
+            usuario.setEmail((txEmail.getText() + "").trim());
+            usuario.setDireccion((txDireccion.getText() + "").trim());
+            usuario.setDescripcion((txDescripcion.getText() + "").trim());
+            usuario.setAcceso(cbAcceso.getSelectionModel().getSelectedItem());
+            if (usuario.updateOnDb() > 0) {
+                FxDialogs.showInfo("Success", "Usuario modificado");
+                ((Node) event.getSource()).getScene().getWindow().hide();
+            } else {
+                FxDialogs.showError("Fail!", "Modificacion rechazada");
+            }
+        }
 
     }
 
     @FXML
     void passwordOnAct(ActionEvent event) {
+        String pass = askPass();
+        if (!pass.equals(usuario.getPass())) {
+            usuario.setPass(pass);
+            usuario.updateOnDb();
+        }
 
     }
 
     @FXML
-        // This method is called by the FXMLLoader when initialization is complete
+    private void discardAct(ActionEvent actionEvent) {
+        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+    }
+
+    @FXML
     void initialize() {
+        cbAcceso.getItems().addAll(DataStore.getAccesos().getCache().values());
+        txButtonPassword.setVisible(false);
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
         if (usuario != null) {
+            txUsername.setEditable(false);
+            txButtonPassword.setVisible(true);
             txId.setText(usuario.getId() + "");
+            txUsername.setText(usuario.getUsername());
             txNombre.setText(usuario.getNombre());
             txTelefono.setText(usuario.getTelefono());
             txEmail.setText(usuario.getEmail());
             txDireccion.setText(usuario.getDireccion());
             txDescripcion.setText(usuario.getDescripcion());
-            cbAcceso.getItems().addAll(DataStore.getAccesos().getCache().values());
             cbAcceso.getSelectionModel().select(usuario.getAcceso());
         }
-
     }
+
+    private boolean validFields() {
+        if (txUsername.getText().trim().length() < 1) return false;
+        return cbAcceso.getSelectionModel().getSelectedItem().getId() >= DataStore.getUser().getIdAcceso();
+    }
+
+    public String askPass() {
+        String pass1;
+        String pass2;
+        do {
+            pass1 = FxDialogs.showTextInput("Enter password", "Enter password");
+            pass2 = FxDialogs.showTextInput("Verify password", "Verify password");
+        } while (!pass1.equals(pass2) && pass1.length() < 1);
+        return pass1;
+    }
+
 }

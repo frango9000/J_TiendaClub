@@ -57,13 +57,18 @@ public class Proveedor extends AbstractProveedor {
     }
 
     @Override
-    public String insertString() {
+    public String getInsertString() {
         return Persistible.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
-    public String updateString() {
+    public String getUpdateString() {
         return Persistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
+    }
+
+    @Override
+    public int insertIntoDB() {
+        return 0;
     }
 
     @Override
@@ -74,5 +79,10 @@ public class Proveedor extends AbstractProveedor {
     @Override
     public int refreshFromDb() {
         return DataStore.getProveedores().updateObject(this);
+    }
+
+    @Override
+    public int deleteFromDb() {
+        return 0;
     }
 }

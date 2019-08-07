@@ -19,6 +19,9 @@ public class MainPaneControl extends BorderPane {
     @FXML
     private BorderPane mainPane;
 
+    public BorderPane getMainPane() {
+        return mainPane;
+    }
 
     @FXML
     public void initialize() {

@@ -46,6 +46,11 @@ public class Categoria extends AbstractCategoria {
     }
 
     @Override
+    public int insertIntoDB() {
+        return 0;
+    }
+
+    @Override
     public int updateOnDb() {
         return DataStore.getCategorias().update(this);
     }
@@ -56,12 +61,17 @@ public class Categoria extends AbstractCategoria {
     }
 
     @Override
-    public String insertString() {
+    public int deleteFromDb() {
+        return 0;
+    }
+
+    @Override
+    public String getInsertString() {
         return Persistible.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
-    public String updateString() {
+    public String getUpdateString() {
         return Persistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }

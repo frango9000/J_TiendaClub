@@ -21,23 +21,30 @@ public class Usuario extends AbstractUsuario {
     private HashMap<Integer, Venta> ventas = new HashMap<>();
     private HashMap<Integer, Transferencia> transferencias = new HashMap<>();
 
-    public Usuario(int id, String user, String pass, String nombre, int idAcceso) {
-        super(id, user, pass, nombre, idAcceso);
+    public Usuario(int id, String user, String pass, int idAcceso) {
+        super(id, user, pass, idAcceso);
         updateAcceso();
     }
 
-    public Usuario(String user, String pass, String nombre, int idAcceso) {
-        super(user, pass, nombre, idAcceso);
+    public Usuario(String user, String pass, int idAcceso) {
+        super(user, pass, idAcceso);
         updateAcceso();
+    }
+
+    public Usuario(String username, String pass, Acceso acceso) {
+        super(username, pass, acceso.getId());
+        setAcceso(acceso);
     }
 
     public Usuario(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(9));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(9));
+        setNombre(rs.getString(4));
         setTelefono(rs.getString(5));
         setEmail(rs.getString(6));
         setDireccion(rs.getString(7));
         setDescripcion(rs.getString(8));
     }
+
 
     public void buildStatement(PreparedStatement pst) throws SQLException {
         pst.setString(1, username);
@@ -63,12 +70,12 @@ public class Usuario extends AbstractUsuario {
     }
 
     @Override
-    public String insertString() {
+    public String getInsertString() {
         return Persistible.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
-    public String updateString() {
+    public String getUpdateString() {
         return Persistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 
@@ -91,6 +98,7 @@ public class Usuario extends AbstractUsuario {
     }
 
     private void updateAcceso() {
+        System.out.println("Getting acceso from datastore");
         setAcceso(DataStore.getAccesos().get(idAcceso));
     }
 
@@ -107,6 +115,13 @@ public class Usuario extends AbstractUsuario {
     }
 
     @Override
+    public int insertIntoDB() {
+        if (id == 0) {
+            return DataStore.getUsuarios().insert(this);
+        } else return 0;
+    }
+
+    @Override
     public int updateOnDb() {
         return DataStore.getUsuarios().update(this);
     }
@@ -114,5 +129,10 @@ public class Usuario extends AbstractUsuario {
     @Override
     public int refreshFromDb() {
         return DataStore.getUsuarios().updateObject(this);
+    }
+
+    @Override
+    public int deleteFromDb() {
+        return DataStore.getUsuarios().delete(this);
     }
 }

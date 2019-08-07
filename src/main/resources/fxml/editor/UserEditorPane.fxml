@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="tiendaclub.control.editor.UserEditorPaneControl">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="tiendaclub.control.editor.UserEditorPaneControl">
     <center>
         <GridPane alignment="CENTER" vgap="5.0" BorderPane.alignment="CENTER">
             <columnConstraints>
@@ -64,7 +63,7 @@
                 </TextArea>
                 <TextArea fx:id="txDescripcion" minHeight="-Infinity" prefHeight="70.0" GridPane.columnIndex="1"
                           GridPane.rowIndex="6"/>
-                <TextField fx:id="txId" layoutX="80.0" layoutY="70.0" GridPane.columnIndex="1"/>
+               <TextField fx:id="txId" editable="false" layoutX="80.0" layoutY="70.0" GridPane.columnIndex="1"/>
             </children>
         </GridPane>
     </center>
@@ -86,13 +85,14 @@
             <right>
                 <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER">
                     <children>
+                       <Button mnemonicParsing="false" onAction="#discardAct" text="Descartar"/>
                         <Button mnemonicParsing="false" onAction="#SaveOnAct" text="Guardar"/>
                     </children>
                 </HBox>
             </right>
             <left>
-                <Button mnemonicParsing="false" onAction="#passwordOnAct" text="Password"
-                        BorderPane.alignment="CENTER"/>
+               <Button fx:id="txButtonPassword" mnemonicParsing="false" onAction="#passwordOnAct" text="Password"
+                       BorderPane.alignment="CENTER"/>
             </left>
             <padding>
                 <Insets top="10.0"/>
