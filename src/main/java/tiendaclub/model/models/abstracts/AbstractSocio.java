@@ -2,26 +2,23 @@ package tiendaclub.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public abstract class AbstractSocio extends Persistible {
+public abstract class AbstractSocio extends Activable {
     protected String dni;
     protected String nombre;
     protected String telefono;
     protected String direccion;
     protected String descripcion;
-
-    protected boolean isActive;
     protected LocalDateTime fechaIn;
-    protected LocalDateTime fechaActive;
-    protected LocalDateTime fechaInactive;
 
-    public AbstractSocio(int id, String dni, String nombre, LocalDateTime fechaIn) {
-        this.id = id;
+    public AbstractSocio(int id, String dni, String nombre, LocalDateTime fechaIn, boolean activo) {
+        super(id, activo);
         this.dni = dni;
         this.nombre = nombre;
         this.fechaIn = fechaIn;
     }
 
-    public AbstractSocio(String dni, String nombre) {
+    public AbstractSocio(String dni, String nombre, boolean activo) {
+        super(0, activo);
         this.dni = dni;
         this.nombre = nombre;
     }
@@ -66,36 +63,12 @@ public abstract class AbstractSocio extends Persistible {
         this.descripcion = descripcion;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
     public LocalDateTime getFechaIn() {
         return fechaIn;
     }
 
     public void setFechaIn(LocalDateTime fechaIn) {
         this.fechaIn = fechaIn;
-    }
-
-    public LocalDateTime getFechaActive() {
-        return fechaActive;
-    }
-
-    public void setFechaActive(LocalDateTime fechaActive) {
-        this.fechaActive = fechaActive;
-    }
-
-    public LocalDateTime getFechaInactive() {
-        return fechaInactive;
-    }
-
-    public void setFechaInactive(LocalDateTime fechaInactive) {
-        this.fechaInactive = fechaInactive;
     }
 
     @Override
@@ -119,13 +92,6 @@ public abstract class AbstractSocio extends Persistible {
                 "id=" + id +
                 ", dni='" + dni + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", isActive=" + isActive +
-                ", fechaIn=" + fechaIn +
-                ", fechaActive=" + fechaActive +
-                ", fechaInactive=" + fechaInactive +
                 '}';
     }
 }

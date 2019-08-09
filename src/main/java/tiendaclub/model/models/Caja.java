@@ -13,31 +13,32 @@ import java.util.HashMap;
 
 public class Caja extends AbstractCaja {
     public static final String TABLE_NAME = "cajas";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idSede", "nombre"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idSede", "nombre", "activo"));
 
     private Sede sede;
 
     private HashMap<Integer, CierreZ> cierresZs = new HashMap<>();
     private HashMap<Integer, Venta> ventas = new HashMap<>();
 
-    public Caja(int id, int idSede, String nombre) {
-        super(id, idSede, nombre);
+    public Caja(int id, int idSede, String nombre, boolean activo) {
+        super(id, idSede, nombre, activo);
         updateSede();
     }
 
-    public Caja(int idSede, String nombre) {
-        super(idSede, nombre);
+    public Caja(int idSede, String nombre, boolean activo) {
+        super(idSede, nombre, activo);
         updateSede();
     }
 
     public Caja(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), rs.getString(3));
+        this(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getBoolean(4));
     }
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
         pst.setInt(1, idSede);
         pst.setString(2, nombre);
+        pst.setBoolean(3, activo);
     }
 
     @Override
@@ -45,6 +46,7 @@ public class Caja extends AbstractCaja {
         //setId(rs.getInt(1));
         setIdSede(rs.getInt(2));
         setNombre(rs.getString(3));
+        setActivo(rs.getBoolean(4));
     }
 
     @Override

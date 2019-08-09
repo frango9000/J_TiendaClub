@@ -11,6 +11,10 @@ public abstract class Persistible implements IPersistible {
 
     protected int id;
 
+    protected Persistible(int id) {
+        this.id = id;
+    }
+
     public static String buildInsertString(String TABLE_NAME, ArrayList<String> COL_NAMES) {
         final StringBuilder sql = new StringBuilder(String.format("INSERT INTO %s VALUES(NULL, ", TABLE_NAME));
         int i = COL_NAMES.size();

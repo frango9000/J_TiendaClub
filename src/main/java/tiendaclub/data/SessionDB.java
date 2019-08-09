@@ -22,18 +22,14 @@ import java.util.logging.Logger;
 public final class SessionDB implements Globals {
 
     private static Connection conn;
-    private static boolean valid = false;
 
-    private static String jdbcString = "jdbc:mysql://";
+    private static String jdbcDriver = "jdbc:mysql://";
     private static String jdbcIP = "";
     private static String jdbcPort = "";
     private static String jdbcCatalog = "";
 
     private static String jdbcUser = "";
     private static String jdbcPassword = "";
-
-    private static String jdbcUrl = setDbUrl();
-
 
     private static boolean autoclose = true;
 
@@ -49,12 +45,12 @@ public final class SessionDB implements Globals {
         return conn;
     }
 
-    public static String getJdbcString() {
-        return jdbcString;
+    public static String getJdbcDriver() {
+        return jdbcDriver;
     }
 
-    public static void setJdbcString(String jdbcString) {
-        SessionDB.jdbcString = jdbcString;
+    public static void setJdbcDriver(String jdbcDriver) {
+        SessionDB.jdbcDriver = jdbcDriver;
     }
 
     public static String getJdbcIP() {
@@ -63,7 +59,6 @@ public final class SessionDB implements Globals {
 
     public static void setJdbcIP(String jdbcIP) {
         SessionDB.jdbcIP = jdbcIP;
-        setDbUrl();
     }
 
     public static String getJdbcPort() {
@@ -72,7 +67,6 @@ public final class SessionDB implements Globals {
 
     public static void setJdbcPort(String jdbcPort) {
         SessionDB.jdbcPort = jdbcPort;
-        setDbUrl();
     }
 
     public static String getJdbcCatalog() {
@@ -81,7 +75,6 @@ public final class SessionDB implements Globals {
 
     public static void setJdbcCatalog(String jdbcCatalog) {
         SessionDB.jdbcCatalog = jdbcCatalog;
-        setDbUrl();
     }
 
     public static String getJdbcUser() {
@@ -100,35 +93,27 @@ public final class SessionDB implements Globals {
         SessionDB.jdbcPassword = jdbcPassword;
     }
 
-
-    public static String getJdbcUrl() {
-        return jdbcUrl;
+    public static void setValues(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser, String jdbcPassword) {
+        setJdbcIP(jdbcIP);
+        setJdbcPort(jdbcPort);
+        setJdbcCatalog(jdbcCatalog);
+        setJdbcUser(jdbcUser);
+        setJdbcPassword(jdbcPassword);
     }
 
-    public static String setDbUrl() {
-        return jdbcUrl = jdbcString + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog;
-    }
-
-    public static boolean isValid() {
-        return valid;
-    }
-
-    public static void setValid(boolean valid) {
-        SessionDB.valid = valid;
-    }
 
     /**
      * establece la conexion a la DB
      *
      * @return true si la conexion fue establecida correctamente
      */
-    public static boolean connect() {
+    public static boolean connect(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser, String jdbcPassword) {
         boolean success = false;
         try {
             if (conn == null || conn.isClosed()) {
-                conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+                conn = DriverManager.getConnection(jdbcDriver + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog, jdbcUser, jdbcPassword);
                 if (SQL_CONN) {
-                    System.out.println("Connection to " + conn.getMetaData().getDriverName() + " has been established. DB: " + conn.getCatalog());
+                    System.out.println("Connection to " + conn.getMetaData().getDriverName() + " has been established. Catalog: " + conn.getCatalog());
                 }
             } else {
                 if (SQL_CONN) {
@@ -140,6 +125,45 @@ public final class SessionDB implements Globals {
             System.out.println(e.getMessage());
         }
         return success;
+    }
+
+    public static boolean connect(String catalog) {
+        return connect(jdbcIP, jdbcPort, catalog, jdbcUser, jdbcPassword);
+    }
+    public static boolean connect() {
+        return connect(jdbcIP, jdbcPort, jdbcCatalog, jdbcUser, jdbcPassword);
+    }
+
+    public static boolean connectTry() {
+        return connect(jdbcIP, jdbcPort, "", jdbcUser, jdbcPassword);
+    }
+
+    public static boolean isConnValid() {
+        boolean valid = false;
+        if (connectTry()) {
+            try {
+                valid = conn.isValid(30);
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                close();
+            }
+        }
+        return valid;
+    }
+
+    public static boolean isSessionValid() {
+        boolean valid = false;
+        if (connect()) {
+            try {
+                valid = conn.isValid(30);
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                close();
+            }
+        }
+        return valid;
     }
 
     /**
@@ -168,29 +192,15 @@ public final class SessionDB implements Globals {
     }
 
     /**
-     * este metodo es para consultas en secuencia, al ejecutarlo
-     * [setAutoclose(false)] se conecta a la DB y despues de todos los accesos a
-     * la BD debe ser llamado nuevamente para asegurar la desconexion.
-     * <p>
-     * Ejemplo SessionDB.setAutoclose(false);
-     * <p>
-     * CategoriaDao.getInstance().queryAll();
-     * ProductoDao.getInstance().queryAll(); categorizarProductos();
-     * ArrayList<Orden> ordenesActivas =
-     * MesaDao.getInstance().getOrdenesActivas();
-     * ServidoDao.getInstance().queryByOrden(ordenesActivas);
-     * MesaDao.getInstance().queryAll();
-     * <p>
-     * SessionDB.setAutoclose(true);
      *
      * @param autoclose
      */
-    public static void setAutoclose(boolean autoclose) {
+    public static void setAutoclose(boolean autoclose, String catalog) {
         if (autoclose) {
             SessionDB.autoclose = autoclose;
             close();
         } else {
-            connect();
+            connect(catalog);
             SessionDB.autoclose = autoclose;
         }
         if (SQL_CONN) {
@@ -198,15 +208,38 @@ public final class SessionDB implements Globals {
         }
     }
 
+    public static void setAutoclose(boolean autoclose) {
+        setAutoclose(autoclose, jdbcCatalog);
+    }
+
+    public static boolean isRoot() {
+        boolean isRoot = false;
+        String sql = "SHOW DATABASES like 'admtdc_%'";
+        if (connectTry()) {
+            try (Statement stmt = conn.createStatement()) {
+                isRoot = stmt.execute(sql);
+                if (SQL_DEBUG) {
+                    System.out.println(sql);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                close();
+            }
+        }
+        return isRoot;
+    }
+
     /**
      * Devuelve Una lista con los nombres de las tablas en una DB
      *
      * @return
      */
-    public static ArrayList<String> listTables() {
+    public static ArrayList<String> listTables(String catalog) {
         String sql = "SHOW TABLES";
         ArrayList<String> tableNames = new ArrayList<>();
-        if (connect()) {
+        System.out.println(catalog);
+        if (connect(catalog)) {
             try (Statement stmt = conn.createStatement()) {
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
@@ -214,7 +247,6 @@ public final class SessionDB implements Globals {
                 }
                 if (SQL_DEBUG) {
                     System.out.println(sql);
-                    System.out.println("Catalog: " + conn.getCatalog());
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -225,14 +257,27 @@ public final class SessionDB implements Globals {
         return tableNames;
     }
 
+    public static ArrayList<String> listTables() {
+        return listTables(jdbcCatalog);
+    }
+
+    public static int numOfTables(String catalog) {
+        return listTables(catalog).size();
+    }
+
     public static int numOfTables() {
-        return listTables().size();
+        return numOfTables(jdbcCatalog);
+    }
+
+    public static void printTables(String catalog) {
+        ArrayList<String> tablenames = listTables(catalog);
+        tablenames.forEach((name) -> System.out.println(name));
     }
 
     public static void printTables() {
-        ArrayList<String> tablenames = listTables();
-        tablenames.forEach((name) -> System.out.println(name));
+        printTables(jdbcCatalog);
     }
+
 
     /**
      * Devuelve Una lista con los nombres de las tablas en una DB
@@ -242,7 +287,7 @@ public final class SessionDB implements Globals {
     public static ArrayList<String> listCatalogs() {
         String sql = "SHOW DATABASES like '" + DB_PREFIX + "%'";
         ArrayList<String> dbNames = new ArrayList<>();
-        if (connect()) {
+        if (connectTry()) {
             try (Statement stmt = conn.createStatement()) {
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
@@ -260,137 +305,26 @@ public final class SessionDB implements Globals {
         return dbNames;
     }
 
+    public static int numOfCatalogs() {
+        return listCatalogs().size();
+    }
+
+    public static void printCatalogs() {
+        ArrayList<String> catalogs = listCatalogs();
+        catalogs.forEach((name) -> System.out.println(name));
+    }
+
     public static ArrayList<String> listValidCatalogs() {
         setAutoclose(false);
         ArrayList<String> list = listCatalogs();
         ArrayList<String> validList = new ArrayList<>();
         for (String catalog : list) {
-            if (isSchemaValid(catalog))
+            if (isCatalogValid(catalog))
                 validList.add(catalog);
         }
         setAutoclose(true);
         return validList;
     }
-
-    public static int numOfDBs() {
-        return listCatalogs().size();
-    }
-
-    public static void printDBs() {
-        ArrayList<String> tablenames = listTables();
-        tablenames.forEach((name) -> System.out.println(name));
-    }
-
-
-    public static int createTables() {
-        int rows = 0;
-        File sqlFile = new File("src/app/model/sql/tables.sql");
-        StringBuilder sqlcmd = new StringBuilder();
-        try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
-            while (scan.hasNext()) {
-                sqlcmd.append(scan.nextLine()).append("\n");
-            }
-            String multicmd = sqlcmd.toString();
-            String[] cmds = multicmd.split(";");
-            if (connect()) {
-                for (String sql : cmds) {
-                    try (Statement stmt = SessionDB.getConn().createStatement()) {
-                        rows += stmt.executeUpdate(sql.trim());
-                        if (SQL_DEBUG) {
-                            System.out.println(sql);
-                        }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, sql, ex);
-                    }
-                }
-            }
-        } catch (FileNotFoundException ignored) {
-        } finally {
-            close();
-        }
-        return rows;
-    }
-
-    public static int createViews() {
-        int rows = 0;
-        File sqlFile = new File("src/app/model/sql/views.sql");
-        StringBuilder sqlcmd = new StringBuilder();
-        try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
-            while (scan.hasNext()) {
-                sqlcmd.append(scan.nextLine()).append("\n");
-            }
-            String multicmd = sqlcmd.toString();
-            String[] cmds = multicmd.split(";");
-            if (connect()) {
-                for (String sql : cmds) {
-                    try (Statement stmt = SessionDB.getConn().createStatement()) {
-                        rows += stmt.executeUpdate(sql.trim());
-                        if (SQL_DEBUG) {
-                            System.out.println(sql);
-                        }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, sql, ex);
-                    }
-                }
-            }
-        } catch (FileNotFoundException ignored) {
-        } finally {
-            close();
-        }
-        return rows;
-    }
-
-    public static int createFullStructure() {
-        int rows = 0;
-        rows += createTables();
-        rows += createViews();
-        return rows;
-    }
-
-    public static int insertarDemoData() {
-        int rows = 0;
-        File sqlFile = new File("src/src/model/sql/demodata.sql");
-        StringBuilder sqlcmd = new StringBuilder();
-        try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
-            while (scan.hasNext()) {
-                sqlcmd.append(scan.nextLine()).append("\n");
-            }
-            String multicmd = sqlcmd.toString();
-            String[] cmds = multicmd.split(";");
-            if (connect()) {
-                for (String sql : cmds) {
-                    try (Statement stmt = conn.createStatement()) {
-                        stmt.executeUpdate(sql.trim());
-                        if (SQL_DEBUG) {
-                            System.out.println(sql);
-                        }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, sql, ex);
-                    }
-                }
-            }
-        } catch (FileNotFoundException ignored) {
-        } finally {
-            close();
-        }
-        return rows;
-    }
-
-    public static boolean isConnValid() {
-        boolean valid = false;
-        if (connect()) {
-            try {
-                valid = conn.isValid(30);
-            } catch (SQLException ex) {
-                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                close();
-            }
-        }
-        return valid;
-
-    }
-
 
     /**
      * devuelve true si la estructura de la DB activa es valida (coincide con la
@@ -398,9 +332,8 @@ public final class SessionDB implements Globals {
      *
      * @return true si es valida
      */
-    public static boolean isSchemaValid(String catalog) {
-        setJdbcCatalog(catalog);
-        ArrayList<String> tables = listTables();
+    public static boolean isCatalogValid(String catalog) {
+        ArrayList<String> tables = listTables(catalog);
         StringBuilder tablesString = new StringBuilder();
         tables.forEach(cnsmr -> tablesString.append(cnsmr).append("\n"));
         String model = "accesos\n" +
@@ -419,21 +352,39 @@ public final class SessionDB implements Globals {
                 "vendidos\n" +
                 "ventas\n" +
                 "zs\n";
-        //System.out.println(tablesString.toString());
+        System.out.println(tablesString.toString());
         System.out.println("Valid Schema: " + catalog + "->" + model.matches(tablesString.toString()));
         return model.matches(tablesString.toString());
     }
 
-    public static boolean isSchemaValid() {
-        return isSchemaValid(getJdbcCatalog());
+    public static boolean isCatalogValid() {
+        return isCatalogValid(getJdbcCatalog());
     }
 
     public static boolean createCatalog(String dbname) {
         boolean success = false;
-        if (connect() && dbname.trim().length() > 1) {
-            String sql = "CREATE DATABASE " + DB_PREFIX + dbname.trim();
+        if (connectTry() && dbname.length() > 1) {
+            String sql = "CREATE DATABASE " + DB_PREFIX + dbname;
             try (Statement statement = conn.createStatement()) {
-                success = statement.execute(sql);
+                success = statement.executeUpdate(sql) > 0;
+                if (SQL_DEBUG) {
+                    System.out.println(sql);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                close();
+            }
+        }
+        return success;
+    }
+
+    public static boolean dropCatalog(String dbname) {
+        boolean success = false;
+        if (connectTry() && dbname.length() > 1) {
+            String sql = "DROP DATABASE " + dbname;
+            try (Statement statement = conn.createStatement()) {
+                success = statement.executeUpdate(sql) > 0;
                 if (SQL_DEBUG) {
                     System.out.println(sql);
                 }
@@ -448,12 +399,10 @@ public final class SessionDB implements Globals {
 
     public static boolean hasCatalog(String dbname) {
         boolean hasCatalog = false;
-        if (connect() && dbname.trim().length() > 1) {
+        if (connectTry() && dbname.length() > 1) {
             String sql = "SHOW DATABASES like '" + DB_PREFIX + dbname.trim() + "'";
             try (Statement statement = conn.createStatement()) {
-                ResultSet rs = statement.executeQuery(sql);
-                if (rs.next())
-                    hasCatalog = true;
+                hasCatalog = statement.execute(sql);
                 if (SQL_DEBUG) {
                     System.out.println(sql);
                 }
@@ -466,23 +415,120 @@ public final class SessionDB implements Globals {
         return hasCatalog;
     }
 
-    public static boolean isRoot() {
-        boolean isRoot = false;
-        String sql = "SHOW DATABASES like 'admtdc_%'";
-        if (connect()) {
-            try (Statement stmt = conn.createStatement()) {
-                ResultSet rs = stmt.executeQuery(sql);
-                if (rs.next())
-                    isRoot = true;
-                if (SQL_DEBUG) {
-                    System.out.println(sql);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                close();
+
+    //Catalog Creation Code
+
+    public static int createTables() {
+        int rows = 0;
+        File sqlFile = new File(Globals.ROOT_PATH + "model/sql/tables.sql");
+        StringBuilder sqlcmd = new StringBuilder();
+        try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
+            while (scan.hasNext()) {
+                sqlcmd.append(scan.nextLine()).append("\n");
             }
+            String multicmd = sqlcmd.toString();
+            String[] cmds = multicmd.split(";");
+            if (connect()) {
+                for (String sql : cmds) {
+                    try (Statement stmt = SessionDB.getConn().createStatement()) {
+                        stmt.executeUpdate(sql.trim());
+                        rows++;
+                        if (SQL_DEBUG) {
+                            System.out.println(sql);
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, sql, ex);
+                    }
+                }
+            }
+        } catch (FileNotFoundException ignored) {
+        } finally {
+            if (SQL_DEBUG) {
+                System.out.println("Tables created: " + rows);
+            }
+            close();
         }
-        return isRoot;
+        return rows;
+    }
+
+    public static int createViews() {
+        int rows = 0;
+        File sqlFile = new File(Globals.ROOT_PATH + "model/sql/views.sql");
+        StringBuilder sqlcmd = new StringBuilder();
+        try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
+            while (scan.hasNext()) {
+                sqlcmd.append(scan.nextLine()).append("\n");
+            }
+            String multicmd = sqlcmd.toString();
+            String[] cmds = multicmd.split(";");
+            if (connect()) {
+                for (String sql : cmds) {
+                    try (Statement stmt = SessionDB.getConn().createStatement()) {
+                        stmt.executeUpdate(sql.trim());
+                        rows++;
+                        if (SQL_DEBUG) {
+                            System.out.println(sql);
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, sql, ex);
+                    }
+                }
+            }
+        } catch (FileNotFoundException ignored) {
+        } finally {
+            if (SQL_DEBUG) {
+                System.out.println("Views created: " + rows);
+            }
+            close();
+        }
+        return rows;
+    }
+
+    public static int insertData(String filepath) {
+        int rows = 0;
+        File sqlFile = new File(filepath);
+        StringBuilder sqlcmd = new StringBuilder();
+        try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
+            while (scan.hasNext()) {
+                sqlcmd.append(scan.nextLine()).append("\n");
+            }
+            String multicmd = sqlcmd.toString();
+            String[] cmds = multicmd.split(";");
+            if (connect()) {
+                for (String sql : cmds) {
+                    try (Statement stmt = conn.createStatement()) {
+                        rows += stmt.executeUpdate(sql.trim());
+                        if (SQL_DEBUG) {
+                            System.out.println(sql);
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, sql, ex);
+                    }
+                }
+            }
+        } catch (FileNotFoundException ignored) {
+        } finally {
+            if (SQL_DEBUG) {
+                System.out.println("Inserts: " + rows);
+            }
+            close();
+        }
+        return rows;
+    }
+
+    public static int insertData() {
+        return insertData(Globals.ROOT_PATH + "model/sql/data.sql");
+    }
+
+    public static int insertDemoData() {
+        return insertData(Globals.ROOT_PATH + "model/sql/demodata.sql");
+    }
+
+    public static int createFullStructure() {
+        int rows = 0;
+        rows += createTables();
+        rows += createViews();
+        insertData();
+        return rows;
     }
 }

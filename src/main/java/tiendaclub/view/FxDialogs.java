@@ -166,6 +166,14 @@ public class FxDialogs {
         return showConfirm("Input", header, message, (String[]) null);
     }
 
+    public static Boolean showConfirmBoolean(String title, String header, String message) {
+        return (showConfirm(title, header, message, new String[]{YES, NO}).equals(YES));
+    }
+
+    public static Boolean showConfirmBoolean(String header, String message) {
+        return (showConfirm("Confirm", header, message, new String[]{YES, NO}).equals(YES));
+    }
+
     public static String showTextInput(String title, String header, String message, String defaultValue) {
         TextInputDialog dialog = new TextInputDialog(defaultValue);
         dialog.initStyle(StageStyle.UTILITY);

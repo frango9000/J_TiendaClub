@@ -12,25 +12,26 @@ import java.util.Arrays;
 
 public class Producto extends AbstractProducto {
     public static final String TABLE_NAME = "productos";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nombre", "descripcion", "precio_venta", "iva", "idCategoria"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nombre", "descripcion", "precio_venta", "iva", "idCategoria", "activo"));
 
     private Categoria categoria;
 
     //private HashMap<Integer, Comprado> comprados = new HashMap<>(); //No Use
     //private HashMap<Integer, Transferencia> transferencias = new HashMap<>(); //No Use
 
-    public Producto(int id, String nombre, int precioVenta, int iva, int idCategoria) {
-        super(id, nombre, precioVenta, iva, idCategoria);
+
+    public Producto(int id, String nombre, int precioVenta, int iva, int idCategoria, boolean activo) {
+        super(id, nombre, precioVenta, iva, idCategoria, activo);
         updateCategoria();
     }
 
-    public Producto(String nombre, int precioVenta, int iva, int idCategoria) {
-        super(nombre, precioVenta, iva, idCategoria);
+    public Producto(String nombre, int precioVenta, int iva, int idCategoria, boolean activo) {
+        super(nombre, precioVenta, iva, idCategoria, activo);
         updateCategoria();
     }
 
     public Producto(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getInt(4), rs.getInt(5), rs.getInt(6));
+        this(rs.getInt(1), rs.getString(2), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getBoolean(7));
         setDescripcion(rs.getString(3));
     }
 
@@ -41,6 +42,7 @@ public class Producto extends AbstractProducto {
         pst.setInt(3, precioVenta);
         pst.setInt(4, iva);
         pst.setInt(5, idCategoria);
+        pst.setBoolean(6, activo);
     }
 
     @Override
@@ -51,6 +53,7 @@ public class Producto extends AbstractProducto {
         setPrecioVenta(rs.getInt(4));
         setIva(rs.getInt(5));
         setIdCategoria(rs.getInt(6));
+        setActivo(rs.getBoolean(7));
     }
 
     @Override

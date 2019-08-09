@@ -7,7 +7,7 @@ public abstract class AbstractVendido extends Persistible {
     protected int precioUnidad;
 
     public AbstractVendido(int id, int idVenta, int idProducto, int cantidad, int precioUnidad) {
-        this.id = id;
+        super(id);
         this.idVenta = idVenta;
         this.idProducto = idProducto;
         this.cantidad = cantidad;
@@ -15,6 +15,7 @@ public abstract class AbstractVendido extends Persistible {
     }
 
     public AbstractVendido(int idVenta, int idProducto, int cantidad, int precioUnidad) {
+        super(0);
         this.idVenta = idVenta;
         this.idProducto = idProducto;
         this.cantidad = cantidad;

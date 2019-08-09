@@ -1,6 +1,6 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractUsuario extends Persistible {
+public abstract class AbstractUsuario extends Activable {
 
     protected String username;
     protected String pass;
@@ -11,14 +11,15 @@ public abstract class AbstractUsuario extends Persistible {
     protected String descripcion;
     protected int idAcceso;
 
-    public AbstractUsuario(int id, String username, String pass, int idAcceso) {
-        this.id = id;
+    public AbstractUsuario(int id, String username, String pass, int idAcceso, boolean activo) {
+        super(id, activo);
         this.username = username;
         this.pass = pass;
         this.idAcceso = idAcceso;
     }
 
-    public AbstractUsuario(String username, String pass, int idAcceso) {
+    public AbstractUsuario(String username, String pass, int idAcceso, boolean activo) {
+        super(0, activo);
         this.username = username;
         this.pass = pass;
         this.idAcceso = idAcceso;

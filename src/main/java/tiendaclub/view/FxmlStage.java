@@ -12,6 +12,7 @@ public class FxmlStage extends Stage {
 
     public FxmlStage(String title) {
         setTitle(title);
+        setOnCloseRequest(event -> System.exit(0));
     }
 
     public FxmlStage(String fxml, String title) {

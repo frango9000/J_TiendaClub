@@ -15,22 +15,20 @@ import java.util.HashMap;
 
 public class Socio extends AbstractSocio {
     public static final String TABLE_NAME = "socios";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("dni", "nombre", "telefono", "direccion", "descripcion", "fecha_in", "fecha_active", "fecha_inactive"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("dni", "nombre", "telefono", "direccion", "descripcion", "fecha_in", "activo"));
 
     private HashMap<Integer, Venta> ventas = new HashMap<>();
 
-    public Socio(int id, String dni, String nombre, LocalDateTime fechaIn) {
-        super(id, dni, nombre, fechaIn);
+    public Socio(int id, String dni, String nombre, LocalDateTime fechaIn, boolean activo) {
+        super(id, dni, nombre, fechaIn, activo);
     }
 
-    public Socio(String dni, String nombre) {
-        super(dni, nombre);
+    public Socio(String dni, String nombre, boolean activo) {
+        super(dni, nombre, activo);
     }
 
     public Socio(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), DateUtils.toLocalDateTime(rs.getTimestamp(7)));
-        setFechaActive(DateUtils.toLocalDateTime(rs.getTimestamp(8)));
-        setFechaInactive(DateUtils.toLocalDateTime(rs.getTimestamp(9)));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), DateUtils.toLocalDateTime(rs.getTimestamp(7)), rs.getBoolean(8));
         setTelefono(rs.getString(4));
         setDireccion(rs.getString(5));
         setDescripcion(rs.getString(6));
@@ -44,8 +42,7 @@ public class Socio extends AbstractSocio {
         pst.setString(4, direccion);
         pst.setString(5, descripcion);
         pst.setTimestamp(6, DateUtils.toTimestamp(fechaIn));
-        pst.setTimestamp(7, DateUtils.toTimestamp(fechaActive));
-        pst.setTimestamp(8, DateUtils.toTimestamp(fechaInactive));
+        pst.setBoolean(7, activo);
     }
 
     @Override
@@ -57,8 +54,7 @@ public class Socio extends AbstractSocio {
         setDireccion(rs.getString(5));
         setDescripcion(rs.getString(6));
         setFechaIn(DateUtils.toLocalDateTime(rs.getTimestamp(7)));
-        setFechaActive(DateUtils.toLocalDateTime(rs.getTimestamp(8)));
-        setFechaInactive(DateUtils.toLocalDateTime(rs.getTimestamp(9)));
+        setActivo(rs.getBoolean(8));
     }
 
     public HashMap<Integer, Venta> getVentas() {

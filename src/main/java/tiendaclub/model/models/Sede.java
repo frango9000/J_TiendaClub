@@ -13,23 +13,23 @@ import java.util.HashMap;
 
 public class Sede extends AbstractSede {
     public static final String TABLE_NAME = "sedes";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nombre", "telefono", "direccion"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nombre", "telefono", "direccion", "activo"));
 
     private HashMap<Integer, Caja> cajas = new HashMap<>();
     private HashMap<Integer, Compra> compras = new HashMap<>();
     private HashMap<Integer, Transferencia> transferIn = new HashMap<>();
     private HashMap<Integer, Transferencia> transferOut = new HashMap<>();
 
-    public Sede(int id, String nombre, String telefono, String direccion) {
-        super(id, nombre, telefono, direccion);
+    public Sede(int id, String nombre, String telefono, String direccion, boolean activo) {
+        super(id, nombre, telefono, direccion, activo);
     }
 
-    public Sede(String nombre, String telefono, String direccion) {
-        super(nombre, telefono, direccion);
+    public Sede(String nombre, String telefono, String direccion, boolean activo) {
+        super(nombre, telefono, direccion, activo);
     }
 
     public Sede(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5));
     }
 
     @Override
@@ -37,6 +37,7 @@ public class Sede extends AbstractSede {
         pst.setString(1, nombre);
         pst.setString(2, telefono);
         pst.setString(3, direccion);
+        pst.setBoolean(4, activo);
     }
 
     @Override
@@ -45,6 +46,7 @@ public class Sede extends AbstractSede {
         setNombre(rs.getString(2));
         setTelefono(rs.getString(3));
         setDireccion(rs.getString(4));
+        setActivo(rs.getBoolean(5));
     }
 
     public HashMap<Integer, Caja> getCajas() {

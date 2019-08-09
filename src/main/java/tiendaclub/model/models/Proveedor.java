@@ -13,20 +13,20 @@ import java.util.HashMap;
 
 public class Proveedor extends AbstractProveedor {
     public static final String TABLE_NAME = "proveedores";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion", "activo"));
 
     private HashMap<Integer, Compra> compras = new HashMap<>();
 
-    public Proveedor(int id, String nif, String nombre) {
-        super(id, nif, nombre);
+    public Proveedor(int id, String nif, String nombre, boolean activo) {
+        super(id, nif, nombre, activo);
     }
 
-    public Proveedor(String nif, String nombre) {
-        super(nif, nombre);
+    public Proveedor(String nif, String nombre, boolean activo) {
+        super(nif, nombre, activo);
     }
 
     public Proveedor(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getBoolean(4));
         setTelefono(rs.getString(4));
         setEmail(rs.getString(5));
         setDireccion(rs.getString(6));
@@ -40,6 +40,7 @@ public class Proveedor extends AbstractProveedor {
         pst.setString(4, email);
         pst.setString(5, direccion);
         pst.setString(6, descripcion);
+        pst.setBoolean(7, activo);
     }
 
     public void updateObject(ResultSet rs) throws SQLException {
@@ -50,6 +51,7 @@ public class Proveedor extends AbstractProveedor {
         setEmail(rs.getString(5));
         setDireccion(rs.getString(6));
         setDescripcion(rs.getString(7));
+        setActivo(rs.getBoolean(8));
     }
 
     public HashMap<Integer, Compra> getCompras() {

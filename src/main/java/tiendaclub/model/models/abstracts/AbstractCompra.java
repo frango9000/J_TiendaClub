@@ -9,7 +9,7 @@ public abstract class AbstractCompra extends Persistible {
     protected LocalDateTime fechahora;
 
     public AbstractCompra(int id, int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
-        this.id = id;
+        super(id);
         this.idUsuario = idUsuario;
         this.idSede = idSede;
         this.idProveedor = idProveedor;
@@ -17,6 +17,7 @@ public abstract class AbstractCompra extends Persistible {
     }
 
     public AbstractCompra(int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
+        super(0);
         this.idUsuario = idUsuario;
         this.idSede = idSede;
         this.idProveedor = idProveedor;

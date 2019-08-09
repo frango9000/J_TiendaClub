@@ -4,11 +4,12 @@ public abstract class AbstractAcceso extends Persistible {
     protected String nivel;
 
     public AbstractAcceso(int id, String nivel) {
-        this.id = id;
+        super(id);
         this.nivel = nivel;
     }
 
-    public AbstractAcceso(String nivel) {
+    protected AbstractAcceso(String nivel) {
+        super(0);
         this.nivel = nivel;
     }
 

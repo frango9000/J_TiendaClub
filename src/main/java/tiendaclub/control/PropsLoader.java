@@ -35,7 +35,6 @@ public class PropsLoader {
 
             SessionDB.setJdbcUser(props.getProperty("user"));
             SessionDB.setJdbcPassword(props.getProperty("password"));
-            SessionDB.setDbUrl();
 
             quickstart = Boolean.parseBoolean(props.getProperty("quickstart", "false"));
 

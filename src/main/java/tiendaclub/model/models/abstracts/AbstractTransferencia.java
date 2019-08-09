@@ -11,7 +11,7 @@ public abstract class AbstractTransferencia extends Persistible {
     protected LocalDateTime fechahora;
 
     public AbstractTransferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad, LocalDateTime fechahora) {
-        this.id = id;
+        super(id);
         this.idUsuario = idUsuario;
         this.idSedeOrigen = idSedeOrigen;
         this.idSedeDestino = idSedeDestino;
@@ -21,6 +21,7 @@ public abstract class AbstractTransferencia extends Persistible {
     }
 
     public AbstractTransferencia(int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad) {
+        super(0);
         this.idUsuario = idUsuario;
         this.idSedeOrigen = idSedeOrigen;
         this.idSedeDestino = idSedeDestino;

@@ -16,4 +16,6 @@ public interface Globals {
 
     String DB_PREFIX = "tdc_";
 
+    String ROOT_PATH = "src/main/java/tiendaclub/";
+
 }

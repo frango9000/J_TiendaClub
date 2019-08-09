@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class Usuario extends AbstractUsuario {
     public static final String TABLE_NAME = "usuarios";
-    public static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso"));
+    public static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso", "activo"));
 
     private Acceso acceso;
 
@@ -21,23 +21,23 @@ public class Usuario extends AbstractUsuario {
     private HashMap<Integer, Venta> ventas = new HashMap<>();
     private HashMap<Integer, Transferencia> transferencias = new HashMap<>();
 
-    public Usuario(int id, String user, String pass, int idAcceso) {
-        super(id, user, pass, idAcceso);
+    public Usuario(int id, String username, String pass, int idAcceso, boolean activo) {
+        super(id, username, pass, idAcceso, activo);
         updateAcceso();
     }
 
-    public Usuario(String user, String pass, int idAcceso) {
-        super(user, pass, idAcceso);
+    public Usuario(String username, String pass, int idAcceso, boolean activo) {
+        super(username, pass, idAcceso, activo);
         updateAcceso();
     }
 
-    public Usuario(String username, String pass, Acceso acceso) {
-        super(username, pass, acceso.getId());
+    public Usuario(String username, String pass, Acceso acceso, boolean activo) {
+        super(username, pass, acceso.getId(), activo);
         setAcceso(acceso);
     }
 
     public Usuario(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(9));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(9), rs.getBoolean(10));
         setNombre(rs.getString(4));
         setTelefono(rs.getString(5));
         setEmail(rs.getString(6));
@@ -55,6 +55,7 @@ public class Usuario extends AbstractUsuario {
         pst.setString(6, direccion);
         pst.setString(7, descripcion);
         pst.setInt(8, idAcceso);
+        pst.setBoolean(9, activo);
     }
 
     public void updateObject(ResultSet rs) throws SQLException {
@@ -67,6 +68,7 @@ public class Usuario extends AbstractUsuario {
         setDireccion(rs.getString(7));
         setDescripcion(rs.getString(8));
         setIdAcceso(rs.getInt(9));
+        setActivo(rs.getBoolean(10));
     }
 
     @Override

@@ -83,11 +83,11 @@ public class MainFX extends Application {
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root));
 
-        if (!SessionDB.isConnValid() || !PropsLoader.isQuickstart()) {
+        if (!PropsLoader.isQuickstart() || !SessionDB.isConnValid()) {
             Stage configStage = new FxmlStage("/fxml/ConfigPane.fxml", "Config Stage");
             configStage.showAndWait();
         }
-        if (SessionDB.isSchemaValid()) {
+        if (SessionDB.isCatalogValid()) {
             Stage loginStage = new FxmlStage("/fxml/LoginPane.fxml", "Login Stage");
             loginStage.showAndWait();
 

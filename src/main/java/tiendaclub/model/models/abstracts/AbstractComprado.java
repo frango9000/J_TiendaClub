@@ -6,15 +6,16 @@ public abstract class AbstractComprado extends Persistible {
     protected int cantidad;
     protected int precioUnidad;
 
-    public AbstractComprado(int id, int idCompra, int idProducto, int cantidad, int precioUnidad) {
-        this.id = id;
+    protected AbstractComprado(int id, int idCompra, int idProducto, int cantidad, int precioUnidad) {
+        super(id);
         this.idCompra = idCompra;
         this.idProducto = idProducto;
         this.cantidad = cantidad;
         this.precioUnidad = precioUnidad;
     }
 
-    public AbstractComprado(int idCompra, int idProducto, int cantidad, int precioUnidad) {
+    protected AbstractComprado(int idCompra, int idProducto, int cantidad, int precioUnidad) {
+        super(0);
         this.idCompra = idCompra;
         this.idProducto = idProducto;
         this.cantidad = cantidad;

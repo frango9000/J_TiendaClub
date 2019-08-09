@@ -33,19 +33,18 @@ public class LoginPaneControl extends BorderPane {
         passwordTextField.setOnAction(this::loginOnAct);
         usernameTextField.setText("admin");
         passwordTextField.setText("admin");
-
     }
-
 
     @FXML
     private void loginOnAct(ActionEvent actionEvent) {
         DataStore.setUser(DataStore.getUsuarios().query("username", usernameTextField.getText().trim(), "pass", passwordTextField.getText().trim()));
         System.out.println(DataStore.getUser());
         if (DataStore.getUser() == null) {
-            actionEvent.consume();
             alertMsg.setStyle("-fx-text-fill: red");
-            alertMsg.setText("Acces Denied");
-
+            alertMsg.setText("Access Denied");
+        } else if (!DataStore.getUser().isActivo()) {
+            alertMsg.setStyle("-fx-text-fill: red");
+            alertMsg.setText("Account Locked");
         } else ((Node) actionEvent.getSource()).getScene().getWindow().hide();
     }
 }

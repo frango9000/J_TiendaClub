@@ -1,18 +1,19 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractSede extends Persistible {
+public abstract class AbstractSede extends Activable {
     protected String nombre;
     protected String telefono;
     protected String direccion;
 
-    public AbstractSede(int id, String nombre, String telefono, String direccion) {
-        this.id = id;
+    public AbstractSede(int id, String nombre, String telefono, String direccion, boolean activo) {
+        super(id, activo);
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
     }
 
-    public AbstractSede(String nombre, String telefono, String direccion) {
+    public AbstractSede(String nombre, String telefono, String direccion, boolean activo) {
+        super(0, activo);
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;

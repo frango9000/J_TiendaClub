@@ -1,6 +1,6 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractProveedor extends Persistible {
+public abstract class AbstractProveedor extends Activable {
     protected String nif;
     protected String nombre;
     protected String telefono;
@@ -8,13 +8,14 @@ public abstract class AbstractProveedor extends Persistible {
     protected String direccion;
     protected String descripcion;
 
-    public AbstractProveedor(int id, String nif, String nombre) {
-        this.id = id;
+    public AbstractProveedor(int id, String nif, String nombre, boolean activo) {
+        super(id, activo);
         this.nif = nif;
         this.nombre = nombre;
     }
 
-    public AbstractProveedor(String nif, String nombre) {
+    public AbstractProveedor(String nif, String nombre, boolean activo) {
+        super(0, activo);
         this.nif = nif;
         this.nombre = nombre;
     }

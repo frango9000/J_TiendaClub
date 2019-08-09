@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `accesos`
 (
     `id`    TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `nivel` VARCHAR(12)         NOT NULL,
+    `nivel` VARCHAR(24)         NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `nivel` (`nivel`)
 );
@@ -12,11 +12,12 @@ CREATE TABLE IF NOT EXISTS `usuarios`
     `username`    CHAR(40)            NOT NULL,
     `pass`        CHAR(41)            NOT NULL,
     `nombre`      VARCHAR(50)         NOT NULL,
-    `telefono`    VARCHAR(20)         NULL DEFAULT NULL,
-    `email`       VARCHAR(50)         NULL DEFAULT NULL,
-    `direccion`   VARCHAR(50)         NULL DEFAULT NULL,
-    `descripcion` VARCHAR(50)         NULL DEFAULT NULL,
+    `telefono`    VARCHAR(20)         NULL     DEFAULT NULL,
+    `email`       VARCHAR(50)         NULL     DEFAULT NULL,
+    `direccion`   VARCHAR(50)         NULL     DEFAULT NULL,
+    `descripcion` VARCHAR(50)         NULL     DEFAULT NULL,
     `idAcceso`    TINYINT(3) UNSIGNED NOT NULL,
+    `activo`      TINYINT(1)          NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     INDEX `idAcceso` (`idAcceso`),
     CONSTRAINT `idAcceso` FOREIGN KEY (`idAcceso`) REFERENCES `accesos` (`id`)
@@ -27,25 +28,25 @@ CREATE TABLE IF NOT EXISTS `proveedores`
     `id`          SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nif`         CHAR(10)             NOT NULL,
     `nombre`      VARCHAR(50)          NOT NULL,
-    `telefono`    VARCHAR(20)          NULL DEFAULT NULL,
-    `email`       VARCHAR(50)          NULL DEFAULT NULL,
-    `direccion`   VARCHAR(50)          NULL DEFAULT NULL,
-    `descripcion` VARCHAR(50)          NULL DEFAULT NULL,
+    `telefono`    VARCHAR(20)          NULL     DEFAULT NULL,
+    `email`       VARCHAR(50)          NULL     DEFAULT NULL,
+    `direccion`   VARCHAR(50)          NULL     DEFAULT NULL,
+    `descripcion` VARCHAR(50)          NULL     DEFAULT NULL,
+    `activo`      TINYINT(1)           NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `nif` (`nif`)
 );
 
 CREATE TABLE IF NOT EXISTS `socios`
 (
-    `id`             SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `dni`            CHAR(10)             NOT NULL,
-    `nombre`         VARCHAR(50)          NOT NULL,
-    `telefono`       VARCHAR(20)          NULL     DEFAULT NULL,
-    `direccion`      VARCHAR(50)          NULL     DEFAULT NULL,
-    `descripcion`    VARCHAR(127)         NULL     DEFAULT NULL,
-    `fecha_in`       DATETIME             NOT NULL DEFAULT current_timestamp(),
-    `fecha_active`   DATETIME             NULL     DEFAULT current_timestamp(),
-    `fecha_inactive` DATETIME             NULL     DEFAULT NULL,
+    `id`          SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `dni`         CHAR(10)             NOT NULL,
+    `nombre`      VARCHAR(50)          NOT NULL,
+    `telefono`    VARCHAR(20)          NULL     DEFAULT NULL,
+    `direccion`   VARCHAR(50)          NULL     DEFAULT NULL,
+    `descripcion` VARCHAR(127)         NULL     DEFAULT NULL,
+    `fecha_in`    DATETIME             NOT NULL DEFAULT current_timestamp(),
+    `activo`      TINYINT(1)           NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `dni` (`dni`)
 );
@@ -56,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `sedes`
     `nombre`    VARCHAR(50)         NOT NULL,
     `telefono`  VARCHAR(50)         NOT NULL,
     `direccion` VARCHAR(100)        NOT NULL,
+    `activo`    TINYINT(1)          NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 );
 
@@ -64,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `cajas`
     `id`     SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
     `idSede` TINYINT(3) UNSIGNED  NOT NULL,
     `nombre` VARCHAR(50)          NOT NULL,
+    `activo` TINYINT(1)           NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     INDEX `FK_cajas_sedes` (`idSede`),
     CONSTRAINT `FK_cajas_sedes` FOREIGN KEY (`idSede`) REFERENCES `sedes` (`id`)
@@ -84,6 +87,7 @@ CREATE TABLE IF NOT EXISTS `categorias`
 (
     `id`     TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(20)         NOT NULL,
+    `activo` TINYINT(1)          NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 );
 
@@ -95,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `productos`
     `precio_venta` INT(6)               NOT NULL,
     `iva`          TINYINT(3) UNSIGNED  NOT NULL DEFAULT 0,
     `idCategoria`  TINYINT(3) UNSIGNED  NOT NULL,
+    `activo`       TINYINT(1)           NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     INDEX `FK_productos_categorias` (`idCategoria`),
     CONSTRAINT `FK_productos_categorias` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`)
@@ -179,16 +184,3 @@ CREATE TABLE IF NOT EXISTS `transferencias`
     CONSTRAINT `FK_transferencias_sedes_2` FOREIGN KEY (`idSedeDestino`) REFERENCES `sedes` (`id`),
     CONSTRAINT `FK_transferencias_usuarios` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`)
 )
-
-# CREATE TABLE IF NOT EXISTS `stock`
-# (
-#     `id`         MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-#     `idSede`     TINYINT(3) UNSIGNED   NOT NULL,
-#     `idProducto` SMALLINT(5) UNSIGNED  NOT NULL,
-#     `cantidad`   INT(6)                NOT NULL,
-#     PRIMARY KEY (`id`),
-#     UNIQUE INDEX `idSede_idProducto` (`idSede`, `idProducto`),
-#     INDEX `FK_stock_productos` (`idProducto`, `idSede`),
-#     CONSTRAINT `FK_stock_productos` FOREIGN KEY (`idProducto`) REFERENCES `productos` (`id`),
-#     CONSTRAINT `FK_stock_sedes` FOREIGN KEY (`idSede`) REFERENCES `sedes` (`id`)
-# )

@@ -7,26 +7,17 @@ package tiendaclub.control.editor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tiendaclub.data.DataStore;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FxDialogs;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class UserEditorPaneControl extends Stage {
 
     private Usuario usuario;
-    @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
+
     @FXML
     private TextField txUsername;
     @FXML
@@ -45,13 +36,15 @@ public class UserEditorPaneControl extends Stage {
     private TextField txId;
     @FXML
     private Button txButtonPassword;
+    @FXML
+    private CheckBox fxCheckActivo;
 
     @FXML
     void SaveOnAct(ActionEvent event) {
         if (txId.getText().length() < 1) {
             if (validFields()) {
                 String pass = askPass();
-                Usuario usuario = new Usuario(txUsername.getText().trim(), pass, cbAcceso.getSelectionModel().getSelectedItem());
+                Usuario usuario = new Usuario(txUsername.getText().trim(), pass, cbAcceso.getSelectionModel().getSelectedItem(), fxCheckActivo.isSelected());
                 usuario.setNombre(txUsername.getText().trim());
                 usuario.setTelefono(txTelefono.getText().trim());
                 usuario.setEmail(txEmail.getText().trim());
@@ -71,6 +64,7 @@ public class UserEditorPaneControl extends Stage {
             usuario.setDireccion((txDireccion.getText() + "").trim());
             usuario.setDescripcion((txDescripcion.getText() + "").trim());
             usuario.setAcceso(cbAcceso.getSelectionModel().getSelectedItem());
+            usuario.setActivo(fxCheckActivo.isSelected());
             if (usuario.updateOnDb() > 0) {
                 FxDialogs.showInfo("Success", "Usuario modificado");
                 ((Node) event.getSource()).getScene().getWindow().hide();

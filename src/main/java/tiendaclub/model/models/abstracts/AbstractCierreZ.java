@@ -8,12 +8,13 @@ public abstract class AbstractCierreZ extends Persistible {
     protected LocalDateTime cierre;
 
     public AbstractCierreZ(int id, int idCaja, LocalDateTime apertura) {
-        this.id = id;
+        super(id);
         this.idCaja = idCaja;
         this.apertura = apertura;
     }
 
     public AbstractCierreZ(int idCaja, LocalDateTime apertura) {
+        super(0);
         this.idCaja = idCaja;
         this.apertura = apertura;
     }

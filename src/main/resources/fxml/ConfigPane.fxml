@@ -2,84 +2,123 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11"
-      fx:controller="tiendaclub.control.ConfigPaneControl">
-    <children>
-        <MenuBar>
+<BorderPane minHeight="310.0" minWidth="265.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="tiendaclub.control.ConfigPaneControl">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem fx:id="menuLoad" mnemonicParsing="false" onAction="#menuLoadAct" text="Load"/>
-                        <MenuItem fx:id="menuSave" mnemonicParsing="false" onAction="#menuSaveAct" text="Save"/>
+                        <MenuItem mnemonicParsing="false" onAction="#fxMenuLoadAction" text="Load"/>
+                        <MenuItem mnemonicParsing="false" onAction="#fxMenuSaveAction" text="Save"/>
                         <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#menuCloseAct" text="Close"/>
+                        <MenuItem mnemonicParsing="false" onAction="#menuCloseAct" text="Close"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem fx:id="menuDbConfig" mnemonicParsing="false" onAction="#menuDbConfigAct"
-                                  text="DB Config"/>
-                        <MenuItem fx:id="menuTest" mnemonicParsing="false" onAction="#menuTestAct" text="Test"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About"/>
+                        <MenuItem mnemonicParsing="false" text="About"/>
+                        <MenuItem mnemonicParsing="false" onAction="#fxHiddenCreateCatalog" text="Hidden"
+                                  visible="false">
+                            <accelerator>
+                                <KeyCodeCombination alt="DOWN" code="C" control="DOWN" meta="UP" shift="UP"
+                                                    shortcut="UP"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#fxHiddenDropCatalog" text="HiddenDropCatalog"
+                                  visible="false">
+                            <accelerator>
+                                <KeyCodeCombination alt="DOWN" code="D" control="DOWN" meta="UP" shift="DOWN"
+                                                    shortcut="UP"/>
+                            </accelerator>
+                        </MenuItem>
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
-        <BorderPane>
+    </top>
+    <bottom>
+        <BorderPane BorderPane.alignment="CENTER">
+            <right>
+                <Button fx:id="fxBtnEnter" defaultButton="true" mnemonicParsing="false" onAction="#fxBtnEnterAction"
+                        text="Login" BorderPane.alignment="CENTER"/>
+            </right>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0"/>
             </padding>
-            <top>
-                <HBox alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true"/>
-                        <Label text=" Title ">
-                            <font>
-                                <Font size="33.0"/>
-                            </font>
-                        </Label>
-                    </children>
-                    <BorderPane.margin>
-                        <Insets/>
-                    </BorderPane.margin>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0"/>
-                    </padding>
-                </HBox>
-            </top>
-            <center>
-                <GridPane hgap="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                          minWidth="-Infinity" prefHeight="96.0" prefWidth="230.0" BorderPane.alignment="CENTER">
+        </BorderPane>
+    </bottom>
+    <center>
+        <VBox spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <GridPane>
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="35.0"/>
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0"
-                                           prefWidth="189.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="35.0" prefWidth="35.0"/>
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0"/>
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                     </rowConstraints>
                     <children>
                         <Label text="User"/>
                         <Label text="Pass" GridPane.rowIndex="1"/>
-                        <Button fx:id="buttonEnter" defaultButton="true" mnemonicParsing="false"
-                                onAction="#buttonEnterAct" text="Enter" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <TextField fx:id="textFieldUser" GridPane.columnIndex="1"/>
-                        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <TextField fx:id="fxUsername" minWidth="200.0" GridPane.columnIndex="1"/>
+                        <PasswordField fx:id="fxPassword" minWidth="200.0" GridPane.columnIndex="1"
+                                       GridPane.rowIndex="1"/>
                     </children>
                     <opaqueInsets>
                         <Insets/>
                     </opaqueInsets>
-                    <BorderPane.margin>
-                        <Insets/>
-                    </BorderPane.margin>
                 </GridPane>
-            </center>
-        </BorderPane>
-    </children>
-</VBox>
+                <TitledPane animated="false" text="Conection Details">
+                    <content>
+                        <GridPane>
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="35.0" prefWidth="35.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="IP"/>
+                                <Label text="Port" GridPane.rowIndex="1"/>
+                                <TextField fx:id="fxDbIp" minWidth="200.0" GridPane.columnIndex="1"/>
+                                <TextField fx:id="fxDbPort" minWidth="200.0" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="3">
+                                    <children>
+                                        <Button fx:id="fxBtnTestConn" mnemonicParsing="false"
+                                                onAction="#fxBtnTestConnAction" text="Conection"/>
+                                        <Button fx:id="fxBtnTestCatalog" mnemonicParsing="false"
+                                                onAction="#fxBtnTestCatalogAction" text="Catalog"/>
+                                    </children>
+                                </HBox>
+                                <Label layoutX="14.0" layoutY="48.0" text="Test" GridPane.rowIndex="3"/>
+                                <Label layoutX="14.0" layoutY="48.0" text="DB" GridPane.rowIndex="2"/>
+                                <TextField fx:id="fxDbCatalog" editable="false" minWidth="200.0"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            </children>
+                            <padding>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </padding>
+                        </GridPane>
+                    </content>
+                    <VBox.margin>
+                        <Insets bottom="-4.0" left="-4.0" right="-4.0" top="-4.0"/>
+                    </VBox.margin>
+                </TitledPane>
+            </children>
+            <padding>
+                <Insets bottom="-10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

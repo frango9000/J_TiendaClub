@@ -1,16 +1,17 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractCaja extends Persistible {
+public abstract class AbstractCaja extends Activable {
     protected int idSede;
     protected String nombre;
 
-    public AbstractCaja(int id, int idSede, String nombre) {
-        this.id = id;
+    public AbstractCaja(int id, int idSede, String nombre, boolean activo) {
+        super(id, activo);
         this.idSede = idSede;
         this.nombre = nombre;
     }
 
-    public AbstractCaja(int idSede, String nombre) {
+    protected AbstractCaja(int idSede, String nombre, boolean activo) {
+        super(0, activo);
         this.idSede = idSede;
         this.nombre = nombre;
     }

@@ -197,23 +197,25 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
     @Override
     public int insert(T objectT) {
         int rows = 0;
-        if (SessionDB.connect()) {
-            String sql = objectT.getInsertString();
-            try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                objectT.buildStatement(pstmt);
-                rows = pstmt.executeUpdate();
+        if (objectT.getId() == 0) {
+            if (SessionDB.connect()) {
+                String sql = objectT.getInsertString();
+                try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                    objectT.buildStatement(pstmt);
+                    rows = pstmt.executeUpdate();
 
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        objectT.setId(rs.getInt(1));
-                        table.putIfAbsent(objectT.getId(), objectT);
+                    try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            objectT.setId(rs.getInt(1));
+                            table.putIfAbsent(objectT.getId(), objectT);
+                        }
                     }
+                    printSql(sql);
+                } catch (SQLException ex) {
+                    Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+                } finally {
+                    SessionDB.close();
                 }
-                printSql(sql);
-            } catch (SQLException ex) {
-                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
-            } finally {
-                SessionDB.close();
             }
         }
         return rows;
