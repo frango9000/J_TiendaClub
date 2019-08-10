@@ -73,7 +73,7 @@
                         <Insets/>
                     </opaqueInsets>
                 </GridPane>
-                <TitledPane animated="false" text="Conection Details">
+                <TitledPane fx:id="fxTitledPane" animated="false" expanded="false" text="Conection Details">
                     <content>
                         <GridPane>
                             <columnConstraints>

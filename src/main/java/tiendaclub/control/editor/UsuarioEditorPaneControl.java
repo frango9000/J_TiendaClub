@@ -7,14 +7,16 @@ package tiendaclub.control.editor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tiendaclub.data.DataStore;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
+import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
 
-public class UserEditorPaneControl extends Stage {
+public class UsuarioEditorPaneControl extends Stage {
 
     private Usuario usuario;
 
@@ -38,6 +40,37 @@ public class UserEditorPaneControl extends Stage {
     private Button txButtonPassword;
     @FXML
     private CheckBox fxCheckActivo;
+
+    public static Parent getRoot() {
+        return FXMLStage.getRoot("/fxml/tables/UsuariosPane.fxml");
+    }
+
+    @FXML
+    void initialize() {
+        cbAcceso.getItems().addAll(DataStore.getAccesos().getCache().values());
+        txButtonPassword.setVisible(false);
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        if (usuario != null) {
+            txUsername.setEditable(false);
+            txButtonPassword.setVisible(true);
+            txId.setText(usuario.getId() + "");
+            txUsername.setText(usuario.getUsername());
+            txNombre.setText(usuario.getNombre());
+            txTelefono.setText(usuario.getTelefono());
+            txEmail.setText(usuario.getEmail());
+            txDireccion.setText(usuario.getDireccion());
+            txDescripcion.setText(usuario.getDescripcion());
+            cbAcceso.getSelectionModel().select(usuario.getAcceso());
+        }
+    }
+
 
     @FXML
     void SaveOnAct(ActionEvent event) {
@@ -89,33 +122,6 @@ public class UserEditorPaneControl extends Stage {
     private void discardAct(ActionEvent actionEvent) {
         ((Node) actionEvent.getSource()).getScene().getWindow().hide();
     }
-
-    @FXML
-    void initialize() {
-        cbAcceso.getItems().addAll(DataStore.getAccesos().getCache().values());
-        txButtonPassword.setVisible(false);
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-        if (usuario != null) {
-            txUsername.setEditable(false);
-            txButtonPassword.setVisible(true);
-            txId.setText(usuario.getId() + "");
-            txUsername.setText(usuario.getUsername());
-            txNombre.setText(usuario.getNombre());
-            txTelefono.setText(usuario.getTelefono());
-            txEmail.setText(usuario.getEmail());
-            txDireccion.setText(usuario.getDireccion());
-            txDescripcion.setText(usuario.getDescripcion());
-            cbAcceso.getSelectionModel().select(usuario.getAcceso());
-        }
-    }
-
     private boolean validFields() {
         if (txUsername.getText().trim().length() < 1) return false;
         return cbAcceso.getSelectionModel().getSelectedItem().getId() >= DataStore.getUser().getIdAcceso();

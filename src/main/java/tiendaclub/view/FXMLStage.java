@@ -8,14 +8,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class FxmlStage extends Stage {
+public class FXMLStage extends Stage {
 
-    public FxmlStage(String title) {
+    public FXMLStage(String title) {
         setTitle(title);
-        setOnCloseRequest(event -> System.exit(0));
     }
 
-    public FxmlStage(String fxml, String title) {
+    public FXMLStage(String fxml, String title) {
         this(title);
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxml));
@@ -27,11 +26,19 @@ public class FxmlStage extends Stage {
         }
     }
 
-    public FxmlStage(Pane root, String title) {
+    public FXMLStage(Pane root, String title) {
         this(title);
         setScene(new Scene(root));
         root.requestFocus();
     }
 
-
+    public static Parent getRoot(String url) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(FXMLStage.class.getResource(url));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return root;
+    }
 }

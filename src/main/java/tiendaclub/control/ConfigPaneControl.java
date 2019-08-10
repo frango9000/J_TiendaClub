@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import tiendaclub.data.SessionDB;
@@ -31,6 +32,8 @@ public class ConfigPaneControl extends VBox {
     private Button fxBtnTestCatalog;
     @FXML
     private TextField fxDbCatalog;
+    @FXML
+    private TitledPane fxTitledPane;
 
     @FXML
     public void initialize() {

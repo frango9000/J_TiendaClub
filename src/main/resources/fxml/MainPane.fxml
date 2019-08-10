@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.StatusBar?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainPane" xmlns="http://javafx.com/javafx/11.0.1"
+<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="tiendaclub.control.MainPaneControl">
     <center>
         <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
@@ -51,6 +51,10 @@
                                 <MenuItem mnemonicParsing="false" text="Config"/>
                                 <MenuItem fx:id="menuUsuarios" mnemonicParsing="false" onAction="#menuUsuariosAct"
                                           text="Users"/>
+                                <MenuItem fx:id="fxMenuSedes" mnemonicParsing="false" onAction="#fxMenuSedesAction"
+                                          text="Sedes"/>
+                                <MenuItem fx:id="fxMenuCajas" mnemonicParsing="false" onAction="#fxMenuCajasAction"
+                                          text="Cajas"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
