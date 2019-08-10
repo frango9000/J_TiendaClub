@@ -2,8 +2,6 @@ package tiendaclub;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -20,34 +18,12 @@ import java.util.Collection;
 
 public class MainFX extends Application {
 
-    private static Parent root;
 
     private static Stage mainStage;
-    private static MainPaneControl mainPaneControl;
-
-
-    public MainFX() {
-        if (root == null)
-            //pane = new Pane(new Label("Default Pane"));
-            root = new Pane();
-        //pane = new RawEditorPane();
-    }
-
-    public MainFX(Parent node) {
-        root = node;
-    }
 
     public static void main(String[] args) {
         launch(args);
 
-    }
-
-    public static Parent getRoot() {
-        return root;
-    }
-
-    public static void setRoot(Parent node) {
-        root = node;
     }
 
     public static Stage getMainStage() {
@@ -58,14 +34,6 @@ public class MainFX extends Application {
         MainFX.mainStage = mainStage;
     }
 
-    public static MainPaneControl getMainPaneControl() {
-        return mainPaneControl;
-    }
-
-    public static void setMainPaneControl(MainPaneControl mainPaneControl) {
-        MainFX.mainPaneControl = mainPaneControl;
-    }
-
     public static void initializeToolkit() {
         Platform.startup(() -> {
         });
@@ -74,13 +42,9 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         mainStage = primaryStage;
-
         PropsLoader.loadProps();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainPane.fxml"));
-        mainPaneControl = loader.getController();
-
-        Parent root = loader.load();
+        Pane root = MainPaneControl.loadFXML();
         primaryStage.setScene(new Scene(root));
 
         if (!PropsLoader.isQuickstart() || !SessionDB.isConnValid()) {
@@ -113,14 +77,5 @@ public class MainFX extends Application {
                     DataStore.setCaja(FxDialogs.showChoices("Caja:", "Cajas:", null, cajas));
             }
         }
-    }
-
-    public void go() {
-        launch("");
-    }
-
-    public void go(Parent node) {
-        setRoot(node);
-        go();
     }
 }

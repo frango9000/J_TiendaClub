@@ -4,15 +4,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import tiendaclub.data.DataStore;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
 
-public class SedesPaneControl {
+import java.io.IOException;
+
+public class SedesPaneControl extends BorderPane {
 
     final private ObservableList<Sede> sedes = FXCollections.observableArrayList();
 
@@ -27,9 +31,17 @@ public class SedesPaneControl {
     @FXML
     private TableColumn<Sede, String> fxColumnDireccion;
 
-    public static Parent getRoot() {
-        return FXMLStage.getRoot("/fxml/tables/SedesPane.fxml");
+    public static Pane getPane() {
+        String url = "/fxml/tables/SedesPane.fxml";
+        Pane root = null;
+        try {
+            root = FXMLLoader.load(FXMLStage.class.getResource(url));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return root;
     }
+
 
     @FXML
     void initialize() {

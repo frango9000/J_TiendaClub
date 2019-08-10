@@ -2,16 +2,17 @@ package tiendaclub.control;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import org.controlsfx.control.StatusBar;
 import tiendaclub.control.table.SedesPaneControl;
 import tiendaclub.control.table.UsuariosPaneControl;
 
 import java.io.IOException;
 
-public class MainPaneControl extends BorderPane {
+public class MainPaneControl {
 
     @FXML
     private MenuItem menuUsuarios;
@@ -28,20 +29,30 @@ public class MainPaneControl extends BorderPane {
         return mainPane;
     }
 
+    public static Pane loadFXML() {
+        String url = "/fxml/MainPane.fxml";
+        Pane pane = null;
+        try {
+            pane = FXMLLoader.load(MainPaneControl.class.getResource(url));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pane;
+    }
     @FXML
     public void initialize() {
 
     }
 
     @FXML
-    private void menuUsuariosAct(ActionEvent actionEvent) throws IOException {
-        Parent root = UsuariosPaneControl.getRoot();
+    private void fxMenuUsuariosAction(ActionEvent actionEvent) throws IOException {
+        Pane root = UsuariosPaneControl.getPane();
         mainPane.setCenter(root);
     }
 
     @FXML
     private void fxMenuSedesAction(ActionEvent actionEvent) throws IOException {
-        Parent root = SedesPaneControl.getRoot();
+        Pane root = SedesPaneControl.getPane();
         mainPane.setCenter(root);
     }
 

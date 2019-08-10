@@ -5,12 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
+import javafx.scene.layout.Pane;
 import tiendaclub.MainFX;
 import tiendaclub.control.editor.UsuarioEditorPaneControl;
 import tiendaclub.data.DataStore;
@@ -22,7 +21,8 @@ import java.io.IOException;
 
 public class UsuariosPaneControl extends BorderPane {
 
-    final private ObservableList<Usuario> usuarios = FXCollections.observableArrayList();
+    private final ObservableList<Usuario> usuarios = FXCollections.observableArrayList();
+
 
     @FXML
     private TableView<Usuario> fxTable;
@@ -35,8 +35,15 @@ public class UsuariosPaneControl extends BorderPane {
     @FXML
     private TableColumn<Usuario, Acceso> fxColumnLevel;
 
-    public static Parent getRoot() {
-        return FXMLStage.getRoot("/fxml/tables/UsuariosPane.fxml");
+    public static Pane getPane() {
+        String url = "/fxml/tables/UsuariosPane.fxml";
+        Pane root = null;
+        try {
+            root = FXMLLoader.load(FXMLStage.class.getResource(url));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return root;
     }
 
     @FXML
@@ -56,12 +63,8 @@ public class UsuariosPaneControl extends BorderPane {
 
     @FXML
     private void fxButtonAddAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editor/UserEditorPane.fxml"));
-        BorderPane pane = loader.load();
-        UsuarioEditorPaneControl control = loader.getController();
+        Pane pane = UsuarioEditorPaneControl.loadFXML();
         FXMLStage stage = new FXMLStage(pane, "Usuario");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(MainFX.getMainStage());
         stage.showAndWait();
     }
 
@@ -73,13 +76,10 @@ public class UsuariosPaneControl extends BorderPane {
     private void fxButtonEditAction(ActionEvent actionEvent) throws IOException {
         Usuario selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editor/UserEditorPane.fxml"));
-            BorderPane pane = loader.load();
-            UsuarioEditorPaneControl control = loader.getController();
+            Pane pane = UsuarioEditorPaneControl.loadFXML();
+            UsuarioEditorPaneControl control = UsuarioEditorPaneControl.getController();
             control.setUsuario(selected);
             FXMLStage stage = new FXMLStage(pane, "Usuario");
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(MainFX.getMainStage());
             stage.showAndWait();
         } else actionEvent.consume();
 

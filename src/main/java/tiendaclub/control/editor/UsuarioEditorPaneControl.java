@@ -6,17 +6,20 @@ package tiendaclub.control.editor;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import tiendaclub.data.DataStore;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
 
-public class UsuarioEditorPaneControl extends Stage {
+import java.io.IOException;
+
+public class UsuarioEditorPaneControl extends BorderPane {
 
     private Usuario usuario;
 
@@ -41,12 +44,26 @@ public class UsuarioEditorPaneControl extends Stage {
     @FXML
     private CheckBox fxCheckActivo;
 
-    public static Parent getRoot() {
-        return FXMLStage.getRoot("/fxml/tables/UsuariosPane.fxml");
+    private static UsuarioEditorPaneControl controller;
+
+    public static UsuarioEditorPaneControl getController() {
+        return controller;
+    }
+
+    public static Pane loadFXML() {
+        String url = "/fxml/editor/UserEditorPane.fxml";
+        Pane root = null;
+        try {
+            root = FXMLLoader.load(FXMLStage.class.getResource(url));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return root;
     }
 
     @FXML
     void initialize() {
+        controller = this;
         cbAcceso.getItems().addAll(DataStore.getAccesos().getCache().values());
         txButtonPassword.setVisible(false);
     }

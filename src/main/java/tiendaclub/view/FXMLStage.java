@@ -4,7 +4,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import tiendaclub.MainFX;
 
 import java.io.IOException;
 
@@ -12,6 +14,8 @@ public class FXMLStage extends Stage {
 
     public FXMLStage(String title) {
         setTitle(title);
+        initModality(Modality.WINDOW_MODAL);
+        initOwner(MainFX.getMainStage());
     }
 
     public FXMLStage(String fxml, String title) {
@@ -30,15 +34,5 @@ public class FXMLStage extends Stage {
         this(title);
         setScene(new Scene(root));
         root.requestFocus();
-    }
-
-    public static Parent getRoot(String url) {
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(FXMLStage.class.getResource(url));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return root;
     }
 }
