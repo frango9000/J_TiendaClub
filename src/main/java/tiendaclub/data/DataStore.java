@@ -8,77 +8,76 @@ public class DataStore {
     private static Sede sede;
     private static Usuario user;
 
-    private static GenericDao<Acceso> accesos = new GenericDao<>(Acceso.TABLE_NAME);
-    private static GenericDao<Sede> sedes = new GenericDao<>(Sede.TABLE_NAME);
-    private static GenericDao<Caja> cajas = new GenericDao<>(Caja.TABLE_NAME);
-    private static GenericDao<Categoria> categorias = new GenericDao<>(Categoria.TABLE_NAME);
-    private static GenericDao<CierreZ> cierreZs = new GenericDao<>(CierreZ.TABLE_NAME);
-    private static GenericDao<Compra> compras = new GenericDao<>(Compra.TABLE_NAME);
-    private static GenericDao<Comprado> comprados = new GenericDao<>(Comprado.TABLE_NAME);
-    private static GenericDao<Producto> productos = new GenericDao<>(Producto.TABLE_NAME);
-    private static GenericDao<Proveedor> proveedores = new GenericDao<>(Proveedor.TABLE_NAME);
-    private static GenericDao<Socio> socios = new GenericDao<>(Socio.TABLE_NAME);
-    private static GenericDao<Transferencia> transferencias = new GenericDao<>(Transferencia.TABLE_NAME);
-    private static GenericDao<Usuario> usuarios = new GenericDao<>(Usuario.TABLE_NAME);
-    private static GenericDao<Vendido> vendidos = new GenericDao<>(Vendido.TABLE_NAME);
-    private static GenericDao<Venta> ventas = new GenericDao<>(Venta.TABLE_NAME);
+    private static PersistableDao<Acceso> accesos = new PersistableDao<>(Acceso.TABLE_NAME);
+    private static PersistableDao<Sede> sedes = new PersistableDao<>(Sede.TABLE_NAME);
+    private static PersistableDao<Caja> cajas = new PersistableDao<>(Caja.TABLE_NAME);
+    private static PersistableDao<Categoria> categorias = new PersistableDao<>(Categoria.TABLE_NAME);
+    private static PersistableDao<CierreZ> cierreZs = new PersistableDao<>(CierreZ.TABLE_NAME);
+    private static PersistableDao<Compra> compras = new PersistableDao<>(Compra.TABLE_NAME);
+    private static PersistableDao<Comprado> comprados = new PersistableDao<>(Comprado.TABLE_NAME);
+    private static PersistableDao<Producto> productos = new PersistableDao<>(Producto.TABLE_NAME);
+    private static PersistableDao<Proveedor> proveedores = new PersistableDao<>(Proveedor.TABLE_NAME);
+    private static PersistableDao<Socio> socios = new PersistableDao<>(Socio.TABLE_NAME);
+    private static PersistableDao<Transferencia> transferencias = new PersistableDao<>(Transferencia.TABLE_NAME);
+    private static ActivableDao<Usuario> usuarios = new ActivableDao<>(Usuario.TABLE_NAME);
+    private static PersistableDao<Vendido> vendidos = new PersistableDao<>(Vendido.TABLE_NAME);
+    private static PersistableDao<Venta> ventas = new PersistableDao<>(Venta.TABLE_NAME);
 
-    public static GenericDao<Acceso> getAccesos() {
+    public static PersistableDao<Acceso> getAccesos() {
         return accesos;
     }
 
-    public static GenericDao<Sede> getSedes() {
+    public static PersistableDao<Sede> getSedes() {
         return sedes;
     }
 
-    public static GenericDao<Caja> getCajas() {
+    public static PersistableDao<Caja> getCajas() {
         return cajas;
     }
 
-    public static GenericDao<Categoria> getCategorias() {
+    public static PersistableDao<Categoria> getCategorias() {
         return categorias;
     }
 
-    public static GenericDao<CierreZ> getCierreZs() {
+    public static PersistableDao<CierreZ> getCierreZs() {
         return cierreZs;
     }
 
-    public static GenericDao<Compra> getCompras() {
+    public static PersistableDao<Compra> getCompras() {
         return compras;
     }
 
-    public static GenericDao<Comprado> getComprados() {
+    public static PersistableDao<Comprado> getComprados() {
         return comprados;
     }
 
-    public static GenericDao<Producto> getProductos() {
+    public static PersistableDao<Producto> getProductos() {
         return productos;
     }
 
-    public static GenericDao<Proveedor> getProveedores() {
+    public static PersistableDao<Proveedor> getProveedores() {
         return proveedores;
     }
 
-    public static GenericDao<Socio> getSocios() {
+    public static PersistableDao<Socio> getSocios() {
         return socios;
     }
 
-    public static GenericDao<Transferencia> getTransferencias() {
+    public static PersistableDao<Transferencia> getTransferencias() {
         return transferencias;
     }
 
-    public static GenericDao<Usuario> getUsuarios() {
+    public static ActivableDao<Usuario> getUsuarios() {
         return usuarios;
     }
 
-    public static GenericDao<Vendido> getVendidos() {
+    public static PersistableDao<Vendido> getVendidos() {
         return vendidos;
     }
 
-    public static GenericDao<Venta> getVentas() {
+    public static PersistableDao<Venta> getVentas() {
         return ventas;
     }
-
 
     public static void firstQuery() {
         SessionDB.setAutoclose(false);

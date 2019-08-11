@@ -2,7 +2,7 @@ package tiendaclub.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public abstract class AbstractTransferencia extends Persistible {
+public abstract class AbstractTransferencia extends Identifiable {
     protected int idUsuario;
     protected int idSedeOrigen;
     protected int idSedeDestino;

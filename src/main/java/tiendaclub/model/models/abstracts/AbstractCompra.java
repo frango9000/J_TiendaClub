@@ -2,7 +2,7 @@ package tiendaclub.model.models.abstracts;
 
 import java.time.LocalDateTime;
 
-public abstract class AbstractCompra extends Persistible {
+public abstract class AbstractCompra extends Identifiable {
     protected int idUsuario;
     protected int idSede;
     protected int idProveedor;

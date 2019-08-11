@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,6 +24,7 @@ public class UsuariosPaneControl extends BorderPane {
 
     private final ObservableList<Usuario> usuarios = FXCollections.observableArrayList();
 
+    private boolean showInactive = false;
 
     @FXML
     private TableView<Usuario> fxTable;
@@ -34,6 +36,8 @@ public class UsuariosPaneControl extends BorderPane {
     private TableColumn<Usuario, String> fxColumnName;
     @FXML
     private TableColumn<Usuario, Acceso> fxColumnLevel;
+    @FXML
+    private Button fxBtnShowHide;
 
     public static Pane getPane() {
         String url = "/fxml/tables/UsuariosPane.fxml";
@@ -53,7 +57,7 @@ public class UsuariosPaneControl extends BorderPane {
         fxColumnName.setCellValueFactory(new PropertyValueFactory<Usuario, String>("nombre"));
         fxColumnLevel.setCellValueFactory(new PropertyValueFactory<Usuario, Acceso>("acceso"));
         fxTable.setItems(usuarios);
-        usuarios.addAll(DataStore.getUsuarios().getCache().values());
+        usuarios.addAll(DataStore.getUsuarios().getActivesTable().values());
     }
 
     @FXML
@@ -62,18 +66,19 @@ public class UsuariosPaneControl extends BorderPane {
     }
 
     @FXML
-    private void fxButtonAddAction(ActionEvent actionEvent) throws IOException {
+    private void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
         Pane pane = UsuarioEditorPaneControl.loadFXML();
         FXMLStage stage = new FXMLStage(pane, "Usuario");
         stage.showAndWait();
+        fxTable.refresh();
     }
 
     @FXML
-    private void fxButtonDeleteAction(ActionEvent actionEvent) {
+    private void fxBtnEliminarAction(ActionEvent actionEvent) {
     }
 
     @FXML
-    private void fxButtonEditAction(ActionEvent actionEvent) throws IOException {
+    private void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
         Usuario selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             Pane pane = UsuarioEditorPaneControl.loadFXML();
@@ -81,11 +86,27 @@ public class UsuariosPaneControl extends BorderPane {
             control.setUsuario(selected);
             FXMLStage stage = new FXMLStage(pane, "Usuario");
             stage.showAndWait();
-        } else actionEvent.consume();
-
+            fxTable.refresh();
+        }
     }
 
     @FXML
-    private void fxButtonRefreshAction(ActionEvent actionEvent) {
+    private void fxBtnRefreshAction(ActionEvent actionEvent) {
+        fxTable.refresh();
+    }
+
+    @FXML
+    private void fxBtnShowHideAction(ActionEvent actionEvent) {
+        if (showInactive) {
+            showInactive = false;
+            usuarios.clear();
+            usuarios.addAll(DataStore.getUsuarios().getActivesTable().values());
+            fxBtnShowHide.setText("Todos");
+        } else {
+            showInactive = true;
+            usuarios.clear();
+            usuarios.addAll(DataStore.getUsuarios().getCache().values());
+            fxBtnShowHide.setText("Activos");
+        }
     }
 }

@@ -22,18 +22,24 @@
     <right>
         <BorderPane BorderPane.alignment="CENTER">
             <bottom>
-                <Button mnemonicParsing="false" onAction="#fxButtonBackAction" prefWidth="80.0" text="Volver"
-                        BorderPane.alignment="CENTER"/>
+                <VBox spacing="10.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#fxBtnEliminarAction" prefWidth="80.0"
+                                text="Eliminar"/>
+                        <Button mnemonicParsing="false" onAction="#fxBtnRefreshAction" prefWidth="80.0"
+                                text="Refrescar"/>
+                        <Button fx:id="fxBtnShowHide" mnemonicParsing="false" onAction="#fxBtnShowHideAction"
+                                prefWidth="80.0" text="Todos"/>
+                        <Button layoutX="10.0" layoutY="115.0" mnemonicParsing="false" onAction="#fxButtonBackAction"
+                                prefWidth="80.0" text="Volver"/>
+                    </children>
+                </VBox>
             </bottom>
             <top>
                 <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#fxButtonAddAction" prefWidth="80.0" text="Agregar"/>
-                        <Button mnemonicParsing="false" onAction="#fxButtonEditAction" prefWidth="80.0" text="Editar"/>
-                        <Button mnemonicParsing="false" onAction="#fxButtonDeleteAction" prefWidth="80.0"
-                                text="Eliminar"/>
-                        <Button mnemonicParsing="false" onAction="#fxButtonRefreshAction" prefWidth="80.0"
-                                text="Refrescar"/>
+                        <Button mnemonicParsing="false" onAction="#fxBtnAddAction" prefWidth="80.0" text="Agregar"/>
+                        <Button mnemonicParsing="false" onAction="#fxBtnEditAction" prefWidth="80.0" text="Editar"/>
                     </children>
                     <BorderPane.margin>
                         <Insets/>

@@ -1,7 +1,7 @@
 package tiendaclub.data;
 
 
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.abstracts.Identifiable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,11 +13,10 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GenericDao<T extends Persistible> implements IDao<T> {
+public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
 
-    protected final String ID_COL_NAME = "id";
-    protected final HashMap<Integer, T> table = new HashMap<>();
-    public String TABLE_NAME;
+    protected String ID_COL_NAME = "id";
+    protected String TABLE_NAME;
 
     public GenericDao(String TABLE_NAME) {
         this.TABLE_NAME = TABLE_NAME;
@@ -29,16 +28,28 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
         }
     }
 
+    protected void index(T objectT) {
+    }
+
+    protected void deindex(int id) {
+    }
+
+    protected void deindex(T objectT) {
+    }
+
+    protected void reindex(T objectT) {
+    }
+
     @Override
     public T query(int id) {
-        T t = null;
+        T objecT = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%d'", TABLE_NAME, ID_COL_NAME, id);
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    t = (T) DataFactory.buildObject(rs);
-                    table.putIfAbsent(t.getId(), t);
+                    objecT = (T) DataFactory.buildObject(rs);
+                    index(objecT);
                 }
                 printSql(sql);
             } catch (SQLException ex) {
@@ -47,19 +58,19 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                 SessionDB.close();
             }
         }
-        return t;
+        return objecT;
     }
 
     @Override
     public T query(String colName, String unique) {
-        T t = null;
+        T objecT = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, unique);
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    t = (T) DataFactory.buildObject(rs);
-                    table.putIfAbsent(t.getId(), t);
+                    objecT = (T) DataFactory.buildObject(rs);
+                    index(objecT);
                 }
                 printSql(sql);
             } catch (SQLException ex) {
@@ -68,19 +79,19 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                 SessionDB.close();
             }
         }
-        return t;
+        return objecT;
     }
 
     @Override
     public T query(String col1Name, String uni, String col2Name, String que) {
-        T t = null;
+        T objecT = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", TABLE_NAME, col1Name, uni, col2Name, que);
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    t = (T) DataFactory.buildObject(rs);
-                    table.putIfAbsent(t.getId(), t);
+                    objecT = (T) DataFactory.buildObject(rs);
+                    index(objecT);
                 }
                 printSql(sql);
             } catch (SQLException ex) {
@@ -89,7 +100,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                 SessionDB.close();
             }
         }
-        return t;
+        return objecT;
     }
 
     @Override
@@ -108,9 +119,9 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
-                    T t = (T) DataFactory.buildObject(rs);
-                    table.putIfAbsent(t.getId(), t);
-                    returnMap.putIfAbsent(t.getId(), t);
+                    T objecT = (T) DataFactory.buildObject(rs);
+                    index(objecT);
+                    returnMap.putIfAbsent(objecT.getId(), objecT);
                 }
                 printSql(sql.toString());
             } catch (SQLException ex) {
@@ -124,15 +135,16 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
 
     @Override
     public HashMap<Integer, T> queryAll() {
-        table.clear();
+        //table.clear();
+        HashMap<Integer, T> returnMap = new HashMap<>();
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s", TABLE_NAME);
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
                 while (rs.next()) {
-                    T t = (T) DataFactory.buildObject(rs);
-                    System.out.println(t.toString());
-                    table.putIfAbsent(t.getId(), t);
+                    T objecT = (T) DataFactory.buildObject(rs);
+                    index(objecT);
+                    returnMap.putIfAbsent(objecT.getId(), objecT);
                 }
                 printSql(sql);
             } catch (SQLException ex) {
@@ -141,58 +153,9 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                 SessionDB.close();
             }
         }
-        return table;
+        return returnMap;
     }
 
-    @Override
-    public T get(int id) {
-        if (id > 0) {
-            if (table.containsKey(id)) {
-                return table.get(id);
-            } else {
-                return query(id);
-            }
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public ArrayList<T> getList(ArrayList<Integer> ids) {
-        ArrayList<T> list = new ArrayList<>();
-        if (ids.size() > 0) {
-            ArrayList<Integer> idsToQuery = new ArrayList<>();
-            for (int id : ids) {
-                if (!table.containsKey(id)) {
-                    idsToQuery.add(id);
-                }
-            }
-            if (ids.size() > 0) {
-                query(idsToQuery);
-            }
-            for (int id : ids) {
-                list.add(table.get(id));
-            }
-        }
-        return list;
-    }
-
-    @Override
-    public HashMap<Integer, T> get(ArrayList<Integer> ids) {
-        HashMap<Integer, T> filteredHashMap = new HashMap<>();
-        if (ids.size() > 0) {
-            ArrayList<T> objs = getList(ids);
-            for (T t : objs) {
-                filteredHashMap.putIfAbsent(t.getId(), t);
-            }
-        }
-        return filteredHashMap;
-    }
-
-    @Override
-    public HashMap<Integer, T> getCache() {
-        return table;
-    }
 
     @Override
     public int insert(T objectT) {
@@ -207,7 +170,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                     try (ResultSet rs = pstmt.getGeneratedKeys()) {
                         if (rs.next()) {
                             objectT.setId(rs.getInt(1));
-                            table.putIfAbsent(objectT.getId(), objectT);
+                            index(objectT);
                         }
                     }
                     printSql(sql);
@@ -229,6 +192,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
             try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql)) {
                 objectT.buildStatement(pstmt);
                 rows = pstmt.executeUpdate();
+                reindex(objectT);
                 printSql(sql);
             } catch (SQLException ex) {
                 Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
@@ -250,7 +214,7 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                     if (rs.next()) {
                         objectT.updateObject(rs);
                         rows++;
-                        table.putIfAbsent(objectT.getId(), objectT);
+                        reindex(objectT);
                     }
                     printSql(sql);
                 } catch (SQLException ex) {
@@ -264,13 +228,18 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
     }
 
     @Override
-    public int delete(T t) {
+    public int delete(T objecT) {
+        return delete(objecT.getId());
+    }
+
+    @Override
+    public int delete(int id) {
         int rows = 0;
         if (SessionDB.connect()) {
-            String sql = String.format("DELETE FROM %s WHERE %s = '%d' ", TABLE_NAME, ID_COL_NAME, t.getId());
+            String sql = String.format("DELETE FROM %s WHERE %s = '%d' ", TABLE_NAME, ID_COL_NAME, id);
             try (Statement stmt = SessionDB.getConn().createStatement()) {
                 rows = stmt.executeUpdate(sql);
-                table.remove(t.getId());
+                deindex(id);
                 printSql(sql);
             } catch (SQLException ex) {
                 Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
@@ -279,11 +248,6 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
             }
         }
         return rows;
-    }
-
-    @Override
-    public int delete(int id) {
-        return delete(table.get(id));
     }
 
     @Override
@@ -307,8 +271,13 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
                     sql.append(" )");
             }
             try (Statement ps = SessionDB.getConn().createStatement()) {
+                SessionDB.getConn().setAutoCommit(false);
                 rows = ps.executeUpdate(sql.toString());
-                toDelete.forEach(table::remove);//remove from local data store
+                if (rows == toDelete.size()) {
+                    SessionDB.getConn().commit();
+                    toDelete.forEach(e -> deindex(e));
+                } else SessionDB.getConn().rollback();
+                SessionDB.getConn().setAutoCommit(true);
                 printSql(sql.toString());
             } catch (SQLException ex) {
                 Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql.toString(), ex);
@@ -320,4 +289,27 @@ public class GenericDao<T extends Persistible> implements IDao<T> {
     }
 
 
+    public static String buildInsertString(String TABLE_NAME, ArrayList<String> COL_NAMES) {
+        final StringBuilder sql = new StringBuilder(String.format("INSERT INTO %s VALUES(NULL, ", TABLE_NAME));
+        int i = COL_NAMES.size();
+        while (i > 0) {
+            sql.append("? ");
+            if (i > 1)
+                sql.append(", ");
+            i--;
+        }
+        return sql.append(")").toString();
+    }
+
+    public static String buildUpdateString(String TABLE_NAME, String ID_COL_NAME, ArrayList<String> COL_NAMES, int id) {
+        final StringBuilder sql = new StringBuilder(String.format("UPDATE %s SET ", TABLE_NAME));
+        Iterator<String> iterator = COL_NAMES.iterator();
+        while (iterator.hasNext()) {
+            sql.append(iterator.next()).append(" = ? ");
+            if (iterator.hasNext())
+                sql.append(", ");
+        }
+        sql.append(String.format("WHERE %s = '%d'", ID_COL_NAME, id));
+        return sql.toString();
+    }
 }

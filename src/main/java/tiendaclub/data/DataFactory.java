@@ -1,14 +1,14 @@
 package tiendaclub.data;
 
 import tiendaclub.model.models.*;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.abstracts.Identifiable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DataFactory {
 
-    public static Persistible buildObject(ResultSet rs) throws SQLException {
+    public static Identifiable buildObject(ResultSet rs) throws SQLException {
         String originTable = rs.getMetaData().getTableName(1);
 
         switch (originTable) {

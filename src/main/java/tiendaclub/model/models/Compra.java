@@ -1,8 +1,8 @@
 package tiendaclub.model.models;
 
 import tiendaclub.data.DataStore;
+import tiendaclub.data.GenericDao;
 import tiendaclub.model.models.abstracts.AbstractCompra;
-import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.model.utils.DateUtils;
 
 import java.sql.PreparedStatement;
@@ -150,11 +150,11 @@ public class Compra extends AbstractCompra {
 
     @Override
     public String getInsertString() {
-        return Persistible.buildInsertString(TABLE_NAME, COL_NAMES);
+        return GenericDao.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
     public String getUpdateString() {
-        return Persistible.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
+        return GenericDao.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }

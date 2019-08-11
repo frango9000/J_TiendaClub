@@ -88,13 +88,13 @@
             <right>
                 <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#discardAct" text="Descartar"/>
-                        <Button mnemonicParsing="false" onAction="#SaveOnAct" text="Guardar"/>
+                        <Button mnemonicParsing="false" onAction="#fxBtnDiscardAction" text="Descartar"/>
+                        <Button mnemonicParsing="false" onAction="#fxBtnSaveAction" text="Guardar"/>
                     </children>
                 </HBox>
             </right>
             <left>
-                <Button fx:id="txButtonPassword" mnemonicParsing="false" onAction="#passwordOnAct" text="Password"
+                <Button fx:id="txButtonPassword" mnemonicParsing="false" onAction="#fxBtnPasswordAction" text="Password"
                         BorderPane.alignment="CENTER"/>
             </left>
             <padding>

@@ -5,7 +5,7 @@ import tiendaclub.model.Globals;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface IDao<T> extends Globals {
+public interface IGenericDao<T> extends Globals {
     T query(int id);
 
     T query(String colName, String unique);
@@ -17,14 +17,6 @@ public interface IDao<T> extends Globals {
 //    HashMap<Integer, T> query(String colName, ArrayList<String> search);
 
     HashMap<Integer, T> queryAll();
-
-    T get(int id);
-
-    HashMap<Integer, T> get(ArrayList<Integer> ids);
-
-    ArrayList<T> getList(ArrayList<Integer> ids);
-
-    HashMap<Integer, T> getCache();
 
     int insert(T objecT);
 
@@ -39,4 +31,6 @@ public interface IDao<T> extends Globals {
     int deleteSome(ArrayList<T> toDelete);
 
     int deleteSomeIds(ArrayList<Integer> toDelete);
+
+
 }

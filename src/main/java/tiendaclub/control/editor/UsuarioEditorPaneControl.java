@@ -22,6 +22,7 @@ import java.io.IOException;
 public class UsuarioEditorPaneControl extends BorderPane {
 
     private Usuario usuario;
+    private boolean creating = true;
 
     @FXML
     private TextField txUsername;
@@ -65,6 +66,7 @@ public class UsuarioEditorPaneControl extends BorderPane {
     void initialize() {
         controller = this;
         cbAcceso.getItems().addAll(DataStore.getAccesos().getCache().values());
+        cbAcceso.getSelectionModel().select(0);
         txButtonPassword.setVisible(false);
     }
 
@@ -75,70 +77,69 @@ public class UsuarioEditorPaneControl extends BorderPane {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
         if (usuario != null) {
+            creating = false;
             txUsername.setEditable(false);
             txButtonPassword.setVisible(true);
-            txId.setText(usuario.getId() + "");
-            txUsername.setText(usuario.getUsername());
-            txNombre.setText(usuario.getNombre());
-            txTelefono.setText(usuario.getTelefono());
-            txEmail.setText(usuario.getEmail());
-            txDireccion.setText(usuario.getDireccion());
-            txDescripcion.setText(usuario.getDescripcion());
+            String txt = "";
+            txId.setText((txt = usuario.getId() + "").length() > 0 ? txt : "");
+            txUsername.setText((txt = usuario.getUsername()) != null ? txt : "");
+            txNombre.setText((txt = usuario.getNombre()) != null ? txt : "");
+            txTelefono.setText((txt = usuario.getTelefono()) != null ? txt : "");
+            txEmail.setText((txt = usuario.getEmail()) != null ? txt : "");
+            txDireccion.setText((txt = usuario.getDireccion()) != null ? txt : "");
+            txDescripcion.setText((txt = usuario.getDescripcion()) != null ? txt : "");
             cbAcceso.getSelectionModel().select(usuario.getAcceso());
+            fxCheckActivo.setSelected(usuario.isActivo());
         }
     }
 
-
-    @FXML
-    void SaveOnAct(ActionEvent event) {
-        if (txId.getText().length() < 1) {
-            if (validFields()) {
-                String pass = askPass();
-                Usuario usuario = new Usuario(txUsername.getText().trim(), pass, cbAcceso.getSelectionModel().getSelectedItem(), fxCheckActivo.isSelected());
-                usuario.setNombre(txUsername.getText().trim());
-                usuario.setTelefono(txTelefono.getText().trim());
-                usuario.setEmail(txEmail.getText().trim());
-                usuario.setDireccion(txDireccion.getText().trim());
-                usuario.setDescripcion(txDescripcion.getText().trim());
-                if (usuario.insertIntoDB() > 0) {
-                    FxDialogs.showInfo("Success", "Usuario insertado");
-                    ((Node) event.getSource()).getScene().getWindow().hide();
-                } else {
-                    FxDialogs.showError("Fail!", "Insercion rechazada");
-                }
-            }
-        } else {
-            usuario.setNombre((txUsername.getText() + "").trim());
-            usuario.setTelefono((txTelefono.getText() + "").trim());
-            usuario.setEmail((txEmail.getText() + "").trim());
-            usuario.setDireccion((txDireccion.getText() + "").trim());
-            usuario.setDescripcion((txDescripcion.getText() + "").trim());
+    private void updateUsuario(Usuario usuario) {
+        String txt = "";
+        usuario.setNombre((txt = txNombre.getText().trim()).length() > 0 ? txt : null);
+        usuario.setTelefono((txt = txTelefono.getText().trim()).length() > 0 ? txt : null);
+        usuario.setEmail((txt = txEmail.getText().trim()).length() > 0 ? txt : null);
+        usuario.setDireccion((txt = txDireccion.getText().trim()).length() > 0 ? txt : null);
+        usuario.setDescripcion((txt = txDescripcion.getText().trim()).length() > 0 ? txt : null);
+        if (!creating) {
             usuario.setAcceso(cbAcceso.getSelectionModel().getSelectedItem());
             usuario.setActivo(fxCheckActivo.isSelected());
-            if (usuario.updateOnDb() > 0) {
-                FxDialogs.showInfo("Success", "Usuario modificado");
-                ((Node) event.getSource()).getScene().getWindow().hide();
-            } else {
-                FxDialogs.showError("Fail!", "Modificacion rechazada");
-            }
         }
-
     }
 
+
     @FXML
-    void passwordOnAct(ActionEvent event) {
+    void fxBtnSaveAction(ActionEvent event) {
+        if (validFields()) {
+            int rows = 0;
+            if (creating) {
+                String pass = askPass();
+                usuario = new Usuario(txUsername.getText().trim(), pass, cbAcceso.getSelectionModel().getSelectedItem(), fxCheckActivo.isSelected());
+                updateUsuario(usuario);
+                rows = usuario.insertIntoDB();
+            } else {
+                updateUsuario(usuario);
+                rows = usuario.updateOnDb();
+            }
+            if (rows > 0) {
+                FxDialogs.showInfo("Success", "Usuario " + (creating ? "creado" : "modificado"));
+                ((Node) event.getSource()).getScene().getWindow().hide();
+            } else FxDialogs.showError("Fail!", "Usuario no " + (creating ? "creado" : "modificado"));
+        } else FxDialogs.showError("Fail!", "Invalid Fields");
+    }
+    @FXML
+    void fxBtnPasswordAction(ActionEvent event) {
         String pass = askPass();
         if (!pass.equals(usuario.getPass())) {
             usuario.setPass(pass);
             usuario.updateOnDb();
         }
-
     }
 
     @FXML
-    private void discardAct(ActionEvent actionEvent) {
+    private void fxBtnDiscardAction(ActionEvent actionEvent) {
         ((Node) actionEvent.getSource()).getScene().getWindow().hide();
     }
+
     private boolean validFields() {
         if (txUsername.getText().trim().length() < 1) return false;
         return cbAcceso.getSelectionModel().getSelectedItem().getId() >= DataStore.getUser().getIdAcceso();
