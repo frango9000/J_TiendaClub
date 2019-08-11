@@ -1,7 +1,7 @@
 package tiendaclub.model.models;
 
 import tiendaclub.data.DataStore;
-import tiendaclub.data.GenericDao;
+import tiendaclub.data.framework.dao.PersistibleDao;
 import tiendaclub.model.models.abstracts.AbstractTransferencia;
 import tiendaclub.model.utils.DateUtils;
 
@@ -174,11 +174,11 @@ public class Transferencia extends AbstractTransferencia {
 
     @Override
     public String getInsertString() {
-        return GenericDao.buildInsertString(TABLE_NAME, COL_NAMES);
+        return PersistibleDao.buildInsertString(TABLE_NAME, COL_NAMES);
     }
 
     @Override
     public String getUpdateString() {
-        return GenericDao.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
+        return PersistibleDao.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
     }
 }

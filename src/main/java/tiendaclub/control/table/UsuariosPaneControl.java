@@ -57,7 +57,7 @@ public class UsuariosPaneControl extends BorderPane {
         fxColumnName.setCellValueFactory(new PropertyValueFactory<Usuario, String>("nombre"));
         fxColumnLevel.setCellValueFactory(new PropertyValueFactory<Usuario, Acceso>("acceso"));
         fxTable.setItems(usuarios);
-        usuarios.addAll(DataStore.getUsuarios().getActivesTable().values());
+        usuarios.addAll(DataStore.getUsuarios().getActive(true));
     }
 
     @FXML
@@ -100,7 +100,7 @@ public class UsuariosPaneControl extends BorderPane {
         if (showInactive) {
             showInactive = false;
             usuarios.clear();
-            usuarios.addAll(DataStore.getUsuarios().getActivesTable().values());
+            usuarios.addAll(DataStore.getUsuarios().getActive(true));
             fxBtnShowHide.setText("Todos");
         } else {
             showInactive = true;

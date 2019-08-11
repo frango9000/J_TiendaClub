@@ -1,7 +1,11 @@
-package tiendaclub.data;
+package tiendaclub.data.framework.dao;
 
 
-import tiendaclub.model.models.abstracts.Identifiable;
+import tiendaclub.data.DataFactory;
+import tiendaclub.data.SessionDB;
+import tiendaclub.data.framework.index.AbstractIndex;
+import tiendaclub.model.Globals;
+import tiendaclub.model.models.abstracts.IPersistible;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,12 +17,14 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
+public class PersistibleDao<T extends IPersistible> implements Globals {
 
     protected String ID_COL_NAME = "id";
     protected String TABLE_NAME;
 
-    public GenericDao(String TABLE_NAME) {
+    protected ArrayList<AbstractIndex<?, T>> indexes = new ArrayList<>();
+
+    public PersistibleDao(String TABLE_NAME) {
         this.TABLE_NAME = TABLE_NAME;
     }
 
@@ -29,18 +35,21 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
     }
 
     protected void index(T objectT) {
+        indexes.forEach(e -> e.index(objectT));
     }
 
     protected void deindex(int id) {
+        indexes.forEach(e -> e.deindex(id));
     }
 
     protected void deindex(T objectT) {
+        indexes.forEach(e -> e.deindex(objectT));
     }
 
     protected void reindex(T objectT) {
+        indexes.forEach(e -> e.index(objectT));
     }
 
-    @Override
     public T query(int id) {
         T objecT = null;
         if (SessionDB.connect()) {
@@ -53,7 +62,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -61,7 +70,6 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
         return objecT;
     }
 
-    @Override
     public T query(String colName, String unique) {
         T objecT = null;
         if (SessionDB.connect()) {
@@ -74,7 +82,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -82,7 +90,6 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
         return objecT;
     }
 
-    @Override
     public T query(String col1Name, String uni, String col2Name, String que) {
         T objecT = null;
         if (SessionDB.connect()) {
@@ -95,7 +102,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -103,7 +110,6 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
         return objecT;
     }
 
-    @Override
     public HashMap<Integer, T> query(ArrayList<Integer> ids) {
         HashMap<Integer, T> returnMap = new HashMap<>();
         if (SessionDB.connect() && ids.size() > 0) {
@@ -125,7 +131,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                 }
                 printSql(sql.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql.toString(), ex);
+                Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql.toString(), ex);
             } finally {
                 SessionDB.close();
             }
@@ -133,7 +139,6 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
         return returnMap;
     }
 
-    @Override
     public HashMap<Integer, T> queryAll() {
         //table.clear();
         HashMap<Integer, T> returnMap = new HashMap<>();
@@ -148,7 +153,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -156,8 +161,6 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
         return returnMap;
     }
 
-
-    @Override
     public int insert(T objectT) {
         int rows = 0;
         if (objectT.getId() == 0) {
@@ -175,7 +178,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                     }
                     printSql(sql);
                 } catch (SQLException ex) {
-                    Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+                    Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
                 } finally {
                     SessionDB.close();
                 }
@@ -184,7 +187,6 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
         return rows;
     }
 
-    @Override
     public int update(T objectT) {
         int rows = 0;
         if (SessionDB.connect()) {
@@ -195,7 +197,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                 reindex(objectT);
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -203,7 +205,6 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
         return rows;
     }
 
-    @Override
     public int updateObject(T objectT) {
         int rows = 0;
         if (objectT.getId() > 0) {
@@ -218,7 +219,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                     }
                     printSql(sql);
                 } catch (SQLException ex) {
-                    Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+                    Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
                 } finally {
                     SessionDB.close();
                 }
@@ -227,12 +228,10 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
         return rows;
     }
 
-    @Override
     public int delete(T objecT) {
         return delete(objecT.getId());
     }
 
-    @Override
     public int delete(int id) {
         int rows = 0;
         if (SessionDB.connect()) {
@@ -242,7 +241,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                 deindex(id);
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -250,14 +249,12 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
         return rows;
     }
 
-    @Override
     public int deleteSome(ArrayList<T> toDelete) {
         ArrayList<Integer> idsToDelete = new ArrayList<>();
         toDelete.forEach(e -> idsToDelete.add(e.getId()));
         return deleteSomeIds(idsToDelete);
     }
 
-    @Override
     public int deleteSomeIds(ArrayList<Integer> toDelete) {
         int rows = 0;
         if (SessionDB.connect() && toDelete.size() > 0) {
@@ -280,7 +277,7 @@ public class GenericDao<T extends Identifiable> implements IGenericDao<T> {
                 SessionDB.getConn().setAutoCommit(true);
                 printSql(sql.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, sql.toString(), ex);
+                Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql.toString(), ex);
             } finally {
                 SessionDB.close();
             }

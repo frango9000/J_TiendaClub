@@ -1,5 +1,7 @@
 package tiendaclub.data;
 
+import tiendaclub.data.framework.dao.ActivableDao;
+import tiendaclub.data.framework.dao.IdentifiableDao;
 import tiendaclub.model.models.*;
 
 public class DataStore {
@@ -8,62 +10,62 @@ public class DataStore {
     private static Sede sede;
     private static Usuario user;
 
-    private static PersistableDao<Acceso> accesos = new PersistableDao<>(Acceso.TABLE_NAME);
-    private static PersistableDao<Sede> sedes = new PersistableDao<>(Sede.TABLE_NAME);
-    private static PersistableDao<Caja> cajas = new PersistableDao<>(Caja.TABLE_NAME);
-    private static PersistableDao<Categoria> categorias = new PersistableDao<>(Categoria.TABLE_NAME);
-    private static PersistableDao<CierreZ> cierreZs = new PersistableDao<>(CierreZ.TABLE_NAME);
-    private static PersistableDao<Compra> compras = new PersistableDao<>(Compra.TABLE_NAME);
-    private static PersistableDao<Comprado> comprados = new PersistableDao<>(Comprado.TABLE_NAME);
-    private static PersistableDao<Producto> productos = new PersistableDao<>(Producto.TABLE_NAME);
-    private static PersistableDao<Proveedor> proveedores = new PersistableDao<>(Proveedor.TABLE_NAME);
-    private static PersistableDao<Socio> socios = new PersistableDao<>(Socio.TABLE_NAME);
-    private static PersistableDao<Transferencia> transferencias = new PersistableDao<>(Transferencia.TABLE_NAME);
+    private static IdentifiableDao<Acceso> accesos = new IdentifiableDao<>(Acceso.TABLE_NAME);
+    private static IdentifiableDao<Sede> sedes = new IdentifiableDao<>(Sede.TABLE_NAME);
+    private static IdentifiableDao<Caja> cajas = new IdentifiableDao<>(Caja.TABLE_NAME);
+    private static IdentifiableDao<Categoria> categorias = new IdentifiableDao<>(Categoria.TABLE_NAME);
+    private static IdentifiableDao<CierreZ> cierreZs = new IdentifiableDao<>(CierreZ.TABLE_NAME);
+    private static IdentifiableDao<Compra> compras = new IdentifiableDao<>(Compra.TABLE_NAME);
+    private static IdentifiableDao<Comprado> comprados = new IdentifiableDao<>(Comprado.TABLE_NAME);
+    private static IdentifiableDao<Producto> productos = new IdentifiableDao<>(Producto.TABLE_NAME);
+    private static IdentifiableDao<Proveedor> proveedores = new IdentifiableDao<>(Proveedor.TABLE_NAME);
+    private static IdentifiableDao<Socio> socios = new IdentifiableDao<>(Socio.TABLE_NAME);
+    private static IdentifiableDao<Transferencia> transferencias = new IdentifiableDao<>(Transferencia.TABLE_NAME);
     private static ActivableDao<Usuario> usuarios = new ActivableDao<>(Usuario.TABLE_NAME);
-    private static PersistableDao<Vendido> vendidos = new PersistableDao<>(Vendido.TABLE_NAME);
-    private static PersistableDao<Venta> ventas = new PersistableDao<>(Venta.TABLE_NAME);
+    private static IdentifiableDao<Vendido> vendidos = new IdentifiableDao<>(Vendido.TABLE_NAME);
+    private static IdentifiableDao<Venta> ventas = new IdentifiableDao<>(Venta.TABLE_NAME);
 
-    public static PersistableDao<Acceso> getAccesos() {
+    public static IdentifiableDao<Acceso> getAccesos() {
         return accesos;
     }
 
-    public static PersistableDao<Sede> getSedes() {
+    public static IdentifiableDao<Sede> getSedes() {
         return sedes;
     }
 
-    public static PersistableDao<Caja> getCajas() {
+    public static IdentifiableDao<Caja> getCajas() {
         return cajas;
     }
 
-    public static PersistableDao<Categoria> getCategorias() {
+    public static IdentifiableDao<Categoria> getCategorias() {
         return categorias;
     }
 
-    public static PersistableDao<CierreZ> getCierreZs() {
+    public static IdentifiableDao<CierreZ> getCierreZs() {
         return cierreZs;
     }
 
-    public static PersistableDao<Compra> getCompras() {
+    public static IdentifiableDao<Compra> getCompras() {
         return compras;
     }
 
-    public static PersistableDao<Comprado> getComprados() {
+    public static IdentifiableDao<Comprado> getComprados() {
         return comprados;
     }
 
-    public static PersistableDao<Producto> getProductos() {
+    public static IdentifiableDao<Producto> getProductos() {
         return productos;
     }
 
-    public static PersistableDao<Proveedor> getProveedores() {
+    public static IdentifiableDao<Proveedor> getProveedores() {
         return proveedores;
     }
 
-    public static PersistableDao<Socio> getSocios() {
+    public static IdentifiableDao<Socio> getSocios() {
         return socios;
     }
 
-    public static PersistableDao<Transferencia> getTransferencias() {
+    public static IdentifiableDao<Transferencia> getTransferencias() {
         return transferencias;
     }
 
@@ -71,11 +73,11 @@ public class DataStore {
         return usuarios;
     }
 
-    public static PersistableDao<Vendido> getVendidos() {
+    public static IdentifiableDao<Vendido> getVendidos() {
         return vendidos;
     }
 
-    public static PersistableDao<Venta> getVentas() {
+    public static IdentifiableDao<Venta> getVentas() {
         return ventas;
     }
 
