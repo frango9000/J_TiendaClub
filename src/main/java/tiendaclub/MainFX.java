@@ -9,6 +9,7 @@ import tiendaclub.control.MainPaneControl;
 import tiendaclub.control.PropsLoader;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionDB;
+import tiendaclub.data.SessionStore;
 import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
@@ -65,16 +66,16 @@ public class MainFX extends Application {
                 FxDialogs.showWarning("No Sede", "Debes crear una sede y una caja");
             else {
                 if (sedes.size() == 1)
-                    DataStore.setSede(sedes.iterator().next());
+                    SessionStore.setSede(sedes.iterator().next());
                 else
-                    DataStore.setSede(FxDialogs.showChoices("Sede:", "Sedes:", null, sedes));
-                Collection<Caja> cajas = DataStore.getSede().getCajas().values();
+                    SessionStore.setSede(FxDialogs.showChoices("Sede:", "Sedes:", null, sedes));
+                Collection<Caja> cajas = SessionStore.getSede().getCajas().values();
                 if (cajas.size() == 0)
                     FxDialogs.showWarning("No caja", "Debes crear una caja");
                 else if (cajas.size() == 1)
-                    DataStore.setCaja(cajas.iterator().next());
+                    SessionStore.setCaja(cajas.iterator().next());
                 else
-                    DataStore.setCaja(FxDialogs.showChoices("Caja:", "Cajas:", null, cajas));
+                    SessionStore.setCaja(FxDialogs.showChoices("Caja:", "Cajas:", null, cajas));
             }
         }
     }

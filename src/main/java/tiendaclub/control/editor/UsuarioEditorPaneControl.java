@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.SessionStore;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FXMLStage;
@@ -142,7 +143,7 @@ public class UsuarioEditorPaneControl extends BorderPane {
 
     private boolean validFields() {
         if (txUsername.getText().trim().length() < 1) return false;
-        return cbAcceso.getSelectionModel().getSelectedItem().getId() >= DataStore.getUser().getIdAcceso();
+        return cbAcceso.getSelectionModel().getSelectedItem().getId() >= SessionStore.getUsuario().getIdAcceso();
     }
 
     public String askPass() {

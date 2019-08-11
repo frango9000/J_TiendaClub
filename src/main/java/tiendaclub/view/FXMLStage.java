@@ -35,4 +35,14 @@ public class FXMLStage extends Stage {
         setScene(new Scene(root));
         root.requestFocus();
     }
+
+    public static Pane getPane(String url) {
+        Pane root = null;
+        try {
+            root = FXMLLoader.load(FXMLStage.class.getResource(url));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return root;
+    }
 }

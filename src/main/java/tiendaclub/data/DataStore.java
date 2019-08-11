@@ -6,20 +6,16 @@ import tiendaclub.model.models.*;
 
 public class DataStore {
 
-    private static Caja caja;
-    private static Sede sede;
-    private static Usuario user;
-
     private static IdentifiableDao<Acceso> accesos = new IdentifiableDao<>(Acceso.TABLE_NAME);
-    private static IdentifiableDao<Sede> sedes = new IdentifiableDao<>(Sede.TABLE_NAME);
-    private static IdentifiableDao<Caja> cajas = new IdentifiableDao<>(Caja.TABLE_NAME);
-    private static IdentifiableDao<Categoria> categorias = new IdentifiableDao<>(Categoria.TABLE_NAME);
+    private static ActivableDao<Sede> sedes = new ActivableDao<>(Sede.TABLE_NAME);
+    private static ActivableDao<Caja> cajas = new ActivableDao<>(Caja.TABLE_NAME);
+    private static ActivableDao<Categoria> categorias = new ActivableDao<>(Categoria.TABLE_NAME);
     private static IdentifiableDao<CierreZ> cierreZs = new IdentifiableDao<>(CierreZ.TABLE_NAME);
     private static IdentifiableDao<Compra> compras = new IdentifiableDao<>(Compra.TABLE_NAME);
     private static IdentifiableDao<Comprado> comprados = new IdentifiableDao<>(Comprado.TABLE_NAME);
-    private static IdentifiableDao<Producto> productos = new IdentifiableDao<>(Producto.TABLE_NAME);
-    private static IdentifiableDao<Proveedor> proveedores = new IdentifiableDao<>(Proveedor.TABLE_NAME);
-    private static IdentifiableDao<Socio> socios = new IdentifiableDao<>(Socio.TABLE_NAME);
+    private static ActivableDao<Producto> productos = new ActivableDao<>(Producto.TABLE_NAME);
+    private static ActivableDao<Proveedor> proveedores = new ActivableDao<>(Proveedor.TABLE_NAME);
+    private static ActivableDao<Socio> socios = new ActivableDao<>(Socio.TABLE_NAME);
     private static IdentifiableDao<Transferencia> transferencias = new IdentifiableDao<>(Transferencia.TABLE_NAME);
     private static ActivableDao<Usuario> usuarios = new ActivableDao<>(Usuario.TABLE_NAME);
     private static IdentifiableDao<Vendido> vendidos = new IdentifiableDao<>(Vendido.TABLE_NAME);
@@ -29,15 +25,15 @@ public class DataStore {
         return accesos;
     }
 
-    public static IdentifiableDao<Sede> getSedes() {
+    public static ActivableDao<Sede> getSedes() {
         return sedes;
     }
 
-    public static IdentifiableDao<Caja> getCajas() {
+    public static ActivableDao<Caja> getCajas() {
         return cajas;
     }
 
-    public static IdentifiableDao<Categoria> getCategorias() {
+    public static ActivableDao<Categoria> getCategorias() {
         return categorias;
     }
 
@@ -53,15 +49,15 @@ public class DataStore {
         return comprados;
     }
 
-    public static IdentifiableDao<Producto> getProductos() {
+    public static ActivableDao<Producto> getProductos() {
         return productos;
     }
 
-    public static IdentifiableDao<Proveedor> getProveedores() {
+    public static ActivableDao<Proveedor> getProveedores() {
         return proveedores;
     }
 
-    public static IdentifiableDao<Socio> getSocios() {
+    public static ActivableDao<Socio> getSocios() {
         return socios;
     }
 
@@ -92,30 +88,6 @@ public class DataStore {
         DataStore.getCategorias().queryAll();
         DataStore.getProductos().queryAll();
         SessionDB.setAutoclose(true);
-
     }
 
-    public static Caja getCaja() {
-        return caja;
-    }
-
-    public static void setCaja(Caja caja) {
-        DataStore.caja = caja;
-    }
-
-    public static Sede getSede() {
-        return sede;
-    }
-
-    public static void setSede(Sede sede) {
-        DataStore.sede = sede;
-    }
-
-    public static Usuario getUser() {
-        return user;
-    }
-
-    public static void setUser(Usuario user) {
-        DataStore.user = user;
-    }
 }
