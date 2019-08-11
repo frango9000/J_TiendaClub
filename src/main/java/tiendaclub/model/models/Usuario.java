@@ -55,7 +55,7 @@ public class Usuario extends AbstractUsuario {
         pst.setString(6, direccion);
         pst.setString(7, descripcion);
         pst.setInt(8, idAcceso);
-        pst.setBoolean(9, activo);
+        pst.setBoolean(9, isActivo());
     }
 
     public void updateObject(ResultSet rs) throws SQLException {

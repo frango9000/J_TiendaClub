@@ -38,7 +38,7 @@ public class Caja extends AbstractCaja {
     public void buildStatement(PreparedStatement pst) throws SQLException {
         pst.setInt(1, idSede);
         pst.setString(2, nombre);
-        pst.setBoolean(3, activo);
+        pst.setBoolean(3, isActivo());
     }
 
     @Override

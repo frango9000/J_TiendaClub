@@ -37,7 +37,7 @@ public class Sede extends AbstractSede {
         pst.setString(1, nombre);
         pst.setString(2, telefono);
         pst.setString(3, direccion);
-        pst.setBoolean(4, activo);
+        pst.setBoolean(4, isActivo());
     }
 
     @Override

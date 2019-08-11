@@ -7,13 +7,13 @@ public abstract class AbstractCategoria extends Activable {
     protected AbstractCategoria(int id, String nombre, boolean activo) {
         super(id, activo);
         this.nombre = nombre;
-        this.activo = activo;
+        setActivo(activo);
     }
 
     protected AbstractCategoria(String nombre, boolean activo) {
         super(0, activo);
         this.nombre = nombre;
-        this.activo = activo;
+        setActivo(activo);
     }
 
     public String getNombre() {

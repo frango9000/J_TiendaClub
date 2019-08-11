@@ -42,7 +42,7 @@ public class Socio extends AbstractSocio {
         pst.setString(4, direccion);
         pst.setString(5, descripcion);
         pst.setTimestamp(6, DateUtils.toTimestamp(fechaIn));
-        pst.setBoolean(7, activo);
+        pst.setBoolean(7, isActivo());
     }
 
     @Override

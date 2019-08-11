@@ -42,7 +42,7 @@ public class Producto extends AbstractProducto {
         pst.setInt(3, precioVenta);
         pst.setInt(4, iva);
         pst.setInt(5, idCategoria);
-        pst.setBoolean(6, activo);
+        pst.setBoolean(6, isActivo());
     }
 
     @Override

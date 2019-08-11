@@ -40,7 +40,7 @@ public class Proveedor extends AbstractProveedor {
         pst.setString(4, email);
         pst.setString(5, direccion);
         pst.setString(6, descripcion);
-        pst.setBoolean(7, activo);
+        pst.setBoolean(7, isActivo());
     }
 
     public void updateObject(ResultSet rs) throws SQLException {

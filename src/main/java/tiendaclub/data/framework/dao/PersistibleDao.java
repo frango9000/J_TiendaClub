@@ -140,7 +140,6 @@ public class PersistibleDao<T extends IPersistible> implements Globals {
     }
 
     public HashMap<Integer, T> queryAll() {
-        //table.clear();
         HashMap<Integer, T> returnMap = new HashMap<>();
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s", TABLE_NAME);
@@ -149,7 +148,7 @@ public class PersistibleDao<T extends IPersistible> implements Globals {
                 while (rs.next()) {
                     T objecT = (T) DataFactory.buildObject(rs);
                     index(objecT);
-                    returnMap.putIfAbsent(objecT.getId(), objecT);
+                    returnMap.put(objecT.getId(), objecT);
                 }
                 printSql(sql);
             } catch (SQLException ex) {

@@ -1,19 +1,27 @@
 package tiendaclub.model.models.abstracts;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public abstract class Activable extends Identifiable {
-    protected boolean activo;
+    protected BooleanProperty activo;
 
-    protected Activable(int id, boolean activo) {
-        super(id);
-        this.activo = activo;
-    }
-
-    public boolean isActivo() {
+    public BooleanProperty activeProperty() {
+        if (activo == null) activo = new SimpleBooleanProperty(this, "activo");
         return activo;
     }
 
+    protected Activable(int id, boolean activo) {
+        super(id);
+        activeProperty().set(activo);
+    }
+
+    public boolean isActivo() {
+        return activeProperty().get();
+    }
+
     public void setActivo(boolean activo) {
-        this.activo = activo;
+        activeProperty().set(activo);
     }
 
     public void toggleActivo() {
