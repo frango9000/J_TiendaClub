@@ -9,13 +9,12 @@ import tiendaclub.model.models.Usuario;
 import tiendaclub.model.models.abstracts.Activable;
 import tiendaclub.view.FxDialogs;
 
+import java.io.IOException;
 import java.util.Collection;
 
 public abstract class ActiveTableControl<T extends Activable> extends TableControl<T> {
 
     protected boolean showInactive = false;
-
-    protected ActivableDao<T> dataOrigin;
     @FXML
     protected Button fxBtnShowHide;
     @FXML
@@ -24,7 +23,14 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     @FXML
     protected void fxBtnShowHideAction(ActionEvent actionEvent) {
         showInactive = !showInactive;
-        addContent(true);
+        if (showInactive) {
+            getDataOrigin().getActive(false).forEach(e -> {
+                if (!listedObjects.contains(e))
+                    listedObjects.add(e);
+            });
+        } else {
+            listedObjects.removeAll(getDataOrigin().getActive(false));
+        }
     }
 
     @FXML
@@ -45,24 +51,35 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     }
 
     @Override
+    protected abstract ActivableDao<T> getDataOrigin();
+
+    @Override
     protected void addContent(boolean clean) {
-        if (clean)
-            listedObjects.clear();
-
-
         Collection<T> list = null;
         if (showInactive) {
-            list = dataOrigin.getCache().values();
+            list = getDataOrigin().getCache().values();
             fxBtnShowHide.setText("Todos");
         } else {
-            list = dataOrigin.getActive(true);
+            list = getDataOrigin().getActive(true);
             fxBtnShowHide.setText("Activos");
         }
 
-        list.forEach(e -> {
-            if (!listedObjects.contains(e))
-                listedObjects.add(e);
-        });
+        if (clean) {
+            listedObjects.clear();
+            listedObjects.addAll(list);
+        } else {
+            list.forEach(e -> {
+                if (!listedObjects.contains(e))
+                    listedObjects.add(e);
+            });
+        }
     }
 
+    @Override
+    protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
+        super.fxBtnEditAction(actionEvent);
+        T selected = fxTable.getSelectionModel().getSelectedItem();
+        if (!showInactive && !selected.isActivo())
+            listedObjects.remove(selected);
+    }
 }

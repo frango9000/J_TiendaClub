@@ -17,13 +17,19 @@ public class ActivableDao<T extends Activable> extends IdentifiableDao<T> {
         }
 
         @Override
-        public void index(T objectV) {
-            index.get(objectV.isActivo()).put(objectV.getId(), objectV);
+        public void index(T objectT) {
+            index.get(objectT.isActivo()).put(objectT.getId(), objectT);
         }
 
         @Override
         public void deindex(T objectT) {
             index.get(objectT.isActivo()).remove(objectT.getId());
+        }
+
+        @Override
+        public void reindex(T objectT) {
+            index.get(!objectT.isActivo()).remove(objectT.getId());
+            index(objectT);
         }
     };
 

@@ -47,7 +47,7 @@ public class PersistibleDao<T extends IPersistible> implements Globals {
     }
 
     protected void reindex(T objectT) {
-        indexes.forEach(e -> e.index(objectT));
+        indexes.forEach(e -> e.reindex(objectT));
     }
 
     public T query(int id) {
@@ -209,13 +209,14 @@ public class PersistibleDao<T extends IPersistible> implements Globals {
         if (objectT.getId() > 0) {
             if (SessionDB.connect()) {
                 String sql = String.format("SELECT * FROM %s WHERE %s = '%d'", TABLE_NAME, ID_COL_NAME, objectT.getId());
+                deindex(objectT);
                 try (Statement ps = SessionDB.getConn().createStatement();
                      ResultSet rs = ps.executeQuery(sql)) {
                     if (rs.next()) {
                         objectT.updateObject(rs);
                         rows++;
-                        reindex(objectT);
                     }
+                    index(objectT);
                     printSql(sql);
                 } catch (SQLException ex) {
                     Logger.getLogger(PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);

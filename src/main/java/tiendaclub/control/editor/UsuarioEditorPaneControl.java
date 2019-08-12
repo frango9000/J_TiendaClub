@@ -1,15 +1,8 @@
-/**
- * Sample Skeleton for 'UserEditorPane.fxml' Controller Class
- */
-
 package tiendaclub.control.editor;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
@@ -18,12 +11,7 @@ import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
 
-import java.io.IOException;
-
-public class UsuarioEditorPaneControl extends BorderPane {
-
-    private Usuario usuario;
-    private boolean creating = true;
+public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
 
     @FXML
     private TextField txUsername;
@@ -46,114 +34,86 @@ public class UsuarioEditorPaneControl extends BorderPane {
     @FXML
     private CheckBox fxCheckActivo;
 
-    private static UsuarioEditorPaneControl controller;
-
-    public static UsuarioEditorPaneControl getController() {
-        return controller;
-    }
-
     public static Pane loadFXML() {
-        String url = "/fxml/editor/UserEditorPane.fxml";
-        Pane root = null;
-        try {
-            root = FXMLLoader.load(FXMLStage.class.getResource(url));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return root;
+        return FXMLStage.getPane("/fxml/editor/UserEditorPane.fxml");
     }
+
 
     @FXML
     void initialize() {
-        controller = this;
         cbAcceso.getItems().addAll(DataStore.getAccesos().getCache().values());
         cbAcceso.getSelectionModel().select(0);
         txButtonPassword.setVisible(false);
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-        if (usuario != null) {
+    @Override
+    public void setEditee(Usuario editee) {
+        this.editee = editee;
+        if (editee != null) {
             creating = false;
             txUsername.setEditable(false);
             txButtonPassword.setVisible(true);
-            String txt = "";
-            txId.setText((txt = usuario.getId() + "").length() > 0 ? txt : "");
-            txUsername.setText((txt = usuario.getUsername()) != null ? txt : "");
-            txNombre.setText((txt = usuario.getNombre()) != null ? txt : "");
-            txTelefono.setText((txt = usuario.getTelefono()) != null ? txt : "");
-            txEmail.setText((txt = usuario.getEmail()) != null ? txt : "");
-            txDireccion.setText((txt = usuario.getDireccion()) != null ? txt : "");
-            txDescripcion.setText((txt = usuario.getDescripcion()) != null ? txt : "");
-            cbAcceso.getSelectionModel().select(usuario.getAcceso());
-            fxCheckActivo.setSelected(usuario.isActivo());
+            setFields();
         }
     }
 
-    private void updateUsuario(Usuario usuario) {
+    @Override
+    protected void updateEditee() {
         String txt = "";
-        usuario.setNombre((txt = txNombre.getText().trim()).length() > 0 ? txt : null);
-        usuario.setTelefono((txt = txTelefono.getText().trim()).length() > 0 ? txt : null);
-        usuario.setEmail((txt = txEmail.getText().trim()).length() > 0 ? txt : null);
-        usuario.setDireccion((txt = txDireccion.getText().trim()).length() > 0 ? txt : null);
-        usuario.setDescripcion((txt = txDescripcion.getText().trim()).length() > 0 ? txt : null);
+        editee.setNombre((txt = txNombre.getText().trim()).length() > 0 ? txt : null);
+        editee.setTelefono((txt = txTelefono.getText().trim()).length() > 0 ? txt : null);
+        editee.setEmail((txt = txEmail.getText().trim()).length() > 0 ? txt : null);
+        editee.setDireccion((txt = txDireccion.getText().trim()).length() > 0 ? txt : null);
+        editee.setDescripcion((txt = txDescripcion.getText().trim()).length() > 0 ? txt : null);
         if (!creating) {
-            usuario.setAcceso(cbAcceso.getSelectionModel().getSelectedItem());
-            usuario.setActivo(fxCheckActivo.isSelected());
+            editee.setAcceso(cbAcceso.getSelectionModel().getSelectedItem());
+            editee.setActivo(fxCheckActivo.isSelected());
         }
     }
 
-
-    @FXML
-    void fxBtnSaveAction(ActionEvent event) {
-        if (validFields()) {
-            int rows = 0;
-            if (creating) {
-                String pass = askPass();
-                usuario = new Usuario(txUsername.getText().trim(), pass, cbAcceso.getSelectionModel().getSelectedItem(), fxCheckActivo.isSelected());
-                updateUsuario(usuario);
-                rows = usuario.insertIntoDB();
-            } else {
-                updateUsuario(usuario);
-                rows = usuario.updateOnDb();
-            }
-            if (rows > 0) {
-                FxDialogs.showInfo("Success", "Usuario " + (creating ? "creado" : "modificado"));
-                ((Node) event.getSource()).getScene().getWindow().hide();
-            } else FxDialogs.showError("Fail!", "Usuario no " + (creating ? "creado" : "modificado"));
-        } else FxDialogs.showError("Fail!", "Invalid Fields");
-    }
-    @FXML
-    void fxBtnPasswordAction(ActionEvent event) {
+    @Override
+    protected Usuario buildEditee() {
         String pass = askPass();
-        if (!pass.equals(usuario.getPass())) {
-            usuario.setPass(pass);
-            usuario.updateOnDb();
-        }
+        editee = new Usuario(txUsername.getText().trim(), pass, cbAcceso.getSelectionModel().getSelectedItem(), fxCheckActivo.isSelected());
+        updateEditee();
+        return editee;
     }
 
-    @FXML
-    private void fxBtnDiscardAction(ActionEvent actionEvent) {
-        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+    @Override
+    protected void setFields() {
+        String txt = "";
+        txId.setText((txt = editee.getId() + "").length() > 0 ? txt : "");
+        txUsername.setText((txt = editee.getUsername()) != null ? txt : "");
+        txNombre.setText((txt = editee.getNombre()) != null ? txt : "");
+        txTelefono.setText((txt = editee.getTelefono()) != null ? txt : "");
+        txEmail.setText((txt = editee.getEmail()) != null ? txt : "");
+        txDireccion.setText((txt = editee.getDireccion()) != null ? txt : "");
+        txDescripcion.setText((txt = editee.getDescripcion()) != null ? txt : "");
+        cbAcceso.getSelectionModel().select(editee.getAcceso());
+        fxCheckActivo.setSelected(editee.isActivo());
     }
 
-    private boolean validFields() {
+    protected boolean validFields() {
         if (txUsername.getText().trim().length() < 1) return false;
         return cbAcceso.getSelectionModel().getSelectedItem().getId() >= SessionStore.getUsuario().getIdAcceso();
     }
 
-    public String askPass() {
+    @FXML
+    void fxBtnPasswordAction(ActionEvent event) {
+        String pass = askPass();
+        if (!pass.equals(editee.getPass())) {
+            editee.setPass(pass);
+            editee.updateOnDb();
+        }
+    }
+
+    private String askPass() {
         String pass1;
         String pass2;
         do {
-            pass1 = FxDialogs.showTextInput("Enter password", "Enter password");
-            pass2 = FxDialogs.showTextInput("Verify password", "Verify password");
+            pass1 = FxDialogs.showTextInput("Enter password", "Enter password").trim();
+            pass2 = FxDialogs.showTextInput("Verify password", "Verify password").trim();
         } while (!pass1.equals(pass2) && pass1.length() < 1);
         return pass1;
     }
-
 }

@@ -7,10 +7,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import tiendaclub.MainFX;
+import tiendaclub.control.editor.EditorControl;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.framework.dao.IdentifiableDao;
 import tiendaclub.model.models.abstracts.Identifiable;
+import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
 
 import java.io.IOException;
@@ -18,8 +21,6 @@ import java.util.Collection;
 
 public abstract class TableControl<T extends Identifiable> extends BorderPane {
     protected final ObservableList<T> listedObjects = FXCollections.observableArrayList();
-
-    protected IdentifiableDao<T> dataOrigin;
 
     @FXML
     protected TableView<T> fxTable;
@@ -33,8 +34,6 @@ public abstract class TableControl<T extends Identifiable> extends BorderPane {
         ((BorderPane) MainFX.getMainStage().getScene().getRoot()).setCenter(null);
     }
 
-    protected abstract void fxBtnAddAction(ActionEvent actionEvent) throws IOException;
-
     @FXML
     protected void fxBtnEliminarAction(ActionEvent actionEvent) {
         T selected = fxTable.getSelectionModel().getSelectedItem();
@@ -47,8 +46,6 @@ public abstract class TableControl<T extends Identifiable> extends BorderPane {
             }
         }
     }
-
-    protected abstract void fxBtnEditAction(ActionEvent actionEvent) throws IOException;
 
     @FXML
     protected void fxBtnRefreshAction(ActionEvent actionEvent) {
@@ -70,7 +67,7 @@ public abstract class TableControl<T extends Identifiable> extends BorderPane {
         if (clean)
             listedObjects.clear();
 
-        Collection<T> list = dataOrigin.getCache().values();
+        Collection<T> list = getDataOrigin().getCache().values();
 
         list.forEach(e -> {
             if (!listedObjects.contains(e))
@@ -81,4 +78,29 @@ public abstract class TableControl<T extends Identifiable> extends BorderPane {
     protected void addContent() {
         addContent(false);
     }
+
+    @FXML
+    protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
+        FXMLStage stage = new FXMLStage(getEditorPane(), "((Stage)getScene().getWindow()).getTitle()");
+        stage.showAndWait();
+        fxTable.refresh();
+        addContent();
+    }
+
+    @FXML
+    protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
+        T selected = fxTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            FXMLStage stage = new FXMLStage(getEditorPane(), "((Stage)getScene().getWindow()).getTitle()");
+            getEditorControl().setEditee(selected);
+            stage.showAndWait();
+            fxTable.refresh();
+        }
+    }
+
+    protected abstract IdentifiableDao<T> getDataOrigin();
+
+    protected abstract Pane getEditorPane() throws IOException;
+
+    protected abstract EditorControl<T> getEditorControl();
 }

@@ -5,7 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import tiendaclub.data.DataStore;
+import tiendaclub.control.editor.EditorControl;
+import tiendaclub.data.framework.dao.ActivableDao;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
 
@@ -26,24 +27,39 @@ public class SedesPaneControl extends ActiveTableControl<Sede> {
 
     @FXML
     void initialize() {
-        dataOrigin = DataStore.getSedes();
 
         fxColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
         fxColumnSede.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         fxColumnTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         fxColumnDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         fxTable.setItems(listedObjects);
-        listedObjects.addAll(DataStore.getSedes().getCache().values());
+
+        addContent();
     }
 
 
     @FXML
-    protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
+    protected void fxBtnAddAction(ActionEvent actionEvent) {
 
     }
 
     @FXML
-    protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
+    protected void fxBtnEditAction(ActionEvent actionEvent) {
 
+    }
+
+    @Override
+    protected ActivableDao<Sede> getDataOrigin() {
+        return null;
+    }
+
+    @Override
+    protected Pane getEditorPane() throws IOException {
+        return null;
+    }
+
+    @Override
+    protected EditorControl<Sede> getEditorControl() {
+        return null;
     }
 }

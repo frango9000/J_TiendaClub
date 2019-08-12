@@ -1,13 +1,14 @@
 package tiendaclub.control.table;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import tiendaclub.control.editor.UsuarioEditorPaneControl;
+import tiendaclub.control.editor.EditorControl;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.framework.dao.ActivableDao;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FXMLStage;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 public class UsuariosPaneControl extends ActiveTableControl<Usuario> {
 
+    private EditorControl<Usuario> control;
     @FXML
     private TableColumn<Usuario, String> fxColumnUser;
     @FXML
@@ -28,8 +30,8 @@ public class UsuariosPaneControl extends ActiveTableControl<Usuario> {
     }
 
     @FXML
-    public void initialize() {
-        dataOrigin = DataStore.getUsuarios();
+    public void initialize() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
 
         fxColumnId.setCellValueFactory(new PropertyValueFactory<Usuario, Integer>("id"));
         fxColumnUser.setCellValueFactory(new PropertyValueFactory<Usuario, String>("username"));
@@ -42,27 +44,22 @@ public class UsuariosPaneControl extends ActiveTableControl<Usuario> {
         addContent();
     }
 
-    @FXML
-    protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
-        Pane pane = UsuarioEditorPaneControl.loadFXML();
-        FXMLStage stage = new FXMLStage(pane, "Usuario");
-        stage.showAndWait();
-        fxTable.refresh();
-        addContent();
+
+    @Override
+    protected ActivableDao<Usuario> getDataOrigin() {
+        return DataStore.getUsuarios();
     }
 
-    @FXML
-    protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
-        Usuario selected = fxTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            Pane pane = UsuarioEditorPaneControl.loadFXML();
-            UsuarioEditorPaneControl control = UsuarioEditorPaneControl.getController();
-            control.setUsuario(selected);
-            FXMLStage stage = new FXMLStage(pane, "Usuario");
-            stage.showAndWait();
-            if (!showInactive && !selected.isActivo())
-                listedObjects.remove(selected);
-            fxTable.refresh();
-        }
+    @Override
+    protected Pane getEditorPane() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editor/UserEditorPane.fxml"));
+        Pane pane = loader.load();
+        control = loader.getController();
+        return pane;
+    }
+
+    @Override
+    protected EditorControl<Usuario> getEditorControl() {
+        return control;
     }
 }
