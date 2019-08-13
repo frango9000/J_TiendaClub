@@ -14,23 +14,23 @@ import tiendaclub.view.FxDialogs;
 public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
 
     @FXML
-    private TextField txUsername;
+    private TextField fxUsername;
     @FXML
-    private TextField txNombre;
+    private TextField fxNombre;
     @FXML
-    private TextField txTelefono;
+    private TextField fxTelefono;
     @FXML
-    private TextField txEmail;
+    private TextField fxEmail;
     @FXML
-    private ComboBox<Acceso> cbAcceso;
+    private ComboBox<Acceso> fxCbxAcceso;
     @FXML
-    private TextArea txDireccion;
+    private TextArea fxDireccion;
     @FXML
-    private TextArea txDescripcion;
+    private TextArea fxDescripcion;
     @FXML
-    private TextField txId;
+    private TextField fxId;
     @FXML
-    private Button txButtonPassword;
+    private Button fxButtonPassword;
     @FXML
     private CheckBox fxCheckActivo;
 
@@ -41,9 +41,9 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
 
     @FXML
     void initialize() {
-        cbAcceso.getItems().addAll(DataStore.getAccesos().getCache().values());
-        cbAcceso.getSelectionModel().select(0);
-        txButtonPassword.setVisible(false);
+        fxCbxAcceso.getItems().addAll(DataStore.getAccesos().getCache().values());
+        fxCbxAcceso.getSelectionModel().select(0);
+        fxButtonPassword.setVisible(false);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
         this.editee = editee;
         if (editee != null) {
             creating = false;
-            txUsername.setEditable(false);
-            txButtonPassword.setVisible(true);
+            fxUsername.setEditable(false);
+            fxButtonPassword.setVisible(true);
             setFields();
         }
     }
@@ -60,21 +60,19 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
     @Override
     protected void updateEditee() {
         String txt = "";
-        editee.setNombre((txt = txNombre.getText().trim()).length() > 0 ? txt : null);
-        editee.setTelefono((txt = txTelefono.getText().trim()).length() > 0 ? txt : null);
-        editee.setEmail((txt = txEmail.getText().trim()).length() > 0 ? txt : null);
-        editee.setDireccion((txt = txDireccion.getText().trim()).length() > 0 ? txt : null);
-        editee.setDescripcion((txt = txDescripcion.getText().trim()).length() > 0 ? txt : null);
-        if (!creating) {
-            editee.setAcceso(cbAcceso.getSelectionModel().getSelectedItem());
-            editee.setActivo(fxCheckActivo.isSelected());
-        }
+        editee.setNombre(getTextOrNull(fxNombre));
+        editee.setTelefono(getTextOrNull(fxTelefono));
+        editee.setEmail(getTextOrNull(fxEmail));
+        editee.setDireccion(getTextOrNull(fxDireccion));
+        editee.setDescripcion(getTextOrNull(fxDescripcion));
+        editee.setAcceso(fxCbxAcceso.getSelectionModel().getSelectedItem());
+        editee.setActivo(fxCheckActivo.isSelected());
     }
 
     @Override
     protected Usuario buildEditee() {
         String pass = askPass();
-        editee = new Usuario(txUsername.getText().trim(), pass, cbAcceso.getSelectionModel().getSelectedItem(), fxCheckActivo.isSelected());
+        editee = new Usuario(getTextOrNull(fxUsername), pass, fxCbxAcceso.getSelectionModel().getSelectedItem());
         updateEditee();
         return editee;
     }
@@ -82,20 +80,20 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
     @Override
     protected void setFields() {
         String txt = "";
-        txId.setText((txt = editee.getId() + "").length() > 0 ? txt : "");
-        txUsername.setText((txt = editee.getUsername()) != null ? txt : "");
-        txNombre.setText((txt = editee.getNombre()) != null ? txt : "");
-        txTelefono.setText((txt = editee.getTelefono()) != null ? txt : "");
-        txEmail.setText((txt = editee.getEmail()) != null ? txt : "");
-        txDireccion.setText((txt = editee.getDireccion()) != null ? txt : "");
-        txDescripcion.setText((txt = editee.getDescripcion()) != null ? txt : "");
-        cbAcceso.getSelectionModel().select(editee.getAcceso());
+        fxId.setText((editee.getId() + ""));
+        fxUsername.setText(getNotNullText(editee.getUsername()));
+        fxNombre.setText(getNotNullText(editee.getNombre()));
+        fxTelefono.setText(getNotNullText(editee.getTelefono()));
+        fxEmail.setText(getNotNullText(editee.getEmail()));
+        fxDireccion.setText(getNotNullText(editee.getDireccion()));
+        fxDescripcion.setText(getNotNullText(editee.getDescripcion()));
+        fxCbxAcceso.getSelectionModel().select(editee.getAcceso());
         fxCheckActivo.setSelected(editee.isActivo());
     }
 
     protected boolean validFields() {
-        if (txUsername.getText().trim().length() < 1) return false;
-        return cbAcceso.getSelectionModel().getSelectedItem().getId() >= SessionStore.getUsuario().getIdAcceso();
+        if (fxUsername.getText().trim().length() < 1) return false;
+        return fxCbxAcceso.getSelectionModel().getSelectedItem().getId() >= SessionStore.getUsuario().getIdAcceso();
     }
 
     @FXML

@@ -35,7 +35,7 @@
             </rowConstraints>
             <children>
                 <Label text="ID"/>
-                <TextField fx:id="txId" editable="false" layoutX="80.0" layoutY="70.0" GridPane.columnIndex="1"/>
+                <TextField fx:id="fxId" editable="false" layoutX="80.0" layoutY="70.0" GridPane.columnIndex="1"/>
                 <Label text="activo" GridPane.rowIndex="8"/>
                 <CheckBox fx:id="fxCheckActivo" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
             </children>

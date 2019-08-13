@@ -43,10 +43,10 @@ public class Venta extends AbstractVenta {
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setInt(1, idUsuario);
-        pst.setInt(2, idCaja);
-        pst.setInt(3, idSocio);
-        pst.setTimestamp(4, DateUtils.toTimestamp(fechahora));
+        pst.setInt(1, getIdUsuario());
+        pst.setInt(2, getIdCaja());
+        pst.setInt(3, getIdSocio());
+        pst.setTimestamp(4, DateUtils.toTimestamp(getFechahora()));
     }
 
     @Override
@@ -70,14 +70,14 @@ public class Venta extends AbstractVenta {
 
     public void setUsuario(Usuario usuario2) {
         if (usuario != null)
-            usuario.getVentas().remove(id);
+            usuario.getVentas().remove(getId());
         this.usuario = usuario2;
         if (usuario != null)
-            usuario.getVentas().put(id, this);
+            usuario.getVentas().put(getId(), this);
     }
 
     private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().get(idUsuario));
+        setUsuario(DataStore.getUsuarios().get(getIdUsuario()));
     }
 
     @Override
@@ -92,14 +92,14 @@ public class Venta extends AbstractVenta {
 
     public void setCaja(Caja caja2) {
         if (caja != null)
-            caja.getVentas().remove(id);
+            caja.getVentas().remove(getId());
         this.caja = caja2;
         if (caja != null)
-            caja.getVentas().put(id, this);
+            caja.getVentas().put(getId(), this);
     }
 
     private void updateCaja() {
-        setCaja(DataStore.getCajas().get(idCaja));
+        setCaja(DataStore.getCajas().get(getIdCaja()));
     }
 
     @Override
@@ -114,14 +114,14 @@ public class Venta extends AbstractVenta {
 
     public void setSocio(Socio socio2) {
         if (socio != null)
-            socio.getVentas().remove(id);
+            socio.getVentas().remove(getId());
         this.socio = socio2;
         if (socio != null)
-            socio.getVentas().put(id, this);
+            socio.getVentas().put(getId(), this);
     }
 
     private void updateSocio() {
-        setSocio(DataStore.getSocios().get(idSocio));
+        setSocio(DataStore.getSocios().get(getIdSocio()));
     }
 
     public HashMap<Integer, Vendido> getVendidos() {

@@ -31,7 +31,7 @@ public class Acceso extends AbstractAcceso {
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setString(1, nivel);
+        pst.setString(1, getNivel());
     }
 
     @Override
@@ -77,6 +77,6 @@ public class Acceso extends AbstractAcceso {
 
     @Override
     public String toString() {
-        return id + " " + nivel;
+        return getId() + " " + getNivel();
     }
 }

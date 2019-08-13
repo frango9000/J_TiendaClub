@@ -5,15 +5,15 @@ public abstract class AbstractSede extends Activable {
     protected String telefono;
     protected String direccion;
 
-    public AbstractSede(int id, String nombre, String telefono, String direccion, boolean activo) {
-        super(id, activo);
+    public AbstractSede(int id, String nombre, String telefono, String direccion) {
+        super(id);
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
     }
 
-    public AbstractSede(String nombre, String telefono, String direccion, boolean activo) {
-        super(0, activo);
+    public AbstractSede(String nombre, String telefono, String direccion) {
+        super(0);
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;

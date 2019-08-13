@@ -20,23 +20,24 @@ public class Sede extends AbstractSede {
     private HashMap<Integer, Transferencia> transferIn = new HashMap<>();
     private HashMap<Integer, Transferencia> transferOut = new HashMap<>();
 
-    public Sede(int id, String nombre, String telefono, String direccion, boolean activo) {
-        super(id, nombre, telefono, direccion, activo);
+    public Sede(int id, String nombre, String telefono, String direccion) {
+        super(id, nombre, telefono, direccion);
     }
 
-    public Sede(String nombre, String telefono, String direccion, boolean activo) {
-        super(nombre, telefono, direccion, activo);
+    public Sede(String nombre, String telefono, String direccion) {
+        super(nombre, telefono, direccion);
     }
 
     public Sede(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+        setActivo(rs.getBoolean(5));
     }
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setString(1, nombre);
-        pst.setString(2, telefono);
-        pst.setString(3, direccion);
+        pst.setString(1, getNombre());
+        pst.setString(2, getTelefono());
+        pst.setString(3, getDireccion());
         pst.setBoolean(4, isActivo());
     }
 
@@ -67,7 +68,7 @@ public class Sede extends AbstractSede {
 
     @Override
     public int insertIntoDB() {
-        return 0;
+        return DataStore.getSedes().insert(this);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class Sede extends AbstractSede {
 
     @Override
     public int deleteFromDb() {
-        return 0;
+        return DataStore.getSedes().delete(this);
     }
 
     @Override
@@ -97,6 +98,6 @@ public class Sede extends AbstractSede {
 
     @Override
     public String toString() {
-        return id + " " + nombre;
+        return getId() + " " + getNombre();
     }
 }

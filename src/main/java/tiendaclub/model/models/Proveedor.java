@@ -17,29 +17,30 @@ public class Proveedor extends AbstractProveedor {
 
     private HashMap<Integer, Compra> compras = new HashMap<>();
 
-    public Proveedor(int id, String nif, String nombre, boolean activo) {
-        super(id, nif, nombre, activo);
+    public Proveedor(int id, String nif, String nombre) {
+        super(id, nif, nombre);
     }
 
-    public Proveedor(String nif, String nombre, boolean activo) {
-        super(nif, nombre, activo);
+    public Proveedor(String nif, String nombre) {
+        super(nif, nombre);
     }
 
     public Proveedor(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getBoolean(4));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3));
         setTelefono(rs.getString(4));
         setEmail(rs.getString(5));
         setDireccion(rs.getString(6));
         setDescripcion(rs.getString(7));
+        setActivo(rs.getBoolean(8));
     }
 
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setString(1, nif);
-        pst.setString(2, nombre);
-        pst.setString(3, telefono);
-        pst.setString(4, email);
-        pst.setString(5, direccion);
-        pst.setString(6, descripcion);
+        pst.setString(1, getNif());
+        pst.setString(2, getNombre());
+        pst.setString(3, getTelefono());
+        pst.setString(4, getEmail());
+        pst.setString(5, getDireccion());
+        pst.setString(6, getDescripcion());
         pst.setBoolean(7, isActivo());
     }
 

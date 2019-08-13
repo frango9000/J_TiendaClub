@@ -20,24 +20,25 @@ public class Caja extends AbstractCaja {
     private HashMap<Integer, CierreZ> cierresZs = new HashMap<>();
     private HashMap<Integer, Venta> ventas = new HashMap<>();
 
-    public Caja(int id, int idSede, String nombre, boolean activo) {
-        super(id, idSede, nombre, activo);
+    public Caja(int id, int idSede, String nombre) {
+        super(id, idSede, nombre);
         updateSede();
     }
 
-    public Caja(int idSede, String nombre, boolean activo) {
-        super(idSede, nombre, activo);
+    public Caja(int idSede, String nombre) {
+        super(idSede, nombre);
         updateSede();
     }
 
     public Caja(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getBoolean(4));
+        this(rs.getInt(1), rs.getInt(2), rs.getString(3));
+        setActivo(rs.getBoolean(4));
     }
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setInt(1, idSede);
-        pst.setString(2, nombre);
+        pst.setInt(1, getIdSede());
+        pst.setString(2, getNombre());
         pst.setBoolean(3, isActivo());
     }
 
@@ -71,14 +72,14 @@ public class Caja extends AbstractCaja {
 
     public void setSede(Sede sede2) {
         if (sede != null)
-            sede.getCajas().remove(id);
+            sede.getCajas().remove(getId());
         this.sede = sede2;
         if (sede != null)
-            sede.getCajas().putIfAbsent(id, this);
+            sede.getCajas().putIfAbsent(getId(), this);
     }
 
     private void updateSede() {
-        setSede(DataStore.getSedes().get(idSede));
+        setSede(DataStore.getSedes().get(getIdSede()));
     }
 
     public HashMap<Integer, CierreZ> getCierresZs() {
@@ -111,6 +112,6 @@ public class Caja extends AbstractCaja {
 
     @Override
     public String toString() {
-        return id + " " + nombre;
+        return getId() + " " + getNombre();
     }
 }

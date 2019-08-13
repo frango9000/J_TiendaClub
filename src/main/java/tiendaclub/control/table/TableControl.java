@@ -22,6 +22,8 @@ import java.util.Collection;
 public abstract class TableControl<T extends Identifiable> extends BorderPane {
     protected final ObservableList<T> listedObjects = FXCollections.observableArrayList();
 
+    protected EditorControl<T> editorControl;
+
     @FXML
     protected TableView<T> fxTable;
 
@@ -102,5 +104,7 @@ public abstract class TableControl<T extends Identifiable> extends BorderPane {
 
     protected abstract Pane getEditorPane() throws IOException;
 
-    protected abstract EditorControl<T> getEditorControl();
+    protected EditorControl<T> getEditorControl() {
+        return editorControl;
+    }
 }

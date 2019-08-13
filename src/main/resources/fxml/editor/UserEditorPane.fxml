@@ -35,36 +35,36 @@
                 <Label text="direccion" GridPane.rowIndex="5"/>
                 <Label text="descripcion" GridPane.rowIndex="6"/>
                 <Label text="idAcceso" GridPane.rowIndex="7"/>
-                <TextField fx:id="txUsername" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField fx:id="fxUsername" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </TextField>
-                <TextField fx:id="txNombre" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <TextField fx:id="fxNombre" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </TextField>
-                <TextField fx:id="txTelefono" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <TextField fx:id="fxTelefono" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </TextField>
-                <TextField fx:id="txEmail" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                <TextField fx:id="fxEmail" GridPane.columnIndex="1" GridPane.rowIndex="4">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </TextField>
-                <ComboBox fx:id="cbAcceso" minWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
-                <TextArea fx:id="txDireccion" minHeight="-Infinity" prefHeight="40.0" style="-fx-wrap-text: true;"
+                <ComboBox fx:id="fxCbxAcceso" minWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                <TextArea fx:id="fxDireccion" minHeight="-Infinity" prefHeight="40.0" style="-fx-wrap-text: true;"
                           GridPane.columnIndex="1" GridPane.rowIndex="5">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </TextArea>
-                <TextArea fx:id="txDescripcion" minHeight="-Infinity" prefHeight="70.0" style="-fx-wrap-text: true;"
+                <TextArea fx:id="fxDescripcion" minHeight="-Infinity" prefHeight="70.0" style="-fx-wrap-text: true;"
                           GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-                <TextField fx:id="txId" editable="false" layoutX="80.0" layoutY="70.0" GridPane.columnIndex="1"/>
+                <TextField fx:id="fxId" editable="false" layoutX="80.0" layoutY="70.0" GridPane.columnIndex="1"/>
                 <Label text="activo" GridPane.rowIndex="8"/>
                 <CheckBox fx:id="fxCheckActivo" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
             </children>
@@ -94,7 +94,7 @@
                 </HBox>
             </right>
             <left>
-                <Button fx:id="txButtonPassword" mnemonicParsing="false" onAction="#fxBtnPasswordAction" text="Password"
+                <Button fx:id="fxButtonPassword" mnemonicParsing="false" onAction="#fxBtnPasswordAction" text="Password"
                         BorderPane.alignment="CENTER"/>
             </left>
             <padding>

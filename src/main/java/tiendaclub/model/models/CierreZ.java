@@ -35,9 +35,9 @@ public class CierreZ extends AbstractCierreZ {
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setInt(1, id);
-        pst.setTimestamp(2, DateUtils.toTimestamp(apertura));
-        pst.setTimestamp(3, DateUtils.toTimestamp(cierre));
+        pst.setInt(1, getId());
+        pst.setTimestamp(2, DateUtils.toTimestamp(getApertura()));
+        pst.setTimestamp(3, DateUtils.toTimestamp(getCierre()));
     }
 
     @Override
@@ -60,14 +60,14 @@ public class CierreZ extends AbstractCierreZ {
 
     public void setCaja(Caja caja2) {
         if (caja != null)
-            caja.getCierresZs().remove(id);
+            caja.getCierresZs().remove(getId());
         this.caja = caja2;
         if (caja != null)
-            caja.getCierresZs().putIfAbsent(id, this);
+            caja.getCierresZs().putIfAbsent(getId(), this);
     }
 
     private void updateCaja() {
-        setCaja(DataStore.getCajas().get(idCaja));
+        setCaja(DataStore.getCajas().get(getIdCaja()));
     }
 
     @Override

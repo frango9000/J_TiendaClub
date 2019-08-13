@@ -8,14 +8,14 @@ public abstract class AbstractProveedor extends Activable {
     protected String direccion;
     protected String descripcion;
 
-    public AbstractProveedor(int id, String nif, String nombre, boolean activo) {
-        super(id, activo);
+    public AbstractProveedor(int id, String nif, String nombre) {
+        super(id);
         this.nif = nif;
         this.nombre = nombre;
     }
 
-    public AbstractProveedor(String nif, String nombre, boolean activo) {
-        super(0, activo);
+    public AbstractProveedor(String nif, String nombre) {
+        super(0);
         this.nif = nif;
         this.nombre = nombre;
     }

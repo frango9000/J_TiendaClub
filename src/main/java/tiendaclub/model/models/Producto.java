@@ -20,28 +20,29 @@ public class Producto extends AbstractProducto {
     //private HashMap<Integer, Transferencia> transferencias = new HashMap<>(); //No Use
 
 
-    public Producto(int id, String nombre, int precioVenta, int iva, int idCategoria, boolean activo) {
-        super(id, nombre, precioVenta, iva, idCategoria, activo);
+    public Producto(int id, String nombre, int precioVenta, int iva, int idCategoria) {
+        super(id, nombre, precioVenta, iva, idCategoria);
         updateCategoria();
     }
 
-    public Producto(String nombre, int precioVenta, int iva, int idCategoria, boolean activo) {
-        super(nombre, precioVenta, iva, idCategoria, activo);
+    public Producto(String nombre, int precioVenta, int iva, int idCategoria) {
+        super(nombre, precioVenta, iva, idCategoria);
         updateCategoria();
     }
 
     public Producto(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getBoolean(7));
+        this(rs.getInt(1), rs.getString(2), rs.getInt(4), rs.getInt(5), rs.getInt(6));
         setDescripcion(rs.getString(3));
+        setActivo(rs.getBoolean(7));
     }
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setString(1, nombre);
-        pst.setString(2, descripcion);
-        pst.setInt(3, precioVenta);
-        pst.setInt(4, iva);
-        pst.setInt(5, idCategoria);
+        pst.setString(1, getNombre());
+        pst.setString(2, getDescripcion());
+        pst.setInt(3, getPrecioVenta());
+        pst.setInt(4, getIva());
+        pst.setInt(5, getIdCategoria());
         pst.setBoolean(6, isActivo());
     }
 
@@ -68,14 +69,14 @@ public class Producto extends AbstractProducto {
 
     public void setCategoria(Categoria categoria2) {
         if (categoria != null)
-            categoria.getProductos().remove(id);
+            categoria.getProductos().remove(getId());
         this.categoria = categoria2;
         if (categoria != null)
-            categoria.getProductos().put(id, this);
+            categoria.getProductos().put(getId(), this);
     }
 
     private void updateCategoria() {
-        setCategoria(DataStore.getCategorias().get(idCategoria));
+        setCategoria(DataStore.getCategorias().get(getIdCategoria()));
     }
 
     @Override

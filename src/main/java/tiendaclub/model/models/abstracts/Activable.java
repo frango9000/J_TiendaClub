@@ -11,9 +11,9 @@ public abstract class Activable extends Identifiable {
         return activo;
     }
 
-    protected Activable(int id, boolean activo) {
+    protected Activable(int id) {
         super(id);
-        activeProperty().set(activo);
+        setActivo(true);
     }
 
     public boolean isActivo() {

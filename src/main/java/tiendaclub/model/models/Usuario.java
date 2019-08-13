@@ -21,40 +21,41 @@ public class Usuario extends AbstractUsuario {
     private HashMap<Integer, Venta> ventas = new HashMap<>();
     private HashMap<Integer, Transferencia> transferencias = new HashMap<>();
 
-    public Usuario(int id, String username, String pass, int idAcceso, boolean activo) {
-        super(id, username, pass, idAcceso, activo);
+    public Usuario(int id, String username, String pass, int idAcceso) {
+        super(id, username, pass, idAcceso);
         updateAcceso();
     }
 
-    public Usuario(String username, String pass, int idAcceso, boolean activo) {
-        super(username, pass, idAcceso, activo);
+    public Usuario(String username, String pass, int idAcceso) {
+        super(username, pass, idAcceso);
         updateAcceso();
     }
 
-    public Usuario(String username, String pass, Acceso acceso, boolean activo) {
-        super(username, pass, acceso.getId(), activo);
+    public Usuario(String username, String pass, Acceso acceso) {
+        super(username, pass, acceso.getId());
         setAcceso(acceso);
     }
 
     public Usuario(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(9), rs.getBoolean(10));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(9));
         setNombre(rs.getString(4));
         setTelefono(rs.getString(5));
         setEmail(rs.getString(6));
         setDireccion(rs.getString(7));
         setDescripcion(rs.getString(8));
+        setActivo(rs.getBoolean(10));
     }
 
 
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setString(1, username);
-        pst.setString(2, pass);
-        pst.setString(3, nombre);
-        pst.setString(4, telefono);
-        pst.setString(5, email);
-        pst.setString(6, direccion);
-        pst.setString(7, descripcion);
-        pst.setInt(8, idAcceso);
+        pst.setString(1, getUsername());
+        pst.setString(2, getPass());
+        pst.setString(3, getNombre());
+        pst.setString(4, getTelefono());
+        pst.setString(5, getEmail());
+        pst.setString(6, getDireccion());
+        pst.setString(7, getDescripcion());
+        pst.setInt(8, getIdAcceso());
         pst.setBoolean(9, isActivo());
     }
 
@@ -93,14 +94,14 @@ public class Usuario extends AbstractUsuario {
 
     public void setAcceso(Acceso acceso2) {
         if (acceso != null)
-            acceso.getUsuarios().remove(id);
+            acceso.getUsuarios().remove(getId());
         this.acceso = acceso2;
         if (acceso != null)
-            acceso.getUsuarios().put(id, this);
+            acceso.getUsuarios().put(getId(), this);
     }
 
     private void updateAcceso() {
-        setAcceso(DataStore.getAccesos().get(idAcceso));
+        setAcceso(DataStore.getAccesos().get(getIdAcceso()));
     }
 
     public HashMap<Integer, Compra> getCompras() {
@@ -117,7 +118,7 @@ public class Usuario extends AbstractUsuario {
 
     @Override
     public int insertIntoDB() {
-        if (id == 0) {
+        if (getId() == 0) {
             return DataStore.getUsuarios().insert(this);
         } else return 0;
     }

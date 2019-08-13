@@ -11,15 +11,15 @@ public abstract class AbstractUsuario extends Activable {
     protected String descripcion;
     protected int idAcceso;
 
-    public AbstractUsuario(int id, String username, String pass, int idAcceso, boolean activo) {
-        super(id, activo);
+    public AbstractUsuario(int id, String username, String pass, int idAcceso) {
+        super(id);
         this.username = username;
         this.pass = pass;
         this.idAcceso = idAcceso;
     }
 
-    public AbstractUsuario(String username, String pass, int idAcceso, boolean activo) {
-        super(0, activo);
+    public AbstractUsuario(String username, String pass, int idAcceso) {
+        super(0);
         this.username = username;
         this.pass = pass;
         this.idAcceso = idAcceso;

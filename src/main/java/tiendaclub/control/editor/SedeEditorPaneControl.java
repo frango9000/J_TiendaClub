@@ -1,21 +1,17 @@
 package tiendaclub.control.editor;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
 
 import java.io.IOException;
 
-public class SedeEditorPaneControl extends BorderPane {
-
-    private Sede sede;
+public class SedeEditorPaneControl extends EditorControl<Sede> {
 
     @FXML
     private TextField fxId;
@@ -44,29 +40,34 @@ public class SedeEditorPaneControl extends BorderPane {
 
     }
 
-    public Sede getSede() {
-        return sede;
+    @Override
+    protected void updateEditee() {
+        String txt = "";
+        editee.setNombre(fxNombre.getText().trim());
+        editee.setTelefono(getTextOrNull(fxTelefono));
+        editee.setDireccion(getTextOrNull(fxDireccion));
+        editee.setActivo(fxCheckActivo.isSelected());
     }
 
-    public void setSede(Sede sede) {
-        this.sede = sede;
-        if (sede != null) {
-            fxId.setText(sede.getId() + "");
-            fxNombre.setText(sede.getNombre() + "");
-            fxTelefono.setText(sede.getTelefono() + "");
-            fxDireccion.setText(sede.getDireccion() + "");
-            fxCheckActivo.setSelected(sede.isActivo());
-        }
+    @Override
+    protected Sede buildEditee() {
+        editee = new Sede(getTextOrNull(fxNombre), getTextOrNull(fxTelefono), getTextOrNull(fxDireccion));
+        editee.setActivo(fxCheckActivo.isSelected());
+        return editee;
     }
 
-    @FXML
-    void fxSaveAction(ActionEvent event) {
-
+    @Override
+    protected void setFields() {
+        String txt = "";
+        fxId.setText((editee.getId() + ""));
+        fxNombre.setText(getNotNullText(editee.getNombre()));
+        fxTelefono.setText(getNotNullText(editee.getTelefono()));
+        fxDireccion.setText(getNotNullText(editee.getDireccion()));
+        fxCheckActivo.setSelected(editee.isActivo());
     }
 
-    @FXML
-    void fxDiscardAction(ActionEvent event) {
-
+    @Override
+    protected boolean validFields() {
+        return (fxNombre.getText().trim().length() > 0);
     }
-
 }

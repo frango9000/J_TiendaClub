@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS `sedes`
 (
     `id`        TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nombre`    VARCHAR(50)         NOT NULL,
-    `telefono`  VARCHAR(50)         NOT NULL,
-    `direccion` VARCHAR(100)        NOT NULL,
+    `telefono`  VARCHAR(50)         NULL     DEFAULT NULL,
+    `direccion` VARCHAR(100)        NULL     DEFAULT NULL,
     `activo`    TINYINT(1)          NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 );

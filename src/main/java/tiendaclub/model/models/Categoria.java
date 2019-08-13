@@ -17,21 +17,22 @@ public class Categoria extends AbstractCategoria {
 
     private HashMap<Integer, Producto> productos = new HashMap<>();
 
-    public Categoria(int id, String nombre, boolean activo) {
-        super(id, nombre, activo);
+    public Categoria(int id, String nombre) {
+        super(id, nombre);
     }
 
-    public Categoria(String nombre, boolean activo) {
-        super(nombre, activo);
+    public Categoria(String nombre) {
+        super(nombre);
     }
 
     public Categoria(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getBoolean(3));
+        this(rs.getInt(1), rs.getString(2));
+        setActivo(rs.getBoolean(3));
     }
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setString(1, nombre);
+        pst.setString(1, getNombre());
         pst.setBoolean(2, isActivo());
     }
 

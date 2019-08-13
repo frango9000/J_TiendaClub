@@ -43,12 +43,12 @@ public class Transferencia extends AbstractTransferencia {
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setInt(1, idUsuario);
-        pst.setInt(2, idSedeDestino);
-        pst.setInt(3, idSedeDestino);
-        pst.setInt(4, idProducto);
-        pst.setInt(5, cantidad);
-        pst.setTimestamp(6, DateUtils.toTimestamp(fechahora));
+        pst.setInt(1, getIdUsuario());
+        pst.setInt(2, getIdSedeOrigen());
+        pst.setInt(3, getIdSedeDestino());
+        pst.setInt(4, getIdProducto());
+        pst.setInt(5, getCantidad());
+        pst.setTimestamp(6, DateUtils.toTimestamp(getFechahora()));
     }
 
     @Override
@@ -74,14 +74,14 @@ public class Transferencia extends AbstractTransferencia {
 
     public void setUsuario(Usuario usuario2) {
         if (usuario != null)
-            usuario.getTransferencias().remove(id);
+            usuario.getTransferencias().remove(getId());
         this.usuario = usuario2;
         if (usuario != null)
-            usuario.getTransferencias().put(id, this);
+            usuario.getTransferencias().put(getId(), this);
     }
 
     private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().get(idUsuario));
+        setUsuario(DataStore.getUsuarios().get(getIdUsuario()));
     }
 
     @Override
@@ -96,14 +96,14 @@ public class Transferencia extends AbstractTransferencia {
 
     public void setSedeOrigen(Sede sedeOrigen2) {
         if (sedeOrigen != null)
-            sedeOrigen.getTransferIn().remove(id);
+            sedeOrigen.getTransferIn().remove(getId());
         this.sedeOrigen = sedeOrigen2;
         if (sedeOrigen != null)
-            sedeOrigen.getTransferIn().put(id, this);
+            sedeOrigen.getTransferIn().put(getId(), this);
     }
 
     private void updateSedeOrigen() {
-        setSedeOrigen(DataStore.getSedes().get(idSedeOrigen));
+        setSedeOrigen(DataStore.getSedes().get(getIdSedeOrigen()));
     }
 
 
@@ -119,14 +119,14 @@ public class Transferencia extends AbstractTransferencia {
 
     public void setSedeDestino(Sede sedeDestino2) {
         if (sedeDestino != null)
-            sedeDestino.getTransferIn().remove(id);
+            sedeDestino.getTransferIn().remove(getId());
         this.sedeDestino = sedeDestino2;
         if (sedeDestino != null)
-            sedeDestino.getTransferIn().put(id, this);
+            sedeDestino.getTransferIn().put(getId(), this);
     }
 
     private void updateSedeDestino() {
-        setSedeDestino(DataStore.getSedes().get(idSedeDestino));
+        setSedeDestino(DataStore.getSedes().get(getIdSedeDestino()));
     }
 
 
@@ -142,14 +142,14 @@ public class Transferencia extends AbstractTransferencia {
 
     public void setProducto(Producto producto2) {
         //if(producto!=null)
-        //  producto.getComprados().remove(id); //No Use
+        //  producto.getComprados().remove(getId()); //No Use
         this.producto = producto2;
         //if(producto!=null)
-        //  producto.getComprados().put(id, this); //No Use
+        //  producto.getComprados().put(getId(), this); //No Use
     }
 
     private void updateProducto() {
-        setProducto(DataStore.getProductos().get(idProducto));
+        setProducto(DataStore.getProductos().get(getIdProducto()));
     }
 
     @Override

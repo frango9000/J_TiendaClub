@@ -7,16 +7,16 @@ public abstract class AbstractProducto extends Activable {
     protected int iva;
     protected int idCategoria;
 
-    public AbstractProducto(int id, String nombre, int precioVenta, int iva, int idCategoria, boolean activo) {
-        super(id, activo);
+    public AbstractProducto(int id, String nombre, int precioVenta, int iva, int idCategoria) {
+        super(id);
         this.nombre = nombre;
         this.precioVenta = precioVenta;
         this.iva = iva;
         this.idCategoria = idCategoria;
     }
 
-    public AbstractProducto(String nombre, int precioVenta, int iva, int idCategoria, boolean activo) {
-        super(0, activo);
+    public AbstractProducto(String nombre, int precioVenta, int iva, int idCategoria) {
+        super(0);
         this.nombre = nombre;
         this.precioVenta = precioVenta;
         this.iva = iva;

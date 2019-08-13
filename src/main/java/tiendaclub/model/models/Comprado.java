@@ -35,10 +35,10 @@ public class Comprado extends AbstractComprado {
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setInt(1, idCompra);
-        pst.setInt(2, idProducto);
-        pst.setInt(3, cantidad);
-        pst.setInt(4, precioUnidad);
+        pst.setInt(1, getIdCompra());
+        pst.setInt(2, getIdProducto());
+        pst.setInt(3, getCantidad());
+        pst.setInt(4, getPrecioUnidad());
     }
 
     @Override
@@ -62,14 +62,14 @@ public class Comprado extends AbstractComprado {
 
     public void setCompra(Compra compra2) {
         if (compra != null)
-            compra.getComprados().remove(id);
+            compra.getComprados().remove(getId());
         this.compra = compra2;
         if (compra != null)
-            compra.getComprados().put(id, this);
+            compra.getComprados().put(getId(), this);
     }
 
     public void updateCompra() {
-        setCompra(DataStore.getCompras().get(idCompra));
+        setCompra(DataStore.getCompras().get(getIdCompra()));
     }
 
     @Override
@@ -84,14 +84,14 @@ public class Comprado extends AbstractComprado {
 
     public void setProducto(Producto producto2) {
         //if(producto!=null)
-        //  producto.getComprados().remove(id); //No Use
+        //  producto.getComprados().remove(getId()); //No Use
         this.producto = producto2;
         //if(producto!=null)
-        //  producto.getComprados().put(id, this); //No Use
+        //  producto.getComprados().put(getId(), this); //No Use
     }
 
     public void updateProducto() {
-        setProducto(DataStore.getProductos().get(idProducto));
+        setProducto(DataStore.getProductos().get(getIdProducto()));
     }
 
     @Override

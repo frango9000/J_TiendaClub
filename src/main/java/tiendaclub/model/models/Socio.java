@@ -19,29 +19,30 @@ public class Socio extends AbstractSocio {
 
     private HashMap<Integer, Venta> ventas = new HashMap<>();
 
-    public Socio(int id, String dni, String nombre, LocalDateTime fechaIn, boolean activo) {
-        super(id, dni, nombre, fechaIn, activo);
+    public Socio(int id, String dni, String nombre, LocalDateTime fechaIn) {
+        super(id, dni, nombre, fechaIn);
     }
 
-    public Socio(String dni, String nombre, boolean activo) {
-        super(dni, nombre, activo);
+    public Socio(String dni, String nombre) {
+        super(dni, nombre);
     }
 
     public Socio(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), DateUtils.toLocalDateTime(rs.getTimestamp(7)), rs.getBoolean(8));
+        this(rs.getInt(1), rs.getString(2), rs.getString(3), DateUtils.toLocalDateTime(rs.getTimestamp(7)));
         setTelefono(rs.getString(4));
         setDireccion(rs.getString(5));
         setDescripcion(rs.getString(6));
+        setActivo(rs.getBoolean(8));
     }
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setString(1, dni);
-        pst.setString(2, nombre);
-        pst.setString(3, telefono);
-        pst.setString(4, direccion);
-        pst.setString(5, descripcion);
-        pst.setTimestamp(6, DateUtils.toTimestamp(fechaIn));
+        pst.setString(1, getDni());
+        pst.setString(2, getNombre());
+        pst.setString(3, getTelefono());
+        pst.setString(4, getDireccion());
+        pst.setString(5, getDescripcion());
+        pst.setTimestamp(6, DateUtils.toTimestamp(getFechaIn()));
         pst.setBoolean(7, isActivo());
     }
 

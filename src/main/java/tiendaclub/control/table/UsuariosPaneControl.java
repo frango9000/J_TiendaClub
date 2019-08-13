@@ -6,7 +6,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import tiendaclub.control.editor.EditorControl;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.framework.dao.ActivableDao;
 import tiendaclub.model.models.Acceso;
@@ -17,7 +16,6 @@ import java.io.IOException;
 
 public class UsuariosPaneControl extends ActiveTableControl<Usuario> {
 
-    private EditorControl<Usuario> control;
     @FXML
     private TableColumn<Usuario, String> fxColumnUser;
     @FXML
@@ -31,8 +29,6 @@ public class UsuariosPaneControl extends ActiveTableControl<Usuario> {
 
     @FXML
     public void initialize() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-
         fxColumnId.setCellValueFactory(new PropertyValueFactory<Usuario, Integer>("id"));
         fxColumnUser.setCellValueFactory(new PropertyValueFactory<Usuario, String>("username"));
         fxColumnName.setCellValueFactory(new PropertyValueFactory<Usuario, String>("nombre"));
@@ -54,12 +50,7 @@ public class UsuariosPaneControl extends ActiveTableControl<Usuario> {
     protected Pane getEditorPane() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editor/UserEditorPane.fxml"));
         Pane pane = loader.load();
-        control = loader.getController();
+        editorControl = loader.getController();
         return pane;
-    }
-
-    @Override
-    protected EditorControl<Usuario> getEditorControl() {
-        return control;
     }
 }

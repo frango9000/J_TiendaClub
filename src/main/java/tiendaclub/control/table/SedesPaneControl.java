@@ -1,11 +1,11 @@
 package tiendaclub.control.table;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import tiendaclub.control.editor.EditorControl;
+import tiendaclub.data.DataStore;
 import tiendaclub.data.framework.dao.ActivableDao;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
@@ -37,29 +37,16 @@ public class SedesPaneControl extends ActiveTableControl<Sede> {
         addContent();
     }
 
-
-    @FXML
-    protected void fxBtnAddAction(ActionEvent actionEvent) {
-
-    }
-
-    @FXML
-    protected void fxBtnEditAction(ActionEvent actionEvent) {
-
-    }
-
     @Override
     protected ActivableDao<Sede> getDataOrigin() {
-        return null;
+        return DataStore.getSedes();
     }
 
     @Override
     protected Pane getEditorPane() throws IOException {
-        return null;
-    }
-
-    @Override
-    protected EditorControl<Sede> getEditorControl() {
-        return null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editor/SedeEditorPane.fxml"));
+        Pane pane = loader.load();
+        editorControl = loader.getController();
+        return pane;
     }
 }

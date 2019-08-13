@@ -57,8 +57,8 @@
             <right>
                 <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#fxDiscardAction" text="Descartar"/>
-                        <Button mnemonicParsing="false" onAction="#fxSaveAction" text="Guardar"/>
+                        <Button mnemonicParsing="false" onAction="#fxBtnDiscardAction" text="Descartar"/>
+                        <Button mnemonicParsing="false" onAction="#fxBtnSaveAction" text="Guardar"/>
                     </children>
                 </HBox>
             </right>

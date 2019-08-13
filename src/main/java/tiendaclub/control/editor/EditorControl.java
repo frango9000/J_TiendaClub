@@ -3,6 +3,7 @@ package tiendaclub.control.editor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.BorderPane;
 import tiendaclub.model.models.abstracts.Identifiable;
 import tiendaclub.view.FxDialogs;
@@ -66,5 +67,15 @@ public abstract class EditorControl<T extends Identifiable> extends BorderPane {
             } else
                 FxDialogs.showError("Fail!", editee.getClass().getSimpleName() + " no " + (creating ? "creado" : "modificado"));
         } else FxDialogs.showError("Fail!", "Invalid Fields");
+    }
+
+
+    protected static String getTextOrNull(TextInputControl control) {
+        String txt = control.getText().trim();
+        return txt.length() > 0 ? txt : null;
+    }
+
+    protected static String getNotNullText(String txt) {
+        return txt != null ? txt : "";
     }
 }

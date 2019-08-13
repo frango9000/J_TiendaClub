@@ -10,15 +10,15 @@ public abstract class AbstractSocio extends Activable {
     protected String descripcion;
     protected LocalDateTime fechaIn;
 
-    public AbstractSocio(int id, String dni, String nombre, LocalDateTime fechaIn, boolean activo) {
-        super(id, activo);
+    public AbstractSocio(int id, String dni, String nombre, LocalDateTime fechaIn) {
+        super(id);
         this.dni = dni;
         this.nombre = nombre;
         this.fechaIn = fechaIn;
     }
 
-    public AbstractSocio(String dni, String nombre, boolean activo) {
-        super(0, activo);
+    public AbstractSocio(String dni, String nombre) {
+        super(0);
         this.dni = dni;
         this.nombre = nombre;
     }

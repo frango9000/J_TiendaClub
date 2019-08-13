@@ -43,10 +43,10 @@ public class Compra extends AbstractCompra {
 
     @Override
     public void buildStatement(PreparedStatement pst) throws SQLException {
-        pst.setInt(1, idUsuario);
-        pst.setInt(2, idSede);
-        pst.setInt(3, idProveedor);
-        pst.setTimestamp(4, DateUtils.toTimestamp(fechahora));
+        pst.setInt(1, getIdUsuario());
+        pst.setInt(2, getIdSede());
+        pst.setInt(3, getIdProveedor());
+        pst.setTimestamp(4, DateUtils.toTimestamp(getFechahora()));
     }
 
     @Override
@@ -70,14 +70,14 @@ public class Compra extends AbstractCompra {
 
     public void setUsuario(Usuario usuario2) {
         if (usuario != null)
-            usuario.getCompras().remove(id);
+            usuario.getCompras().remove(getId());
         this.usuario = usuario2;
         if (usuario != null)
-            usuario.getCompras().put(id, this);
+            usuario.getCompras().put(getId(), this);
     }
 
     private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().get(idUsuario));
+        setUsuario(DataStore.getUsuarios().get(getIdUsuario()));
     }
 
     @Override
@@ -92,14 +92,14 @@ public class Compra extends AbstractCompra {
 
     public void setProveedor(Proveedor proveedor2) {
         if (proveedor != null)
-            proveedor.getCompras().remove(id);
+            proveedor.getCompras().remove(getId());
         this.proveedor = proveedor2;
         if (proveedor != null)
-            proveedor.getCompras().put(id, this);
+            proveedor.getCompras().put(getId(), this);
     }
 
     private void updateProveedor() {
-        setProveedor(DataStore.getProveedores().get(idProveedor));
+        setProveedor(DataStore.getProveedores().get(getIdProveedor()));
     }
 
     @Override
@@ -114,14 +114,14 @@ public class Compra extends AbstractCompra {
 
     public void setSede(Sede sede2) {
         if (sede != null)
-            sede.getCompras().remove(id);
+            sede.getCompras().remove(getId());
         this.sede = sede2;
         if (sede != null)
-            sede.getCompras().put(id, this);
+            sede.getCompras().put(getId(), this);
     }
 
     private void updateSede() {
-        setSede(DataStore.getSedes().get(idSede));
+        setSede(DataStore.getSedes().get(getIdSede()));
     }
 
     public HashMap<Integer, Comprado> getComprados() {
