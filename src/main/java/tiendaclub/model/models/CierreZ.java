@@ -1,7 +1,6 @@
 package tiendaclub.model.models;
 
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.PersistibleDao;
 import tiendaclub.model.models.abstracts.AbstractCierreZ;
 import tiendaclub.model.utils.DateUtils;
 
@@ -71,32 +70,12 @@ public class CierreZ extends AbstractCierreZ {
     }
 
     @Override
-    public int insertIntoDB() {
-        return 0;
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
-    public int updateOnDb() {
-        return DataStore.getCierreZs().update(this);
-    }
-
-    @Override
-    public int refreshFromDb() {
-        return DataStore.getCierreZs().updateObject(this);
-    }
-
-    @Override
-    public int deleteFromDb() {
-        return 0;
-    }
-
-    @Override
-    public String getInsertString() {
-        return PersistibleDao.buildInsertString(TABLE_NAME, COL_NAMES);
-    }
-
-    @Override
-    public String getUpdateString() {
-        return PersistibleDao.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
+    public ArrayList<String> getColNames() {
+        return COL_NAMES;
     }
 }

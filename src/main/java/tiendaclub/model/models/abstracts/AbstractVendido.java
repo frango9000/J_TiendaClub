@@ -1,6 +1,6 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractVendido extends Identifiable {
+public abstract class AbstractVendido extends Persistible {
     protected int idVenta;
     protected int idProducto;
     protected int cantidad;

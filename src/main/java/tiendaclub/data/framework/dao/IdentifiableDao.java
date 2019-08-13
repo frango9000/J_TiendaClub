@@ -1,12 +1,12 @@
 package tiendaclub.data.framework.dao;
 
 import tiendaclub.data.framework.index.IdUniqueIndex;
-import tiendaclub.model.models.abstracts.Identifiable;
+import tiendaclub.model.models.abstracts.Persistible;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class IdentifiableDao<V extends Identifiable> extends PersistibleDao<V> {
+public class IdentifiableDao<V extends Persistible> extends PersistibleDao<V> {
 
     private IdUniqueIndex<V> idIndex = new IdUniqueIndex<>();
 

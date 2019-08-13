@@ -3,7 +3,7 @@ package tiendaclub.model.models.abstracts;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public abstract class Activable extends Identifiable {
+public abstract class Activable extends Persistible {
     protected BooleanProperty activo;
 
     public BooleanProperty activeProperty() {

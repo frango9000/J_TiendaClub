@@ -1,21 +1,24 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class Identifiable implements IPersistible {
+public abstract class Identifiable {
 
     protected static String ID_COL_NAME = "id";
 
     protected int id;
 
     protected Identifiable(int id) {
-        this.id = id;
+        this.id = Math.max(id, 0);
+    }
+
+    public void setId(int id) {
+        this.id = Math.max(id, 0);
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    protected String getIdColName() {
+        return "id";
     }
-
 }

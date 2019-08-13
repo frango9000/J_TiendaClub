@@ -5,10 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.BorderPane;
-import tiendaclub.model.models.abstracts.Identifiable;
+import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.view.FxDialogs;
 
-public abstract class EditorControl<T extends Identifiable> extends BorderPane {
+public abstract class EditorControl<T extends Persistible> extends BorderPane {
 
     protected T editee;
     protected boolean creating = true;

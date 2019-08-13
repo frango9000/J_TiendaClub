@@ -1,7 +1,5 @@
 package tiendaclub.model.models;
 
-import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.PersistibleDao;
 import tiendaclub.model.models.abstracts.AbstractAcceso;
 
 import java.sql.PreparedStatement;
@@ -22,7 +20,7 @@ public class Acceso extends AbstractAcceso {
     }
 
     public Acceso(String nivel) {
-        super(nivel);
+        this(0, nivel);
     }
 
     public Acceso(ResultSet rs) throws SQLException {
@@ -40,43 +38,22 @@ public class Acceso extends AbstractAcceso {
         setNivel(rs.getString(2));
     }
 
-    @Override
-    public String getInsertString() {
-        return PersistibleDao.buildInsertString(TABLE_NAME, COL_NAMES);
-    }
-
-    @Override
-    public String getUpdateString() {
-        return PersistibleDao.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
-    }
-
-
     public HashMap<Integer, Usuario> getUsuarios() {
         return usuarios;
     }
 
     @Override
-    public int insertIntoDB() {
-        return 0;
-    }
-
-    @Override
-    public int updateOnDb() {
-        return DataStore.getAccesos().update(this);
-    }
-
-    @Override
-    public int refreshFromDb() {
-        return DataStore.getAccesos().updateObject(this);
-    }
-
-    @Override
-    public int deleteFromDb() {
-        return 0;
-    }
-
-    @Override
     public String toString() {
         return getId() + " " + getNivel();
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    public ArrayList<String> getColNames() {
+        return COL_NAMES;
     }
 }

@@ -3,6 +3,7 @@ package tiendaclub.model.models.abstracts;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public interface IPersistible {
 
@@ -25,4 +26,12 @@ public interface IPersistible {
     String getInsertString();
 
     String getUpdateString();
+
+
+//
+//    <T extends PersistibleDao<Persistible>> T getDataStore();
+
+    String getTableName();
+
+    ArrayList<String> getColNames();
 }

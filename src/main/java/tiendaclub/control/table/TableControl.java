@@ -12,14 +12,14 @@ import tiendaclub.MainFX;
 import tiendaclub.control.editor.EditorControl;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.framework.dao.IdentifiableDao;
-import tiendaclub.model.models.abstracts.Identifiable;
+import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
 
 import java.io.IOException;
 import java.util.Collection;
 
-public abstract class TableControl<T extends Identifiable> extends BorderPane {
+public abstract class TableControl<T extends Persistible> extends BorderPane {
     protected final ObservableList<T> listedObjects = FXCollections.observableArrayList();
 
     protected EditorControl<T> editorControl;

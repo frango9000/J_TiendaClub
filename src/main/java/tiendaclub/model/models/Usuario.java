@@ -1,7 +1,6 @@
 package tiendaclub.model.models;
 
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.PersistibleDao;
 import tiendaclub.model.models.abstracts.AbstractUsuario;
 
 import java.sql.PreparedStatement;
@@ -73,16 +72,6 @@ public class Usuario extends AbstractUsuario {
     }
 
     @Override
-    public String getInsertString() {
-        return PersistibleDao.buildInsertString(TABLE_NAME, COL_NAMES);
-    }
-
-    @Override
-    public String getUpdateString() {
-        return PersistibleDao.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
-    }
-
-    @Override
     public void setIdAcceso(int idAcceso) {
         super.setIdAcceso(idAcceso);
         updateAcceso();
@@ -117,24 +106,12 @@ public class Usuario extends AbstractUsuario {
     }
 
     @Override
-    public int insertIntoDB() {
-        if (getId() == 0) {
-            return DataStore.getUsuarios().insert(this);
-        } else return 0;
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
-    public int updateOnDb() {
-        return DataStore.getUsuarios().update(this);
-    }
-
-    @Override
-    public int refreshFromDb() {
-        return DataStore.getUsuarios().updateObject(this);
-    }
-
-    @Override
-    public int deleteFromDb() {
-        return DataStore.getUsuarios().delete(this);
+    public ArrayList<String> getColNames() {
+        return COL_NAMES;
     }
 }

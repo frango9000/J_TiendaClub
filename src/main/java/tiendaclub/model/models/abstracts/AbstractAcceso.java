@@ -1,15 +1,10 @@
 package tiendaclub.model.models.abstracts;
 
-public abstract class AbstractAcceso extends Identifiable {
+public abstract class AbstractAcceso extends Persistible {
     protected String nivel;
 
     public AbstractAcceso(int id, String nivel) {
         super(id);
-        this.nivel = nivel;
-    }
-
-    protected AbstractAcceso(String nivel) {
-        super(0);
         this.nivel = nivel;
     }
 

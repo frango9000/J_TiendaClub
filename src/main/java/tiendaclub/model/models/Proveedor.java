@@ -1,7 +1,5 @@
 package tiendaclub.model.models;
 
-import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.PersistibleDao;
 import tiendaclub.model.models.abstracts.AbstractProveedor;
 
 import java.sql.PreparedStatement;
@@ -60,32 +58,12 @@ public class Proveedor extends AbstractProveedor {
     }
 
     @Override
-    public String getInsertString() {
-        return PersistibleDao.buildInsertString(TABLE_NAME, COL_NAMES);
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
-    public String getUpdateString() {
-        return PersistibleDao.buildUpdateString(TABLE_NAME, ID_COL_NAME, COL_NAMES, getId());
-    }
-
-    @Override
-    public int insertIntoDB() {
-        return 0;
-    }
-
-    @Override
-    public int updateOnDb() {
-        return DataStore.getProveedores().update(this);
-    }
-
-    @Override
-    public int refreshFromDb() {
-        return DataStore.getProveedores().updateObject(this);
-    }
-
-    @Override
-    public int deleteFromDb() {
-        return 0;
+    public ArrayList<String> getColNames() {
+        return COL_NAMES;
     }
 }

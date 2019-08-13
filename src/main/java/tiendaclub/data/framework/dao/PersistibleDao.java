@@ -5,7 +5,7 @@ import tiendaclub.data.DataFactory;
 import tiendaclub.data.SessionDB;
 import tiendaclub.data.framework.index.AbstractIndex;
 import tiendaclub.model.Globals;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.abstracts.Persistible;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PersistibleDao<T extends IPersistible> implements Globals {
+public class PersistibleDao<T extends Persistible> implements Globals {
 
     protected String ID_COL_NAME = "id";
     protected String TABLE_NAME;

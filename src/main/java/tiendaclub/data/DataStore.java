@@ -3,6 +3,7 @@ package tiendaclub.data;
 import tiendaclub.data.framework.dao.ActivableDao;
 import tiendaclub.data.framework.dao.IdentifiableDao;
 import tiendaclub.model.models.*;
+import tiendaclub.model.models.abstracts.Persistible;
 
 public class DataStore {
 
@@ -88,6 +89,41 @@ public class DataStore {
         DataStore.getCategorias().queryAll();
         DataStore.getProductos().queryAll();
         SessionDB.setAutoclose(true);
+    }
+
+    public static <T extends Persistible> IdentifiableDao getDataStore(T t) {
+        switch (t.getTableName()) {
+            case Acceso.TABLE_NAME:
+                return DataStore.getAccesos();
+            case Sede.TABLE_NAME:
+                return DataStore.getSedes();
+            case Caja.TABLE_NAME:
+                return DataStore.getCajas();
+            case Categoria.TABLE_NAME:
+                return DataStore.getCategorias();
+            case CierreZ.TABLE_NAME:
+                return DataStore.getCierreZs();
+            case Compra.TABLE_NAME:
+                return DataStore.getCompras();
+            case Comprado.TABLE_NAME:
+                return DataStore.getComprados();
+            case Producto.TABLE_NAME:
+                return DataStore.getProductos();
+            case Proveedor.TABLE_NAME:
+                return DataStore.getProveedores();
+            case Socio.TABLE_NAME:
+                return DataStore.getSocios();
+            case Transferencia.TABLE_NAME:
+                return DataStore.getTransferencias();
+            case Usuario.TABLE_NAME:
+                return DataStore.getUsuarios();
+            case Vendido.TABLE_NAME:
+                return DataStore.getVendidos();
+            case Venta.TABLE_NAME:
+                return DataStore.getVentas();
+            default:
+                throw new IllegalStateException("Unexpected value: " + t.getTableName());
+        }
     }
 
 }
