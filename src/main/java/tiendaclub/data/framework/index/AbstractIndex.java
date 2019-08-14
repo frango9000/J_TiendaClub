@@ -1,13 +1,17 @@
 package tiendaclub.data.framework.index;
 
-import java.util.Collection;
+import tiendaclub.data.framework.datasource.DataSource;
+import tiendaclub.model.models.abstracts.Persistible;
+
 import java.util.HashMap;
 
-public abstract class AbstractIndex<K, T> {
+public abstract class AbstractIndex<K, T extends Persistible> {
 
-    protected String INDEX_COL_NAME = "";
+    protected DataSource<T> dataSource;
 
-    protected HashMap index;
+    protected HashMap<K, ?> index;
+
+    protected String INDEX_COL_NAME;
 
     public abstract void index(T objectT);
 
@@ -17,11 +21,11 @@ public abstract class AbstractIndex<K, T> {
 
     public abstract void reindex(T objectT);
 
-    public abstract HashMap getIndexMap(K key);
-
-    public abstract HashMap getIndexMap();
-
-    public abstract Collection<T> getIndexList(K key);
-
-    public abstract Collection<T> getIndexList();
+//    public abstract HashMap getIndexMap(K key);
+//
+//    public abstract HashMap getIndexMap();
+//
+//    public abstract Collection<T> getIndexValues(K key);
+//
+//    public abstract Collection<T> getIndexValues();
 }

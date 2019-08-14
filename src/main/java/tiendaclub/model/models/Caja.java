@@ -68,7 +68,7 @@ public class Caja extends AbstractCaja {
     }
 
     private void updateSede() {
-        setSede(DataStore.getSedes().get(getIdSede()));
+        setSede(DataStore.getSedes().getIdIndex().getMap(getIdSede()));
     }
 
     public HashMap<Integer, CierreZ> getCierresZs() {

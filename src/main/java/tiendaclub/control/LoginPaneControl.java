@@ -38,7 +38,7 @@ public class LoginPaneControl extends BorderPane {
 
     @FXML
     private void loginOnAct(ActionEvent actionEvent) {
-        SessionStore.setUsuario(DataStore.getUsuarios().query("username", usernameTextField.getText().trim(), "pass", passwordTextField.getText().trim()));
+        SessionStore.setUsuario(DataStore.getUsuarios().getDataSource().query("username", usernameTextField.getText().trim(), "pass", passwordTextField.getText().trim()));
         System.out.println(SessionStore.getUsuario());
         if (SessionStore.getUsuario() == null) {
             alertMsg.setStyle("-fx-text-fill: red");

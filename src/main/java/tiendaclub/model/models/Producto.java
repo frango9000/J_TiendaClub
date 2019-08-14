@@ -75,7 +75,7 @@ public class Producto extends AbstractProducto {
     }
 
     private void updateCategoria() {
-        setCategoria(DataStore.getCategorias().get(getIdCategoria()));
+        setCategoria(DataStore.getCategorias().getIdIndex().getMap(getIdCategoria()));
     }
 
     @Override

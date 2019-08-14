@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import tiendaclub.data.framework.dao.ActivableDao;
+import tiendaclub.data.framework.dao.IdBoolIndexDao;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.model.models.abstracts.Activable;
 import tiendaclub.view.FxDialogs;
@@ -24,12 +24,12 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     protected void fxBtnShowHideAction(ActionEvent actionEvent) {
         showInactive = !showInactive;
         if (showInactive) {
-            getDataOrigin().getActive(false).forEach(e -> {
+            getDataOrigin().getActiveIndex().getCacheActive(false).forEach(e -> {
                 if (!listedObjects.contains(e))
                     listedObjects.add(e);
             });
         } else {
-            listedObjects.removeAll(getDataOrigin().getActive(false));
+            listedObjects.removeAll(getDataOrigin().getActiveIndex().getCacheActive(false));
         }
     }
 
@@ -51,16 +51,16 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     }
 
     @Override
-    protected abstract ActivableDao<T> getDataOrigin();
+    protected abstract IdBoolIndexDao<T> getDataOrigin();
 
     @Override
     protected void addContent(boolean clean) {
         Collection<T> list = null;
         if (showInactive) {
-            list = getDataOrigin().getCache().values();
+            list = getDataOrigin().getIdIndex().getAllCache().values();
             fxBtnShowHide.setText("Todos");
         } else {
-            list = getDataOrigin().getActive(true);
+            list = getDataOrigin().getActiveIndex().getCacheActive(true);
             fxBtnShowHide.setText("Activos");
         }
 

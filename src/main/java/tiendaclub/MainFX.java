@@ -61,7 +61,7 @@ public class MainFX extends Application {
             DataStore.firstQuery();
             primaryStage.show();
 
-            Collection<Sede> sedes = DataStore.getSedes().getCache().values();
+            Collection<Sede> sedes = DataStore.getSedes().getIdIndex().getAllCache().values();
             if (sedes.size() == 0)
                 FxDialogs.showWarning("No Sede", "Debes crear una sede y una caja");
             else {

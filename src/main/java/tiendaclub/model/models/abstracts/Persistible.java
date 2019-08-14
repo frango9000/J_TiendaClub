@@ -16,23 +16,23 @@ public abstract class Persistible extends Identifiable implements IPersistible {
     public int insertIntoDB() {
         if (getId() == 0) {
 //            return getDataStore().insert(this);
-            return getDataStore().insert(this);
+            return getDataStore().getDataSource().insert(this);
         } else return 0;
     }
 
     @Override
     public int updateOnDb() {
-        return getDataStore().update(this);
+        return getDataStore().getDataSource().update(this);
     }
 
     @Override
     public int refreshFromDb() {
-        return getDataStore().updateObject(this);
+        return getDataStore().getDataSource().updateObject(this);
     }
 
     @Override
     public int deleteFromDb() {
-        return getDataStore().delete(this);
+        return getDataStore().getDataSource().delete(this);
     }
 
     @Override

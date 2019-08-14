@@ -1,11 +1,14 @@
 package tiendaclub.data.framework.index;
 
+import tiendaclub.model.models.abstracts.Persistible;
+
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
-public abstract class MultiMapIndex<K, V> extends AbstractIndex<K, V> {
+public abstract class MultiMapIndex<K, V extends Persistible> extends AbstractIndex<K, V> {
 
-    protected HashMap<K, HashMap<Integer, V>> index = new HashMap<>();
+    protected HashMap<K, HashMap<Integer, V>> index;
 
     @Override
     public abstract void index(V objectV);
@@ -21,23 +24,20 @@ public abstract class MultiMapIndex<K, V> extends AbstractIndex<K, V> {
     @Override
     public abstract void reindex(V objectT);
 
-    @Override
-    public HashMap<Integer, V> getIndexMap(K key) {
+
+    public HashMap<Integer, V> getKeyMap(K key) {
         return index.get(key);
     }
 
-    @Override
-    public HashMap<Integer, V> getIndexMap() {
-        return null;
+    public HashMap<K, HashMap<Integer, V>> getIndex() {
+        return index;
     }
 
-    @Override
-    public Collection<V> getIndexList(K key) {
+    public Collection<V> getKeyValues(K key) {
         return index.get(key).values();
     }
 
-    @Override
-    public Collection<V> getIndexList() {
-        return null;
+    public Set<K> getKeys() {
+        return index.keySet();
     }
 }

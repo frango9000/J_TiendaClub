@@ -76,7 +76,7 @@ public class Venta extends AbstractVenta {
     }
 
     private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().get(getIdUsuario()));
+        setUsuario(DataStore.getUsuarios().getIdIndex().getMap(getIdUsuario()));
     }
 
     @Override
@@ -98,7 +98,7 @@ public class Venta extends AbstractVenta {
     }
 
     private void updateCaja() {
-        setCaja(DataStore.getCajas().get(getIdCaja()));
+        setCaja(DataStore.getCajas().getIdIndex().getMap(getIdCaja()));
     }
 
     @Override
@@ -120,7 +120,7 @@ public class Venta extends AbstractVenta {
     }
 
     private void updateSocio() {
-        setSocio(DataStore.getSocios().get(getIdSocio()));
+        setSocio(DataStore.getSocios().getIdIndex().getMap(getIdSocio()));
     }
 
     public HashMap<Integer, Vendido> getVendidos() {

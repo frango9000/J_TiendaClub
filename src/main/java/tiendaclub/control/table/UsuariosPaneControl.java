@@ -7,7 +7,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.ActivableDao;
+import tiendaclub.data.framework.dao.IdBoolIndexDao;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FXMLStage;
@@ -42,7 +42,7 @@ public class UsuariosPaneControl extends ActiveTableControl<Usuario> {
 
 
     @Override
-    protected ActivableDao<Usuario> getDataOrigin() {
+    protected IdBoolIndexDao<Usuario> getDataOrigin() {
         return DataStore.getUsuarios();
     }
 

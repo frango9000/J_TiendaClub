@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 import tiendaclub.MainFX;
 import tiendaclub.control.editor.EditorControl;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.IdentifiableDao;
+import tiendaclub.data.framework.dao.IdIndexDao;
 import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
@@ -61,7 +61,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
 
     @FXML
     protected void fxBtnPullAction(ActionEvent actionEvent) {
-        DataStore.getUsuarios().queryAll();
+        DataStore.getUsuarios().getDataSource().queryAll();
         addContent(true);
     }
 
@@ -69,7 +69,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
         if (clean)
             listedObjects.clear();
 
-        Collection<T> list = getDataOrigin().getCache().values();
+        Collection<T> list = getDataOrigin().getIdIndex().getAllCache().values();
 
         list.forEach(e -> {
             if (!listedObjects.contains(e))
@@ -100,7 +100,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
         }
     }
 
-    protected abstract IdentifiableDao<T> getDataOrigin();
+    protected abstract IdIndexDao<T> getDataOrigin();
 
     protected abstract Pane getEditorPane() throws IOException;
 

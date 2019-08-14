@@ -6,7 +6,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.ActivableDao;
+import tiendaclub.data.framework.dao.IdBoolIndexDao;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
 
@@ -38,7 +38,7 @@ public class SedesPaneControl extends ActiveTableControl<Sede> {
     }
 
     @Override
-    protected ActivableDao<Sede> getDataOrigin() {
+    protected IdBoolIndexDao<Sede> getDataOrigin() {
         return DataStore.getSedes();
     }
 

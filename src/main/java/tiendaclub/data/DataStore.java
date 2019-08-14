@@ -1,97 +1,97 @@
 package tiendaclub.data;
 
-import tiendaclub.data.framework.dao.ActivableDao;
-import tiendaclub.data.framework.dao.IdentifiableDao;
+import tiendaclub.data.framework.dao.IdBoolIndexDao;
+import tiendaclub.data.framework.dao.IdIndexDao;
 import tiendaclub.model.models.*;
 import tiendaclub.model.models.abstracts.Persistible;
 
 public class DataStore {
 
-    private static IdentifiableDao<Acceso> accesos = new IdentifiableDao<>(Acceso.TABLE_NAME);
-    private static ActivableDao<Sede> sedes = new ActivableDao<>(Sede.TABLE_NAME);
-    private static ActivableDao<Caja> cajas = new ActivableDao<>(Caja.TABLE_NAME);
-    private static ActivableDao<Categoria> categorias = new ActivableDao<>(Categoria.TABLE_NAME);
-    private static IdentifiableDao<CierreZ> cierreZs = new IdentifiableDao<>(CierreZ.TABLE_NAME);
-    private static IdentifiableDao<Compra> compras = new IdentifiableDao<>(Compra.TABLE_NAME);
-    private static IdentifiableDao<Comprado> comprados = new IdentifiableDao<>(Comprado.TABLE_NAME);
-    private static ActivableDao<Producto> productos = new ActivableDao<>(Producto.TABLE_NAME);
-    private static ActivableDao<Proveedor> proveedores = new ActivableDao<>(Proveedor.TABLE_NAME);
-    private static ActivableDao<Socio> socios = new ActivableDao<>(Socio.TABLE_NAME);
-    private static IdentifiableDao<Transferencia> transferencias = new IdentifiableDao<>(Transferencia.TABLE_NAME);
-    private static ActivableDao<Usuario> usuarios = new ActivableDao<>(Usuario.TABLE_NAME);
-    private static IdentifiableDao<Vendido> vendidos = new IdentifiableDao<>(Vendido.TABLE_NAME);
-    private static IdentifiableDao<Venta> ventas = new IdentifiableDao<>(Venta.TABLE_NAME);
+    private static IdIndexDao<Acceso> accesos = new IdIndexDao<>(Acceso.TABLE_NAME);
+    private static IdBoolIndexDao<Sede> sedes = new IdBoolIndexDao<>(Sede.TABLE_NAME);
+    private static IdBoolIndexDao<Caja> cajas = new IdBoolIndexDao<>(Caja.TABLE_NAME);
+    private static IdBoolIndexDao<Categoria> categorias = new IdBoolIndexDao<>(Categoria.TABLE_NAME);
+    private static IdIndexDao<CierreZ> cierreZs = new IdIndexDao<>(CierreZ.TABLE_NAME);
+    private static IdIndexDao<Compra> compras = new IdIndexDao<>(Compra.TABLE_NAME);
+    private static IdIndexDao<Comprado> comprados = new IdIndexDao<>(Comprado.TABLE_NAME);
+    private static IdBoolIndexDao<Producto> productos = new IdBoolIndexDao<>(Producto.TABLE_NAME);
+    private static IdBoolIndexDao<Proveedor> proveedores = new IdBoolIndexDao<>(Proveedor.TABLE_NAME);
+    private static IdBoolIndexDao<Socio> socios = new IdBoolIndexDao<>(Socio.TABLE_NAME);
+    private static IdIndexDao<Transferencia> transferencias = new IdIndexDao<>(Transferencia.TABLE_NAME);
+    private static IdBoolIndexDao<Usuario> usuarios = new IdBoolIndexDao<>(Usuario.TABLE_NAME);
+    private static IdIndexDao<Vendido> vendidos = new IdIndexDao<>(Vendido.TABLE_NAME);
+    private static IdIndexDao<Venta> ventas = new IdIndexDao<>(Venta.TABLE_NAME);
 
-    public static IdentifiableDao<Acceso> getAccesos() {
+    public static IdIndexDao<Acceso> getAccesos() {
         return accesos;
     }
 
-    public static ActivableDao<Sede> getSedes() {
+    public static IdBoolIndexDao<Sede> getSedes() {
         return sedes;
     }
 
-    public static ActivableDao<Caja> getCajas() {
+    public static IdBoolIndexDao<Caja> getCajas() {
         return cajas;
     }
 
-    public static ActivableDao<Categoria> getCategorias() {
+    public static IdBoolIndexDao<Categoria> getCategorias() {
         return categorias;
     }
 
-    public static IdentifiableDao<CierreZ> getCierreZs() {
+    public static IdIndexDao<CierreZ> getCierreZs() {
         return cierreZs;
     }
 
-    public static IdentifiableDao<Compra> getCompras() {
+    public static IdIndexDao<Compra> getCompras() {
         return compras;
     }
 
-    public static IdentifiableDao<Comprado> getComprados() {
+    public static IdIndexDao<Comprado> getComprados() {
         return comprados;
     }
 
-    public static ActivableDao<Producto> getProductos() {
+    public static IdBoolIndexDao<Producto> getProductos() {
         return productos;
     }
 
-    public static ActivableDao<Proveedor> getProveedores() {
+    public static IdBoolIndexDao<Proveedor> getProveedores() {
         return proveedores;
     }
 
-    public static ActivableDao<Socio> getSocios() {
+    public static IdBoolIndexDao<Socio> getSocios() {
         return socios;
     }
 
-    public static IdentifiableDao<Transferencia> getTransferencias() {
+    public static IdIndexDao<Transferencia> getTransferencias() {
         return transferencias;
     }
 
-    public static ActivableDao<Usuario> getUsuarios() {
+    public static IdBoolIndexDao<Usuario> getUsuarios() {
         return usuarios;
     }
 
-    public static IdentifiableDao<Vendido> getVendidos() {
+    public static IdIndexDao<Vendido> getVendidos() {
         return vendidos;
     }
 
-    public static IdentifiableDao<Venta> getVentas() {
+    public static IdIndexDao<Venta> getVentas() {
         return ventas;
     }
 
     public static void firstQuery() {
         SessionDB.setAutoclose(false);
-        DataStore.getAccesos().queryAll();
-        DataStore.getUsuarios().queryAll();
-        DataStore.getProveedores().queryAll();
-        DataStore.getSocios().queryAll();
-        DataStore.getSedes().queryAll();
-        DataStore.getCajas().queryAll();
-        DataStore.getCategorias().queryAll();
-        DataStore.getProductos().queryAll();
+        DataStore.getAccesos().getDataSource().queryAll();
+        DataStore.getUsuarios().getDataSource().queryAll();
+        DataStore.getProveedores().getDataSource().queryAll();
+        DataStore.getSocios().getDataSource().queryAll();
+        DataStore.getSedes().getDataSource().queryAll();
+        DataStore.getCajas().getDataSource().queryAll();
+        DataStore.getCategorias().getDataSource().queryAll();
+        DataStore.getProductos().getDataSource().queryAll();
         SessionDB.setAutoclose(true);
     }
 
-    public static <T extends Persistible> IdentifiableDao getDataStore(T t) {
+    public static <T extends Persistible> IdIndexDao getDataStore(T t) {
         switch (t.getTableName()) {
             case Acceso.TABLE_NAME:
                 return DataStore.getAccesos();
