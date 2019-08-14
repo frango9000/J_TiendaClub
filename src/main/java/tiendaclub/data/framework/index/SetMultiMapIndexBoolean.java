@@ -6,10 +6,10 @@ import tiendaclub.model.models.abstracts.Activable;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class MultiMapIndexBoolean<T extends Activable> extends MultiMapIndex<Boolean, T> {
+public class SetMultiMapIndexBoolean<T extends Activable> extends SetMultiMapIndex<Boolean, T> {
 
 
-    public MultiMapIndexBoolean(DataSource<T> dataSource) {
+    public SetMultiMapIndexBoolean(DataSource<T> dataSource) {
         this.dataSource = dataSource;
         this.index = new HashMap<Boolean, HashMap<Integer, T>>();
         index.put(true, new HashMap<Integer, T>());

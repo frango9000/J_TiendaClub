@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
-public abstract class MultiMapIndex<K, V extends Persistible> extends AbstractIndex<K, V> {
+public abstract class SetMultiMapIndex<K, V extends Persistible> extends AbstractIndex<K, V> {
 
     protected HashMap<K, HashMap<Integer, V>> index;
 

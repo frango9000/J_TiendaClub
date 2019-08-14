@@ -1,19 +1,19 @@
 package tiendaclub.data.framework.dao;
 
-import tiendaclub.data.framework.index.MultiMapIndexBoolean;
+import tiendaclub.data.framework.index.SetMultiMapIndexBoolean;
 import tiendaclub.model.models.abstracts.Activable;
 
 public class IdBoolIndexDao<T extends Activable> extends IdIndexDao<T> {
 
 
-    private MultiMapIndexBoolean<T> activeIndex = new MultiMapIndexBoolean<>(dataSource);
+    private SetMultiMapIndexBoolean<T> activeIndex = new SetMultiMapIndexBoolean<>(dataSource);
 
     public IdBoolIndexDao(String TABLE_NAME) {
         super(TABLE_NAME);
         indexes.add(activeIndex);
     }
 
-    public MultiMapIndexBoolean<T> getActiveIndex() {
+    public SetMultiMapIndexBoolean<T> getActiveIndex() {
         return activeIndex;
     }
 }
