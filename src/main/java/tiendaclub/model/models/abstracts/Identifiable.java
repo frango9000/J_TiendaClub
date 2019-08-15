@@ -10,12 +10,12 @@ public abstract class Identifiable {
         this.id = Math.max(id, 0);
     }
 
-    public void setId(int id) {
-        this.id = Math.max(id, 0);
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = Math.max(id, 0);
     }
 
     protected String getIdColName() {

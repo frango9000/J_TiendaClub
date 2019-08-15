@@ -6,14 +6,14 @@ import javafx.beans.property.SimpleBooleanProperty;
 public abstract class Activable extends Persistible {
     protected BooleanProperty activo;
 
-    public BooleanProperty activeProperty() {
-        if (activo == null) activo = new SimpleBooleanProperty(this, "activo");
-        return activo;
-    }
-
     protected Activable(int id) {
         super(id);
         setActivo(true);
+    }
+
+    public BooleanProperty activeProperty() {
+        if (activo == null) activo = new SimpleBooleanProperty(this, "activo");
+        return activo;
     }
 
     public boolean isActivo() {

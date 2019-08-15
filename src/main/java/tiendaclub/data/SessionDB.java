@@ -130,6 +130,7 @@ public final class SessionDB implements Globals {
     public static boolean connect(String catalog) {
         return connect(jdbcIP, jdbcPort, catalog, jdbcUser, jdbcPassword);
     }
+
     public static boolean connect() {
         return connect(jdbcIP, jdbcPort, jdbcCatalog, jdbcUser, jdbcPassword);
     }
@@ -192,7 +193,6 @@ public final class SessionDB implements Globals {
     }
 
     /**
-     *
      * @param autoclose
      */
     public static void setAutoclose(boolean autoclose, String catalog) {

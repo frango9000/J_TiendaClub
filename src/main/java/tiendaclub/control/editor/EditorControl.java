@@ -10,10 +10,9 @@ import tiendaclub.view.FxDialogs;
 
 public abstract class EditorControl<T extends Persistible> extends BorderPane {
 
+    private static EditorControl controller;
     protected T editee;
     protected boolean creating = true;
-
-    private static EditorControl controller;
 
     protected EditorControl() {
         controller = this;
@@ -23,6 +22,14 @@ public abstract class EditorControl<T extends Persistible> extends BorderPane {
         return controller;
     }
 
+    protected static String getTextOrNull(TextInputControl control) {
+        String txt = control.getText().trim();
+        return txt.length() > 0 ? txt : null;
+    }
+
+    protected static String getNotNullText(String txt) {
+        return txt != null ? txt : "";
+    }
 
     public T getEditee() {
         return editee;
@@ -43,7 +50,6 @@ public abstract class EditorControl<T extends Persistible> extends BorderPane {
     protected abstract void setFields();
 
     protected abstract boolean validFields();
-
 
     @FXML
     protected void fxBtnDiscardAction(ActionEvent actionEvent) {
@@ -67,15 +73,5 @@ public abstract class EditorControl<T extends Persistible> extends BorderPane {
             } else
                 FxDialogs.showError("Fail!", editee.getClass().getSimpleName() + " no " + (creating ? "creado" : "modificado"));
         } else FxDialogs.showError("Fail!", "Invalid Fields");
-    }
-
-
-    protected static String getTextOrNull(TextInputControl control) {
-        String txt = control.getText().trim();
-        return txt.length() > 0 ? txt : null;
-    }
-
-    protected static String getNotNullText(String txt) {
-        return txt != null ? txt : "";
     }
 }

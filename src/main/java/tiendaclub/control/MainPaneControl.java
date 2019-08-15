@@ -25,10 +25,6 @@ public class MainPaneControl {
     @FXML
     private MenuItem fxMenuCajas;
 
-    public BorderPane getMainPane() {
-        return mainPane;
-    }
-
     public static Pane loadFXML() {
         String url = "/fxml/MainPane.fxml";
         Pane pane = null;
@@ -39,6 +35,11 @@ public class MainPaneControl {
         }
         return pane;
     }
+
+    public BorderPane getMainPane() {
+        return mainPane;
+    }
+
     @FXML
     public void initialize() {
 
