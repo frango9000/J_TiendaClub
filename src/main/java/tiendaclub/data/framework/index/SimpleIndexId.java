@@ -1,22 +1,26 @@
 package tiendaclub.data.framework.index;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import tiendaclub.data.framework.datasource.DataSource;
 import tiendaclub.model.models.abstracts.Persistible;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 public class SimpleIndexId<V extends Persistible> extends AbstractIndex<Integer, V> {
 
-    protected HashMap<Integer, V> index = new HashMap<Integer, V>();
+    protected HashMap<Integer, V> index = Maps.newHashMap();
 
     public SimpleIndexId(DataSource<V> dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public void index(V objectV) {
-        index.putIfAbsent(objectV.getId(), objectV);
+    public void index(V value) {
+        index.putIfAbsent(value.getId(), value);
     }
 
     @Override
@@ -25,90 +29,124 @@ public class SimpleIndexId<V extends Persistible> extends AbstractIndex<Integer,
     }
 
     @Override
-    public void deindex(V objectT) {
-        deindex(objectT.getId());
+    public void deindex(V value) {
+        deindex(value.getId());
     }
 
     @Override
-    public void reindex(V objectT) {
-        deindex(objectT);
-        index(objectT);
+    public void reindex(V value) {
+        deindex(value);
+        index(value);
     }
-//
-//    @Override
-//    private HashMap<Integer, V> getIndexMap(Integer key) {
-//        return getIndexMap();
-//    }
-//
-//    @Override
-//    private HashMap<Integer, V> getIndexMap() {
-//        return index;
-//    }
-//
-//    @Override
-//    public Collection<V> getIndexValues() {
-//        return index.values();
-//    }
-//
-//    @Override
-//    public Collection<V> getIndexValues(Integer key) {
-//        return Collections.singletonList(index.get(key));
-//    }
 
+    @Override
+    public Set<Integer> getKeys() {
+        dataSource.queryAll();
+        return getCacheKeys();
+    }
 
-    public V getMap(int id) {
-        if (id > 0) {
-            if (cacheContains(id)) {
-                return getFromCache(id);
-            } else {
-                return dataSource.query(id);
+    @Override
+    public Set<V> getValues() {
+        dataSource.queryAll();
+        return getCacheValues();
+    }
+
+    @Override
+    public Set<V> getKeyValues(Integer key) {
+        Set<V> set = Sets.newHashSetWithExpectedSize(1);
+        if (key > 0) {
+            if (!cacheContainsKey(key)) {
+                dataSource.query(key);
             }
-        } else {
-            return null;
+            if (cacheContainsKey(key)) {
+                set.add(index.get(key));
+            }
         }
+        return set;
     }
 
-    public ArrayList<V> getList(ArrayList<Integer> ids) {
-        ArrayList<V> list = new ArrayList<>();
-        if (ids.size() > 0) {
-            ArrayList<Integer> idsToQuery = new ArrayList<>();
-            for (int id : ids) {
-                if (!cacheContains(id)) {
-                    idsToQuery.add(id);
+    @Override
+    public Set<V> getKeyValues(Set<Integer> keys) {
+        Set<V> list = Sets.newHashSetWithExpectedSize(keys.size());
+        if (keys.size() > 0) {
+            HashSet<Integer> keysToQuery = Sets.newHashSet();
+            for (int key : keys) {
+                if (!cacheContainsKey(key)) {
+                    keysToQuery.add(key);
                 }
             }
-            if (ids.size() > 0) {
-                dataSource.querySome(idsToQuery);
-            }
-            for (int id : ids) {
-                list.add(getFromCache(id));
+            if (keysToQuery.size() > 0) {
+                dataSource.querySome(keysToQuery);
             }
         }
-        return list;
+        return getCacheKeyValues(keys);
     }
 
-    public HashMap<Integer, V> getMap(ArrayList<Integer> ids) {
-        HashMap<Integer, V> filteredHashMap = new HashMap<>();
-        if (ids.size() > 0) {
-            ArrayList<V> objs = getList(ids);
-            for (V t : objs) {
-                filteredHashMap.putIfAbsent(t.getId(), t);
-            }
+    @Override
+    public Set<Integer> getCacheKeys() {
+        return index.keySet();
+    }
+
+    @Override
+    public Set<V> getCacheValues() {
+        return Sets.newHashSet(index.values());
+    }
+
+    @Override
+    public Set<V> getCacheKeyValues(Integer key) {
+        Set<V> set = Sets.newHashSetWithExpectedSize(1);
+        if (cacheContainsKey(key))
+            set.add(index.get(key));
+        return set;
+    }
+
+    @Override
+    public Set<V> getCacheKeyValues(Set<Integer> keys) {
+        Set<V> set = Sets.newHashSetWithExpectedSize(keys.size());
+        keys.forEach(key -> {
+            if (cacheContainsKey(key))
+                set.add(index.get(key));
+        });
+        return set;
+    }
+
+    @Override
+    public boolean cacheContainsKey(Integer key) {
+        return index.containsKey(key);
+    }
+
+    @Override
+    public boolean cacheContainsValue(V value) {
+        return index.containsValue(value);
+    }
+
+    @Override
+    public V getValue(Integer key) {
+        if (!cacheContainsKey(key)) {
+            dataSource.query(key);
         }
-        return filteredHashMap;
+        return getCacheValue(key);
     }
 
-    public boolean cacheContains(int id) {
-        return index.containsKey(id);
+    @Override
+    public V getCacheValue(Integer key) {
+        return index.get(key);
     }
 
-    public V getFromCache(int id) {
-        return index.get(id);
+
+    @Override
+    public Optional<V> getValueOptional(Integer key) {
+        if (!cacheContainsKey(key)) {
+            dataSource.query(key);
+        }
+        return getCacheValueOptional(key);
     }
 
-    public HashMap<Integer, V> getAllCache() {
-        return index;
+    @Override
+    public Optional<V> getCacheValueOptional(Integer key) {
+        if (cacheContainsKey(key))
+            return Optional.of(index.get(key));
+        else return Optional.empty();
     }
-
 
 }

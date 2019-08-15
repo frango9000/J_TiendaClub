@@ -66,7 +66,7 @@ public class CierreZ extends AbstractCierreZ {
     }
 
     private void updateCaja() {
-        setCaja(DataStore.getCajas().getIdIndex().getMap(getIdCaja()));
+        setCaja(DataStore.getCajas().getIdIndex().getCacheValue(getIdCaja()));
     }
 
     @Override

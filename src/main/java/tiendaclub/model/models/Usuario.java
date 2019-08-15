@@ -90,7 +90,7 @@ public class Usuario extends AbstractUsuario {
     }
 
     private void updateAcceso() {
-        setAcceso(DataStore.getAccesos().getIdIndex().getMap(getIdAcceso()));
+        setAcceso(DataStore.getAccesos().getIdIndex().getCacheValue(getIdAcceso()));
     }
 
     public HashMap<Integer, Compra> getCompras() {

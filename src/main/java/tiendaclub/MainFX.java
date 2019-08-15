@@ -16,6 +16,7 @@ import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class MainFX extends Application {
 
@@ -61,7 +62,7 @@ public class MainFX extends Application {
             DataStore.firstQuery();
             primaryStage.show();
 
-            Collection<Sede> sedes = DataStore.getSedes().getIdIndex().getAllCache().values();
+            Set<Sede> sedes = DataStore.getSedes().getIdIndex().getCacheValues();
             if (sedes.size() == 0)
                 FxDialogs.showWarning("No Sede", "Debes crear una sede y una caja");
             else {

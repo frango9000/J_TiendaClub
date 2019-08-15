@@ -1,43 +1,123 @@
 package tiendaclub.data.framework.index;
 
+import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Sets;
 import tiendaclub.model.models.abstracts.Persistible;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class SetMultiMapIndex<K, V extends Persistible> extends AbstractIndex<K, V> {
 
-    protected HashMap<K, HashMap<Integer, V>> index;
+    protected SetMultimap<K, V> index;// = MultimapBuilder.SetMultimapBuilder.hashKeys().hashSetValues().build();
 
     @Override
-    public abstract void index(V objectV);
+    public abstract void index(V value);
+
+    @Override
+    public abstract void reindex(V value);
 
     @Override
     public void deindex(int id) {
-        index.forEach((e, f) -> f.remove(id));
+        index.keySet().forEach(aBoolean -> {
+            index.get(aBoolean).forEach(t -> {
+                if (t.getId() == id) {
+                    index.remove(aBoolean, t);
+                }
+            });
+        });
     }
 
     @Override
-    public abstract void deindex(V objectT);
+    public abstract void deindex(V value);
 
     @Override
-    public abstract void reindex(V objectT);
+    public Set<K> getKeys() {
+        dataSource.queryAll();
+        return getCacheKeys();
+    }
 
+    @Override
+    public Set<V> getValues() {
+        dataSource.queryAll();
+        return getCacheValues();
+    }
 
-    public HashMap<Integer, V> getKeyMap(K key) {
+    @Override
+    public Set<V> getKeyValues(K key) {
+        dataSource.querySome(INDEX_COL_NAME, key.toString());
+        return getCacheKeyValues(key);
+    }
+
+    @Override
+    public Set<V> getKeyValues(Set<K> keys) {
+        Set<String> strings = Sets.newHashSetWithExpectedSize(keys.size());
+        keys.forEach(e -> strings.add(e.toString()));
+        dataSource.querySome(INDEX_COL_NAME, strings);
+        return getCacheKeyValues(keys);
+    }
+
+    @Override
+    public Set<K> getCacheKeys() {
+        return index.keySet();
+    }
+
+    @Override
+    public Set<V> getCacheValues() {
+        Set<V> values = Sets.newHashSet();
+        index.keySet().forEach(e -> values.addAll(index.get(e)));
+        return values;
+    }
+
+    @Override
+    public Set<V> getCacheKeyValues(K key) {
         return index.get(key);
     }
 
-    public HashMap<K, HashMap<Integer, V>> getIndex() {
-        return index;
+    @Override
+    public Set<V> getCacheKeyValues(Set<K> keys) {
+        Set<V> values = Sets.newHashSet();
+        keys.forEach(e -> values.addAll(index.get(e)));
+        return values;
     }
 
-    public Collection<V> getKeyValues(K key) {
-        return index.get(key).values();
+    @Override
+    public boolean cacheContainsKey(K key) {
+        return index.containsKey(key);
     }
 
-    public Set<K> getKeys() {
-        return index.keySet();
+    @Override
+    public boolean cacheContainsValue(V value) {
+        return index.containsValue(value);
+    }
+
+    @Override
+    public V getValue(K key) {
+        if (!cacheContainsKey(key)) {
+            getKeyValues(key);
+        }
+        return getCacheValue(key);
+    }
+
+    @Override
+    public V getCacheValue(K key) {
+        if (getCacheKeyValues(key).size() > 0)
+            return getCacheKeyValues(key).iterator().next();
+        return null;
+    }
+
+    @Override
+    public Optional<V> getValueOptional(K key) {
+        if (!cacheContainsKey(key)) {
+            getKeyValues(key);
+        }
+        return getCacheValueOptional(key);
+    }
+
+    @Override
+    public Optional<V> getCacheValueOptional(K key) {
+        if (cacheContainsKey(key))
+            return Optional.of(index.get(key).iterator().next());
+        else return Optional.empty();
     }
 }

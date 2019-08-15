@@ -1,46 +1,41 @@
 package tiendaclub.data.framework.index;
 
+import com.google.common.collect.MultimapBuilder;
 import tiendaclub.data.framework.datasource.DataSource;
 import tiendaclub.model.models.abstracts.Activable;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.Set;
 
 public class SetMultiMapIndexBoolean<T extends Activable> extends SetMultiMapIndex<Boolean, T> {
 
+    //protected SetMultimap<Boolean, T> index;
 
     public SetMultiMapIndexBoolean(DataSource<T> dataSource) {
         this.dataSource = dataSource;
-        this.index = new HashMap<Boolean, HashMap<Integer, T>>();
-        index.put(true, new HashMap<Integer, T>());
-        index.put(false, new HashMap<Integer, T>());
-    }
-
-
-    @Override
-    public void index(T objectT) {
-        index.get(objectT.isActivo()).put(objectT.getId(), objectT);
+        this.index = MultimapBuilder.SetMultimapBuilder.hashKeys(2).hashSetValues().build();
     }
 
     @Override
-    public void deindex(T objectT) {
-        index.get(objectT.isActivo()).remove(objectT.getId());
+    public void index(T value) {
+        index.put(value.isActivo(), value);
     }
 
     @Override
-    public void reindex(T objectT) {
-        index.get(!objectT.isActivo()).remove(objectT.getId());
-        index(objectT);
+    public void reindex(T value) {
+        index.remove(!value.isActivo(), value);
+        index(value);
     }
 
-    public Collection<T> getActive(boolean active) {
-        dataSource.querySome("activo", Boolean.toString(active));
-        return getCacheActive(active);
+    @Override
+    public void deindex(T value) {
+        index.remove(value.isActivo(), value);
     }
 
-    public Collection<T> getCacheActive(boolean active) {
-        return index.get(active).values();
+    public Set<T> getActive(boolean active) {
+        return getKeyValues(active);
     }
 
-
+    public Set<T> getActiveCache(boolean active) {
+        return getCacheKeyValues(active);
+    }
 }

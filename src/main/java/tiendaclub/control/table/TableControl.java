@@ -17,7 +17,7 @@ import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.Set;
 
 public abstract class TableControl<T extends Persistible> extends BorderPane {
     protected final ObservableList<T> listedObjects = FXCollections.observableArrayList();
@@ -69,7 +69,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
         if (clean)
             listedObjects.clear();
 
-        Collection<T> list = getDataOrigin().getIdIndex().getAllCache().values();
+        Set<T> list = getDataOrigin().getIdIndex().getCacheValues();
 
         list.forEach(e -> {
             if (!listedObjects.contains(e))

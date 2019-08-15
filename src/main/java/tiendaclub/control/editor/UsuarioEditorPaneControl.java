@@ -41,7 +41,7 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
 
     @FXML
     void initialize() {
-        fxCbxAcceso.getItems().addAll(DataStore.getAccesos().getIdIndex().getAllCache().values());
+        fxCbxAcceso.getItems().addAll(DataStore.getAccesos().getIdIndex().getCacheValues());
         fxCbxAcceso.getSelectionModel().select(0);
         fxButtonPassword.setVisible(false);
     }

@@ -1,5 +1,6 @@
 package tiendaclub.data.framework.datasource;
 
+import com.google.common.collect.Sets;
 import tiendaclub.data.DataFactory;
 import tiendaclub.data.SessionDB;
 import tiendaclub.data.framework.index.AbstractIndex;
@@ -11,8 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,8 +44,8 @@ public class DataSource<T extends Persistible> implements Globals {
         indexes.forEach(e -> e.index(objectT));
     }
 
-    protected void deindex(int id) {
-        indexes.forEach(e -> e.deindex(id));
+    protected void deindex(int key) {
+        indexes.forEach(e -> e.deindex(key));
     }
 
     protected void deindex(T objectT) {
@@ -98,8 +100,8 @@ public class DataSource<T extends Persistible> implements Globals {
         return objecT;
     }
 
-    public HashMap<Integer, T> querySome(ArrayList<Integer> ids) {
-        HashMap<Integer, T> returnMap = new HashMap<>();
+    public Set<T> querySome(Set<Integer> ids) {
+        HashSet<T> returnSet = Sets.newHashSetWithExpectedSize(ids.size());
         if (SessionDB.connect() && ids.size() > 0) {
             StringBuilder sql = new StringBuilder("SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
             Iterator<Integer> iterator = ids.iterator();
@@ -115,7 +117,7 @@ public class DataSource<T extends Persistible> implements Globals {
                 while (rs.next()) {
                     T objecT = (T) DataFactory.buildObject(rs);
                     index(objecT);
-                    returnMap.putIfAbsent(objecT.getId(), objecT);
+                    returnSet.add(objecT);
                 }
                 printSql(sql.toString());
             } catch (SQLException ex) {
@@ -124,11 +126,40 @@ public class DataSource<T extends Persistible> implements Globals {
                 SessionDB.close();
             }
         }
-        return returnMap;
+        return returnSet;
     }
 
-    public HashMap<Integer, T> querySome(String colName, String search) {
-        HashMap<Integer, T> returnMap = new HashMap<>();
+    public Set<T> querySome(String colName, Set<String> search) {
+        HashSet<T> returnSet = Sets.newHashSetWithExpectedSize(search.size());
+        if (SessionDB.connect() && search.size() > 0) {
+            StringBuilder sql = new StringBuilder("SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
+            Iterator<String> iterator = search.iterator();
+            while (iterator.hasNext()) {
+                sql.append(iterator.next());
+                if (iterator.hasNext())
+                    sql.append(", ");
+                else
+                    sql.append(" )");
+            }
+            try (Statement ps = SessionDB.getConn().createStatement();
+                 ResultSet rs = ps.executeQuery(sql.toString())) {
+                while (rs.next()) {
+                    T objecT = (T) DataFactory.buildObject(rs);
+                    index(objecT);
+                    returnSet.add(objecT);
+                }
+                printSql(sql.toString());
+            } catch (SQLException ex) {
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql.toString(), ex);
+            } finally {
+                SessionDB.close();
+            }
+        }
+        return returnSet;
+    }
+
+    public Set<T> querySome(String colName, String search) {
+        HashSet<T> returnSet = Sets.newHashSet();
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, search);
             try (Statement ps = SessionDB.getConn().createStatement();
@@ -136,7 +167,7 @@ public class DataSource<T extends Persistible> implements Globals {
                 while (rs.next()) {
                     T objecT = (T) DataFactory.buildObject(rs);
                     index(objecT);
-                    returnMap.putIfAbsent(objecT.getId(), objecT);
+                    returnSet.add(objecT);
                 }
                 printSql(sql);
             } catch (SQLException ex) {
@@ -145,28 +176,30 @@ public class DataSource<T extends Persistible> implements Globals {
                 SessionDB.close();
             }
         }
-        return returnMap;
+        return returnSet;
     }
 
-    public HashMap<Integer, T> queryAll() {
-        HashMap<Integer, T> returnMap = new HashMap<>();
+    public Set<T> queryAll() {
+        Set<T> returnSet = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s", TABLE_NAME);
             try (Statement ps = SessionDB.getConn().createStatement();
                  ResultSet rs = ps.executeQuery(sql)) {
+                returnSet = Sets.newHashSetWithExpectedSize(rs.getFetchSize());
                 while (rs.next()) {
                     T objecT = (T) DataFactory.buildObject(rs);
                     index(objecT);
-                    returnMap.putIfAbsent(objecT.getId(), objecT);
+                    returnSet.add(objecT);
                 }
                 printSql(sql);
             } catch (SQLException ex) {
+                returnSet = Set.of();
                 Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
         }
-        return returnMap;
+        return returnSet;
     }
 
     public int insert(T objectT) {
@@ -241,13 +274,13 @@ public class DataSource<T extends Persistible> implements Globals {
         return delete(objecT.getId());
     }
 
-    public int delete(int id) {
+    public int delete(Integer key) {
         int rows = 0;
         if (SessionDB.connect()) {
-            String sql = String.format("DELETE FROM %s WHERE %s = '%d' ", TABLE_NAME, ID_COL_NAME, id);
+            String sql = String.format("DELETE FROM %s WHERE %s = '%d' ", TABLE_NAME, ID_COL_NAME, key);
             try (Statement stmt = SessionDB.getConn().createStatement()) {
                 rows = stmt.executeUpdate(sql);
-                deindex(id);
+                deindex(key);
                 printSql(sql);
             } catch (SQLException ex) {
                 Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
@@ -258,17 +291,17 @@ public class DataSource<T extends Persistible> implements Globals {
         return rows;
     }
 
-    public int deleteSome(ArrayList<T> toDelete) {
-        ArrayList<Integer> idsToDelete = new ArrayList<>();
+    public int deleteSome(Set<T> toDelete) {
+        HashSet<Integer> idsToDelete = Sets.newHashSet();
         toDelete.forEach(e -> idsToDelete.add(e.getId()));
-        return deleteSomeIds(idsToDelete);
+        return deleteSomeKeys(idsToDelete);
     }
 
-    public int deleteSomeIds(ArrayList<Integer> toDelete) {
+    public int deleteSomeKeys(Set<Integer> keys) {
         int rows = 0;
-        if (SessionDB.connect() && toDelete.size() > 0) {
+        if (SessionDB.connect() && keys.size() > 0) {
             StringBuilder sql = new StringBuilder("DELETE FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
-            Iterator<Integer> iterator = toDelete.iterator();
+            Iterator<Integer> iterator = keys.iterator();
             while (iterator.hasNext()) {
                 sql.append(iterator.next());
                 if (iterator.hasNext())
@@ -279,9 +312,9 @@ public class DataSource<T extends Persistible> implements Globals {
             try (Statement ps = SessionDB.getConn().createStatement()) {
                 SessionDB.getConn().setAutoCommit(false);
                 rows = ps.executeUpdate(sql.toString());
-                if (rows == toDelete.size()) {
+                if (rows == keys.size()) {
                     SessionDB.getConn().commit();
-                    toDelete.forEach(e -> deindex(e));
+                    keys.forEach(e -> deindex(e));
                 } else SessionDB.getConn().rollback();
                 SessionDB.getConn().setAutoCommit(true);
                 printSql(sql.toString());
