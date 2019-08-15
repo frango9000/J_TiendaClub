@@ -1,5 +1,6 @@
 package tiendaclub.control.table;
 
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
@@ -9,8 +10,6 @@ import tiendaclub.data.DataStore;
 import tiendaclub.data.framework.dao.IdBoolIndexDao;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
-
-import java.io.IOException;
 
 public class SedesPaneControl extends ActiveTableControl<Sede> {
 

@@ -1,6 +1,7 @@
 package tiendaclub.model.models.abstracts;
 
 public abstract class AbstractSede extends Activable {
+
     protected String nombre;
     protected String telefono;
     protected String direccion;
@@ -45,8 +46,12 @@ public abstract class AbstractSede extends Activable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractSede that = (AbstractSede) o;
 

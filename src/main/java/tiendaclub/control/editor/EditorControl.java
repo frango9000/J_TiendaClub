@@ -68,10 +68,15 @@ public abstract class EditorControl<T extends Persistible> extends BorderPane {
                 rows = editee.updateOnDb();
             }
             if (rows > 0) {
-                FxDialogs.showInfo("Success", editee.getClass().getSimpleName() + " " + (creating ? "creado" : "modificado"));
+                FxDialogs.showInfo("Success",
+                        editee.getClass().getSimpleName() + " " + (creating ? "creado" : "modificado"));
                 ((Node) event.getSource()).getScene().getWindow().hide();
-            } else
-                FxDialogs.showError("Fail!", editee.getClass().getSimpleName() + " no " + (creating ? "creado" : "modificado"));
-        } else FxDialogs.showError("Fail!", "Invalid Fields");
+            } else {
+                FxDialogs.showError("Fail!",
+                        editee.getClass().getSimpleName() + " no " + (creating ? "creado" : "modificado"));
+            }
+        } else {
+            FxDialogs.showError("Fail!", "Invalid Fields");
+        }
     }
 }

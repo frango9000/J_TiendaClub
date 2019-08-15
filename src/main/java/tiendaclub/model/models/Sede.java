@@ -1,17 +1,18 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.models.abstracts.AbstractSede;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import tiendaclub.model.models.abstracts.AbstractSede;
 
 public class Sede extends AbstractSede {
+
     public static final String TABLE_NAME = "sedes";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nombre", "telefono", "direccion", "activo"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+            Arrays.asList("nombre", "telefono", "direccion", "activo"));
 
     private HashMap<Integer, Caja> cajas = new HashMap<>();
     private HashMap<Integer, Compra> compras = new HashMap<>();

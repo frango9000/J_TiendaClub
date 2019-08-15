@@ -1,17 +1,17 @@
 package tiendaclub.model.models;
 
-import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractCierreZ;
-import tiendaclub.model.utils.DateUtils;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import tiendaclub.data.DataStore;
+import tiendaclub.model.models.abstracts.AbstractCierreZ;
+import tiendaclub.model.utils.DateUtils;
 
 public class CierreZ extends AbstractCierreZ {
+
     public static final String TABLE_NAME = "zs";
     private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idCaja", "apertura", "cierre"));
 
@@ -58,11 +58,13 @@ public class CierreZ extends AbstractCierreZ {
     }
 
     public void setCaja(Caja caja2) {
-        if (caja != null)
+        if (caja != null) {
             caja.getCierresZs().remove(getId());
+        }
         this.caja = caja2;
-        if (caja != null)
+        if (caja != null) {
             caja.getCierresZs().putIfAbsent(getId(), this);
+        }
     }
 
     private void updateCaja() {

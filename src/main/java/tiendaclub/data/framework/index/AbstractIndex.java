@@ -1,10 +1,9 @@
 package tiendaclub.data.framework.index;
 
-import tiendaclub.data.framework.datasource.DataSource;
-
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
+import tiendaclub.data.framework.datasource.DataSource;
 
 public abstract class AbstractIndex<K, V> {
 

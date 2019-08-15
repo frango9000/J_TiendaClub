@@ -1,16 +1,16 @@
 package tiendaclub.model.models;
 
-import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractCaja;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import tiendaclub.data.DataStore;
+import tiendaclub.model.models.abstracts.AbstractCaja;
 
 public class Caja extends AbstractCaja {
+
     public static final String TABLE_NAME = "cajas";
     private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idSede", "nombre", "activo"));
 
@@ -60,11 +60,13 @@ public class Caja extends AbstractCaja {
     }
 
     public void setSede(Sede sede2) {
-        if (sede != null)
+        if (sede != null) {
             sede.getCajas().remove(getId());
+        }
         this.sede = sede2;
-        if (sede != null)
+        if (sede != null) {
             sede.getCajas().putIfAbsent(getId(), this);
+        }
     }
 
     private void updateSede() {

@@ -1,9 +1,5 @@
 package tiendaclub.model.models;
 
-import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractCompra;
-import tiendaclub.model.utils.DateUtils;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,10 +7,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import tiendaclub.data.DataStore;
+import tiendaclub.model.models.abstracts.AbstractCompra;
+import tiendaclub.model.utils.DateUtils;
 
 public class Compra extends AbstractCompra {
+
     public static final String TABLE_NAME = "compras";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idSede", "idProveedor", "fechahora"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+            Arrays.asList("idUsuario", "idSede", "idProveedor", "fechahora"));
 
     private Usuario usuario;
     private Proveedor proveedor;
@@ -68,11 +69,13 @@ public class Compra extends AbstractCompra {
     }
 
     public void setUsuario(Usuario usuario2) {
-        if (usuario != null)
+        if (usuario != null) {
             usuario.getCompras().remove(getId());
+        }
         this.usuario = usuario2;
-        if (usuario != null)
+        if (usuario != null) {
             usuario.getCompras().put(getId(), this);
+        }
     }
 
     private void updateUsuario() {
@@ -90,11 +93,13 @@ public class Compra extends AbstractCompra {
     }
 
     public void setProveedor(Proveedor proveedor2) {
-        if (proveedor != null)
+        if (proveedor != null) {
             proveedor.getCompras().remove(getId());
+        }
         this.proveedor = proveedor2;
-        if (proveedor != null)
+        if (proveedor != null) {
             proveedor.getCompras().put(getId(), this);
+        }
     }
 
     private void updateProveedor() {
@@ -112,11 +117,13 @@ public class Compra extends AbstractCompra {
     }
 
     public void setSede(Sede sede2) {
-        if (sede != null)
+        if (sede != null) {
             sede.getCompras().remove(getId());
+        }
         this.sede = sede2;
-        if (sede != null)
+        if (sede != null) {
             sede.getCompras().put(getId(), this);
+        }
     }
 
     private void updateSede() {

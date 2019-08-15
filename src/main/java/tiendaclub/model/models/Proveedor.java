@@ -1,17 +1,18 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.models.abstracts.AbstractProveedor;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import tiendaclub.model.models.abstracts.AbstractProveedor;
 
 public class Proveedor extends AbstractProveedor {
+
     public static final String TABLE_NAME = "proveedores";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion", "activo"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+            Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion", "activo"));
 
     private HashMap<Integer, Compra> compras = new HashMap<>();
 

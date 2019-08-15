@@ -3,6 +3,7 @@ package tiendaclub.model.models.abstracts;
 import java.time.LocalDateTime;
 
 public abstract class AbstractTransferencia extends Persistible {
+
     protected int idUsuario;
     protected int idSedeOrigen;
     protected int idSedeDestino;
@@ -10,7 +11,8 @@ public abstract class AbstractTransferencia extends Persistible {
     protected int cantidad;
     protected LocalDateTime fechahora;
 
-    public AbstractTransferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad, LocalDateTime fechahora) {
+    public AbstractTransferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto,
+            int cantidad, LocalDateTime fechahora) {
         super(id);
         this.idUsuario = idUsuario;
         this.idSedeOrigen = idSedeOrigen;
@@ -79,8 +81,12 @@ public abstract class AbstractTransferencia extends Persistible {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractTransferencia that = (AbstractTransferencia) o;
 

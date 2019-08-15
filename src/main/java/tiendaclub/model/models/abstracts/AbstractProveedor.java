@@ -1,6 +1,7 @@
 package tiendaclub.model.models.abstracts;
 
 public abstract class AbstractProveedor extends Activable {
+
     protected String nif;
     protected String nombre;
     protected String telefono;
@@ -70,8 +71,12 @@ public abstract class AbstractProveedor extends Activable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractProveedor that = (AbstractProveedor) o;
 

@@ -2,7 +2,11 @@ package tiendaclub.control.editor;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
@@ -92,7 +96,9 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
     }
 
     protected boolean validFields() {
-        if (fxUsername.getText().trim().length() < 1) return false;
+        if (fxUsername.getText().trim().length() < 1) {
+            return false;
+        }
         return fxCbxAcceso.getSelectionModel().getSelectedItem().getId() >= SessionStore.getUsuario().getIdAcceso();
     }
 

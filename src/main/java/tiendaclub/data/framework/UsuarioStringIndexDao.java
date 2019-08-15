@@ -4,6 +4,7 @@ import tiendaclub.data.framework.dao.IdIndexDao;
 import tiendaclub.model.models.Usuario;
 
 public class UsuarioStringIndexDao extends IdIndexDao<Usuario> {
+
     public UsuarioStringIndexDao(String TABLE_NAME) {
         super(TABLE_NAME);
     }

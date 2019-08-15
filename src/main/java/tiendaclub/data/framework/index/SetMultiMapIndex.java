@@ -2,10 +2,9 @@ package tiendaclub.data.framework.index;
 
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
-import tiendaclub.model.models.abstracts.Persistible;
-
 import java.util.Optional;
 import java.util.Set;
+import tiendaclub.model.models.abstracts.Persistible;
 
 public abstract class SetMultiMapIndex<K, V extends Persistible> extends AbstractIndex<K, V> {
 
@@ -101,8 +100,9 @@ public abstract class SetMultiMapIndex<K, V extends Persistible> extends Abstrac
 
     @Override
     public V getCacheValue(K key) {
-        if (getCacheKeyValues(key).size() > 0)
+        if (getCacheKeyValues(key).size() > 0) {
             return getCacheKeyValues(key).iterator().next();
+        }
         return null;
     }
 
@@ -116,8 +116,10 @@ public abstract class SetMultiMapIndex<K, V extends Persistible> extends Abstrac
 
     @Override
     public Optional<V> getCacheValueOptional(K key) {
-        if (cacheContainsKey(key))
+        if (cacheContainsKey(key)) {
             return Optional.of(index.get(key).iterator().next());
-        else return Optional.empty();
+        } else {
+            return Optional.empty();
+        }
     }
 }

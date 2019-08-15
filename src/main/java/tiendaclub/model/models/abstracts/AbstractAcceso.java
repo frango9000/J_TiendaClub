@@ -1,6 +1,7 @@
 package tiendaclub.model.models.abstracts;
 
 public abstract class AbstractAcceso extends Persistible {
+
     protected String nivel;
 
     public AbstractAcceso(int id, String nivel) {
@@ -18,8 +19,12 @@ public abstract class AbstractAcceso extends Persistible {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractAcceso that = (AbstractAcceso) o;
 

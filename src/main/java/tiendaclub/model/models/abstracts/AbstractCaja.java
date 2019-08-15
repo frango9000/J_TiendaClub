@@ -1,6 +1,7 @@
 package tiendaclub.model.models.abstracts;
 
 public abstract class AbstractCaja extends Activable {
+
     protected int idSede;
     protected String nombre;
 
@@ -34,8 +35,12 @@ public abstract class AbstractCaja extends Activable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractCaja that = (AbstractCaja) o;
 

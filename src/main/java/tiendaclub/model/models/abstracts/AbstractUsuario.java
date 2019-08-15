@@ -91,8 +91,12 @@ public abstract class AbstractUsuario extends Activable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractUsuario usuario = (AbstractUsuario) o;
 

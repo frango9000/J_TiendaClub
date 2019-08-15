@@ -1,5 +1,7 @@
 package tiendaclub;
 
+import java.util.Collection;
+import java.util.Set;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -14,9 +16,6 @@ import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
-
-import java.util.Collection;
-import java.util.Set;
 
 public class MainFX extends Application {
 
@@ -63,20 +62,22 @@ public class MainFX extends Application {
             primaryStage.show();
 
             Set<Sede> sedes = DataStore.getSedes().getIdIndex().getCacheValues();
-            if (sedes.size() == 0)
+            if (sedes.size() == 0) {
                 FxDialogs.showWarning("No Sede", "Debes crear una sede y una caja");
-            else {
-                if (sedes.size() == 1)
+            } else {
+                if (sedes.size() == 1) {
                     SessionStore.setSede(sedes.iterator().next());
-                else
+                } else {
                     SessionStore.setSede(FxDialogs.showChoices("Sede:", "Sedes:", null, sedes));
+                }
                 Collection<Caja> cajas = SessionStore.getSede().getCajas().values();
-                if (cajas.size() == 0)
+                if (cajas.size() == 0) {
                     FxDialogs.showWarning("No caja", "Debes crear una caja");
-                else if (cajas.size() == 1)
+                } else if (cajas.size() == 1) {
                     SessionStore.setCaja(cajas.iterator().next());
-                else
+                } else {
                     SessionStore.setCaja(FxDialogs.showChoices("Caja:", "Cajas:", null, cajas));
+                }
             }
         }
     }

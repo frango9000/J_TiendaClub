@@ -4,6 +4,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public abstract class Activable extends Persistible {
+
     protected BooleanProperty activo;
 
     protected Activable(int id) {
@@ -12,7 +13,9 @@ public abstract class Activable extends Persistible {
     }
 
     public BooleanProperty activeProperty() {
-        if (activo == null) activo = new SimpleBooleanProperty(this, "activo");
+        if (activo == null) {
+            activo = new SimpleBooleanProperty(this, "activo");
+        }
         return activo;
     }
 

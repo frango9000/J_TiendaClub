@@ -1,21 +1,23 @@
 package tiendaclub.data;
 
-import tiendaclub.model.Globals;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tiendaclub.model.Globals;
 
 /**
- * Clase Session se encagra de mantener la informacion de una conexion a una DB
- * especifica, Para multiples mases de datos crearemos multiples objetos
- * SessionDB
+ * Clase Session se encagra de mantener la informacion de una conexion a una DB especifica, Para multiples mases de
+ * datos crearemos multiples objetos SessionDB
  *
  * @author fsancheztemprano
  */
@@ -93,7 +95,8 @@ public final class SessionDB implements Globals {
         SessionDB.jdbcPassword = jdbcPassword;
     }
 
-    public static void setValues(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser, String jdbcPassword) {
+    public static void setValues(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser,
+            String jdbcPassword) {
         setJdbcIP(jdbcIP);
         setJdbcPort(jdbcPort);
         setJdbcCatalog(jdbcCatalog);
@@ -107,13 +110,17 @@ public final class SessionDB implements Globals {
      *
      * @return true si la conexion fue establecida correctamente
      */
-    public static boolean connect(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser, String jdbcPassword) {
+    public static boolean connect(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser,
+            String jdbcPassword) {
         boolean success = false;
         try {
             if (conn == null || conn.isClosed()) {
-                conn = DriverManager.getConnection(jdbcDriver + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog, jdbcUser, jdbcPassword);
+                conn = DriverManager.getConnection(jdbcDriver + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog, jdbcUser,
+                        jdbcPassword);
                 if (SQL_CONN) {
-                    System.out.println("Connection to " + conn.getMetaData().getDriverName() + " has been established. Catalog: " + conn.getCatalog());
+                    System.out.println(
+                            "Connection to " + conn.getMetaData().getDriverName() + " has been established. Catalog: "
+                                    + conn.getCatalog());
                 }
             } else {
                 if (SQL_CONN) {
@@ -184,8 +191,9 @@ public final class SessionDB implements Globals {
                     }
                 }
             } else {
-                if (SQL_CONN)
+                if (SQL_CONN) {
                     System.out.println("Keeping conection alive.");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -319,16 +327,16 @@ public final class SessionDB implements Globals {
         ArrayList<String> list = listCatalogs();
         ArrayList<String> validList = new ArrayList<>();
         for (String catalog : list) {
-            if (isCatalogValid(catalog))
+            if (isCatalogValid(catalog)) {
                 validList.add(catalog);
+            }
         }
         setAutoclose(true);
         return validList;
     }
 
     /**
-     * devuelve true si la estructura de la DB activa es valida (coincide con la
-     * inicializada)
+     * devuelve true si la estructura de la DB activa es valida (coincide con la inicializada)
      *
      * @return true si es valida
      */
@@ -414,7 +422,6 @@ public final class SessionDB implements Globals {
         }
         return hasCatalog;
     }
-
 
     //Catalog Creation Code
 

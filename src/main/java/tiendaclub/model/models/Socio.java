@@ -1,8 +1,5 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.models.abstracts.AbstractSocio;
-import tiendaclub.model.utils.DateUtils;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,10 +7,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import tiendaclub.model.models.abstracts.AbstractSocio;
+import tiendaclub.model.utils.DateUtils;
 
 public class Socio extends AbstractSocio {
+
     public static final String TABLE_NAME = "socios";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("dni", "nombre", "telefono", "direccion", "descripcion", "fecha_in", "activo"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+            Arrays.asList("dni", "nombre", "telefono", "direccion", "descripcion", "fecha_in", "activo"));
 
     private HashMap<Integer, Venta> ventas = new HashMap<>();
 

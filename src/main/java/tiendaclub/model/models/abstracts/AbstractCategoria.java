@@ -24,8 +24,12 @@ public abstract class AbstractCategoria extends Activable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractCategoria that = (AbstractCategoria) o;
 

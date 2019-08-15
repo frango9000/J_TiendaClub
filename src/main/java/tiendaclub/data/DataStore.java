@@ -2,7 +2,20 @@ package tiendaclub.data;
 
 import tiendaclub.data.framework.dao.IdBoolIndexDao;
 import tiendaclub.data.framework.dao.IdIndexDao;
-import tiendaclub.model.models.*;
+import tiendaclub.model.models.Acceso;
+import tiendaclub.model.models.Caja;
+import tiendaclub.model.models.Categoria;
+import tiendaclub.model.models.CierreZ;
+import tiendaclub.model.models.Compra;
+import tiendaclub.model.models.Comprado;
+import tiendaclub.model.models.Producto;
+import tiendaclub.model.models.Proveedor;
+import tiendaclub.model.models.Sede;
+import tiendaclub.model.models.Socio;
+import tiendaclub.model.models.Transferencia;
+import tiendaclub.model.models.Usuario;
+import tiendaclub.model.models.Vendido;
+import tiendaclub.model.models.Venta;
 import tiendaclub.model.models.abstracts.Persistible;
 
 public class DataStore {

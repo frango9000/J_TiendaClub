@@ -1,12 +1,6 @@
 package tiendaclub.data.framework.datasource;
 
 import com.google.common.collect.Sets;
-import tiendaclub.data.DataFactory;
-import tiendaclub.data.SessionDB;
-import tiendaclub.data.framework.index.AbstractIndex;
-import tiendaclub.model.Globals;
-import tiendaclub.model.models.abstracts.Persistible;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +11,11 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tiendaclub.data.DataFactory;
+import tiendaclub.data.SessionDB;
+import tiendaclub.data.framework.index.AbstractIndex;
+import tiendaclub.model.Globals;
+import tiendaclub.model.models.abstracts.Persistible;
 
 public class DataSource<T extends Persistible> implements Globals {
 
@@ -65,14 +64,15 @@ public class DataSource<T extends Persistible> implements Globals {
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, unique);
             try (Statement ps = SessionDB.getConn().createStatement();
-                 ResultSet rs = ps.executeQuery(sql)) {
+                    ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
                     objecT = (T) DataFactory.buildObject(rs);
                     index(objecT);
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                        .log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -83,16 +83,18 @@ public class DataSource<T extends Persistible> implements Globals {
     public T query(String col1Name, String uni, String col2Name, String que) {
         T objecT = null;
         if (SessionDB.connect()) {
-            String sql = String.format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", TABLE_NAME, col1Name, uni, col2Name, que);
+            String sql = String
+                    .format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", TABLE_NAME, col1Name, uni, col2Name, que);
             try (Statement ps = SessionDB.getConn().createStatement();
-                 ResultSet rs = ps.executeQuery(sql)) {
+                    ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
                     objecT = (T) DataFactory.buildObject(rs);
                     index(objecT);
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                        .log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -107,13 +109,14 @@ public class DataSource<T extends Persistible> implements Globals {
             Iterator<Integer> iterator = ids.iterator();
             while (iterator.hasNext()) {
                 sql.append(iterator.next());
-                if (iterator.hasNext())
+                if (iterator.hasNext()) {
                     sql.append(", ");
-                else
+                } else {
                     sql.append(" )");
+                }
             }
             try (Statement ps = SessionDB.getConn().createStatement();
-                 ResultSet rs = ps.executeQuery(sql.toString())) {
+                    ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
                     T objecT = (T) DataFactory.buildObject(rs);
                     index(objecT);
@@ -121,7 +124,8 @@ public class DataSource<T extends Persistible> implements Globals {
                 }
                 printSql(sql.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql.toString(), ex);
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                        .log(Level.SEVERE, sql.toString(), ex);
             } finally {
                 SessionDB.close();
             }
@@ -136,13 +140,14 @@ public class DataSource<T extends Persistible> implements Globals {
             Iterator<String> iterator = search.iterator();
             while (iterator.hasNext()) {
                 sql.append(iterator.next());
-                if (iterator.hasNext())
+                if (iterator.hasNext()) {
                     sql.append(", ");
-                else
+                } else {
                     sql.append(" )");
+                }
             }
             try (Statement ps = SessionDB.getConn().createStatement();
-                 ResultSet rs = ps.executeQuery(sql.toString())) {
+                    ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
                     T objecT = (T) DataFactory.buildObject(rs);
                     index(objecT);
@@ -150,7 +155,8 @@ public class DataSource<T extends Persistible> implements Globals {
                 }
                 printSql(sql.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql.toString(), ex);
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                        .log(Level.SEVERE, sql.toString(), ex);
             } finally {
                 SessionDB.close();
             }
@@ -163,7 +169,7 @@ public class DataSource<T extends Persistible> implements Globals {
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, search);
             try (Statement ps = SessionDB.getConn().createStatement();
-                 ResultSet rs = ps.executeQuery(sql)) {
+                    ResultSet rs = ps.executeQuery(sql)) {
                 while (rs.next()) {
                     T objecT = (T) DataFactory.buildObject(rs);
                     index(objecT);
@@ -171,7 +177,8 @@ public class DataSource<T extends Persistible> implements Globals {
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                        .log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -184,7 +191,7 @@ public class DataSource<T extends Persistible> implements Globals {
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s", TABLE_NAME);
             try (Statement ps = SessionDB.getConn().createStatement();
-                 ResultSet rs = ps.executeQuery(sql)) {
+                    ResultSet rs = ps.executeQuery(sql)) {
                 returnSet = Sets.newHashSetWithExpectedSize(rs.getFetchSize());
                 while (rs.next()) {
                     T objecT = (T) DataFactory.buildObject(rs);
@@ -194,7 +201,8 @@ public class DataSource<T extends Persistible> implements Globals {
                 printSql(sql);
             } catch (SQLException ex) {
                 returnSet = Set.of();
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                        .log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -207,7 +215,8 @@ public class DataSource<T extends Persistible> implements Globals {
         if (objectT.getId() == 0) {
             if (SessionDB.connect()) {
                 String sql = objectT.getInsertString();
-                try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                try (PreparedStatement pstmt = SessionDB.getConn()
+                        .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     objectT.buildStatement(pstmt);
                     rows = pstmt.executeUpdate();
 
@@ -219,7 +228,8 @@ public class DataSource<T extends Persistible> implements Globals {
                     }
                     printSql(sql);
                 } catch (SQLException ex) {
-                    Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
+                    Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                            .log(Level.SEVERE, sql, ex);
                 } finally {
                     SessionDB.close();
                 }
@@ -238,7 +248,8 @@ public class DataSource<T extends Persistible> implements Globals {
                 reindex(objectT);
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                        .log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -250,10 +261,11 @@ public class DataSource<T extends Persistible> implements Globals {
         int rows = 0;
         if (objectT.getId() > 0) {
             if (SessionDB.connect()) {
-                String sql = String.format("SELECT * FROM %s WHERE %s = '%d'", TABLE_NAME, ID_COL_NAME, objectT.getId());
+                String sql = String
+                        .format("SELECT * FROM %s WHERE %s = '%d'", TABLE_NAME, ID_COL_NAME, objectT.getId());
                 deindex(objectT);
                 try (Statement ps = SessionDB.getConn().createStatement();
-                     ResultSet rs = ps.executeQuery(sql)) {
+                        ResultSet rs = ps.executeQuery(sql)) {
                     if (rs.next()) {
                         objectT.updateObject(rs);
                         rows++;
@@ -261,7 +273,8 @@ public class DataSource<T extends Persistible> implements Globals {
                     index(objectT);
                     printSql(sql);
                 } catch (SQLException ex) {
-                    Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
+                    Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                            .log(Level.SEVERE, sql, ex);
                 } finally {
                     SessionDB.close();
                 }
@@ -283,7 +296,8 @@ public class DataSource<T extends Persistible> implements Globals {
                 deindex(key);
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql, ex);
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                        .log(Level.SEVERE, sql, ex);
             } finally {
                 SessionDB.close();
             }
@@ -304,10 +318,11 @@ public class DataSource<T extends Persistible> implements Globals {
             Iterator<Integer> iterator = keys.iterator();
             while (iterator.hasNext()) {
                 sql.append(iterator.next());
-                if (iterator.hasNext())
+                if (iterator.hasNext()) {
                     sql.append(", ");
-                else
+                } else {
                     sql.append(" )");
+                }
             }
             try (Statement ps = SessionDB.getConn().createStatement()) {
                 SessionDB.getConn().setAutoCommit(false);
@@ -315,11 +330,14 @@ public class DataSource<T extends Persistible> implements Globals {
                 if (rows == keys.size()) {
                     SessionDB.getConn().commit();
                     keys.forEach(e -> deindex(e));
-                } else SessionDB.getConn().rollback();
+                } else {
+                    SessionDB.getConn().rollback();
+                }
                 SessionDB.getConn().setAutoCommit(true);
                 printSql(sql.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName()).log(Level.SEVERE, sql.toString(), ex);
+                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
+                        .log(Level.SEVERE, sql.toString(), ex);
             } finally {
                 SessionDB.close();
             }

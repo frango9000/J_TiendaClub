@@ -1,6 +1,7 @@
 package tiendaclub.model.models.abstracts;
 
 public abstract class AbstractVendido extends Persistible {
+
     protected int idVenta;
     protected int idProducto;
     protected int cantidad;
@@ -56,8 +57,12 @@ public abstract class AbstractVendido extends Persistible {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractVendido that = (AbstractVendido) o;
 

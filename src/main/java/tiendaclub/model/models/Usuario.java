@@ -1,18 +1,20 @@
 package tiendaclub.model.models;
 
-import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractUsuario;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import tiendaclub.data.DataStore;
+import tiendaclub.model.models.abstracts.AbstractUsuario;
 
 public class Usuario extends AbstractUsuario {
+
     public static final String TABLE_NAME = "usuarios";
-    public static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso", "activo"));
+    public static final ArrayList<String> COL_NAMES = new ArrayList<>(
+            Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso",
+                    "activo"));
 
     private Acceso acceso;
 
@@ -82,11 +84,13 @@ public class Usuario extends AbstractUsuario {
     }
 
     public void setAcceso(Acceso acceso2) {
-        if (acceso != null)
+        if (acceso != null) {
             acceso.getUsuarios().remove(getId());
+        }
         this.acceso = acceso2;
-        if (acceso != null)
+        if (acceso != null) {
             acceso.getUsuarios().put(getId(), this);
+        }
     }
 
     private void updateAcceso() {

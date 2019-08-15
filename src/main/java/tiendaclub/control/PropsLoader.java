@@ -1,7 +1,5 @@
 package tiendaclub.control;
 
-import tiendaclub.data.SessionDB;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,6 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tiendaclub.data.SessionDB;
 
 public class PropsLoader {
 
@@ -57,12 +56,15 @@ public class PropsLoader {
         Properties props = new Properties();
         props.put("ip", SessionDB.getJdbcIP());
         props.put("port", SessionDB.getJdbcPort());
-        if (SessionDB.getJdbcCatalog().length() > 0)
+        if (SessionDB.getJdbcCatalog().length() > 0) {
             props.put("dbname", SessionDB.getJdbcCatalog());
-        if (SessionDB.getJdbcUser().length() > 0)
+        }
+        if (SessionDB.getJdbcUser().length() > 0) {
             props.put("user", SessionDB.getJdbcUser());
-        if (SessionDB.getJdbcPassword().length() > 0)
+        }
+        if (SessionDB.getJdbcPassword().length() > 0) {
             props.put("password", SessionDB.getJdbcPassword());
+        }
 
         props.put("quickstart", quickstart ? "true" : "false");
         try (FileOutputStream f = new FileOutputStream(file)) {

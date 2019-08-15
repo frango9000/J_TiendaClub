@@ -27,7 +27,6 @@ public interface IPersistible {
 
     String getUpdateString();
 
-
 //
 //    <T extends PersistibleDao<Persistible>> T getDataStore();
 

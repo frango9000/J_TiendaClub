@@ -1,5 +1,7 @@
 package tiendaclub.control.table;
 
+import java.io.IOException;
+import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,10 +18,8 @@ import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
 
-import java.io.IOException;
-import java.util.Set;
-
 public abstract class TableControl<T extends Persistible> extends BorderPane {
+
     protected final ObservableList<T> listedObjects = FXCollections.observableArrayList();
 
     protected EditorControl<T> editorControl;
@@ -43,8 +43,9 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
             if (FxDialogs.showConfirmBoolean("Cuidado", "Deseas eliminar el Id " + selected.getId() + " ?")) {
                 boolean success = selected.deleteFromDb() == 1;
                 FxDialogs.showInfo("", "Id " + selected.getId() + (success ? " " : "NO ") + "eliminado");
-                if (success)
+                if (success) {
                     listedObjects.remove(selected);
+                }
             }
         }
     }
@@ -66,14 +67,16 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
     }
 
     protected void addContent(boolean clean) {
-        if (clean)
+        if (clean) {
             listedObjects.clear();
+        }
 
         Set<T> list = getDataOrigin().getIdIndex().getCacheValues();
 
         list.forEach(e -> {
-            if (!listedObjects.contains(e))
+            if (!listedObjects.contains(e)) {
                 listedObjects.add(e);
+            }
         });
     }
 

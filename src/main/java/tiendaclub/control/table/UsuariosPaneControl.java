@@ -1,5 +1,6 @@
 package tiendaclub.control.table;
 
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
@@ -11,8 +12,6 @@ import tiendaclub.data.framework.dao.IdBoolIndexDao;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FXMLStage;
-
-import java.io.IOException;
 
 public class UsuariosPaneControl extends ActiveTableControl<Usuario> {
 

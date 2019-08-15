@@ -1,15 +1,15 @@
 package tiendaclub.model.models;
 
-import tiendaclub.model.models.abstracts.AbstractCategoria;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import tiendaclub.model.models.abstracts.AbstractCategoria;
 
 public class Categoria extends AbstractCategoria {
+
     public static final String TABLE_NAME = "categorias";
     private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nombre", "activo"));
 

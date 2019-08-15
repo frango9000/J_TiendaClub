@@ -3,6 +3,7 @@ package tiendaclub.model.models.abstracts;
 import java.time.LocalDateTime;
 
 public abstract class AbstractVenta extends Persistible {
+
     protected int idUsuario;
     protected int idCaja;
     protected int idSocio;
@@ -58,8 +59,12 @@ public abstract class AbstractVenta extends Persistible {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractVenta that = (AbstractVenta) o;
 

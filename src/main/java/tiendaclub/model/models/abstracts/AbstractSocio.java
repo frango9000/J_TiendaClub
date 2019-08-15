@@ -3,6 +3,7 @@ package tiendaclub.model.models.abstracts;
 import java.time.LocalDateTime;
 
 public abstract class AbstractSocio extends Activable {
+
     protected String dni;
     protected String nombre;
     protected String telefono;
@@ -73,8 +74,12 @@ public abstract class AbstractSocio extends Activable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractSocio that = (AbstractSocio) o;
 

@@ -1,5 +1,7 @@
 package tiendaclub.control.table;
 
+import java.io.IOException;
+import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,9 +10,6 @@ import tiendaclub.data.framework.dao.IdBoolIndexDao;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.model.models.abstracts.Activable;
 import tiendaclub.view.FxDialogs;
-
-import java.io.IOException;
-import java.util.Set;
 
 public abstract class ActiveTableControl<T extends Activable> extends TableControl<T> {
 
@@ -25,8 +24,9 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
         showInactive = !showInactive;
         if (showInactive) {
             getDataOrigin().getActiveIndex().getActiveCache(false).forEach(e -> {
-                if (!listedObjects.contains(e))
+                if (!listedObjects.contains(e)) {
                     listedObjects.add(e);
+                }
             });
         } else {
             listedObjects.removeAll(getDataOrigin().getActiveIndex().getActiveCache(false));
@@ -38,14 +38,17 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
         T selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             boolean isActive = selected.isActivo();
-            if (FxDialogs.showConfirmBoolean("Cuidado", "Deseas " + (isActive ? "des" : "") + "activar el id " + selected.getId() + " ?")) {
+            if (FxDialogs.showConfirmBoolean("Cuidado",
+                    "Deseas " + (isActive ? "des" : "") + "activar el id " + selected.getId() + " ?")) {
                 selected.toggleActivo();
                 boolean success = selected.updateOnDb() == 1;
-                FxDialogs.showInfo("", "Usuario " + selected.getId() + (success ? " " : "NO ") + (isActive ? "des" : "") + "activado");
-                if (!success)
+                FxDialogs.showInfo("",
+                        "Usuario " + selected.getId() + (success ? " " : "NO ") + (isActive ? "des" : "") + "activado");
+                if (!success) {
                     selected.toggleActivo();
-                else if (!showInactive && !selected.isActivo())
+                } else if (!showInactive && !selected.isActivo()) {
                     listedObjects.remove(selected);
+                }
             }
         }
     }
@@ -69,8 +72,9 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
             listedObjects.addAll(list);
         } else {
             list.forEach(e -> {
-                if (!listedObjects.contains(e))
+                if (!listedObjects.contains(e)) {
                     listedObjects.add(e);
+                }
             });
         }
     }
@@ -79,7 +83,8 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
         super.fxBtnEditAction(actionEvent);
         T selected = fxTable.getSelectionModel().getSelectedItem();
-        if (!showInactive && !selected.isActivo())
+        if (!showInactive && !selected.isActivo()) {
             listedObjects.remove(selected);
+        }
     }
 }

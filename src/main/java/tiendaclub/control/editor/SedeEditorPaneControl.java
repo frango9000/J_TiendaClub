@@ -1,5 +1,6 @@
 package tiendaclub.control.editor;
 
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
@@ -8,8 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
-
-import java.io.IOException;
 
 public class SedeEditorPaneControl extends EditorControl<Sede> {
 

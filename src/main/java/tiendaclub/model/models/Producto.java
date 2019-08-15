@@ -1,17 +1,18 @@
 package tiendaclub.model.models;
 
-import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractProducto;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import tiendaclub.data.DataStore;
+import tiendaclub.model.models.abstracts.AbstractProducto;
 
 public class Producto extends AbstractProducto {
+
     public static final String TABLE_NAME = "productos";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nombre", "descripcion", "precio_venta", "iva", "idCategoria", "activo"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+            Arrays.asList("nombre", "descripcion", "precio_venta", "iva", "idCategoria", "activo"));
 
     private Categoria categoria;
 
@@ -67,11 +68,13 @@ public class Producto extends AbstractProducto {
     }
 
     public void setCategoria(Categoria categoria2) {
-        if (categoria != null)
+        if (categoria != null) {
             categoria.getProductos().remove(getId());
+        }
         this.categoria = categoria2;
-        if (categoria != null)
+        if (categoria != null) {
             categoria.getProductos().put(getId(), this);
+        }
     }
 
     private void updateCategoria() {

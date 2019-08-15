@@ -3,6 +3,7 @@ package tiendaclub.model.models.abstracts;
 import java.time.LocalDateTime;
 
 public abstract class AbstractCierreZ extends Persistible {
+
     protected int idCaja;
     protected LocalDateTime apertura;
     protected LocalDateTime cierre;
@@ -45,8 +46,12 @@ public abstract class AbstractCierreZ extends Persistible {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractCierreZ cierreZ = (AbstractCierreZ) o;
 

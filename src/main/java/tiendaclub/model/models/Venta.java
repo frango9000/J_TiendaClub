@@ -1,9 +1,5 @@
 package tiendaclub.model.models;
 
-import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractVenta;
-import tiendaclub.model.utils.DateUtils;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,10 +7,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import tiendaclub.data.DataStore;
+import tiendaclub.model.models.abstracts.AbstractVenta;
+import tiendaclub.model.utils.DateUtils;
 
 public class Venta extends AbstractVenta {
+
     public static final String TABLE_NAME = "ventas";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idCaja", "idSocio", "fechahora"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+            Arrays.asList("idUsuario", "idCaja", "idSocio", "fechahora"));
 
     private Usuario usuario;
     private Caja caja;
@@ -68,11 +69,13 @@ public class Venta extends AbstractVenta {
     }
 
     public void setUsuario(Usuario usuario2) {
-        if (usuario != null)
+        if (usuario != null) {
             usuario.getVentas().remove(getId());
+        }
         this.usuario = usuario2;
-        if (usuario != null)
+        if (usuario != null) {
             usuario.getVentas().put(getId(), this);
+        }
     }
 
     private void updateUsuario() {
@@ -90,11 +93,13 @@ public class Venta extends AbstractVenta {
     }
 
     public void setCaja(Caja caja2) {
-        if (caja != null)
+        if (caja != null) {
             caja.getVentas().remove(getId());
+        }
         this.caja = caja2;
-        if (caja != null)
+        if (caja != null) {
             caja.getVentas().put(getId(), this);
+        }
     }
 
     private void updateCaja() {
@@ -112,11 +117,13 @@ public class Venta extends AbstractVenta {
     }
 
     public void setSocio(Socio socio2) {
-        if (socio != null)
+        if (socio != null) {
             socio.getVentas().remove(getId());
+        }
         this.socio = socio2;
-        if (socio != null)
+        if (socio != null) {
             socio.getVentas().put(getId(), this);
+        }
     }
 
     private void updateSocio() {

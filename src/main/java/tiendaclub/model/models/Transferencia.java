@@ -1,26 +1,28 @@
 package tiendaclub.model.models;
 
-import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractTransferencia;
-import tiendaclub.model.utils.DateUtils;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import tiendaclub.data.DataStore;
+import tiendaclub.model.models.abstracts.AbstractTransferencia;
+import tiendaclub.model.utils.DateUtils;
 
 public class Transferencia extends AbstractTransferencia {
+
     public static final String TABLE_NAME = "transferencias";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idSedeOrigen", "idSedeDestino", "idProducto", "cantidad", "fechahora"));
+    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+            Arrays.asList("idUsuario", "idSedeOrigen", "idSedeDestino", "idProducto", "cantidad", "fechahora"));
 
     private Usuario usuario;
     private Sede sedeOrigen;
     private Sede sedeDestino;
     private Producto producto;
 
-    public Transferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad, LocalDateTime fechahora) {
+    public Transferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad,
+            LocalDateTime fechahora) {
         super(id, idUsuario, idSedeOrigen, idSedeDestino, idProducto, cantidad, fechahora);
         updateUsuario();
         updateSedeOrigen();
@@ -37,7 +39,8 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     public Transferencia(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), DateUtils.toLocalDateTime(rs.getDate(7)));
+        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6),
+                DateUtils.toLocalDateTime(rs.getDate(7)));
     }
 
     @Override
@@ -72,11 +75,13 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     public void setUsuario(Usuario usuario2) {
-        if (usuario != null)
+        if (usuario != null) {
             usuario.getTransferencias().remove(getId());
+        }
         this.usuario = usuario2;
-        if (usuario != null)
+        if (usuario != null) {
             usuario.getTransferencias().put(getId(), this);
+        }
     }
 
     private void updateUsuario() {
@@ -94,11 +99,13 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     public void setSedeOrigen(Sede sedeOrigen2) {
-        if (sedeOrigen != null)
+        if (sedeOrigen != null) {
             sedeOrigen.getTransferIn().remove(getId());
+        }
         this.sedeOrigen = sedeOrigen2;
-        if (sedeOrigen != null)
+        if (sedeOrigen != null) {
             sedeOrigen.getTransferIn().put(getId(), this);
+        }
     }
 
     private void updateSedeOrigen() {
@@ -117,11 +124,13 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     public void setSedeDestino(Sede sedeDestino2) {
-        if (sedeDestino != null)
+        if (sedeDestino != null) {
             sedeDestino.getTransferIn().remove(getId());
+        }
         this.sedeDestino = sedeDestino2;
-        if (sedeDestino != null)
+        if (sedeDestino != null) {
             sedeDestino.getTransferIn().put(getId(), this);
+        }
     }
 
     private void updateSedeDestino() {

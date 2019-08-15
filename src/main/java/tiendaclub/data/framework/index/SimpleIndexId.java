@@ -2,13 +2,12 @@ package tiendaclub.data.framework.index;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import tiendaclub.data.framework.datasource.DataSource;
-import tiendaclub.model.models.abstracts.Persistible;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import tiendaclub.data.framework.datasource.DataSource;
+import tiendaclub.model.models.abstracts.Persistible;
 
 public class SimpleIndexId<V extends Persistible> extends AbstractIndex<Integer, V> {
 
@@ -95,8 +94,9 @@ public class SimpleIndexId<V extends Persistible> extends AbstractIndex<Integer,
     @Override
     public Set<V> getCacheKeyValues(Integer key) {
         Set<V> set = Sets.newHashSetWithExpectedSize(1);
-        if (cacheContainsKey(key))
+        if (cacheContainsKey(key)) {
             set.add(index.get(key));
+        }
         return set;
     }
 
@@ -104,8 +104,9 @@ public class SimpleIndexId<V extends Persistible> extends AbstractIndex<Integer,
     public Set<V> getCacheKeyValues(Set<Integer> keys) {
         Set<V> set = Sets.newHashSetWithExpectedSize(keys.size());
         keys.forEach(key -> {
-            if (cacheContainsKey(key))
+            if (cacheContainsKey(key)) {
                 set.add(index.get(key));
+            }
         });
         return set;
     }
@@ -144,9 +145,11 @@ public class SimpleIndexId<V extends Persistible> extends AbstractIndex<Integer,
 
     @Override
     public Optional<V> getCacheValueOptional(Integer key) {
-        if (cacheContainsKey(key))
+        if (cacheContainsKey(key)) {
             return Optional.of(index.get(key));
-        else return Optional.empty();
+        } else {
+            return Optional.empty();
+        }
     }
 
 }

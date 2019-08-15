@@ -1,5 +1,6 @@
 package tiendaclub.control;
 
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,8 +10,6 @@ import javafx.scene.layout.Pane;
 import org.controlsfx.control.StatusBar;
 import tiendaclub.control.table.SedesPaneControl;
 import tiendaclub.control.table.UsuariosPaneControl;
-
-import java.io.IOException;
 
 public class MainPaneControl {
 

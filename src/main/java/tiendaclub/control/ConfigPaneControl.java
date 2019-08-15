@@ -1,5 +1,7 @@
 package tiendaclub.control;
 
+import java.io.File;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -12,9 +14,6 @@ import javafx.stage.FileChooser;
 import tiendaclub.data.SessionDB;
 import tiendaclub.model.Globals;
 import tiendaclub.view.FxDialogs;
-
-import java.io.File;
-import java.util.ArrayList;
 
 public class ConfigPaneControl extends VBox {
 
@@ -60,10 +59,11 @@ public class ConfigPaneControl extends VBox {
         fileChooser.setInitialDirectory(new File(PropsLoader.defaultDir));
         File file = fileChooser.showOpenDialog(null);
         try {
-            if (PropsLoader.loadProps(file))
+            if (PropsLoader.loadProps(file)) {
                 FxDialogs.showInfo("Loading config.ini", "Config loaded from " + file.getAbsolutePath());
-            else
+            } else {
                 FxDialogs.showError("Loading config.ini", "Config failed to load from " + file.getAbsolutePath());
+            }
         } catch (NullPointerException ex) {
             FxDialogs.showException("titl", "msg", ex);
         }
@@ -72,10 +72,11 @@ public class ConfigPaneControl extends VBox {
 
     @FXML
     void fxMenuSaveAction(ActionEvent event) {
-        if (PropsLoader.saveProps())
+        if (PropsLoader.saveProps()) {
             FxDialogs.showMessage("Saving config.ini", "Config saved to config.ini");
-        else
+        } else {
             FxDialogs.showError("Saving config.ini", "Config failed to save to config.ini");
+        }
     }
 
     @FXML
@@ -90,29 +91,38 @@ public class ConfigPaneControl extends VBox {
                     if (SessionDB.isSessionValid()) {
                         //Start
                         ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-                    } else FxDialogs.showError("Error", "Invalid Conn");//??
+                    } else {
+                        FxDialogs.showError("Error", "Invalid Conn");//??
+                    }
                 }
-            } else FxDialogs.showError("Error", "No Valid Catalog");
-        } else FxDialogs.showError("Error", "Invalid Conn");
+            } else {
+                FxDialogs.showError("Error", "No Valid Catalog");
+            }
+        } else {
+            FxDialogs.showError("Error", "Invalid Conn");
+        }
     }
 
     @FXML
     private void fxBtnTestConnAction(ActionEvent actionEvent) {
-        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(), fxUsername.getText().trim(), fxPassword.getText().trim());
-        if (SessionDB.isConnValid())
+        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(),
+                fxUsername.getText().trim(), fxPassword.getText().trim());
+        if (SessionDB.isConnValid()) {
             fxBtnTestConn.setStyle("-fx-background-color: #75ff8a");
-        else
+        } else {
             fxBtnTestConn.setStyle("-fx-background-color: red");
+        }
     }
 
     @FXML
     private void fxBtnTestCatalogAction(ActionEvent actionEvent) {
-        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(), fxUsername.getText().trim(), fxPassword.getText().trim());
+        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(),
+                fxUsername.getText().trim(), fxPassword.getText().trim());
         ArrayList<String> listCatalogs = SessionDB.listCatalogs();
         if (listCatalogs.size() == 0) {//TODO move db creation to DB section inside main prog
-            if (!SessionDB.isRoot())
+            if (!SessionDB.isRoot()) {
                 FxDialogs.showWarning("Catalog Wizard", "No valid Catalogs and no access to create.");
-            else {
+            } else {
                 createCatalog(listCatalogs);
             }
         } else {
@@ -121,8 +131,12 @@ public class ConfigPaneControl extends VBox {
                 if (SessionDB.isCatalogValid(catalog)) {
                     fxBtnTestCatalog.setStyle("-fx-background-color: #75ff8a");
                     fxDbCatalog.setText(catalog);
-                } else fxBtnTestCatalog.setStyle("-fx-background-color: Yellow");
-            } else fxBtnTestCatalog.setStyle("-fx-background-color: Red");
+                } else {
+                    fxBtnTestCatalog.setStyle("-fx-background-color: Yellow");
+                }
+            } else {
+                fxBtnTestCatalog.setStyle("-fx-background-color: Red");
+            }
         }
     }
 
@@ -164,7 +178,8 @@ public class ConfigPaneControl extends VBox {
     @FXML
     private void fxHiddenDropCatalog(ActionEvent actionEvent) {
         String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", "", SessionDB.listCatalogs());
-        if (catalog != null && catalog.length() > 1 && FxDialogs.showConfirmBoolean("Droping Catalog: " + catalog, "This is irreversible, data will be lost.")) {
+        if (catalog != null && catalog.length() > 1 && FxDialogs
+                .showConfirmBoolean("Droping Catalog: " + catalog, "This is irreversible, data will be lost.")) {
             SessionDB.dropCatalog(catalog);
         }
     }

@@ -1,5 +1,6 @@
 package tiendaclub.view;
 
+import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -7,8 +8,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import tiendaclub.MainFX;
-
-import java.io.IOException;
 
 public class FXMLStage extends Stage {
 

@@ -1,10 +1,9 @@
 package tiendaclub.data.framework.index;
 
 import com.google.common.collect.MultimapBuilder;
+import java.util.Set;
 import tiendaclub.data.framework.datasource.DataSource;
 import tiendaclub.model.models.abstracts.Activable;
-
-import java.util.Set;
 
 public class SetMultiMapIndexBoolean<T extends Activable> extends SetMultiMapIndex<Boolean, T> {
 

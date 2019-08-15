@@ -1,16 +1,24 @@
 package tiendaclub.view;
 
-import javafx.scene.control.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.robot.Robot;
 import javafx.stage.StageStyle;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.*;
 
 
 public class FxDialogs {
@@ -193,7 +201,8 @@ public class FxDialogs {
         return showTextInput("Input", header, message, "");
     }
 
-    public static <T> T showChoices(String title, String header, String message, T defaultChoice, Collection<T> choices) {
+    public static <T> T showChoices(String title, String header, String message, T defaultChoice,
+            Collection<T> choices) {
         ChoiceDialog<T> dialog = new ChoiceDialog<>(defaultChoice, choices);
         dialog.initStyle(StageStyle.UTILITY);
         dialog.setTitle(title);
@@ -201,9 +210,11 @@ public class FxDialogs {
         dialog.setContentText(message);
 
         Optional<T> result = dialog.showAndWait();
-        if (result.isEmpty())
+        if (result.isEmpty()) {
             return null;
-        else return result.get();
+        } else {
+            return result.get();
+        }
     }
 
     public static <T> T showChoices(String header, String message, T defaultChoice, Collection<T> choices) {

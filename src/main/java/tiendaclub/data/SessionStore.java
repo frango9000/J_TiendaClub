@@ -5,6 +5,7 @@ import tiendaclub.model.models.Sede;
 import tiendaclub.model.models.Usuario;
 
 public class SessionStore {
+
     static Caja caja;
     static Sede sede;
     static Usuario usuario;

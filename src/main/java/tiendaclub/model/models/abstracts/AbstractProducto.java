@@ -1,6 +1,7 @@
 package tiendaclub.model.models.abstracts;
 
 public abstract class AbstractProducto extends Activable {
+
     protected String nombre;
     protected String descripcion;
     protected int precioVenta;
@@ -65,8 +66,12 @@ public abstract class AbstractProducto extends Activable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         AbstractProducto that = (AbstractProducto) o;
 
