@@ -1,9 +1,9 @@
 package tiendaclub.data.framework;
 
-import tiendaclub.data.framework.dao.IdIndexDao;
+import tiendaclub.data.framework.dao.IndexIdDao;
 import tiendaclub.model.models.Usuario;
 
-public class UsuarioStringIndexDao extends IdIndexDao<Usuario> {
+public class UsuarioStringIndexDao extends IndexIdDao<Usuario> {
 
     public UsuarioStringIndexDao(String TABLE_NAME) {
         super(TABLE_NAME);

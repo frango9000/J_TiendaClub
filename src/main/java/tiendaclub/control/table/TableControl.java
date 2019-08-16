@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
 import tiendaclub.MainFX;
 import tiendaclub.control.editor.EditorControl;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.IdIndexDao;
+import tiendaclub.data.framework.dao.IndexIdDao;
 import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
@@ -103,7 +103,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
         }
     }
 
-    protected abstract IdIndexDao<T> getDataOrigin();
+    protected abstract IndexIdDao<T> getDataOrigin();
 
     protected abstract Pane getEditorPane() throws IOException;
 

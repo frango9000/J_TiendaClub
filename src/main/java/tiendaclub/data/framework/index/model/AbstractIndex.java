@@ -1,34 +1,41 @@
-package tiendaclub.data.framework.index;
+package tiendaclub.data.framework.index.model;
 
-import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import java.util.Optional;
 import java.util.Set;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.data.framework.datasource.DataSource;
+import tiendaclub.data.framework.index.maps.IIndexMap;
 
-public abstract class SetMultiMapIndex<K, V extends Persistible> extends AbstractIndex<K, V> {
+public abstract class AbstractIndex<K, V> implements IIndex<K, V> {
 
-    protected SetMultimap<K, V> index;// = MultimapBuilder.SetMultimapBuilder.hashKeys().hashSetValues().build();
+    protected IIndexMap<K, V> index;
+
+    protected DataSource<?> dataSource;
+
+    protected String INDEX_COL_NAME;
+
 
     @Override
-    public abstract void index(V value);
+    public abstract K indexKey(V value);
 
     @Override
-    public abstract void reindex(V value);
-
-    @Override
-    public void deindex(int id) {
-        index.keySet().forEach(aBoolean -> {
-            index.get(aBoolean).forEach(t -> {
-                if (t.getId() == id) {
-                    index.remove(aBoolean, t);
-                }
-            });
-        });
+    public void index(V value) {
+        index.put(indexKey(value), value);
     }
 
     @Override
-    public abstract void deindex(V value);
+    public void reindex(V value) {
+        deindex(value);
+        index(value);
+    }
+
+    @Override
+    public void deindex(V value) {
+        index.remove(indexKey(value), value);
+    }
+
+    @Override
+    public abstract void deindex(int id);
 
     @Override
     public Set<K> getKeys() {
@@ -44,15 +51,13 @@ public abstract class SetMultiMapIndex<K, V extends Persistible> extends Abstrac
 
     @Override
     public Set<V> getKeyValues(K key) {
-        dataSource.querySome(INDEX_COL_NAME, key.toString());
+        dataSource.querySome(INDEX_COL_NAME, key);
         return getCacheKeyValues(key);
     }
 
     @Override
     public Set<V> getKeyValues(Set<K> keys) {
-        Set<String> strings = Sets.newHashSetWithExpectedSize(keys.size());
-        keys.forEach(e -> strings.add(e.toString()));
-        dataSource.querySome(INDEX_COL_NAME, strings);
+        dataSource.querySome(INDEX_COL_NAME, keys);
         return getCacheKeyValues(keys);
     }
 
@@ -63,9 +68,7 @@ public abstract class SetMultiMapIndex<K, V extends Persistible> extends Abstrac
 
     @Override
     public Set<V> getCacheValues() {
-        Set<V> values = Sets.newHashSet();
-        index.keySet().forEach(e -> values.addAll(index.get(e)));
-        return values;
+        return Sets.newHashSet(index.values());
     }
 
     @Override
@@ -92,18 +95,13 @@ public abstract class SetMultiMapIndex<K, V extends Persistible> extends Abstrac
 
     @Override
     public V getValue(K key) {
-        if (!cacheContainsKey(key)) {
-            getKeyValues(key);
-        }
+        dataSource.querySome(INDEX_COL_NAME, key);
         return getCacheValue(key);
     }
 
     @Override
     public V getCacheValue(K key) {
-        if (getCacheKeyValues(key).size() > 0) {
-            return getCacheKeyValues(key).iterator().next();
-        }
-        return null;
+        return index.getValue(key);
     }
 
     @Override
@@ -117,9 +115,10 @@ public abstract class SetMultiMapIndex<K, V extends Persistible> extends Abstrac
     @Override
     public Optional<V> getCacheValueOptional(K key) {
         if (cacheContainsKey(key)) {
-            return Optional.of(index.get(key).iterator().next());
+            return Optional.of(getCacheValue(key));
         } else {
             return Optional.empty();
         }
     }
+
 }

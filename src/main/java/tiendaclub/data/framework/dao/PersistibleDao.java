@@ -2,7 +2,7 @@ package tiendaclub.data.framework.dao;
 
 import java.util.ArrayList;
 import tiendaclub.data.framework.datasource.DataSource;
-import tiendaclub.data.framework.index.AbstractIndex;
+import tiendaclub.data.framework.index.model.AbstractIndex;
 import tiendaclub.model.Globals;
 import tiendaclub.model.models.abstracts.Persistible;
 

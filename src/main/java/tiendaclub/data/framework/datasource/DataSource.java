@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import tiendaclub.data.DataFactory;
 import tiendaclub.data.SessionDB;
-import tiendaclub.data.framework.index.AbstractIndex;
+import tiendaclub.data.framework.index.model.AbstractIndex;
 import tiendaclub.model.Globals;
 import tiendaclub.model.models.abstracts.Persistible;
 
@@ -59,10 +60,10 @@ public class DataSource<T extends Persistible> implements Globals {
         return query(ID_COL_NAME, Integer.toString(id));
     }
 
-    public T query(String colName, String unique) {
+    public T query(String colName, Object unique) {
         T objecT = null;
         if (SessionDB.connect()) {
-            String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, unique);
+            String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, unique.toString());
             try (Statement ps = SessionDB.getConn().createStatement();
                     ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
@@ -133,13 +134,13 @@ public class DataSource<T extends Persistible> implements Globals {
         return returnSet;
     }
 
-    public Set<T> querySome(String colName, Set<String> search) {
+    public Set<T> querySome(String colName, Collection search) {
         HashSet<T> returnSet = Sets.newHashSetWithExpectedSize(search.size());
         if (SessionDB.connect() && search.size() > 0) {
             StringBuilder sql = new StringBuilder("SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
-            Iterator<String> iterator = search.iterator();
+            Iterator iterator = search.iterator();
             while (iterator.hasNext()) {
-                sql.append(iterator.next());
+                sql.append(iterator.next().toString());
                 if (iterator.hasNext()) {
                     sql.append(", ");
                 } else {
@@ -164,10 +165,10 @@ public class DataSource<T extends Persistible> implements Globals {
         return returnSet;
     }
 
-    public Set<T> querySome(String colName, String search) {
+    public Set<T> querySome(String colName, Object search) {
         HashSet<T> returnSet = Sets.newHashSet();
         if (SessionDB.connect()) {
-            String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, search);
+            String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, search.toString());
             try (Statement ps = SessionDB.getConn().createStatement();
                     ResultSet rs = ps.executeQuery(sql)) {
                 while (rs.next()) {

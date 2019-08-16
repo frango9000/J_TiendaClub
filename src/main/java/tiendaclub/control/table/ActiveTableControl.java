@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import tiendaclub.data.framework.dao.IdBoolIndexDao;
+import tiendaclub.data.framework.dao.IndexIdActiveDao;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.model.models.abstracts.Activable;
 import tiendaclub.view.FxDialogs;
@@ -54,7 +54,7 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     }
 
     @Override
-    protected abstract IdBoolIndexDao<T> getDataOrigin();
+    protected abstract IndexIdActiveDao<T> getDataOrigin();
 
     @Override
     protected void addContent(boolean clean) {
