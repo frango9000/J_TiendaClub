@@ -85,7 +85,7 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().getIdIndex().getCacheValue(getIdUsuario()));
+        setUsuario(DataStore.getUsuarios().getIndexId().getCacheValue(getIdUsuario()));
     }
 
     @Override
@@ -109,7 +109,7 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     private void updateSedeOrigen() {
-        setSedeOrigen(DataStore.getSedes().getIdIndex().getCacheValue(getIdSedeOrigen()));
+        setSedeOrigen(DataStore.getSedes().getIndexId().getCacheValue(getIdSedeOrigen()));
     }
 
 
@@ -134,7 +134,7 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     private void updateSedeDestino() {
-        setSedeDestino(DataStore.getSedes().getIdIndex().getCacheValue(getIdSedeDestino()));
+        setSedeDestino(DataStore.getSedes().getIndexId().getCacheValue(getIdSedeDestino()));
     }
 
 
@@ -157,7 +157,7 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     private void updateProducto() {
-        setProducto(DataStore.getProductos().getIdIndex().getCacheValue(getIdProducto()));
+        setProducto(DataStore.getProductos().getIndexId().getCacheValue(getIdProducto()));
     }
 
     @Override

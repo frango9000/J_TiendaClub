@@ -4,11 +4,21 @@ import com.google.common.collect.Sets;
 import java.util.HashSet;
 import java.util.Set;
 import tiendaclub.data.framework.index.maps.IndexHashMap;
+import tiendaclub.model.models.abstracts.IPersistible;
 
-public abstract class SimpleMapIndex<K, V> extends AbstractIndex<K, V> {
+public abstract class SimpleMapIndex<K, V extends IPersistible> extends AbstractIndex<K, V> {
 
     {
         this.index = new IndexHashMap<K, V>();
+    }
+
+    @Override
+    public void deindex(int idValue) {
+        index.values().forEach(v -> {
+            if (v.getId() == idValue) {
+                deindex(v);
+            }
+        });
     }
 
     @Override

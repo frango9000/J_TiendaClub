@@ -2,6 +2,7 @@ package tiendaclub.data;
 
 import tiendaclub.data.framework.dao.IndexIdActiveDao;
 import tiendaclub.data.framework.dao.IndexIdDao;
+import tiendaclub.data.framework.dao.UsuarioDao;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Categoria;
@@ -31,7 +32,7 @@ public class DataStore {
     private static IndexIdActiveDao<Proveedor> proveedores = new IndexIdActiveDao<>(Proveedor.TABLE_NAME);
     private static IndexIdActiveDao<Socio> socios = new IndexIdActiveDao<>(Socio.TABLE_NAME);
     private static IndexIdDao<Transferencia> transferencias = new IndexIdDao<>(Transferencia.TABLE_NAME);
-    private static IndexIdActiveDao<Usuario> usuarios = new IndexIdActiveDao<>(Usuario.TABLE_NAME);
+    private static UsuarioDao usuarios = new UsuarioDao(Usuario.TABLE_NAME);
     private static IndexIdDao<Vendido> vendidos = new IndexIdDao<>(Vendido.TABLE_NAME);
     private static IndexIdDao<Venta> ventas = new IndexIdDao<>(Venta.TABLE_NAME);
 
@@ -79,7 +80,7 @@ public class DataStore {
         return transferencias;
     }
 
-    public static IndexIdActiveDao<Usuario> getUsuarios() {
+    public static UsuarioDao getUsuarios() {
         return usuarios;
     }
 
@@ -95,6 +96,7 @@ public class DataStore {
         SessionDB.setAutoclose(false);
         DataStore.getAccesos().getDataSource().queryAll();
         DataStore.getUsuarios().getDataSource().queryAll();
+//        DataStore.getUsuarios().getIndexAcceso().getValue(3);
         DataStore.getProveedores().getDataSource().queryAll();
         DataStore.getSocios().getDataSource().queryAll();
         DataStore.getSedes().getDataSource().queryAll();

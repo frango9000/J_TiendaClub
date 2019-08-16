@@ -3,17 +3,17 @@ package tiendaclub.data.framework.dao;
 import tiendaclub.data.framework.index.IndexActive;
 import tiendaclub.model.models.abstracts.Activable;
 
-public class IndexIdActiveDao<T extends Activable> extends IndexIdDao<T> {
+public class IndexIdActiveDao<V extends Activable> extends IndexIdDao<V> {
 
 
-    private IndexActive<T> activeIndex = new IndexActive<>(dataSource);
+    private IndexActive<V> indexActive = new IndexActive<>(dataSource);
 
     public IndexIdActiveDao(String TABLE_NAME) {
         super(TABLE_NAME);
-        indexes.add(activeIndex);
+        indexes.add(indexActive);
     }
 
-    public IndexActive<T> getActiveIndex() {
-        return activeIndex;
+    public IndexActive<V> getIndexActive() {
+        return indexActive;
     }
 }

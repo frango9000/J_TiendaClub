@@ -23,13 +23,13 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     protected void fxBtnShowHideAction(ActionEvent actionEvent) {
         showInactive = !showInactive;
         if (showInactive) {
-            getDataOrigin().getActiveIndex().getActiveCache(false).forEach(e -> {
+            getDataOrigin().getIndexActive().getActiveCache(false).forEach(e -> {
                 if (!listedObjects.contains(e)) {
                     listedObjects.add(e);
                 }
             });
         } else {
-            listedObjects.removeAll(getDataOrigin().getActiveIndex().getActiveCache(false));
+            listedObjects.removeAll(getDataOrigin().getIndexActive().getActiveCache(false));
         }
     }
 
@@ -60,10 +60,10 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     protected void addContent(boolean clean) {
         Set<T> list = null;
         if (showInactive) {
-            list = getDataOrigin().getIdIndex().getCacheValues();
+            list = getDataOrigin().getIndexId().getCacheValues();
             fxBtnShowHide.setText("Todos");
         } else {
-            list = getDataOrigin().getActiveIndex().getActiveCache(true);
+            list = getDataOrigin().getIndexActive().getActiveCache(true);
             fxBtnShowHide.setText("Activos");
         }
 

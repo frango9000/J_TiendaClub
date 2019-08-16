@@ -71,7 +71,7 @@ public class Comprado extends AbstractComprado {
     }
 
     public void updateCompra() {
-        setCompra(DataStore.getCompras().getIdIndex().getCacheValue(getIdCompra()));
+        setCompra(DataStore.getCompras().getIndexId().getCacheValue(getIdCompra()));
     }
 
     @Override
@@ -93,7 +93,7 @@ public class Comprado extends AbstractComprado {
     }
 
     public void updateProducto() {
-        setProducto(DataStore.getProductos().getIdIndex().getCacheValue(getIdProducto()));
+        setProducto(DataStore.getProductos().getIndexId().getCacheValue(getIdProducto()));
     }
 
     @Override

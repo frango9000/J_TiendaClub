@@ -70,7 +70,7 @@ public class Caja extends AbstractCaja {
     }
 
     private void updateSede() {
-        setSede(DataStore.getSedes().getIdIndex().getCacheValue(getIdSede()));
+        setSede(DataStore.getSedes().getIndexId().getCacheValue(getIdSede()));
     }
 
     public HashMap<Integer, CierreZ> getCierresZs() {

@@ -13,6 +13,7 @@ public interface Globals {
     boolean DEBUG = true;
     boolean SQL_DEBUG = true;
     boolean SQL_CONN = true;
+    boolean VERBOSE_FACTORY = true;
 
     String DB_PREFIX = "tdc_";
 

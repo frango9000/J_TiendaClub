@@ -2,6 +2,7 @@ package tiendaclub.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import tiendaclub.model.Globals;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Categoria;
@@ -16,44 +17,62 @@ import tiendaclub.model.models.Transferencia;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.model.models.Vendido;
 import tiendaclub.model.models.Venta;
-import tiendaclub.model.models.abstracts.Identifiable;
+import tiendaclub.model.models.abstracts.IPersistible;
 
-public class DataFactory {
+public class DataFactory implements Globals {
 
-    public static Identifiable buildObject(ResultSet rs) throws SQLException {
+    public static IPersistible buildObject(ResultSet rs) throws SQLException {
         String originTable = rs.getMetaData().getTableName(1);
-
+        IPersistible iPersistible = null;
         switch (originTable) {
             case Acceso.TABLE_NAME:
-                return new Acceso(rs);
+                iPersistible = new Acceso(rs);
+                break;
             case Sede.TABLE_NAME:
-                return new Sede(rs);
+                iPersistible = new Sede(rs);
+                break;
             case Caja.TABLE_NAME:
-                return new Caja(rs);
+                iPersistible = new Caja(rs);
+                break;
             case Categoria.TABLE_NAME:
-                return new Categoria(rs);
+                iPersistible = new Categoria(rs);
+                break;
             case CierreZ.TABLE_NAME:
-                return new CierreZ(rs);
+                iPersistible = new CierreZ(rs);
+                break;
             case Compra.TABLE_NAME:
-                return new Compra(rs);
+                iPersistible = new Compra(rs);
+                break;
             case Comprado.TABLE_NAME:
-                return new Comprado(rs);
+                iPersistible = new Comprado(rs);
+                break;
             case Producto.TABLE_NAME:
-                return new Producto(rs);
+                iPersistible = new Producto(rs);
+                break;
             case Proveedor.TABLE_NAME:
-                return new Proveedor(rs);
+                iPersistible = new Proveedor(rs);
+                break;
             case Socio.TABLE_NAME:
-                return new Socio(rs);
+                iPersistible = new Socio(rs);
+                break;
             case Transferencia.TABLE_NAME:
-                return new Transferencia(rs);
+                iPersistible = new Transferencia(rs);
+                break;
             case Usuario.TABLE_NAME:
-                return new Usuario(rs);
+                iPersistible = new Usuario(rs);
+                break;
             case Vendido.TABLE_NAME:
-                return new Vendido(rs);
+                iPersistible = new Vendido(rs);
+                break;
             case Venta.TABLE_NAME:
-                return new Venta(rs);
+                iPersistible = new Venta(rs);
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + rs.getMetaData().getTableName(1));
         }
+        if (VERBOSE_FACTORY) {
+            System.out.println(iPersistible.toString());
+        }
+        return iPersistible;
     }
 }

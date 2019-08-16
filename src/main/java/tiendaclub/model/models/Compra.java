@@ -79,7 +79,7 @@ public class Compra extends AbstractCompra {
     }
 
     private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().getIdIndex().getCacheValue(getIdUsuario()));
+        setUsuario(DataStore.getUsuarios().getIndexId().getCacheValue(getIdUsuario()));
     }
 
     @Override
@@ -103,7 +103,7 @@ public class Compra extends AbstractCompra {
     }
 
     private void updateProveedor() {
-        setProveedor(DataStore.getProveedores().getIdIndex().getCacheValue(getIdProveedor()));
+        setProveedor(DataStore.getProveedores().getIndexId().getCacheValue(getIdProveedor()));
     }
 
     @Override
@@ -127,7 +127,7 @@ public class Compra extends AbstractCompra {
     }
 
     private void updateSede() {
-        setSede(DataStore.getSedes().getIdIndex().getCacheValue(getIdSede()));
+        setSede(DataStore.getSedes().getIndexId().getCacheValue(getIdSede()));
     }
 
     public HashMap<Integer, Comprado> getComprados() {

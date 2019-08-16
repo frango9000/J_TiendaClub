@@ -71,7 +71,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
             listedObjects.clear();
         }
 
-        Set<T> list = getDataOrigin().getIdIndex().getCacheValues();
+        Set<T> list = getDataOrigin().getIndexId().getCacheValues();
 
         list.forEach(e -> {
             if (!listedObjects.contains(e)) {

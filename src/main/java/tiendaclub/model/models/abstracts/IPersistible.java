@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import tiendaclub.data.framework.dao.PersistibleDao;
 
 public interface IPersistible {
 
@@ -27,8 +28,7 @@ public interface IPersistible {
 
     String getUpdateString();
 
-//
-//    <T extends PersistibleDao<Persistible>> T getDataStore();
+    <T extends IPersistible> PersistibleDao<T> getDataStore();
 
     String getTableName();
 

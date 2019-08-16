@@ -16,16 +16,16 @@ import tiendaclub.data.DataFactory;
 import tiendaclub.data.SessionDB;
 import tiendaclub.data.framework.index.model.AbstractIndex;
 import tiendaclub.model.Globals;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.abstracts.IPersistible;
 
-public class DataSource<T extends Persistible> implements Globals {
+public class DataSource<V extends IPersistible> implements Globals {
 
     protected String ID_COL_NAME = "id";
     protected String TABLE_NAME;
 
-    protected ArrayList<AbstractIndex<?, T>> indexes;
+    protected ArrayList<AbstractIndex<?, V>> indexes;
 
-    public DataSource(String TABLE_NAME, ArrayList<AbstractIndex<?, T>> indexes) {
+    public DataSource(String TABLE_NAME, ArrayList<AbstractIndex<?, V>> indexes) {
         this.TABLE_NAME = TABLE_NAME;
         this.indexes = indexes;
     }
@@ -36,38 +36,42 @@ public class DataSource<T extends Persistible> implements Globals {
         }
     }
 
-    public ArrayList<AbstractIndex<?, T>> getIndexes() {
+    public void setID_COL_NAME(String ID_COL_NAME) {
+        this.ID_COL_NAME = ID_COL_NAME;
+    }
+
+    public ArrayList<AbstractIndex<?, V>> getIndexes() {
         return indexes;
     }
 
-    protected void index(T objectT) {
-        indexes.forEach(e -> e.index(objectT));
+    protected void index(V objectV) {
+        indexes.forEach(e -> e.index(objectV));
     }
 
     protected void deindex(int key) {
         indexes.forEach(e -> e.deindex(key));
     }
 
-    protected void deindex(T objectT) {
-        indexes.forEach(e -> e.deindex(objectT));
+    protected void deindex(V objectV) {
+        indexes.forEach(e -> e.deindex(objectV));
     }
 
-    protected void reindex(T objectT) {
-        indexes.forEach(e -> e.reindex(objectT));
+    protected void reindex(V objectV) {
+        indexes.forEach(e -> e.reindex(objectV));
     }
 
-    public T query(int id) {
+    public V query(int id) {
         return query(ID_COL_NAME, Integer.toString(id));
     }
 
-    public T query(String colName, Object unique) {
-        T objecT = null;
+    public V query(String colName, Object unique) {
+        V objecT = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, unique.toString());
             try (Statement ps = SessionDB.getConn().createStatement();
                     ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    objecT = (T) DataFactory.buildObject(rs);
+                    objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
                 }
                 printSql(sql);
@@ -81,15 +85,15 @@ public class DataSource<T extends Persistible> implements Globals {
         return objecT;
     }
 
-    public T query(String col1Name, String uni, String col2Name, String que) {
-        T objecT = null;
+    public V query(String col1Name, String uni, String col2Name, String que) {
+        V objecT = null;
         if (SessionDB.connect()) {
             String sql = String
                     .format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", TABLE_NAME, col1Name, uni, col2Name, que);
             try (Statement ps = SessionDB.getConn().createStatement();
                     ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    objecT = (T) DataFactory.buildObject(rs);
+                    objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
                 }
                 printSql(sql);
@@ -103,8 +107,8 @@ public class DataSource<T extends Persistible> implements Globals {
         return objecT;
     }
 
-    public Set<T> querySome(Set<Integer> ids) {
-        HashSet<T> returnSet = Sets.newHashSetWithExpectedSize(ids.size());
+    public Set<V> querySome(Set<Integer> ids) {
+        HashSet<V> returnSet = Sets.newHashSetWithExpectedSize(ids.size());
         if (SessionDB.connect() && ids.size() > 0) {
             StringBuilder sql = new StringBuilder("SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
             Iterator<Integer> iterator = ids.iterator();
@@ -119,7 +123,7 @@ public class DataSource<T extends Persistible> implements Globals {
             try (Statement ps = SessionDB.getConn().createStatement();
                     ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
-                    T objecT = (T) DataFactory.buildObject(rs);
+                    V objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
                     returnSet.add(objecT);
                 }
@@ -134,8 +138,8 @@ public class DataSource<T extends Persistible> implements Globals {
         return returnSet;
     }
 
-    public Set<T> querySome(String colName, Collection search) {
-        HashSet<T> returnSet = Sets.newHashSetWithExpectedSize(search.size());
+    public Set<V> querySome(String colName, Collection search) {
+        HashSet<V> returnSet = Sets.newHashSetWithExpectedSize(search.size());
         if (SessionDB.connect() && search.size() > 0) {
             StringBuilder sql = new StringBuilder("SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
             Iterator iterator = search.iterator();
@@ -150,7 +154,7 @@ public class DataSource<T extends Persistible> implements Globals {
             try (Statement ps = SessionDB.getConn().createStatement();
                     ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
-                    T objecT = (T) DataFactory.buildObject(rs);
+                    V objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
                     returnSet.add(objecT);
                 }
@@ -165,14 +169,14 @@ public class DataSource<T extends Persistible> implements Globals {
         return returnSet;
     }
 
-    public Set<T> querySome(String colName, Object search) {
-        HashSet<T> returnSet = Sets.newHashSet();
+    public Set<V> querySome(String colName, Object search) {
+        HashSet<V> returnSet = Sets.newHashSet();
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, search.toString());
             try (Statement ps = SessionDB.getConn().createStatement();
                     ResultSet rs = ps.executeQuery(sql)) {
                 while (rs.next()) {
-                    T objecT = (T) DataFactory.buildObject(rs);
+                    V objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
                     returnSet.add(objecT);
                 }
@@ -187,15 +191,15 @@ public class DataSource<T extends Persistible> implements Globals {
         return returnSet;
     }
 
-    public Set<T> queryAll() {
-        Set<T> returnSet = null;
+    public Set<V> queryAll() {
+        Set<V> returnSet = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s", TABLE_NAME);
             try (Statement ps = SessionDB.getConn().createStatement();
                     ResultSet rs = ps.executeQuery(sql)) {
                 returnSet = Sets.newHashSetWithExpectedSize(rs.getFetchSize());
                 while (rs.next()) {
-                    T objecT = (T) DataFactory.buildObject(rs);
+                    V objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
                     returnSet.add(objecT);
                 }
@@ -211,20 +215,20 @@ public class DataSource<T extends Persistible> implements Globals {
         return returnSet;
     }
 
-    public int insert(T objectT) {
+    public int insert(V objectV) {
         int rows = 0;
-        if (objectT.getId() == 0) {
+        if (objectV.getId() == 0) {
             if (SessionDB.connect()) {
-                String sql = objectT.getInsertString();
+                String sql = objectV.getInsertString();
                 try (PreparedStatement pstmt = SessionDB.getConn()
                         .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                    objectT.buildStatement(pstmt);
+                    objectV.buildStatement(pstmt);
                     rows = pstmt.executeUpdate();
 
                     try (ResultSet rs = pstmt.getGeneratedKeys()) {
                         if (rs.next()) {
-                            objectT.setId(rs.getInt(1));
-                            index(objectT);
+                            objectV.setId(rs.getInt(1));
+                            index(objectV);
                         }
                     }
                     printSql(sql);
@@ -239,14 +243,14 @@ public class DataSource<T extends Persistible> implements Globals {
         return rows;
     }
 
-    public int update(T objectT) {
+    public int update(V objectV) {
         int rows = 0;
         if (SessionDB.connect()) {
-            String sql = objectT.getUpdateString();
+            String sql = objectV.getUpdateString();
             try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql)) {
-                objectT.buildStatement(pstmt);
+                objectV.buildStatement(pstmt);
                 rows = pstmt.executeUpdate();
-                reindex(objectT);
+                reindex(objectV);
                 printSql(sql);
             } catch (SQLException ex) {
                 Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
@@ -258,20 +262,20 @@ public class DataSource<T extends Persistible> implements Globals {
         return rows;
     }
 
-    public int updateObject(T objectT) {
+    public int updateObject(V objectV) {
         int rows = 0;
-        if (objectT.getId() > 0) {
+        if (objectV.getId() > 0) {
             if (SessionDB.connect()) {
                 String sql = String
-                        .format("SELECT * FROM %s WHERE %s = '%d'", TABLE_NAME, ID_COL_NAME, objectT.getId());
-                deindex(objectT);
+                        .format("SELECT * FROM %s WHERE %s = '%d'", TABLE_NAME, ID_COL_NAME, objectV.getId());
+                deindex(objectV);
                 try (Statement ps = SessionDB.getConn().createStatement();
                         ResultSet rs = ps.executeQuery(sql)) {
                     if (rs.next()) {
-                        objectT.updateObject(rs);
+                        objectV.updateObject(rs);
                         rows++;
                     }
-                    index(objectT);
+                    index(objectV);
                     printSql(sql);
                 } catch (SQLException ex) {
                     Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
@@ -284,7 +288,7 @@ public class DataSource<T extends Persistible> implements Globals {
         return rows;
     }
 
-    public int delete(T objecT) {
+    public int delete(V objecT) {
         return delete(objecT.getId());
     }
 
@@ -306,7 +310,7 @@ public class DataSource<T extends Persistible> implements Globals {
         return rows;
     }
 
-    public int deleteSome(Set<T> toDelete) {
+    public int deleteSome(Set<V> toDelete) {
         HashSet<Integer> idsToDelete = Sets.newHashSet();
         toDelete.forEach(e -> idsToDelete.add(e.getId()));
         return deleteSomeKeys(idsToDelete);

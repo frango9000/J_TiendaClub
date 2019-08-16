@@ -5,14 +5,15 @@ import java.util.Optional;
 import java.util.Set;
 import tiendaclub.data.framework.datasource.DataSource;
 import tiendaclub.data.framework.index.maps.IIndexMap;
+import tiendaclub.model.models.abstracts.IPersistible;
 
-public abstract class AbstractIndex<K, V> implements IIndex<K, V> {
+public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex<K, V> {
 
     protected IIndexMap<K, V> index;
 
-    protected DataSource<?> dataSource;
+    protected DataSource<V> dataSource;
 
-    protected String INDEX_COL_NAME;
+    protected String INDEX_COL_NAME = "";
 
 
     @Override
@@ -35,7 +36,15 @@ public abstract class AbstractIndex<K, V> implements IIndex<K, V> {
     }
 
     @Override
-    public abstract void deindex(int id);
+    public void deindex(int idValue) {
+        index.keySet().forEach(key -> {
+            index.get(key).forEach(value -> {
+                if (value.getId() == idValue) {
+                    index.remove(key, value);
+                }
+            });
+        });
+    }
 
     @Override
     public Set<K> getKeys() {

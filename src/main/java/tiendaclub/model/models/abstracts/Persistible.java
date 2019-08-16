@@ -64,7 +64,8 @@ public abstract class Persistible extends Identifiable implements IPersistible {
         return sql.toString();
     }
 
-    public <T extends Persistible> PersistibleDao<T> getDataStore() {
+    @Override
+    public <T extends IPersistible> PersistibleDao<T> getDataStore() {
         return DataStore.getDataStore(this);
     }
 

@@ -8,8 +8,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import tiendaclub.data.DataStore;
 import tiendaclub.model.models.abstracts.AbstractUsuario;
+import tiendaclub.model.models.abstracts.IAcceso;
 
-public class Usuario extends AbstractUsuario {
+public class Usuario extends AbstractUsuario implements IAcceso {
 
     public static final String TABLE_NAME = "usuarios";
     public static final ArrayList<String> COL_NAMES = new ArrayList<>(
@@ -94,7 +95,7 @@ public class Usuario extends AbstractUsuario {
     }
 
     private void updateAcceso() {
-        setAcceso(DataStore.getAccesos().getIdIndex().getCacheValue(getIdAcceso()));
+        setAcceso(DataStore.getAccesos().getIndexId().getCacheValue(getIdAcceso()));
     }
 
     public HashMap<Integer, Compra> getCompras() {
