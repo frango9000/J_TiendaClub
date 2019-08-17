@@ -29,7 +29,7 @@ public class Categoria extends AbstractCategoria {
     }
 
     @Override
-    public void buildStatement(PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
         pst.setString(1, getNombre());
         pst.setBoolean(2, isActivo());
     }

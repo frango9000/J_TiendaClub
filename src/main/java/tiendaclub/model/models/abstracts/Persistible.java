@@ -3,6 +3,7 @@ package tiendaclub.model.models.abstracts;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.framework.dao.PersistibleDao;
 
@@ -15,6 +16,14 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
 
     protected Object backup;
 
+    protected Persistible(int id) {
+        super(id);
+    }
+
+
+    @Override
+    public abstract <V extends IPersistible> boolean restoreFrom(@NonNull V objectV);
+
     @Override
     public void setBackup() throws CloneNotSupportedException {
         this.backup = this.clone();
@@ -24,9 +33,6 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
     public Object getBackup() {
         return backup;
     }
-
-    @Override
-    public abstract <V extends IPersistible> boolean restoreFrom(V objectV);
 
     @Override
     public void restoreFromBackup() {
@@ -40,9 +46,6 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
         this.backup = null;
     }
 
-    protected Persistible(int id) {
-        super(id);
-    }
 
     @Override
     public int insertIntoDB() {
@@ -100,10 +103,6 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
     public <V extends IPersistible> PersistibleDao<V> getDataStore() { //TODO Check Casting
         return DataStore.getDataStore(this);
     }
-
-
-    @Override
-    public abstract String toStringFormatted();
 
 
     @Override

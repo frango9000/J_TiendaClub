@@ -37,7 +37,7 @@ public class Producto extends AbstractProducto {
     }
 
     @Override
-    public void buildStatement(PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
         pst.setString(1, getNombre());
         pst.setString(2, getDescripcion());
         pst.setInt(3, getPrecioVenta());

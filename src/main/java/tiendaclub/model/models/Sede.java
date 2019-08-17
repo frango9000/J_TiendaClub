@@ -1,39 +1,48 @@
 package tiendaclub.model.models;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import tiendaclub.model.models.abstracts.AbstractSede;
+import tiendaclub.model.models.abstracts.Activable;
+import tiendaclub.model.models.abstracts.IPersistible;
 
-public class Sede extends AbstractSede {
+public class Sede extends Activable {
 
     public static final String TABLE_NAME = "sedes";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
             Arrays.asList("nombre", "telefono", "direccion", "activo"));
 
-    private HashMap<Integer, Caja> cajas = new HashMap<>();
-    private HashMap<Integer, Compra> compras = new HashMap<>();
-    private HashMap<Integer, Transferencia> transferIn = new HashMap<>();
-    private HashMap<Integer, Transferencia> transferOut = new HashMap<>();
+    protected String nombre;
+    protected String telefono;
+    protected String direccion;
 
-    public Sede(int id, String nombre, String telefono, String direccion) {
-        super(id, nombre, telefono, direccion);
+    {
+        this.tableName = TABLE_NAME;
+        this.columnNames = COLUMN_NAMES;
     }
 
-    public Sede(String nombre, String telefono, String direccion) {
-        super(nombre, telefono, direccion);
+    public Sede(int id, String nombre) {
+        super(id);
+        setNombre(nombre);
+    }
+
+    public Sede(String nombre) {
+        this(0, nombre);
     }
 
     public Sede(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+        this(rs.getInt(1), rs.getString(2));
+        setDireccion(rs.getString(3));
+        setTelefono(rs.getString(4));
         setActivo(rs.getBoolean(5));
     }
 
     @Override
-    public void buildStatement(PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
         pst.setString(1, getNombre());
         pst.setString(2, getTelefono());
         pst.setString(3, getDireccion());
@@ -41,42 +50,79 @@ public class Sede extends AbstractSede {
     }
 
     @Override
-    public void updateObject(ResultSet rs) throws SQLException {
-        //setId(rs.getInt(1));
-        setNombre(rs.getString(2));
-        setTelefono(rs.getString(3));
-        setDireccion(rs.getString(4));
-        setActivo(rs.getBoolean(5));
+    public <V extends IPersistible> boolean restoreFrom(@NotNull V objectV) {
+        if (getId() == objectV.getId() && !this.equals(objectV)) {
+            Sede newValues = (Sede) objectV;
+            setNombre(newValues.getNombre());
+            setTelefono(newValues.getTelefono());
+            setDireccion(newValues.getDireccion());
+            setActivo(newValues.isActivo());
+            return true;
+        }
+        return false;
     }
 
-    public HashMap<Integer, Caja> getCajas() {
-        return cajas;
+    public String getNombre() {
+        return nombre;
     }
 
-    public HashMap<Integer, Compra> getCompras() {
-        return compras;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public HashMap<Integer, Transferencia> getTransferIn() {
-        return transferIn;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public HashMap<Integer, Transferencia> getTransferOut() {
-        return transferOut;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     @Override
-    public String getTableName() {
-        return TABLE_NAME;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Sede sede = (Sede) o;
+        return getId() == sede.getId() &&
+                isActivo() == sede.isActivo() &&
+                Objects.equal(getNombre(), sede.getNombre()) &&
+                Objects.equal(getTelefono(), sede.getTelefono()) &&
+                Objects.equal(getDireccion(), sede.getDireccion());
     }
 
     @Override
-    public ArrayList<String> getColumnNames() {
-        return COL_NAMES;
+    public int hashCode() {
+        return getId();
     }
 
     @Override
     public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("nombre", nombre)
+                .add("telefono", telefono)
+                .add("direccion", direccion)
+                .add("activo", activo)
+                .toString();
+    }
+
+    @Override
+    public String toStringFormatted() {
         return getId() + " " + getNombre();
     }
 }

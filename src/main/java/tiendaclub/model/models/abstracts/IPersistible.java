@@ -1,9 +1,9 @@
 package tiendaclub.model.models.abstracts;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.framework.dao.PersistibleDao;
 
 public interface IPersistible {
@@ -20,9 +20,9 @@ public interface IPersistible {
 
     int deleteFromDb();
 
-    void buildStatement(PreparedStatement pst) throws SQLException;
+    void buildStatement(@NonNull PreparedStatement pst) throws SQLException;
 
-    void updateObject(ResultSet rs) throws SQLException;
+    <V extends IPersistible> boolean restoreFrom(@NonNull V objectV);
 
     String getInsertString();
 
@@ -39,8 +39,6 @@ public interface IPersistible {
     void setBackup() throws CloneNotSupportedException;
 
     Object getBackup();
-
-    <V extends IPersistible> boolean restoreFrom(V objectV);
 
     void restoreFromBackup();
 

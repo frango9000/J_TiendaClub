@@ -14,7 +14,8 @@ public class Acceso extends Persistible {
 
     public static final String TABLE_NAME = "accesos";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Collections.singletonList("nivel"));
-    protected String nivel;
+
+    private String nivel;
 //
 //    int id;
 //
@@ -55,26 +56,18 @@ public class Acceso extends Persistible {
     }
 
     @Override
-    public void buildStatement(PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
         pst.setString(1, getNivel());
     }
 
     @Override
-    public void updateObject(ResultSet rs) throws SQLException {
-        //setId(rs.getInt(1));
-        setNivel(rs.getString(2));
-    }
-
-
-    @Override
-    public <V extends IPersistible> boolean restoreFrom(V objectV) {
+    public <V extends IPersistible> boolean restoreFrom(@NotNull V objectV) {
         if (getId() == objectV.getId() && !this.equals(objectV)) {
             Acceso newValues = (Acceso) objectV;
             setNivel(newValues.getNivel());
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override

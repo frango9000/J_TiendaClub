@@ -1,55 +1,58 @@
 package tiendaclub.model.models;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
 import tiendaclub.model.models.abstracts.Activable;
 import tiendaclub.model.models.abstracts.IAcceso;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.abstracts.IPersistible;
 
 public class Usuario extends Activable implements IAcceso {
 
     public static final String TABLE_NAME = "usuarios";
-    public static final ArrayList<String> COL_NAMES = new ArrayList<>(
+    public static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
             Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso",
                     "activo"));
 
-
-    protected String username;
-    protected String pass;
-    protected String nombre;
-    protected String telefono;
-    protected String email;
-    protected String direccion;
-    protected String descripcion;
-    protected int idAcceso;
+    private String username;
+    private String pass;
+    private String nombre;
+    private String telefono;
+    private String email;
+    private String direccion;
+    private String descripcion;
+    private int idAcceso;
     private Acceso acceso;
 
-    private HashMap<Integer, Compra> compras = new HashMap<>();
-    private HashMap<Integer, Venta> ventas = new HashMap<>();
-    private HashMap<Integer, Transferencia> transferencias = new HashMap<>();
+    {
+        this.tableName = TABLE_NAME;
+        this.columnNames = COLUMN_NAMES;
+    }
 
-    public Usuario(int id, String username, String pass, int idAcceso) {
-        super(id, username, pass, idAcceso);
+    public Usuario(int id, String username, int idAcceso) {
+        super(id);
         updateAcceso();
     }
 
-    public Usuario(String username, String pass, int idAcceso) {
-        super(username, pass, idAcceso);
+    public Usuario(String username, int idAcceso) {
+        this(0, username, idAcceso);
         updateAcceso();
     }
 
-    public Usuario(String username, String pass, Acceso acceso) {
-        super(username, pass, acceso.getId());
+    public Usuario(String username, Acceso acceso) {
+        this(username, acceso.getId());
         setAcceso(acceso);
     }
 
     public Usuario(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(9));
+        this(rs.getInt(1), rs.getString(2), rs.getInt(9));
+        setPass(rs.getString(3));
         setNombre(rs.getString(4));
         setTelefono(rs.getString(5));
         setEmail(rs.getString(6));
@@ -59,7 +62,7 @@ public class Usuario extends Activable implements IAcceso {
     }
 
 
-    public void buildStatement(PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
         pst.setString(1, getUsername());
         pst.setString(2, getPass());
         pst.setString(3, getNombre());
@@ -71,22 +74,88 @@ public class Usuario extends Activable implements IAcceso {
         pst.setBoolean(9, isActivo());
     }
 
-    public void updateObject(ResultSet rs) throws SQLException {
-        //setId(rs.getInt(1));
-        setUsername(rs.getString(2));
-        setPass(rs.getString(3));
-        setNombre(rs.getString(4));
-        setTelefono(rs.getString(5));
-        setEmail(rs.getString(6));
-        setDireccion(rs.getString(7));
-        setDescripcion(rs.getString(8));
-        setIdAcceso(rs.getInt(9));
-        setActivo(rs.getBoolean(10));
+    @Override
+    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
+        if (getId() == objectV.getId() && !this.equals(objectV)) {
+            Usuario newValues = (Usuario) objectV;
+            setUsername(newValues.getUsername());
+            setPass(newValues.getPass());
+            setNombre(newValues.getNombre());
+            setTelefono(newValues.getTelefono());
+            setEmail(newValues.getEmail());
+            setDireccion(newValues.getDireccion());
+            setDescripcion(newValues.getDescripcion());
+            setIdAcceso(newValues.getIdAcceso());
+            setAcceso(newValues.getAcceso());
+            return true;
+        }
+        return false;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    @Override
+    public int getIdAcceso() {
+        return idAcceso;
     }
 
     @Override
     public void setIdAcceso(int idAcceso) {
-        super.setIdAcceso(idAcceso);
+        this.idAcceso = idAcceso;
         updateAcceso();
     }
 
@@ -94,49 +163,61 @@ public class Usuario extends Activable implements IAcceso {
         return acceso;
     }
 
-    public void setAcceso(Acceso acceso2) {
-//        if (acceso != null) {
-//            acceso.getUsuarios().remove(getId());
-//        }
-        this.acceso = acceso2;
-//        if (acceso != null) {
-//            acceso.getUsuarios().put(getId(), this);
-//        }
+    public void setAcceso(@NonNull Acceso acceso) {
+        this.acceso = acceso;
+        this.idAcceso = getAcceso().getId();
     }
 
     private void updateAcceso() {
         setAcceso(DataStore.getAccesos().getIndexId().getCacheValue(getIdAcceso()));
     }
 
-    public HashMap<Integer, Compra> getCompras() {
-        return compras;
-    }
 
-    public HashMap<Integer, Venta> getVentas() {
-        return ventas;
-    }
-
-    public HashMap<Integer, Transferencia> getTransferencias() {
-        return transferencias;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Usuario usuario = (Usuario) o;
+        return getId() == usuario.getId() &&
+                getIdAcceso() == usuario.getIdAcceso() &&
+                Objects.equal(getUsername(), usuario.getUsername()) &&
+                Objects.equal(getPass(), usuario.getPass()) &&
+                Objects.equal(getNombre(), usuario.getNombre()) &&
+                Objects.equal(getTelefono(), usuario.getTelefono()) &&
+                Objects.equal(getEmail(), usuario.getEmail()) &&
+                Objects.equal(getDireccion(), usuario.getDireccion()) &&
+                Objects.equal(getDescripcion(), usuario.getDescripcion());
     }
 
     @Override
-    public <V extends Persistible> boolean restoreFrom(V objectV) {
-
+    public int hashCode() {
+        return getId();
     }
 
     @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public ArrayList<String> getColumnNames() {
-        return COL_NAMES;
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("username", username)
+                .add("pass", pass)
+                .add("nombre", nombre)
+                .add("telefono", telefono)
+                .add("email", email)
+                .add("direccion", direccion)
+                .add("descripcion", descripcion)
+                .add("idAcceso", idAcceso)
+                .add("acceso", acceso.toString())
+                .toString();
     }
 
     @Override
     public String toStringFormatted() {
-        return null;
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("username", username).toString();
     }
 }
