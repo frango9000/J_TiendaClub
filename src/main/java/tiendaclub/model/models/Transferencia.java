@@ -166,7 +166,7 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     @Override
-    public ArrayList<String> getColNames() {
+    public ArrayList<String> getColumnNames() {
         return COL_NAMES;
     }
 }

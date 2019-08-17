@@ -77,7 +77,7 @@ public class CierreZ extends AbstractCierreZ {
     }
 
     @Override
-    public ArrayList<String> getColNames() {
+    public ArrayList<String> getColumnNames() {
         return COL_NAMES;
     }
 }

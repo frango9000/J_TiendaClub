@@ -2,7 +2,7 @@ package tiendaclub.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import tiendaclub.model.Globals;
+import tiendaclub.misc.Globals;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Categoria;

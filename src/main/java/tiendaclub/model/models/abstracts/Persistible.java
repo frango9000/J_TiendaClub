@@ -1,11 +1,44 @@
 package tiendaclub.model.models.abstracts;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.framework.dao.PersistibleDao;
 
-public abstract class Persistible extends Identifiable implements IPersistible {
+public abstract class Persistible extends Identifiable implements IPersistible, Cloneable, Serializable {
+
+
+    protected String tableName;
+    protected ArrayList<String> columnNames;
+
+
+    protected Object backup;
+
+    @Override
+    public void setBackup() throws CloneNotSupportedException {
+        this.backup = this.clone();
+    }
+
+    @Override
+    public Object getBackup() {
+        return backup;
+    }
+
+    @Override
+    public abstract <V extends IPersistible> boolean restoreFrom(V objectV);
+
+    @Override
+    public void restoreFromBackup() {
+        if (backup != null) {
+            restoreFrom((Persistible) backup);
+        }
+    }
+
+    @Override
+    public void commit() {
+        this.backup = null;
+    }
 
     protected Persistible(int id) {
         super(id);
@@ -14,7 +47,6 @@ public abstract class Persistible extends Identifiable implements IPersistible {
     @Override
     public int insertIntoDB() {
         if (getId() == 0) {
-//            return getDataStore().insert(this);
             return getDataStore().getDataSource().insert(this);
         } else {
             return 0;
@@ -27,7 +59,7 @@ public abstract class Persistible extends Identifiable implements IPersistible {
     }
 
     @Override
-    public int refreshFromDb() {
+    public boolean refreshFromDb() {
         return getDataStore().getDataSource().updateObject(this);
     }
 
@@ -39,7 +71,7 @@ public abstract class Persistible extends Identifiable implements IPersistible {
     @Override
     public String getInsertString() {
         final StringBuilder sql = new StringBuilder(String.format("INSERT INTO %s VALUES(NULL, ", getTableName()));
-        int i = getColNames().size();
+        int i = getColumnNames().size();
         while (i > 0) {
             sql.append("? ");
             if (i > 1) {
@@ -53,7 +85,7 @@ public abstract class Persistible extends Identifiable implements IPersistible {
     @Override
     public String getUpdateString() {
         final StringBuilder sql = new StringBuilder(String.format("UPDATE %s SET ", getTableName()));
-        Iterator<String> iterator = getColNames().iterator();
+        Iterator<String> iterator = getColumnNames().iterator();
         while (iterator.hasNext()) {
             sql.append(iterator.next()).append(" = ? ");
             if (iterator.hasNext()) {
@@ -65,13 +97,27 @@ public abstract class Persistible extends Identifiable implements IPersistible {
     }
 
     @Override
-    public <T extends IPersistible> PersistibleDao<T> getDataStore() {
+    public <V extends IPersistible> PersistibleDao<V> getDataStore() { //TODO Check Casting
         return DataStore.getDataStore(this);
     }
 
-    @Override
-    public abstract String getTableName();
 
     @Override
-    public abstract ArrayList<String> getColNames();
+    public abstract String toStringFormatted();
+
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public String getTableName() {
+        return tableName;
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return columnNames;
+    }
 }

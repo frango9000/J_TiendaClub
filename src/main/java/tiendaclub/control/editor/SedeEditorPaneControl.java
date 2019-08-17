@@ -49,7 +49,7 @@ public class SedeEditorPaneControl extends EditorControl<Sede> {
     }
 
     @Override
-    protected Sede buildEditee() {
+    protected Sede buildNew() {
         editee = new Sede(getTextOrNull(fxNombre), getTextOrNull(fxTelefono), getTextOrNull(fxDireccion));
         editee.setActivo(fxCheckActivo.isSelected());
         return editee;

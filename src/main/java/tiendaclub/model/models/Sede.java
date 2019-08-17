@@ -71,7 +71,7 @@ public class Sede extends AbstractSede {
     }
 
     @Override
-    public ArrayList<String> getColNames() {
+    public ArrayList<String> getColumnNames() {
         return COL_NAMES;
     }
 

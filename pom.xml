@@ -52,6 +52,11 @@
       <groupId>com.google.guava</groupId>
       <version>28.0-jre</version>
     </dependency>
+    <dependency>
+      <artifactId>flogger</artifactId>
+      <groupId>com.google.flogger</groupId>
+      <version>0.4</version>
+    </dependency>
 
 
   </dependencies>

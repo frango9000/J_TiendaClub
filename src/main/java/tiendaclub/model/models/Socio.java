@@ -67,7 +67,7 @@ public class Socio extends AbstractSocio {
     }
 
     @Override
-    public ArrayList<String> getColNames() {
+    public ArrayList<String> getColumnNames() {
         return COL_NAMES;
     }
 }

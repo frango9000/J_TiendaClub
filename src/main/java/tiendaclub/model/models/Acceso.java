@@ -1,22 +1,41 @@
 package tiendaclub.model.models;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import tiendaclub.model.models.abstracts.AbstractAcceso;
+import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.abstracts.Persistible;
 
-public class Acceso extends AbstractAcceso {
+public class Acceso extends Persistible {
 
     public static final String TABLE_NAME = "accesos";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Collections.singletonList("nivel"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Collections.singletonList("nivel"));
+    protected String nivel;
+//
+//    int id;
+//
+//    @Override
+//    public int getId() {
+//        return id;
+//    }
+//
+//    @Override
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
-    private HashMap<Integer, Usuario> usuarios = new HashMap<>();
+    {
+        this.tableName = TABLE_NAME;
+        this.columnNames = COLUMN_NAMES;
+    }
 
     public Acceso(int id, String nivel) {
-        super(id, nivel);
+        super(id);
+        this.nivel = nivel;
     }
 
     public Acceso(String nivel) {
@@ -25,6 +44,14 @@ public class Acceso extends AbstractAcceso {
 
     public Acceso(ResultSet rs) throws SQLException {
         this(rs.getInt(1), rs.getString(2));
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
     }
 
     @Override
@@ -38,22 +65,46 @@ public class Acceso extends AbstractAcceso {
         setNivel(rs.getString(2));
     }
 
-    public HashMap<Integer, Usuario> getUsuarios() {
-        return usuarios;
+
+    @Override
+    public <V extends IPersistible> boolean restoreFrom(V objectV) {
+        if (getId() == objectV.getId() && !this.equals(objectV)) {
+            Acceso newValues = (Acceso) objectV;
+            setNivel(newValues.getNivel());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Acceso acceso = (Acceso) o;
+        return id == acceso.id &&
+                Objects.equal(nivel, acceso.nivel);
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 
     @Override
     public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("nivel", nivel)
+                .toString();
+    }
+
+    @Override
+    public String toStringFormatted() {
         return getId() + " " + getNivel();
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public ArrayList<String> getColNames() {
-        return COL_NAMES;
     }
 }

@@ -86,7 +86,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
 
     @FXML
     protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
-        FXMLStage stage = new FXMLStage(getEditorPane(), "((Stage)getScene().getWindow()).getTitle()");
+        FXMLStage stage = new FXMLStage(getEditorPane(), "Creator");
         stage.showAndWait();
         fxTable.refresh();
         addContent();
@@ -96,8 +96,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
     protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
         T selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            FXMLStage stage = new FXMLStage(getEditorPane(), "((Stage)getScene().getWindow()).getTitle()");
-            getEditorControl().setEditee(selected);
+            FXMLStage stage = new FXMLStage(getEditorPane(), selected.getClass().getSimpleName() + " Editor");
             stage.showAndWait();
             fxTable.refresh();
         }

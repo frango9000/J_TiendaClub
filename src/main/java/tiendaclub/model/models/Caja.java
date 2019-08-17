@@ -87,7 +87,7 @@ public class Caja extends AbstractCaja {
     }
 
     @Override
-    public ArrayList<String> getColNames() {
+    public ArrayList<String> getColumnNames() {
         return COL_NAMES;
     }
 

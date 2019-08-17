@@ -1,10 +1,13 @@
 package tiendaclub.control.editor;
 
+import com.google.common.flogger.StackSize;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.BorderPane;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import tiendaclub.misc.Flogger;
 import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.view.FxDialogs;
 
@@ -31,21 +34,15 @@ public abstract class EditorControl<T extends Persistible> extends BorderPane {
         return txt != null ? txt : "";
     }
 
-    public T getEditee() {
-        return editee;
-    }
-
-    public void setEditee(T editee) {
+    public void setEditee(@NonNull T editee) {
         this.editee = editee;
-        if (editee != null) {
-            creating = false;
-            setFields();
-        }
+        creating = false;
+        setFields();
     }
 
     protected abstract void updateEditee();
 
-    protected abstract T buildEditee();
+    protected abstract T buildNew();
 
     protected abstract void setFields();
 
@@ -61,11 +58,16 @@ public abstract class EditorControl<T extends Persistible> extends BorderPane {
         if (validFields()) {
             int rows = 0;
             if (creating) {
-                buildEditee();
+                buildNew();
                 rows = editee.insertIntoDB();
             } else {
-                updateEditee();
-                rows = editee.updateOnDb();
+                try {
+                    editee.setBackup();
+                    updateEditee();
+                    rows = editee.updateOnDb();
+                } catch (CloneNotSupportedException e) {
+                    Flogger.atSevere().withStackTrace(StackSize.FULL).log("Failed creating backup");
+                }
             }
             if (rows > 0) {
                 FxDialogs.showInfo("Success",
@@ -74,8 +76,10 @@ public abstract class EditorControl<T extends Persistible> extends BorderPane {
             } else {
                 FxDialogs.showError("Fail!",
                         editee.getClass().getSimpleName() + " no " + (creating ? "creado" : "modificado"));
+                setFields();
             }
         } else {
+            Flogger.atWarning().log("Invalid Fields");
             FxDialogs.showError("Fail!", "Invalid Fields");
         }
     }

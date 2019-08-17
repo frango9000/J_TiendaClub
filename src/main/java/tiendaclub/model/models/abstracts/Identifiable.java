@@ -21,4 +21,9 @@ public abstract class Identifiable {
     protected String getIdColName() {
         return "id";
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " ID: " + getId();
+    }
 }

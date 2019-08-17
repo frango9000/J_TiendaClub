@@ -3,7 +3,7 @@ package tiendaclub.data.framework.dao;
 import java.util.ArrayList;
 import tiendaclub.data.framework.datasource.DataSource;
 import tiendaclub.data.framework.index.model.AbstractIndex;
-import tiendaclub.model.Globals;
+import tiendaclub.misc.Globals;
 import tiendaclub.model.models.abstracts.IPersistible;
 
 public class PersistibleDao<V extends IPersistible> implements Globals {

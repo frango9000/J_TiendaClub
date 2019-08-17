@@ -10,12 +10,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import tiendaclub.data.DataFactory;
 import tiendaclub.data.SessionDB;
 import tiendaclub.data.framework.index.model.AbstractIndex;
-import tiendaclub.model.Globals;
+import tiendaclub.misc.Flogger;
+import tiendaclub.misc.Globals;
 import tiendaclub.model.models.abstracts.IPersistible;
 
 public class DataSource<V extends IPersistible> implements Globals {
@@ -32,7 +31,7 @@ public class DataSource<V extends IPersistible> implements Globals {
 
     protected static void printSql(String sql) {
         if (SQL_DEBUG) {
-            System.out.println(sql);
+            Flogger.atInfo().log(sql);
         }
     }
 
@@ -65,6 +64,10 @@ public class DataSource<V extends IPersistible> implements Globals {
     }
 
     public V query(String colName, Object unique) {
+        return query(colName, unique, true);
+    }
+
+    private V query(String colName, Object unique, boolean indexOn) {
         V objecT = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, unique.toString());
@@ -72,12 +75,13 @@ public class DataSource<V extends IPersistible> implements Globals {
                     ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
                     objecT = (V) DataFactory.buildObject(rs);
-                    index(objecT);
+                    if (indexOn) {
+                        index(objecT);
+                    }
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                        .log(Level.SEVERE, sql, ex);
+                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
             } finally {
                 SessionDB.close();
             }
@@ -98,8 +102,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                        .log(Level.SEVERE, sql, ex);
+                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
             } finally {
                 SessionDB.close();
             }
@@ -129,8 +132,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 }
                 printSql(sql.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                        .log(Level.SEVERE, sql.toString(), ex);
+                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
             } finally {
                 SessionDB.close();
             }
@@ -160,8 +162,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 }
                 printSql(sql.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                        .log(Level.SEVERE, sql.toString(), ex);
+                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
             } finally {
                 SessionDB.close();
             }
@@ -182,8 +183,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                        .log(Level.SEVERE, sql, ex);
+                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
             } finally {
                 SessionDB.close();
             }
@@ -206,8 +206,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 printSql(sql);
             } catch (SQLException ex) {
                 returnSet = Set.of();
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                        .log(Level.SEVERE, sql, ex);
+                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
             } finally {
                 SessionDB.close();
             }
@@ -233,8 +232,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     }
                     printSql(sql);
                 } catch (SQLException ex) {
-                    Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                            .log(Level.SEVERE, sql, ex);
+                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
                 } finally {
                     SessionDB.close();
                 }
@@ -245,16 +243,25 @@ public class DataSource<V extends IPersistible> implements Globals {
 
     public int update(V objectV) {
         int rows = 0;
-        if (SessionDB.connect()) {
+        if (SessionDB.connect() && (!Globals.SAFE_UPDATE || objectV.getBackup() != null)) {
             String sql = objectV.getUpdateString();
             try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql)) {
                 objectV.buildStatement(pstmt);
                 rows = pstmt.executeUpdate();
-                reindex(objectV);
+                if (rows > 1) {
+                    if (objectV.getBackup() != null) {
+                        deindex((V) objectV.getBackup());
+                        objectV.commit();
+                    } else {
+                        deindex(objectV.getId());
+                    }
+                    index(objectV);
+                }
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                        .log(Level.SEVERE, sql, ex);
+                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                Flogger.atSevere().log("Reverting object to backup");
+                objectV.restoreFromBackup();
             } finally {
                 SessionDB.close();
             }
@@ -262,30 +269,9 @@ public class DataSource<V extends IPersistible> implements Globals {
         return rows;
     }
 
-    public int updateObject(V objectV) {
-        int rows = 0;
-        if (objectV.getId() > 0) {
-            if (SessionDB.connect()) {
-                String sql = String
-                        .format("SELECT * FROM %s WHERE %s = '%d'", TABLE_NAME, ID_COL_NAME, objectV.getId());
-                deindex(objectV);
-                try (Statement ps = SessionDB.getConn().createStatement();
-                        ResultSet rs = ps.executeQuery(sql)) {
-                    if (rs.next()) {
-                        objectV.updateObject(rs);
-                        rows++;
-                    }
-                    index(objectV);
-                    printSql(sql);
-                } catch (SQLException ex) {
-                    Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                            .log(Level.SEVERE, sql, ex);
-                } finally {
-                    SessionDB.close();
-                }
-            }
-        }
-        return rows;
+    public boolean updateObject(V objectV) {
+        V freshObject = query(ID_COL_NAME, objectV.getId(), false);
+        return objectV.restoreFrom(freshObject);
     }
 
     public int delete(V objecT) {
@@ -301,8 +287,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 deindex(key);
                 printSql(sql);
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                        .log(Level.SEVERE, sql, ex);
+                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
             } finally {
                 SessionDB.close();
             }
@@ -341,8 +326,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 SessionDB.getConn().setAutoCommit(true);
                 printSql(sql.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(tiendaclub.data.framework.dao.PersistibleDao.class.getName())
-                        .log(Level.SEVERE, sql.toString(), ex);
+                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
             } finally {
                 SessionDB.close();
             }

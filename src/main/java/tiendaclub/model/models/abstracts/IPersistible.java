@@ -16,7 +16,7 @@ public interface IPersistible {
 
     int updateOnDb();
 
-    int refreshFromDb();
+    boolean refreshFromDb();
 
     int deleteFromDb();
 
@@ -32,5 +32,18 @@ public interface IPersistible {
 
     String getTableName();
 
-    ArrayList<String> getColNames();
+    ArrayList<String> getColumnNames();
+
+    String toStringFormatted();
+
+    void setBackup() throws CloneNotSupportedException;
+
+    Object getBackup();
+
+    <V extends IPersistible> boolean restoreFrom(V objectV);
+
+    void restoreFromBackup();
+
+    void commit();
+
 }

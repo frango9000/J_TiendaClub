@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import tiendaclub.model.Globals;
+import tiendaclub.misc.Globals;
 
 /**
  * Clase Session se encagra de mantener la informacion de una conexion a una DB especifica, Para multiples mases de

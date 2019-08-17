@@ -14,11 +14,7 @@ public abstract class SimpleMapIndex<K, V extends IPersistible> extends Abstract
 
     @Override
     public void deindex(int idValue) {
-        index.values().forEach(v -> {
-            if (v.getId() == idValue) {
-                deindex(v);
-            }
-        });
+        index.entries().removeIf(kvEntry -> kvEntry.getValue().getId() == idValue);
     }
 
     @Override

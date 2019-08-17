@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiendaclub.model;
+package tiendaclub.misc;
+
+import java.util.logging.Level;
 
 /**
  * @author NarF
@@ -15,8 +17,11 @@ public interface Globals {
     boolean SQL_CONN = true;
     boolean VERBOSE_FACTORY = true;
 
+    Level LOG_LEVEL = Level.ALL;
+
     String DB_PREFIX = "tdc_";
 
     String ROOT_PATH = "src/main/java/tiendaclub/";
 
+    boolean SAFE_UPDATE = true;//enforce objects to have a backup to fallback to in case update statement fails
 }

@@ -51,7 +51,7 @@ public class Categoria extends AbstractCategoria {
     }
 
     @Override
-    public ArrayList<String> getColNames() {
+    public ArrayList<String> getColumnNames() {
         return COL_NAMES;
     }
 }

@@ -140,7 +140,7 @@ public class Compra extends AbstractCompra {
     }
 
     @Override
-    public ArrayList<String> getColNames() {
+    public ArrayList<String> getColumnNames() {
         return COL_NAMES;
     }
 }

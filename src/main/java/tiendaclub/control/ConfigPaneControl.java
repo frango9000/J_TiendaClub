@@ -12,7 +12,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import tiendaclub.data.SessionDB;
-import tiendaclub.model.Globals;
+import tiendaclub.misc.Globals;
 import tiendaclub.view.FxDialogs;
 
 public class ConfigPaneControl extends VBox {

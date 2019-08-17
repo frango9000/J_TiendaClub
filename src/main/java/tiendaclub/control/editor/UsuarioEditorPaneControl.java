@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
 import tiendaclub.model.models.Acceso;
@@ -51,19 +52,14 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
     }
 
     @Override
-    public void setEditee(Usuario editee) {
-        this.editee = editee;
-        if (editee != null) {
-            creating = false;
-            fxUsername.setEditable(false);
-            fxButtonPassword.setVisible(true);
-            setFields();
-        }
+    public void setEditee(@NonNull Usuario editee) {
+        fxUsername.setEditable(false);
+        fxButtonPassword.setVisible(true);
+        super.setEditee(editee);
     }
 
     @Override
     protected void updateEditee() {
-        String txt = "";
         editee.setNombre(getTextOrNull(fxNombre));
         editee.setTelefono(getTextOrNull(fxTelefono));
         editee.setEmail(getTextOrNull(fxEmail));
@@ -74,7 +70,7 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
     }
 
     @Override
-    protected Usuario buildEditee() {
+    protected Usuario buildNew() {
         String pass = askPass();
         editee = new Usuario(getTextOrNull(fxUsername), pass, fxCbxAcceso.getSelectionModel().getSelectedItem());
         updateEditee();
@@ -83,7 +79,6 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
 
     @Override
     protected void setFields() {
-        String txt = "";
         fxId.setText((editee.getId() + ""));
         fxUsername.setText(getNotNullText(editee.getUsername()));
         fxNombre.setText(getNotNullText(editee.getNombre()));

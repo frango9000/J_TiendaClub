@@ -7,16 +7,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractUsuario;
+import tiendaclub.model.models.abstracts.Activable;
 import tiendaclub.model.models.abstracts.IAcceso;
+import tiendaclub.model.models.abstracts.Persistible;
 
-public class Usuario extends AbstractUsuario implements IAcceso {
+public class Usuario extends Activable implements IAcceso {
 
     public static final String TABLE_NAME = "usuarios";
     public static final ArrayList<String> COL_NAMES = new ArrayList<>(
             Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso",
                     "activo"));
 
+
+    protected String username;
+    protected String pass;
+    protected String nombre;
+    protected String telefono;
+    protected String email;
+    protected String direccion;
+    protected String descripcion;
+    protected int idAcceso;
     private Acceso acceso;
 
     private HashMap<Integer, Compra> compras = new HashMap<>();
@@ -85,13 +95,13 @@ public class Usuario extends AbstractUsuario implements IAcceso {
     }
 
     public void setAcceso(Acceso acceso2) {
-        if (acceso != null) {
-            acceso.getUsuarios().remove(getId());
-        }
+//        if (acceso != null) {
+//            acceso.getUsuarios().remove(getId());
+//        }
         this.acceso = acceso2;
-        if (acceso != null) {
-            acceso.getUsuarios().put(getId(), this);
-        }
+//        if (acceso != null) {
+//            acceso.getUsuarios().put(getId(), this);
+//        }
     }
 
     private void updateAcceso() {
@@ -111,12 +121,22 @@ public class Usuario extends AbstractUsuario implements IAcceso {
     }
 
     @Override
+    public <V extends Persistible> boolean restoreFrom(V objectV) {
+
+    }
+
+    @Override
     public String getTableName() {
         return TABLE_NAME;
     }
 
     @Override
-    public ArrayList<String> getColNames() {
+    public ArrayList<String> getColumnNames() {
         return COL_NAMES;
+    }
+
+    @Override
+    public String toStringFormatted() {
+        return null;
     }
 }
