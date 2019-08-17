@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.model.models.abstracts.Activable;
 import tiendaclub.model.models.abstracts.IPersistible;
 import tiendaclub.model.utils.DateUtils;
@@ -50,7 +51,7 @@ public class Socio extends Activable {
     }
 
     @Override
-    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
         pst.setString(1, getDni());
         pst.setString(2, getNombre());
         pst.setString(3, getTelefono());
@@ -61,7 +62,7 @@ public class Socio extends Activable {
     }
 
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NotNull V objectV) {
+    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
         if (getId() == objectV.getId() && !this.equals(objectV)) {
             Socio newValues = (Socio) objectV;
             setDni(newValues.getDni());

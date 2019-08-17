@@ -42,7 +42,7 @@ public class Venta extends AbstractVenta {
     }
 
     @Override
-    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
         pst.setInt(1, getIdUsuario());
         pst.setInt(2, getIdCaja());
         pst.setInt(3, getIdSocio());

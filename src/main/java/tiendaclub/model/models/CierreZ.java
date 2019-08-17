@@ -34,11 +34,16 @@ public class CierreZ extends Persistible {
         super(id);
         setIdCaja(idCaja);
         setApertura(apertura);
-        updateCaja();
     }
 
     public CierreZ(int idCaja, LocalDateTime apertura) {
         this(0, idCaja, apertura);
+    }
+
+    public CierreZ(Caja caja, LocalDateTime apertura) {
+        super(0);
+        this.caja = caja;
+        this.apertura = apertura;
     }
 
     public CierreZ(ResultSet rs) throws SQLException {
@@ -57,7 +62,6 @@ public class CierreZ extends Persistible {
     public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
         if (getId() == objectV.getId() && !this.equals(objectV)) {
             CierreZ newValues = (CierreZ) objectV;
-            setIdCaja(newValues.getIdCaja());
             setCaja(newValues.getCaja());
             setApertura(newValues.getApertura());
             setCierre(newValues.getCierre());

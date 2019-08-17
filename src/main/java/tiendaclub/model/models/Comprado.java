@@ -34,7 +34,7 @@ public class Comprado extends AbstractComprado {
     }
 
     @Override
-    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
         pst.setInt(1, getIdCompra());
         pst.setInt(2, getIdProducto());
         pst.setInt(3, getCantidad());

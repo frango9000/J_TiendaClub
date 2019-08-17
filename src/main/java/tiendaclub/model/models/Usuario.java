@@ -37,16 +37,17 @@ public class Usuario extends Activable implements IAcceso {
 
     public Usuario(int id, String username, int idAcceso) {
         super(id);
-        updateAcceso();
+        setUsername(username);
+        setIdAcceso(idAcceso);
     }
 
     public Usuario(String username, int idAcceso) {
         this(0, username, idAcceso);
-        updateAcceso();
     }
 
     public Usuario(String username, Acceso acceso) {
-        this(username, acceso.getId());
+        super(0);
+        setUsername(username);
         setAcceso(acceso);
     }
 
@@ -85,7 +86,6 @@ public class Usuario extends Activable implements IAcceso {
             setEmail(newValues.getEmail());
             setDireccion(newValues.getDireccion());
             setDescripcion(newValues.getDescripcion());
-            setIdAcceso(newValues.getIdAcceso());
             setAcceso(newValues.getAcceso());
             return true;
         }

@@ -18,14 +18,12 @@ public class Proveedor extends Activable {
             Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion", "activo"));
 
 //    int id;
-//    @Override
-//    public int getId() {
-//        return id;
-//    }
-//    @Override
-//    public void setId(int id) {
-//        this.id = id;
-//    }
+////    public int getId() {
+////        return id;
+////    }
+////    public void setId(int id) {
+////        this.id = id;
+////    }
 
     protected String nif;
     protected String nombre;

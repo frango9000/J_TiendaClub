@@ -44,7 +44,7 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     @Override
-    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
         pst.setInt(1, getIdUsuario());
         pst.setInt(2, getIdSedeOrigen());
         pst.setInt(3, getIdSedeDestino());

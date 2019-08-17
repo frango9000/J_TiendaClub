@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.model.models.abstracts.Activable;
 import tiendaclub.model.models.abstracts.IPersistible;
 
@@ -42,7 +43,7 @@ public class Sede extends Activable {
     }
 
     @Override
-    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
         pst.setString(1, getNombre());
         pst.setString(2, getTelefono());
         pst.setString(3, getDireccion());
@@ -50,7 +51,7 @@ public class Sede extends Activable {
     }
 
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NotNull V objectV) {
+    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
         if (getId() == objectV.getId() && !this.equals(objectV)) {
             Sede newValues = (Sede) objectV;
             setNombre(newValues.getNombre());

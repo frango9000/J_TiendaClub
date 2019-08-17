@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.model.models.abstracts.IPersistible;
 import tiendaclub.model.models.abstracts.Persistible;
 
@@ -56,12 +57,12 @@ public class Acceso extends Persistible {
     }
 
     @Override
-    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
         pst.setString(1, getNivel());
     }
 
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NotNull V objectV) {
+    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
         if (getId() == objectV.getId() && !this.equals(objectV)) {
             Acceso newValues = (Acceso) objectV;
             setNivel(newValues.getNivel());

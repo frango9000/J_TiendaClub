@@ -119,4 +119,9 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
     public ArrayList<String> getColumnNames() {
         return columnNames;
     }
+
+    @Override
+    public String toStringFormatted() {
+        return Integer.toString(getId());
+    }
 }

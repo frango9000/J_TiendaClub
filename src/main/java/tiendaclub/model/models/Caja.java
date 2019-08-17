@@ -16,10 +16,9 @@ public class Caja extends Activable {
 
     public static final String TABLE_NAME = "cajas";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idSede", "nombre", "activo"));
+
     protected int idSede;
     protected String nombre;
-    int id;
-    boolean activo;
     private Sede sede;
 
     {
@@ -31,31 +30,16 @@ public class Caja extends Activable {
         super(id);
         setIdSede(idSede);
         setNombre(nombre);
-        updateSede();
     }
+
     public Caja(int idSede, String nombre) {
         this(0, idSede, nombre);
-        updateSede();
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean isActivo() {
-        return activo;
-    }
-
-    @Override
-    public void setActivo(boolean activo) {
-        this.activo = activo;
+    public Caja(Sede sede, String nombre) {
+        super(0);
+        setSede(sede);
+        setNombre(nombre);
     }
 
     public Caja(ResultSet rs) throws SQLException {
@@ -74,7 +58,6 @@ public class Caja extends Activable {
     public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
         if (getId() == objectV.getId() && !this.equals(objectV)) {
             Caja newValues = (Caja) objectV;
-            setIdSede(newValues.getIdSede());
             setSede(newValues.getSede());
             setNombre(newValues.getNombre());
             setActivo(newValues.isActivo());

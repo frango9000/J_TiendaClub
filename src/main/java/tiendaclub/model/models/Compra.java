@@ -42,7 +42,7 @@ public class Compra extends AbstractCompra {
     }
 
     @Override
-    public void buildStatement(@NotNull PreparedStatement pst) throws SQLException {
+    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
         pst.setInt(1, getIdUsuario());
         pst.setInt(2, getIdSede());
         pst.setInt(3, getIdProveedor());
