@@ -70,7 +70,8 @@ public class MainFX extends Application {
                 } else {
                     SessionStore.setSede(FxDialogs.showChoices("Sede:", "Sedes:", null, sedes));
                 }
-                Collection<Caja> cajas = SessionStore.getSede().getCajas().values();
+                Collection<Caja> cajas = DataStore.getCajas().getIndexId()
+                        .getCacheValues();//SessionStore.getSede().getCajas().values();
                 if (cajas.size() == 0) {
                     FxDialogs.showWarning("No caja", "Debes crear una caja");
                 } else if (cajas.size() == 1) {

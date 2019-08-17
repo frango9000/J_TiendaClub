@@ -1,44 +1,60 @@
 package tiendaclub.model.models;
 
+import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractVenta;
+import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.model.utils.DateUtils;
 
-public class Venta extends AbstractVenta {
+public class Venta extends Persistible {
 
     public static final String TABLE_NAME = "ventas";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
             Arrays.asList("idUsuario", "idCaja", "idSocio", "fechahora"));
 
-    private Usuario usuario;
-    private Caja caja;
-    private Socio socio;
 
-    private HashMap<Integer, Vendido> vendidos = new HashMap<>();
+    protected int idUsuario;
+    private Usuario usuario;
+    protected int idCaja;
+    private Caja caja;
+    protected int idSocio;
+    private Socio socio;
+    protected LocalDateTime fechahora;
+
+    {
+        this.tableName = TABLE_NAME;
+        this.columnNames = COLUMN_NAMES;
+    }
 
     public Venta(int id, int idUsuario, int idCaja, int idSocio, LocalDateTime fechahora) {
-        super(id, idUsuario, idCaja, idSocio, fechahora);
-        updateUsuario();
-        updateCaja();
-        updateSocio();
+        super(id);
+        setIdUsuario(idUsuario);
+        setIdCaja(idCaja);
+        setIdSocio(idSocio);
+        setFechahora(fechahora);
     }
 
     public Venta(int idUsuario, int idCaja, int idSocio, LocalDateTime fechahora) {
-        super(idUsuario, idCaja, idSocio, fechahora);
-        updateUsuario();
-        updateCaja();
-        updateSocio();
+        this(0, idUsuario, idCaja, idSocio, fechahora);
     }
 
     public Venta(ResultSet rs) throws SQLException {
         this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), DateUtils.toLocalDateTime(rs.getDate(5)));
+    }
+
+    public Venta(Usuario usuario, Caja caja, Socio socio, LocalDateTime fechahora) {
+        super(0);
+        setUsuario(usuario);
+        setCaja(caja);
+        setSocio(socio);
+        setFechahora(fechahora);
     }
 
     @Override
@@ -50,97 +66,111 @@ public class Venta extends AbstractVenta {
     }
 
     @Override
-    public void updateObject(ResultSet rs) throws SQLException {
-        //setId(rs.getInt(1));
-        setIdUsuario(rs.getInt(2));
-        setIdCaja(rs.getInt(3));
-        setIdSocio(rs.getInt(4));
-        setFechahora(DateUtils.toLocalDateTime(rs.getTimestamp(5)));
+    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
+        if (getId() == objectV.getId() && !this.equals(objectV)) {
+            Venta newValues = (Venta) objectV;
+            setUsuario(newValues.getUsuario());
+            setCaja(newValues.getCaja());
+            setSocio(newValues.getSocio());
+            setFechahora(newValues.getFechahora());
+            return true;
+        }
+        return false;
     }
 
-    @Override
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
     public void setIdUsuario(int idUsuario) {
-        super.setIdUsuario(idUsuario);
+        this.idUsuario = idUsuario;
         updateUsuario();
+    }
+
+    public int getIdCaja() {
+        return idCaja;
+    }
+
+    public void setIdCaja(int idCaja) {
+        this.idCaja = idCaja;
+        updateCaja();
+    }
+
+    public int getIdSocio() {
+        return idSocio;
     }
 
     public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario2) {
-        if (usuario != null) {
-            usuario.getVentas().remove(getId());
-        }
-        this.usuario = usuario2;
-        if (usuario != null) {
-            usuario.getVentas().put(getId(), this);
-        }
+    public void setIdSocio(int idSocio) {
+        this.idSocio = idSocio;
+        updateSocio();
+    }
+
+    public LocalDateTime getFechahora() {
+        return fechahora;
     }
 
     private void updateUsuario() {
         setUsuario(DataStore.getUsuarios().getIndexId().getCacheValue(getIdUsuario()));
     }
 
-    @Override
-    public void setIdCaja(int idCaja) {
-        super.setIdCaja(idCaja);
-        updateCaja();
-    }
-
     public Caja getCaja() {
         return caja;
     }
 
-    public void setCaja(Caja caja2) {
-        if (caja != null) {
-            caja.getVentas().remove(getId());
-        }
-        this.caja = caja2;
-        if (caja != null) {
-            caja.getVentas().put(getId(), this);
-        }
+    public void setFechahora(LocalDateTime fechahora) {
+        this.fechahora = fechahora;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        this.idUsuario = getUsuario().getId();
     }
 
     private void updateCaja() {
         setCaja(DataStore.getCajas().getIndexId().getCacheValue(getIdCaja()));
     }
 
-    @Override
-    public void setIdSocio(int idSocio) {
-        super.setIdSocio(idSocio);
-        updateSocio();
-    }
 
     public Socio getSocio() {
         return socio;
     }
 
-    public void setSocio(Socio socio2) {
-        if (socio != null) {
-            socio.getVentas().remove(getId());
-        }
-        this.socio = socio2;
-        if (socio != null) {
-            socio.getVentas().put(getId(), this);
-        }
+    public void setCaja(Caja caja) {
+        this.caja = caja;
+        this.idCaja = getCaja().getId();
+    }
+
+    public void setSocio(Socio socio) {
+        this.socio = socio;
+        this.idSocio = getSocio().getId();
     }
 
     private void updateSocio() {
         setSocio(DataStore.getSocios().getIndexId().getCacheValue(getIdSocio()));
     }
 
-    public HashMap<Integer, Vendido> getVendidos() {
-        return vendidos;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Venta venta = (Venta) o;
+        return getId() == venta.getId() &&
+                getIdUsuario() == venta.getIdUsuario() &&
+                getIdCaja() == venta.getIdCaja() &&
+                getIdSocio() == venta.getIdSocio() &&
+                Objects.equal(getFechahora(), venta.getFechahora());
     }
 
     @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public ArrayList<String> getColumnNames() {
-        return COL_NAMES;
+    public int hashCode() {
+        return getId();
     }
 }

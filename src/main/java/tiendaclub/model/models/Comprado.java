@@ -1,32 +1,52 @@
 package tiendaclub.model.models;
 
+import com.google.common.base.MoreObjects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractComprado;
+import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.abstracts.Persistible;
 
-public class Comprado extends AbstractComprado {
+public class Comprado extends Persistible {
 
     public static final String TABLE_NAME = "comprados";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
             Arrays.asList("idCompra", "idProducto", "cantidad", "precio_unidad"));
 
-    private Compra compra;
-    private Producto producto;
 
+    protected int idCompra;
+    private Compra compra;
+    protected int idProducto;
+    private Producto producto;
+    protected int cantidad;
+    protected int precioUnidad;
+
+    {
+        this.tableName = TABLE_NAME;
+        this.columnNames = COLUMN_NAMES;
+    }
     public Comprado(int id, int idCompra, int idProducto, int cantidad, int precioUnidad) {
-        super(id, idCompra, idProducto, cantidad, precioUnidad);
-        updateCompra();
-        updateProducto();
+        super(id);
+        setIdCompra(idCompra);
+        setIdProducto(idProducto);
+        setCantidad(cantidad);
+        setPrecioUnidad(precioUnidad);
     }
 
     public Comprado(int idCompra, int idProducto, int cantidad, int precioUnidad) {
-        super(idCompra, idProducto, cantidad, precioUnidad);
-        updateCompra();
-        updateProducto();
+        this(0, idCompra, idProducto, cantidad, precioUnidad);
+    }
+
+    public Comprado(Compra compra, Producto producto, int cantidad, int precioUnidad) {
+        super(0);
+        setCompra(compra);
+        setProducto(producto);
+        setCantidad(cantidad);
+        setPrecioUnidad(precioUnidad);
     }
 
     public Comprado(ResultSet rs) throws SQLException {
@@ -42,54 +62,73 @@ public class Comprado extends AbstractComprado {
     }
 
     @Override
-    public void updateObject(ResultSet rs) throws SQLException {
-        //setId(rs.getInt(1));
-        setIdCompra(rs.getInt(2));
-        setIdProducto(rs.getInt(3));
-        setCantidad(rs.getInt(4));
-        setPrecioUnidad(rs.getInt(5));
+    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
+        if (getId() == objectV.getId() && !this.equals(objectV)) {
+            Comprado newValues = (Comprado) objectV;
+            setCompra(newValues.getCompra());
+            setProducto(newValues.getProducto());
+            setCantidad(newValues.getCantidad());
+            setPrecioUnidad(newValues.getPrecioUnidad());
+            return true;
+        }
+        return false;
     }
 
-    @Override
+    public int getIdCompra() {
+        return idCompra;
+    }
+
     public void setIdCompra(int idCompra) {
-        super.setIdCompra(idCompra);
+        this.idCompra = idCompra;
         updateCompra();
     }
+
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+        updateProducto();
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
 
     public Compra getCompra() {
         return compra;
     }
 
-    public void setCompra(Compra compra2) {
-        if (compra != null) {
-            compra.getComprados().remove(getId());
-        }
-        this.compra = compra2;
-        if (compra != null) {
-            compra.getComprados().put(getId(), this);
-        }
+    public int getPrecioUnidad() {
+        return precioUnidad;
+    }
+
+    public void setPrecioUnidad(int precioUnidad) {
+        this.precioUnidad = precioUnidad;
     }
 
     public void updateCompra() {
         setCompra(DataStore.getCompras().getIndexId().getCacheValue(getIdCompra()));
     }
 
-    @Override
-    public void setIdProducto(int idProducto) {
-        super.setIdProducto(idProducto);
-        updateProducto();
-    }
-
     public Producto getProducto() {
         return producto;
     }
 
-    public void setProducto(Producto producto2) {
-        //if(producto!=null)
-        //  producto.getComprados().remove(getId()); //No Use
-        this.producto = producto2;
-        //if(producto!=null)
-        //  producto.getComprados().put(getId(), this); //No Use
+    public void setCompra(Compra compra) {
+        this.compra = compra;
+        this.idCompra = getCompra().getId();
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+        this.idProducto = getProducto().getId();
     }
 
     public void updateProducto() {
@@ -97,12 +136,36 @@ public class Comprado extends AbstractComprado {
     }
 
     @Override
-    public String getTableName() {
-        return TABLE_NAME;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Comprado comprado = (Comprado) o;
+        return getId() == comprado.getId() &&
+                getIdCompra() == comprado.getIdCompra() &&
+                getIdProducto() == comprado.getIdProducto() &&
+                getCantidad() == comprado.getCantidad() &&
+                getPrecioUnidad() == comprado.getPrecioUnidad();
     }
 
     @Override
-    public ArrayList<String> getColumnNames() {
-        return COL_NAMES;
+    public int hashCode() {
+        return getId();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("idCompra", idCompra)
+                .add("compra", compra.toString())
+                .add("idProducto", idProducto)
+                .add("producto", producto.toString())
+                .add("cantidad", cantidad)
+                .add("precioUnidad", precioUnidad)
+                .toString();
     }
 }

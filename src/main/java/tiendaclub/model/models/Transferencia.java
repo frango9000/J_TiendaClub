@@ -1,41 +1,66 @@
 package tiendaclub.model.models;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractTransferencia;
+import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.model.utils.DateUtils;
 
-public class Transferencia extends AbstractTransferencia {
+public class Transferencia extends Persistible {
 
     public static final String TABLE_NAME = "transferencias";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
             Arrays.asList("idUsuario", "idSedeOrigen", "idSedeDestino", "idProducto", "cantidad", "fechahora"));
 
-    private Usuario usuario;
-    private Sede sedeOrigen;
-    private Sede sedeDestino;
-    private Producto producto;
 
+    protected int idUsuario;
+    private Usuario usuario;
+    protected int idSedeOrigen;
+    private Sede sedeOrigen;
+    protected int idSedeDestino;
+    private Sede sedeDestino;
+    protected int idProducto;
+    private Producto producto;
+    protected int cantidad;
+    protected LocalDateTime fechahora;
+
+    {
+        this.tableName = TABLE_NAME;
+        this.columnNames = COLUMN_NAMES;
+    }
     public Transferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad,
             LocalDateTime fechahora) {
-        super(id, idUsuario, idSedeOrigen, idSedeDestino, idProducto, cantidad, fechahora);
-        updateUsuario();
-        updateSedeOrigen();
-        updateSedeDestino();
-        updateProducto();
+        super(id);
+        setCantidad(cantidad);
+        setFechahora(fechahora);
+        setIdUsuario(idUsuario);
+        setIdSedeOrigen(idSedeOrigen);
+        setIdSedeDestino(idSedeDestino);
+        setIdProducto(idProducto);
     }
 
-    public Transferencia(int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad) {
-        super(idUsuario, idSedeOrigen, idSedeDestino, idProducto, cantidad);
-        updateUsuario();
-        updateSedeOrigen();
-        updateSedeDestino();
-        updateProducto();
+    public Transferencia(int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad,
+            LocalDateTime fechahora) {
+        this(0, idUsuario, idSedeOrigen, idSedeDestino, idProducto, cantidad, fechahora);
+    }
+
+    public Transferencia(Usuario usuario, Sede sedeOrigen, Sede sedeDestino,
+            Producto producto, int cantidad, LocalDateTime fechahora) {
+        super(0);
+        setUsuario(usuario);
+        setSedeOrigen(sedeOrigen);
+        setSedeDestino(sedeDestino);
+        setProducto(producto);
+        setCantidad(cantidad);
+        setFechahora(fechahora);
     }
 
     public Transferencia(ResultSet rs) throws SQLException {
@@ -54,58 +79,83 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     @Override
-    public void updateObject(ResultSet rs) throws SQLException {
-        //setId(rs.getInt(1));
-        setIdUsuario(rs.getInt(2));
-        setIdSedeOrigen(rs.getInt(3));
-        setIdSedeDestino(rs.getInt(4));
-        setIdProducto(rs.getInt(5));
-        setCantidad(rs.getInt(6));
-        setFechahora(DateUtils.toLocalDateTime(rs.getTimestamp(7)));
+    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
+        if (getId() == objectV.getId() && !this.equals(objectV)) {
+            Transferencia newValues = (Transferencia) objectV;
+            setUsuario(newValues.getUsuario());
+            setSedeOrigen(newValues.getSedeOrigen());
+            setSedeDestino(newValues.getSedeDestino());
+            setProducto(newValues.getProducto());
+            setCantidad(newValues.getCantidad());
+            setFechahora(newValues.getFechahora());
+            return true;
+        }
+        return false;
     }
 
-    @Override
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
     public void setIdUsuario(int idUsuario) {
-        super.setIdUsuario(idUsuario);
+        this.idUsuario = idUsuario;
         updateUsuario();
     }
+
+    public int getIdSedeOrigen() {
+        return idSedeOrigen;
+    }
+
+    public void setIdSedeOrigen(int idSedeOrigen) {
+        this.idSedeOrigen = idSedeOrigen;
+        updateSedeOrigen();
+    }
+
+    public int getIdSedeDestino() {
+        return idSedeDestino;
+    }
+
+    public void setIdSedeDestino(int idSedeDestino) {
+        this.idSedeDestino = idSedeDestino;
+        updateSedeDestino();
+    }
+
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+        updateProducto();
+    }
+
 
     public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario2) {
-        if (usuario != null) {
-            usuario.getTransferencias().remove(getId());
-        }
-        this.usuario = usuario2;
-        if (usuario != null) {
-            usuario.getTransferencias().put(getId(), this);
-        }
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     private void updateUsuario() {
         setUsuario(DataStore.getUsuarios().getIndexId().getCacheValue(getIdUsuario()));
     }
 
-    @Override
-    public void setIdSedeOrigen(int idSedeOrigen) {
-        super.setIdSedeOrigen(idSedeOrigen);
-        updateSedeOrigen();
-    }
-
     public Sede getSedeOrigen() {
         return sedeOrigen;
     }
 
-    public void setSedeOrigen(Sede sedeOrigen2) {
-        if (sedeOrigen != null) {
-            sedeOrigen.getTransferIn().remove(getId());
-        }
-        this.sedeOrigen = sedeOrigen2;
-        if (sedeOrigen != null) {
-            sedeOrigen.getTransferIn().put(getId(), this);
-        }
+    public LocalDateTime getFechahora() {
+        return fechahora;
+    }
+
+    public void setFechahora(LocalDateTime fechahora) {
+        this.fechahora = fechahora;
     }
 
     private void updateSedeOrigen() {
@@ -113,24 +163,18 @@ public class Transferencia extends AbstractTransferencia {
     }
 
 
-    @Override
-    public void setIdSedeDestino(int idSedeDestino) {
-        super.setIdSedeDestino(idSedeDestino);
-        updateSedeDestino();
-    }
-
     public Sede getSedeDestino() {
         return sedeDestino;
     }
 
-    public void setSedeDestino(Sede sedeDestino2) {
-        if (sedeDestino != null) {
-            sedeDestino.getTransferIn().remove(getId());
-        }
-        this.sedeDestino = sedeDestino2;
-        if (sedeDestino != null) {
-            sedeDestino.getTransferIn().put(getId(), this);
-        }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        this.idUsuario = getUsuario().getId();
+    }
+
+    public void setSedeOrigen(Sede sedeOrigen) {
+        this.sedeOrigen = sedeOrigen;
+        this.idSedeOrigen = getSedeOrigen().getId();
     }
 
     private void updateSedeDestino() {
@@ -138,22 +182,18 @@ public class Transferencia extends AbstractTransferencia {
     }
 
 
-    @Override
-    public void setIdProducto(int idProducto) {
-        super.setIdProducto(idProducto);
-        updateProducto();
-    }
-
     public Producto getProducto() {
         return producto;
     }
 
-    public void setProducto(Producto producto2) {
-        //if(producto!=null)
-        //  producto.getComprados().remove(getId()); //No Use
-        this.producto = producto2;
-        //if(producto!=null)
-        //  producto.getComprados().put(getId(), this); //No Use
+    public void setSedeDestino(Sede sedeDestino) {
+        this.sedeDestino = sedeDestino;
+        this.idSedeDestino = getSedeDestino().getId();
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+        this.idProducto = getProducto().getId();
     }
 
     private void updateProducto() {
@@ -161,12 +201,42 @@ public class Transferencia extends AbstractTransferencia {
     }
 
     @Override
-    public String getTableName() {
-        return TABLE_NAME;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Transferencia that = (Transferencia) o;
+        return getId() == that.getId() &&
+                getIdUsuario() == that.getIdUsuario() &&
+                getIdSedeOrigen() == that.getIdSedeOrigen() &&
+                getIdSedeDestino() == that.getIdSedeDestino() &&
+                getIdProducto() == that.getIdProducto() &&
+                getCantidad() == that.getCantidad() &&
+                Objects.equal(getFechahora(), that.getFechahora());
     }
 
     @Override
-    public ArrayList<String> getColumnNames() {
-        return COL_NAMES;
+    public int hashCode() {
+        return getId();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("idUsuario", idUsuario)
+                .add("usuario", usuario.toString())
+                .add("idSedeOrigen", idSedeOrigen)
+                .add("sedeOrigen", sedeOrigen.toString())
+                .add("idSedeDestino", idSedeDestino)
+                .add("sedeDestino", sedeDestino.toString())
+                .add("idProducto", idProducto)
+                .add("producto", producto.toString())
+                .add("cantidad", cantidad)
+                .add("fechahora", fechahora)
+                .toString();
     }
 }

@@ -1,40 +1,57 @@
 package tiendaclub.model.models;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.AbstractCompra;
+import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.abstracts.Persistible;
 import tiendaclub.model.utils.DateUtils;
 
-public class Compra extends AbstractCompra {
+public class Compra extends Persistible {
 
     public static final String TABLE_NAME = "compras";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
             Arrays.asList("idUsuario", "idSede", "idProveedor", "fechahora"));
 
+
+    protected int idUsuario;
     private Usuario usuario;
+    protected int idSede;
+    protected int idProveedor;
+    protected LocalDateTime fechahora;
     private Proveedor proveedor;
     private Sede sede;
 
-    private HashMap<Integer, Comprado> comprados = new HashMap<>();
+    {
+        this.tableName = TABLE_NAME;
+        this.columnNames = COLUMN_NAMES;
+    }
 
     public Compra(int id, int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
-        super(id, idUsuario, idSede, idProveedor, fechahora);
-        updateUsuario();
-        updateProveedor();
-        updateSede();
+        super(id);
+        setIdUsuario(idUsuario);
+        setIdSede(idSede);
+        setIdProveedor(idProveedor);
+        setFechahora(fechahora);
     }
 
     public Compra(int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
-        super(idUsuario, idSede, idProveedor, fechahora);
-        updateUsuario();
-        updateProveedor();
-        updateSede();
+        this(0, idUsuario, idSede, idProveedor, fechahora);
+    }
+
+    public Compra(Usuario usuario, Sede sede, Proveedor proveedor, LocalDateTime fechahora) {
+        super(0);
+        setUsuario(usuario);
+        setSede(sede);
+        setProveedor(proveedor);
+        setFechahora(fechahora);
     }
 
     public Compra(ResultSet rs) throws SQLException {
@@ -50,97 +67,125 @@ public class Compra extends AbstractCompra {
     }
 
     @Override
-    public void updateObject(ResultSet rs) throws SQLException {
-        //setId(rs.getInt(1));
-        setIdUsuario(rs.getInt(2));
-        setIdSede(rs.getInt(3));
-        setIdProveedor(rs.getInt(4));
-        setFechahora(DateUtils.toLocalDateTime(rs.getTimestamp(5)));
+    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
+        if (getId() == objectV.getId() && !this.equals(objectV)) {
+            Compra newValues = (Compra) objectV;
+            setUsuario(newValues.getUsuario());
+            setSede(newValues.getSede());
+            setProveedor(newValues.getProveedor());
+            setFechahora(newValues.getFechahora());
+            return true;
+        }
+        return false;
     }
 
-    @Override
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
     public void setIdUsuario(int idUsuario) {
-        super.setIdUsuario(idUsuario);
+        this.idUsuario = idUsuario;
         updateUsuario();
+    }
+
+    public int getIdSede() {
+        return idSede;
+    }
+
+    public void setIdSede(int idSede) {
+        this.idSede = idSede;
+        updateSede();
+    }
+
+    public int getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
+        updateProveedor();
     }
 
     public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario2) {
-        if (usuario != null) {
-            usuario.getCompras().remove(getId());
-        }
-        this.usuario = usuario2;
-        if (usuario != null) {
-            usuario.getCompras().put(getId(), this);
-        }
+    public LocalDateTime getFechahora() {
+        return fechahora;
     }
 
     private void updateUsuario() {
         setUsuario(DataStore.getUsuarios().getIndexId().getCacheValue(getIdUsuario()));
     }
 
-    @Override
-    public void setIdProveedor(int idProveedor) {
-        super.setIdProveedor(idProveedor);
-        updateProveedor();
-    }
-
     public Proveedor getProveedor() {
         return proveedor;
     }
 
-    public void setProveedor(Proveedor proveedor2) {
-        if (proveedor != null) {
-            proveedor.getCompras().remove(getId());
-        }
-        this.proveedor = proveedor2;
-        if (proveedor != null) {
-            proveedor.getCompras().put(getId(), this);
-        }
+    public void setFechahora(LocalDateTime fechahora) {
+        this.fechahora = fechahora;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        this.idUsuario = getUsuario().getId();
     }
 
     private void updateProveedor() {
         setProveedor(DataStore.getProveedores().getIndexId().getCacheValue(getIdProveedor()));
     }
 
-    @Override
-    public void setIdSede(int idSede) {
-        super.setIdSede(idSede);
-        updateSede();
-    }
 
     public Sede getSede() {
         return sede;
     }
 
-    public void setSede(Sede sede2) {
-        if (sede != null) {
-            sede.getCompras().remove(getId());
-        }
-        this.sede = sede2;
-        if (sede != null) {
-            sede.getCompras().put(getId(), this);
-        }
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+        this.idProveedor = getProveedor().getId();
+    }
+
+    public void setSede(Sede sede) {
+        this.sede = sede;
+        this.idSede = getSede().getId();
     }
 
     private void updateSede() {
         setSede(DataStore.getSedes().getIndexId().getCacheValue(getIdSede()));
     }
 
-    public HashMap<Integer, Comprado> getComprados() {
-        return comprados;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Compra compra = (Compra) o;
+        return getId() == compra.getId() &&
+                getIdUsuario() == compra.getIdUsuario() &&
+                getIdSede() == compra.getIdSede() &&
+                getIdProveedor() == compra.getIdProveedor() &&
+                Objects.equal(getFechahora(), compra.getFechahora());
     }
 
     @Override
-    public String getTableName() {
-        return TABLE_NAME;
+    public int hashCode() {
+        return getId();
     }
 
     @Override
-    public ArrayList<String> getColumnNames() {
-        return COL_NAMES;
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("idUsuario", idUsuario)
+                .add("usuario", usuario.toString())
+                .add("idSede", idSede)
+                .add("sede", sede.toString())
+                .add("idProveedor", idProveedor)
+                .add("proveedor", proveedor.toString())
+                .add("fechahora", fechahora)
+                .toString();
     }
 }
