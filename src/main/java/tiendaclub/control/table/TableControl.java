@@ -13,8 +13,8 @@ import javafx.scene.layout.Pane;
 import tiendaclub.MainFX;
 import tiendaclub.control.editor.EditorControl;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.IndexIdDao;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.data.framework.dao.core.IndexIdDao;
+import tiendaclub.model.models.core.Persistible;
 import tiendaclub.view.FXMLStage;
 import tiendaclub.view.FxDialogs;
 

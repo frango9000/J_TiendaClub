@@ -1,11 +1,13 @@
-package tiendaclub.data.framework.index.model;
+package tiendaclub.data.framework.index.core;
 
 import com.google.common.collect.Sets;
+import java.io.Writer;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import tiendaclub.data.framework.datasource.DataSource;
-import tiendaclub.data.framework.index.maps.IIndexMap;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.data.framework.index.core.maps.IIndexMap;
+import tiendaclub.model.models.core.IPersistible;
 
 public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex<K, V> {
 
@@ -13,11 +15,20 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
 
     protected DataSource<V> dataSource;
 
-    protected String INDEX_COL_NAME = "";
+    protected String indexColumnName = "";
 
+    protected Function<V, K> keyValueFunction;
+
+    protected AbstractIndex(DataSource<V> dataSource, String indexColumnName, Function<V, K> keyValueFunction) {
+        this.dataSource = dataSource;
+        this.indexColumnName = indexColumnName;
+        this.keyValueFunction = keyValueFunction;
+    }
 
     @Override
-    public abstract K indexKey(V value);
+    public K indexKey(V value) {
+        return keyValueFunction.apply(value);
+    }
 
     @Override
     public void index(V value) {
@@ -36,15 +47,7 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
     }
 
     @Override
-    public void deindex(int idValue) {
-        index.keySet().forEach(key -> {
-            index.get(key).forEach(value -> {
-                if (value.getId() == idValue) {
-                    index.remove(key, value);
-                }
-            });
-        });
-    }
+    public abstract void deindex(int idValue);
 
     @Override
     public Set<K> getKeys() {
@@ -60,13 +63,13 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
 
     @Override
     public Set<V> getKeyValues(K key) {
-        dataSource.querySome(INDEX_COL_NAME, key);
+        dataSource.querySome(indexColumnName, key);
         return getCacheKeyValues(key);
     }
 
     @Override
     public Set<V> getKeyValues(Set<K> keys) {
-        dataSource.querySome(INDEX_COL_NAME, keys);
+        dataSource.querySome(indexColumnName, keys);
         return getCacheKeyValues(keys);
     }
 
@@ -104,7 +107,7 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
 
     @Override
     public V getValue(K key) {
-        dataSource.querySome(INDEX_COL_NAME, key);
+        dataSource.querySome(indexColumnName, key);
         return getCacheValue(key);
     }
 
@@ -118,6 +121,8 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
         if (!cacheContainsKey(key)) {
             getKeyValues(key);
         }
+        Writer out;
+
         return getCacheValueOptional(key);
     }
 

@@ -9,16 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.Activable;
-import tiendaclub.model.models.abstracts.IAcceso;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.core.Activable;
+import tiendaclub.model.models.core.IPersistible;
 
-public class Usuario extends Activable implements IAcceso {
+public class Usuario extends Activable {
 
     public static final String TABLE_NAME = "usuarios";
-    public static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso",
-                    "activo"));
+    public static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso", "activo"));
 
     private String username;
     private String pass;
@@ -148,12 +145,10 @@ public class Usuario extends Activable implements IAcceso {
         this.descripcion = descripcion;
     }
 
-    @Override
     public int getIdAcceso() {
         return idAcceso;
     }
 
-    @Override
     public void setIdAcceso(int idAcceso) {
         this.idAcceso = idAcceso;
         updateAcceso();
@@ -182,15 +177,12 @@ public class Usuario extends Activable implements IAcceso {
             return false;
         }
         Usuario usuario = (Usuario) o;
-        return getId() == usuario.getId() &&
-                getIdAcceso() == usuario.getIdAcceso() &&
-                Objects.equal(getUsername(), usuario.getUsername()) &&
-                Objects.equal(getPass(), usuario.getPass()) &&
-                Objects.equal(getNombre(), usuario.getNombre()) &&
-                Objects.equal(getTelefono(), usuario.getTelefono()) &&
-                Objects.equal(getEmail(), usuario.getEmail()) &&
-                Objects.equal(getDireccion(), usuario.getDireccion()) &&
-                Objects.equal(getDescripcion(), usuario.getDescripcion());
+        return getId() == usuario.getId() && getIdAcceso() == usuario.getIdAcceso()
+                && Objects.equal(getUsername(), usuario.getUsername()) && Objects.equal(getPass(), usuario.getPass())
+                && Objects.equal(getNombre(), usuario.getNombre())
+                && Objects.equal(getTelefono(), usuario.getTelefono()) && Objects.equal(getEmail(), usuario.getEmail())
+                && Objects.equal(getDireccion(), usuario.getDireccion())
+                && Objects.equal(getDescripcion(), usuario.getDescripcion());
     }
 
     @Override
@@ -200,24 +192,11 @@ public class Usuario extends Activable implements IAcceso {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("username", username)
-                .add("pass", pass)
-                .add("nombre", nombre)
-                .add("telefono", telefono)
-                .add("email", email)
-                .add("direccion", direccion)
-                .add("descripcion", descripcion)
-                .add("idAcceso", idAcceso)
-                .add("acceso", acceso.toString())
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("username", username).add("pass", pass).add("nombre", nombre).add("telefono", telefono).add("email", email).add("direccion", direccion).add("descripcion", descripcion).add("idAcceso", idAcceso).add("acceso", acceso.toString()).toString();
     }
 
     @Override
     public String toStringFormatted() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("username", username).toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("username", username).toString();
     }
 }

@@ -1,8 +1,9 @@
 package tiendaclub.data;
 
-import tiendaclub.data.framework.dao.IndexIdActiveDao;
-import tiendaclub.data.framework.dao.IndexIdDao;
+import tiendaclub.data.framework.dao.CajaDao;
 import tiendaclub.data.framework.dao.UsuarioDao;
+import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
+import tiendaclub.data.framework.dao.core.IndexIdDao;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Categoria;
@@ -17,13 +18,13 @@ import tiendaclub.model.models.Transferencia;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.model.models.Vendido;
 import tiendaclub.model.models.Venta;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.core.Persistible;
 
 public class DataStore {
 
     private static IndexIdDao<Acceso> accesos = new IndexIdDao<>(Acceso.TABLE_NAME);
     private static IndexIdActiveDao<Sede> sedes = new IndexIdActiveDao<>(Sede.TABLE_NAME);
-    private static IndexIdActiveDao<Caja> cajas = new IndexIdActiveDao<>(Caja.TABLE_NAME);
+    private static CajaDao cajas = new CajaDao();
     private static IndexIdActiveDao<Categoria> categorias = new IndexIdActiveDao<>(Categoria.TABLE_NAME);
     private static IndexIdDao<CierreZ> cierreZs = new IndexIdDao<>(CierreZ.TABLE_NAME);
     private static IndexIdDao<Compra> compras = new IndexIdDao<>(Compra.TABLE_NAME);
@@ -32,7 +33,7 @@ public class DataStore {
     private static IndexIdActiveDao<Proveedor> proveedores = new IndexIdActiveDao<>(Proveedor.TABLE_NAME);
     private static IndexIdActiveDao<Socio> socios = new IndexIdActiveDao<>(Socio.TABLE_NAME);
     private static IndexIdDao<Transferencia> transferencias = new IndexIdDao<>(Transferencia.TABLE_NAME);
-    private static UsuarioDao usuarios = new UsuarioDao(Usuario.TABLE_NAME);
+    private static UsuarioDao usuarios = new UsuarioDao();
     private static IndexIdDao<Vendido> vendidos = new IndexIdDao<>(Vendido.TABLE_NAME);
     private static IndexIdDao<Venta> ventas = new IndexIdDao<>(Venta.TABLE_NAME);
 
@@ -96,7 +97,6 @@ public class DataStore {
         SessionDB.setAutoclose(false);
         DataStore.getAccesos().getDataSource().queryAll();
         DataStore.getUsuarios().getDataSource().queryAll();
-//        DataStore.getUsuarios().getIndexAcceso().getValue(3);
         DataStore.getProveedores().getDataSource().queryAll();
         DataStore.getSocios().getDataSource().queryAll();
         DataStore.getSedes().getDataSource().queryAll();

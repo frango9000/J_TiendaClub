@@ -2,16 +2,15 @@ package tiendaclub.data.framework.index;
 
 import java.util.Set;
 import tiendaclub.data.framework.datasource.DataSource;
-import tiendaclub.data.framework.index.maps.IndexSetMultimap;
-import tiendaclub.data.framework.index.model.SetMultiMapIndex;
-import tiendaclub.model.models.abstracts.Activable;
+import tiendaclub.data.framework.index.core.SetMultiMapIndex;
+import tiendaclub.data.framework.index.core.maps.IndexSetMultimap;
+import tiendaclub.model.models.core.Activable;
 
-public class IndexActive<V extends Activable> extends SetMultiMapIndex<Boolean, V> {
+public class MultiIndexActive<V extends Activable> extends SetMultiMapIndex<Boolean, V> {
 
-    public IndexActive(DataSource<V> dataSource) {
+    public MultiIndexActive(DataSource<V> dataSource) {
+        super(dataSource, "activo", Activable::isActivo);
         this.index = new IndexSetMultimap<>(2);
-        this.INDEX_COL_NAME = "activo";
-        this.dataSource = dataSource;
     }
 
     @Override

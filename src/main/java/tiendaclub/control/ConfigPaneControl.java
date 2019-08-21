@@ -105,8 +105,7 @@ public class ConfigPaneControl extends VBox {
 
     @FXML
     private void fxBtnTestConnAction(ActionEvent actionEvent) {
-        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(),
-                fxUsername.getText().trim(), fxPassword.getText().trim());
+        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(), fxUsername.getText().trim(), fxPassword.getText().trim());
         if (SessionDB.isConnValid()) {
             fxBtnTestConn.setStyle("-fx-background-color: #75ff8a");
         } else {
@@ -116,8 +115,7 @@ public class ConfigPaneControl extends VBox {
 
     @FXML
     private void fxBtnTestCatalogAction(ActionEvent actionEvent) {
-        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(),
-                fxUsername.getText().trim(), fxPassword.getText().trim());
+        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(), fxUsername.getText().trim(), fxPassword.getText().trim());
         ArrayList<String> listCatalogs = SessionDB.listCatalogs();
         if (listCatalogs.size() == 0) {//TODO move db creation to DB section inside main prog
             if (!SessionDB.isRoot()) {
@@ -178,8 +176,8 @@ public class ConfigPaneControl extends VBox {
     @FXML
     private void fxHiddenDropCatalog(ActionEvent actionEvent) {
         String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", "", SessionDB.listCatalogs());
-        if (catalog != null && catalog.length() > 1 && FxDialogs
-                .showConfirmBoolean("Droping Catalog: " + catalog, "This is irreversible, data will be lost.")) {
+        if (catalog != null && catalog.length() > 1 && FxDialogs.showConfirmBoolean(
+                "Droping Catalog: " + catalog, "This is irreversible, data will be lost.")) {
             SessionDB.dropCatalog(catalog);
         }
     }

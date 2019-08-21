@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.Activable;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.core.Activable;
+import tiendaclub.model.models.core.IPersistible;
 
 public class Producto extends Activable {
 
     public static final String TABLE_NAME = "productos";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("nombre", "descripcion", "precio_venta", "iva", "idCategoria", "activo"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nombre", "descripcion", "precio_venta", "iva", "idCategoria", "activo"));
 
     protected String nombre;
     protected String descripcion;
@@ -143,13 +142,9 @@ public class Producto extends Activable {
             return false;
         }
         Producto producto = (Producto) o;
-        return getId() == producto.getId() &&
-                precioVenta == producto.precioVenta &&
-                iva == producto.iva &&
-                idCategoria == producto.idCategoria &&
-                isActivo() == producto.isActivo() &&
-                Objects.equal(nombre, producto.nombre) &&
-                Objects.equal(descripcion, producto.descripcion);
+        return getId() == producto.getId() && precioVenta == producto.precioVenta && iva == producto.iva
+                && idCategoria == producto.idCategoria && isActivo() == producto.isActivo()
+                && Objects.equal(nombre, producto.nombre) && Objects.equal(descripcion, producto.descripcion);
     }
 
     @Override
@@ -159,16 +154,7 @@ public class Producto extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("nombre", nombre)
-                .add("descripcion", descripcion)
-                .add("precioVenta", precioVenta)
-                .add("iva", iva)
-                .add("idCategoria", idCategoria)
-                .add("categoria", categoria.toString())
-                .add("activo", activo)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("nombre", nombre).add("descripcion", descripcion).add("precioVenta", precioVenta).add("iva", iva).add("idCategoria", idCategoria).add("categoria", categoria.toString()).add("activo", isActivo()).toString();
     }
 
     @Override

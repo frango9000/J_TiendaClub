@@ -1,11 +1,11 @@
-package tiendaclub.model.models.abstracts;
+package tiendaclub.model.models.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.PersistibleDao;
+import tiendaclub.data.framework.dao.core.PersistibleDao;
 
 public abstract class Persistible extends Identifiable implements IPersistible, Cloneable, Serializable {
 
@@ -99,11 +99,11 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
         return sql.toString();
     }
 
+    @SuppressWarnings("unchecked") // TODO verify cast
     @Override
-    public <V extends IPersistible> PersistibleDao<V> getDataStore() { //TODO Check Casting
+    public <V extends IPersistible> PersistibleDao<V> getDataStore() {
         return DataStore.getDataStore(this);
     }
-
 
     @Override
     public Object clone() throws CloneNotSupportedException {

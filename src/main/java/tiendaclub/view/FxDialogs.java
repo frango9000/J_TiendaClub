@@ -201,8 +201,7 @@ public class FxDialogs {
         return showTextInput("Input", header, message, "");
     }
 
-    public static <T> T showChoices(String title, String header, String message, T defaultChoice,
-            Collection<T> choices) {
+    public static <T> T showChoices(String title, String header, String message, T defaultChoice, Collection<T> choices) {
         ChoiceDialog<T> dialog = new ChoiceDialog<>(defaultChoice, choices);
         dialog.initStyle(StageStyle.UTILITY);
         dialog.setTitle(title);

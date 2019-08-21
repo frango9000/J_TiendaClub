@@ -8,7 +8,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.IndexIdActiveDao;
+import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FXMLStage;

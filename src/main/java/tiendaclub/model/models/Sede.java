@@ -8,14 +8,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import tiendaclub.model.models.abstracts.Activable;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.core.Activable;
+import tiendaclub.model.models.core.IPersistible;
 
 public class Sede extends Activable {
 
     public static final String TABLE_NAME = "sedes";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("nombre", "telefono", "direccion", "activo"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nombre", "telefono", "direccion", "activo"));
 
     protected String nombre;
     protected String telefono;
@@ -99,11 +98,9 @@ public class Sede extends Activable {
             return false;
         }
         Sede sede = (Sede) o;
-        return getId() == sede.getId() &&
-                isActivo() == sede.isActivo() &&
-                Objects.equal(getNombre(), sede.getNombre()) &&
-                Objects.equal(getTelefono(), sede.getTelefono()) &&
-                Objects.equal(getDireccion(), sede.getDireccion());
+        return getId() == sede.getId() && isActivo() == sede.isActivo() && Objects.equal(getNombre(), sede.getNombre())
+                && Objects.equal(getTelefono(), sede.getTelefono())
+                && Objects.equal(getDireccion(), sede.getDireccion());
     }
 
     @Override
@@ -113,13 +110,7 @@ public class Sede extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("nombre", nombre)
-                .add("telefono", telefono)
-                .add("direccion", direccion)
-                .add("activo", activo)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("nombre", nombre).add("telefono", telefono).add("direccion", direccion).add("activo", isActivo()).toString();
     }
 
     @Override

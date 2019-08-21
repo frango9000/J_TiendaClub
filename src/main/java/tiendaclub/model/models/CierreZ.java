@@ -10,20 +10,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.IPersistible;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.model.models.core.Persistible;
 import tiendaclub.model.utils.DateUtils;
 
 public class CierreZ extends Persistible {
 
     public static final String TABLE_NAME = "zs";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("idCaja", "apertura", "cierre"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idCaja", "apertura", "cierre"));
 
     protected int idCaja;
-    private Caja caja;
     protected LocalDateTime apertura;
     protected LocalDateTime cierre;
+    private Caja caja;
 
     {
         this.tableName = TABLE_NAME;
@@ -117,11 +116,9 @@ public class CierreZ extends Persistible {
             return false;
         }
         CierreZ cierreZ = (CierreZ) o;
-        return getId() == cierreZ.getId() &&
-                getIdCaja() == cierreZ.getIdCaja() &&
-                Objects.equal(getCaja(), cierreZ.getCaja()) &&
-                Objects.equal(getApertura(), cierreZ.getApertura()) &&
-                Objects.equal(getCierre(), cierreZ.getCierre());
+        return getId() == cierreZ.getId() && getIdCaja() == cierreZ.getIdCaja()
+                && Objects.equal(getCaja(), cierreZ.getCaja()) && Objects.equal(getApertura(), cierreZ.getApertura())
+                && Objects.equal(getCierre(), cierreZ.getCierre());
     }
 
     @Override
@@ -131,13 +128,7 @@ public class CierreZ extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("idCaja", idCaja)
-                .add("caja", caja.toString())
-                .add("apertura", apertura)
-                .add("cierre", cierre)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("idCaja", idCaja).add("caja", caja.toString()).add("apertura", apertura).add("cierre", cierre).toString();
     }
 
     @Override

@@ -9,15 +9,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import tiendaclub.model.models.abstracts.Activable;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.core.Activable;
+import tiendaclub.model.models.core.IPersistible;
 import tiendaclub.model.utils.DateUtils;
 
 public class Socio extends Activable {
 
     public static final String TABLE_NAME = "socios";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("dni", "nombre", "telefono", "direccion", "descripcion", "fecha_in", "activo"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("dni", "nombre", "telefono", "direccion", "descripcion", "fecha_in", "activo"));
 
     protected String dni;
     protected String nombre;
@@ -134,14 +133,11 @@ public class Socio extends Activable {
             return false;
         }
         Socio socio = (Socio) o;
-        return getId() == socio.getId() &&
-                isActivo() == socio.isActivo() &&
-                Objects.equal(getDni(), socio.getDni()) &&
-                Objects.equal(getNombre(), socio.getNombre()) &&
-                Objects.equal(getTelefono(), socio.getTelefono()) &&
-                Objects.equal(getDireccion(), socio.getDireccion()) &&
-                Objects.equal(getDescripcion(), socio.getDescripcion()) &&
-                Objects.equal(getFechaIn(), socio.getFechaIn());
+        return getId() == socio.getId() && isActivo() == socio.isActivo() && Objects.equal(getDni(), socio.getDni())
+                && Objects.equal(getNombre(), socio.getNombre()) && Objects.equal(getTelefono(), socio.getTelefono())
+                && Objects.equal(getDireccion(), socio.getDireccion())
+                && Objects.equal(getDescripcion(), socio.getDescripcion())
+                && Objects.equal(getFechaIn(), socio.getFechaIn());
     }
 
     @Override
@@ -151,16 +147,7 @@ public class Socio extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("dni", dni)
-                .add("nombre", nombre)
-                .add("telefono", telefono)
-                .add("direccion", direccion)
-                .add("descripcion", descripcion)
-                .add("fechaIn", fechaIn)
-                .add("activo", activo)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("dni", dni).add("nombre", nombre).add("telefono", telefono).add("direccion", direccion).add("descripcion", descripcion).add("fechaIn", fechaIn).add("activo", isActivo()).toString();
     }
 
     @Override

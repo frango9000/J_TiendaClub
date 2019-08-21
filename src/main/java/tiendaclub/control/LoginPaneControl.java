@@ -10,6 +10,8 @@ import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
+import tiendaclub.misc.Flogger;
+import tiendaclub.model.models.Usuario;
 
 public class LoginPaneControl extends BorderPane {
 
@@ -39,16 +41,19 @@ public class LoginPaneControl extends BorderPane {
 
     @FXML
     private void loginOnAct(ActionEvent actionEvent) {
-        SessionStore.setUsuario(DataStore.getUsuarios().getDataSource()
-                .query("username", usernameTextField.getText().trim(), "pass", passwordTextField.getText().trim()));
-        System.out.println(SessionStore.getUsuario());
-        if (SessionStore.getUsuario() == null) {
+        Usuario user = DataStore.getUsuarios().getUsernameIndex().getCacheValue(usernameTextField.getText().trim());
+        Flogger.atInfo().log(user.toString());
+        if (user == null) {
+            alertMsg.setStyle("-fx-text-fill: red");
+            alertMsg.setText("User not found");
+        } else if (!user.getPass().equals(passwordTextField.getText().trim())) {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("Access Denied");
-        } else if (!SessionStore.getUsuario().isActivo()) {
+        } else if (!user.isActivo()) {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("Account Locked");
         } else {
+            SessionStore.setUsuario(user);
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
         }
     }

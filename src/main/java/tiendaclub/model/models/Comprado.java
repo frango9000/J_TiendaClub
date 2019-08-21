@@ -8,28 +8,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.IPersistible;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.model.models.core.Persistible;
 
 public class Comprado extends Persistible {
 
     public static final String TABLE_NAME = "comprados";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("idCompra", "idProducto", "cantidad", "precio_unidad"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idCompra", "idProducto", "cantidad", "precio_unidad"));
 
 
     protected int idCompra;
-    private Compra compra;
     protected int idProducto;
-    private Producto producto;
     protected int cantidad;
     protected int precioUnidad;
+    private Compra compra;
+    private Producto producto;
 
     {
         this.tableName = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
-    public Comprado(int id, int idCompra, int idProducto, int cantidad, int precioUnidad) {
+
+    private Comprado(int id, int idCompra, int idProducto, int cantidad, int precioUnidad) {
         super(id);
         setIdCompra(idCompra);
         setIdProducto(idProducto);
@@ -105,6 +105,11 @@ public class Comprado extends Persistible {
         return compra;
     }
 
+    public void setCompra(Compra compra) {
+        this.compra = compra;
+        this.idCompra = getCompra().getId();
+    }
+
     public int getPrecioUnidad() {
         return precioUnidad;
     }
@@ -119,11 +124,6 @@ public class Comprado extends Persistible {
 
     public Producto getProducto() {
         return producto;
-    }
-
-    public void setCompra(Compra compra) {
-        this.compra = compra;
-        this.idCompra = getCompra().getId();
     }
 
     public void setProducto(Producto producto) {
@@ -144,11 +144,9 @@ public class Comprado extends Persistible {
             return false;
         }
         Comprado comprado = (Comprado) o;
-        return getId() == comprado.getId() &&
-                getIdCompra() == comprado.getIdCompra() &&
-                getIdProducto() == comprado.getIdProducto() &&
-                getCantidad() == comprado.getCantidad() &&
-                getPrecioUnidad() == comprado.getPrecioUnidad();
+        return getId() == comprado.getId() && getIdCompra() == comprado.getIdCompra()
+                && getIdProducto() == comprado.getIdProducto() && getCantidad() == comprado.getCantidad()
+                && getPrecioUnidad() == comprado.getPrecioUnidad();
     }
 
     @Override
@@ -158,14 +156,6 @@ public class Comprado extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("idCompra", idCompra)
-                .add("compra", compra.toString())
-                .add("idProducto", idProducto)
-                .add("producto", producto.toString())
-                .add("cantidad", cantidad)
-                .add("precioUnidad", precioUnidad)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("idCompra", idCompra).add("compra", compra.toString()).add("idProducto", idProducto).add("producto", producto.toString()).add("cantidad", cantidad).add("precioUnidad", precioUnidad).toString();
     }
 }

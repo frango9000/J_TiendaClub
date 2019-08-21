@@ -7,10 +7,9 @@ import java.util.logging.Level;
 
 public class Flogger implements Globals {
 
-    private static final FluentLogger flogger;
+    private static final FluentLogger flogger = FluentLogger.forEnclosingClass();
 
     static {
-        flogger = FluentLogger.forEnclosingClass();
         LoggerConfig.of(flogger).setLevel(Globals.LOG_LEVEL);
     }
 

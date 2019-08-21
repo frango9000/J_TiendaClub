@@ -12,6 +12,8 @@ public class TestFX {
         DataStore.firstQuery();
         DataStore.getUsuarios().getIndexAcceso().getValue(1);
         DataStore.getUsuarios().getIndexAcceso().getValue(3);
+        DataStore.getUsuarios();
+
 
     }
 }

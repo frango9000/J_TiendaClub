@@ -1,4 +1,4 @@
-package tiendaclub.data.framework.index.model;
+package tiendaclub.data.framework.index.core;
 
 import java.util.Optional;
 import java.util.Set;

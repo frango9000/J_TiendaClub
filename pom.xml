@@ -58,10 +58,9 @@
       <version>0.4</version>
     </dependency>
     <dependency>
-      <artifactId>annotations</artifactId>
-      <groupId>org.jetbrains</groupId>
-      <scope>compile</scope>
-      <version>17.0.0</version>
+      <artifactId>flogger-system-backend</artifactId>
+      <groupId>com.google.flogger</groupId>
+      <version>0.4</version>
     </dependency>
 
 

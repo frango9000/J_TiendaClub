@@ -54,11 +54,12 @@ public class MainFX extends Application {
             configStage.showAndWait();
         }
         if (SessionDB.isCatalogValid()) {
+            DataStore.firstQuery();
+
             Stage loginStage = new FXMLStage("/fxml/LoginPane.fxml", "Login Stage");
             loginStage.setOnCloseRequest(event -> System.exit(0));
             loginStage.showAndWait();
 
-            DataStore.firstQuery();
             primaryStage.show();
 
             Set<Sede> sedes = DataStore.getSedes().getIndexId().getCacheValues();
@@ -70,8 +71,7 @@ public class MainFX extends Application {
                 } else {
                     SessionStore.setSede(FxDialogs.showChoices("Sede:", "Sedes:", null, sedes));
                 }
-                Collection<Caja> cajas = DataStore.getCajas().getIndexId()
-                        .getCacheValues();//SessionStore.getSede().getCajas().values();
+                Collection<Caja> cajas = DataStore.getCajas().getIndexId().getCacheValues();//SessionStore.getSede().getCajas().values();
                 if (cajas.size() == 0) {
                     FxDialogs.showWarning("No caja", "Debes crear una caja");
                 } else if (cajas.size() == 1) {

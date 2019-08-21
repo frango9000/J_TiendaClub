@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.Activable;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.core.Activable;
+import tiendaclub.model.models.core.IPersistible;
 
 public class Caja extends Activable {
 
@@ -105,10 +105,8 @@ public class Caja extends Activable {
             return false;
         }
         Caja caja = (Caja) o;
-        return getId() == caja.getId() &&
-                getIdSede() == caja.getIdSede() &&
-                isActivo() == caja.isActivo() &&
-                Objects.equal(getNombre(), caja.getNombre());
+        return getId() == caja.getId() && getIdSede() == caja.getIdSede() && isActivo() == caja.isActivo()
+                && Objects.equal(getNombre(), caja.getNombre());
     }
 
     @Override
@@ -118,13 +116,7 @@ public class Caja extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("idSede", idSede)
-                .add("sede", sede.toString())
-                .add("nombre", nombre)
-                .add("activo", activo)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("idSede", idSede).add("sede", sede.toString()).add("nombre", nombre).add("activo", isActivo()).toString();
     }
 
     @Override

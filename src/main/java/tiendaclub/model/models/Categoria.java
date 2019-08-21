@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import tiendaclub.model.models.abstracts.Activable;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.core.Activable;
+import tiendaclub.model.models.core.IPersistible;
 
 public class Categoria extends Activable {
 
@@ -60,9 +60,8 @@ public class Categoria extends Activable {
             return false;
         }
         Categoria categoria = (Categoria) o;
-        return getId() == categoria.getId() &&
-                isActivo() == categoria.isActivo() &&
-                Objects.equal(getNombre(), categoria.getNombre());
+        return getId() == categoria.getId() && isActivo() == categoria.isActivo()
+                && Objects.equal(getNombre(), categoria.getNombre());
     }
 
     @Override
@@ -72,10 +71,6 @@ public class Categoria extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("nombre", nombre)
-                .add("activo", activo)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("nombre", nombre).add("activo", isActivo()).toString();
     }
 }

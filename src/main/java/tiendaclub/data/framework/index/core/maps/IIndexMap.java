@@ -1,4 +1,4 @@
-package tiendaclub.data.framework.index.maps;
+package tiendaclub.data.framework.index.core.maps;
 
 import com.google.common.collect.SetMultimap;
 import org.checkerframework.checker.nullness.qual.Nullable;

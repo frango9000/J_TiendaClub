@@ -8,7 +8,7 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.BorderPane;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.misc.Flogger;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.core.Persistible;
 import tiendaclub.view.FxDialogs;
 
 public abstract class EditorControl<T extends Persistible> extends BorderPane {

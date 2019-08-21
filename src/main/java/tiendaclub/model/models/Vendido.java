@@ -9,27 +9,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.IPersistible;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.model.models.core.Persistible;
 
 public class Vendido extends Persistible {
 
     public static final String TABLE_NAME = "vendidos";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("idVenta", "idProducto", "cantidad", "precio_unidad"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idVenta", "idProducto", "cantidad", "precio_unidad"));
 
 
     protected int idProducto;
     protected int idVenta;
     protected int cantidad;
-    private Venta venta;
     protected int precioUnidad;
+    private Venta venta;
     private Producto producto;
 
     {
         this.tableName = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
+
     public Vendido(int id, int idVenta, int idProducto, int cantidad, int precioUnidad) {
         super(id);
         setIdVenta(idVenta);
@@ -105,6 +105,11 @@ public class Vendido extends Persistible {
         return venta;
     }
 
+    public void setVenta(Venta venta) {
+        this.venta = venta;
+        this.idVenta = getVenta().getId();
+    }
+
     public int getPrecioUnidad() {
         return precioUnidad;
     }
@@ -119,11 +124,6 @@ public class Vendido extends Persistible {
 
     public Producto getProducto() {
         return producto;
-    }
-
-    public void setVenta(Venta venta) {
-        this.venta = venta;
-        this.idVenta = getVenta().getId();
     }
 
     public void setProducto(Producto producto) {
@@ -144,11 +144,9 @@ public class Vendido extends Persistible {
             return false;
         }
         Vendido vendido = (Vendido) o;
-        return getId() == vendido.getId() &&
-                getIdProducto() == vendido.getIdProducto() &&
-                getIdVenta() == vendido.getIdVenta() &&
-                getCantidad() == vendido.getCantidad() &&
-                getPrecioUnidad() == vendido.getPrecioUnidad();
+        return getId() == vendido.getId() && getIdProducto() == vendido.getIdProducto()
+                && getIdVenta() == vendido.getIdVenta() && getCantidad() == vendido.getCantidad()
+                && getPrecioUnidad() == vendido.getPrecioUnidad();
     }
 
     @Override
@@ -158,14 +156,6 @@ public class Vendido extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("idProducto", idProducto)
-                .add("producto", producto.toString())
-                .add("idVenta", idVenta)
-                .add("venta", venta.toString())
-                .add("cantidad", cantidad)
-                .add("precioUnidad", precioUnidad)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("idProducto", idProducto).add("producto", producto.toString()).add("idVenta", idVenta).add("venta", venta.toString()).add("cantidad", cantidad).add("precioUnidad", precioUnidad).toString();
     }
 }

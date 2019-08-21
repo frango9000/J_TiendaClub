@@ -9,24 +9,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.IPersistible;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.model.models.core.Persistible;
 import tiendaclub.model.utils.DateUtils;
 
 public class Venta extends Persistible {
 
     public static final String TABLE_NAME = "ventas";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("idUsuario", "idCaja", "idSocio", "fechahora"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idCaja", "idSocio", "fechahora"));
 
 
     protected int idUsuario;
-    private Usuario usuario;
     protected int idCaja;
-    private Caja caja;
     protected int idSocio;
-    private Socio socio;
     protected LocalDateTime fechahora;
+    private Usuario usuario;
+    private Caja caja;
+    private Socio socio;
 
     {
         this.tableName = TABLE_NAME;
@@ -100,17 +99,26 @@ public class Venta extends Persistible {
         return idSocio;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
     public void setIdSocio(int idSocio) {
         this.idSocio = idSocio;
         updateSocio();
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        this.idUsuario = getUsuario().getId();
+    }
+
     public LocalDateTime getFechahora() {
         return fechahora;
+    }
+
+    public void setFechahora(LocalDateTime fechahora) {
+        this.fechahora = fechahora;
     }
 
     private void updateUsuario() {
@@ -121,27 +129,17 @@ public class Venta extends Persistible {
         return caja;
     }
 
-    public void setFechahora(LocalDateTime fechahora) {
-        this.fechahora = fechahora;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-        this.idUsuario = getUsuario().getId();
+    public void setCaja(Caja caja) {
+        this.caja = caja;
+        this.idCaja = getCaja().getId();
     }
 
     private void updateCaja() {
         setCaja(DataStore.getCajas().getIndexId().getCacheValue(getIdCaja()));
     }
 
-
     public Socio getSocio() {
         return socio;
-    }
-
-    public void setCaja(Caja caja) {
-        this.caja = caja;
-        this.idCaja = getCaja().getId();
     }
 
     public void setSocio(Socio socio) {
@@ -162,11 +160,8 @@ public class Venta extends Persistible {
             return false;
         }
         Venta venta = (Venta) o;
-        return getId() == venta.getId() &&
-                getIdUsuario() == venta.getIdUsuario() &&
-                getIdCaja() == venta.getIdCaja() &&
-                getIdSocio() == venta.getIdSocio() &&
-                Objects.equal(getFechahora(), venta.getFechahora());
+        return getId() == venta.getId() && getIdUsuario() == venta.getIdUsuario() && getIdCaja() == venta.getIdCaja()
+                && getIdSocio() == venta.getIdSocio() && Objects.equal(getFechahora(), venta.getFechahora());
     }
 
     @Override

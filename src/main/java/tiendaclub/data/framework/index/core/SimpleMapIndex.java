@@ -1,14 +1,17 @@
-package tiendaclub.data.framework.index.model;
+package tiendaclub.data.framework.index.core;
 
 import com.google.common.collect.Sets;
 import java.util.HashSet;
 import java.util.Set;
-import tiendaclub.data.framework.index.maps.IndexHashMap;
-import tiendaclub.model.models.abstracts.IPersistible;
+import java.util.function.Function;
+import tiendaclub.data.framework.datasource.DataSource;
+import tiendaclub.data.framework.index.core.maps.IndexHashMap;
+import tiendaclub.model.models.core.IPersistible;
 
-public abstract class SimpleMapIndex<K, V extends IPersistible> extends AbstractIndex<K, V> {
+public class SimpleMapIndex<K, V extends IPersistible> extends AbstractIndex<K, V> {
 
-    {
+    public SimpleMapIndex(DataSource<V> dataSource, String indexColumnName, Function<V, K> keyValueFunction) {
+        super(dataSource, indexColumnName, keyValueFunction);
         this.index = new IndexHashMap<K, V>();
     }
 
@@ -20,7 +23,7 @@ public abstract class SimpleMapIndex<K, V extends IPersistible> extends Abstract
     @Override
     public Set<V> getKeyValues(K key) {
         if (!cacheContainsKey(key)) {
-            dataSource.query(INDEX_COL_NAME, key);
+            dataSource.query(indexColumnName, key);
         }
         return getCacheKeyValues(key);
     }
@@ -35,7 +38,7 @@ public abstract class SimpleMapIndex<K, V extends IPersistible> extends Abstract
                 }
             }
             if (keysToQuery.size() > 0) {
-                dataSource.querySome(INDEX_COL_NAME, keys);
+                dataSource.querySome(indexColumnName, keys);
             }
         }
         return getCacheKeyValues(keys);
@@ -44,7 +47,7 @@ public abstract class SimpleMapIndex<K, V extends IPersistible> extends Abstract
     @Override
     public V getValue(K key) {
         if (!cacheContainsKey(key)) {
-            dataSource.query(INDEX_COL_NAME, key);
+            dataSource.query(indexColumnName, key);
         }
         return getCacheValue(key);
     }

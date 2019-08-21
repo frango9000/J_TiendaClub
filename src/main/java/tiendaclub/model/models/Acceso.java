@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import tiendaclub.model.models.abstracts.IPersistible;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.model.models.core.Persistible;
 
 public class Acceso extends Persistible {
 
@@ -17,18 +17,18 @@ public class Acceso extends Persistible {
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Collections.singletonList("nivel"));
 
     private String nivel;
-//
-//    int id;
-//
-//    @Override
-//    public int getId() {
-//        return id;
-//    }
-//
-//    @Override
-//    public void setId(int id) {
-//        this.id = id;
-//    }
+    //
+    //    int id;
+    //
+    //    @Override
+    //    public int getId() {
+    //        return id;
+    //    }
+    //
+    //    @Override
+    //    public void setId(int id) {
+    //        this.id = id;
+    //    }
 
     {
         this.tableName = TABLE_NAME;
@@ -80,8 +80,7 @@ public class Acceso extends Persistible {
             return false;
         }
         Acceso acceso = (Acceso) o;
-        return id == acceso.id &&
-                Objects.equal(nivel, acceso.nivel);
+        return id == acceso.id && Objects.equal(nivel, acceso.nivel);
     }
 
     @Override
@@ -91,10 +90,7 @@ public class Acceso extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("nivel", nivel)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("nivel", nivel).toString();
     }
 
     @Override

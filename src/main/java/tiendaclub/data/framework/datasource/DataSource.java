@@ -12,11 +12,12 @@ import java.util.Iterator;
 import java.util.Set;
 import tiendaclub.data.DataFactory;
 import tiendaclub.data.SessionDB;
-import tiendaclub.data.framework.index.model.AbstractIndex;
+import tiendaclub.data.framework.index.core.AbstractIndex;
 import tiendaclub.misc.Flogger;
 import tiendaclub.misc.Globals;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.core.IPersistible;
 
+@SuppressWarnings("unchecked") //TODO verify casting
 public class DataSource<V extends IPersistible> implements Globals {
 
     protected String ID_COL_NAME = "id";
@@ -71,8 +72,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         V objecT = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, unique.toString());
-            try (Statement ps = SessionDB.getConn().createStatement();
-                    ResultSet rs = ps.executeQuery(sql)) {
+            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
                     objecT = (V) DataFactory.buildObject(rs);
                     if (indexOn) {
@@ -92,10 +92,8 @@ public class DataSource<V extends IPersistible> implements Globals {
     public V query(String col1Name, String uni, String col2Name, String que) {
         V objecT = null;
         if (SessionDB.connect()) {
-            String sql = String
-                    .format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", TABLE_NAME, col1Name, uni, col2Name, que);
-            try (Statement ps = SessionDB.getConn().createStatement();
-                    ResultSet rs = ps.executeQuery(sql)) {
+            String sql = String.format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", TABLE_NAME, col1Name, uni, col2Name, que);
+            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
                     objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
@@ -123,8 +121,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     sql.append(" )");
                 }
             }
-            try (Statement ps = SessionDB.getConn().createStatement();
-                    ResultSet rs = ps.executeQuery(sql.toString())) {
+            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
                     V objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
@@ -153,8 +150,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     sql.append(" )");
                 }
             }
-            try (Statement ps = SessionDB.getConn().createStatement();
-                    ResultSet rs = ps.executeQuery(sql.toString())) {
+            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
                     V objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
@@ -174,8 +170,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         HashSet<V> returnSet = Sets.newHashSet();
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_NAME, colName, search.toString());
-            try (Statement ps = SessionDB.getConn().createStatement();
-                    ResultSet rs = ps.executeQuery(sql)) {
+            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 while (rs.next()) {
                     V objecT = (V) DataFactory.buildObject(rs);
                     index(objecT);
@@ -195,8 +190,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         Set<V> returnSet = null;
         if (SessionDB.connect()) {
             String sql = String.format("SELECT * FROM %s", TABLE_NAME);
-            try (Statement ps = SessionDB.getConn().createStatement();
-                    ResultSet rs = ps.executeQuery(sql)) {
+            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 returnSet = Sets.newHashSetWithExpectedSize(rs.getFetchSize());
                 while (rs.next()) {
                     V objecT = (V) DataFactory.buildObject(rs);
@@ -219,8 +213,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         if (objectV.getId() == 0) {
             if (SessionDB.connect()) {
                 String sql = objectV.getInsertString();
-                try (PreparedStatement pstmt = SessionDB.getConn()
-                        .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     objectV.buildStatement(pstmt);
                     rows = pstmt.executeUpdate();
 

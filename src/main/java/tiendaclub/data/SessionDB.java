@@ -95,8 +95,7 @@ public final class SessionDB implements Globals {
         SessionDB.jdbcPassword = jdbcPassword;
     }
 
-    public static void setValues(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser,
-            String jdbcPassword) {
+    public static void setValues(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser, String jdbcPassword) {
         setJdbcIP(jdbcIP);
         setJdbcPort(jdbcPort);
         setJdbcCatalog(jdbcCatalog);
@@ -110,13 +109,12 @@ public final class SessionDB implements Globals {
      *
      * @return true si la conexion fue establecida correctamente
      */
-    public static boolean connect(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser,
-            String jdbcPassword) {
+    public static boolean connect(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser, String jdbcPassword) {
         boolean success = false;
         try {
             if (conn == null || conn.isClosed()) {
-                conn = DriverManager.getConnection(jdbcDriver + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog, jdbcUser,
-                        jdbcPassword);
+                conn = DriverManager.getConnection(
+                        jdbcDriver + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog, jdbcUser, jdbcPassword);
                 if (SQL_CONN) {
                     System.out.println(
                             "Connection to " + conn.getMetaData().getDriverName() + " has been established. Catalog: "
@@ -344,22 +342,10 @@ public final class SessionDB implements Globals {
         ArrayList<String> tables = listTables(catalog);
         StringBuilder tablesString = new StringBuilder();
         tables.forEach(cnsmr -> tablesString.append(cnsmr).append("\n"));
-        String model = "accesos\n" +
-                "cajas\n" +
-                "categorias\n" +
-                "comprados\n" +
-                "compras\n" +
-                "monedero\n" +
-                "productos\n" +
-                "proveedores\n" +
-                "sedes\n" +
-                "socios\n" +
-                "stock\n" +
-                "transferencias\n" +
-                "usuarios\n" +
-                "vendidos\n" +
-                "ventas\n" +
-                "zs\n";
+        String model =
+                "accesos\n" + "cajas\n" + "categorias\n" + "comprados\n" + "compras\n" + "monedero\n" + "productos\n"
+                        + "proveedores\n" + "sedes\n" + "socios\n" + "stock\n" + "transferencias\n" + "usuarios\n"
+                        + "vendidos\n" + "ventas\n" + "zs\n";
         System.out.println(tablesString.toString());
         System.out.println("Valid Schema: " + catalog + "->" + model.matches(tablesString.toString()));
         return model.matches(tablesString.toString());

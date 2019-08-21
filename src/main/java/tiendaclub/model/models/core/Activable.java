@@ -1,4 +1,4 @@
-package tiendaclub.model.models.abstracts;
+package tiendaclub.model.models.core;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

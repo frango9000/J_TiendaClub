@@ -8,22 +8,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import tiendaclub.model.models.abstracts.Activable;
-import tiendaclub.model.models.abstracts.IPersistible;
+import tiendaclub.model.models.core.Activable;
+import tiendaclub.model.models.core.IPersistible;
 
 public class Proveedor extends Activable {
 
     public static final String TABLE_NAME = "proveedores";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion", "activo"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion", "activo"));
 
-//    int id;
-////    public int getId() {
-////        return id;
-////    }
-////    public void setId(int id) {
-////        this.id = id;
-////    }
+    //    int id;
+    ////    public int getId() {
+    ////        return id;
+    ////    }
+    ////    public void setId(int id) {
+    ////        this.id = id;
+    ////    }
 
     protected String nif;
     protected String nombre;
@@ -32,15 +31,15 @@ public class Proveedor extends Activable {
     protected String direccion;
     protected String descripcion;
 
-//    boolean activo;
-//    @Override
-//    public boolean isActivo() {
-//        return activo;
-//    }
-//    @Override
-//    public void setActivo(boolean activo) {
-//        this.activo = activo;
-//    }
+    //    boolean activo;
+    //    @Override
+    //    public boolean isActivo() {
+    //        return activo;
+    //    }
+    //    @Override
+    //    public void setActivo(boolean activo) {
+    //        this.activo = activo;
+    //    }
 
     {
         this.tableName = TABLE_NAME;
@@ -151,14 +150,12 @@ public class Proveedor extends Activable {
             return false;
         }
         Proveedor proveedor = (Proveedor) o;
-        return getId() == proveedor.getId() &&
-                isActivo() == proveedor.isActivo() &&
-                Objects.equal(getNif(), proveedor.getNif()) &&
-                Objects.equal(getNombre(), proveedor.getNombre()) &&
-                Objects.equal(getTelefono(), proveedor.getTelefono()) &&
-                Objects.equal(getEmail(), proveedor.getEmail()) &&
-                Objects.equal(getDireccion(), proveedor.getDireccion()) &&
-                Objects.equal(getDescripcion(), proveedor.getDescripcion());
+        return getId() == proveedor.getId() && isActivo() == proveedor.isActivo()
+                && Objects.equal(getNif(), proveedor.getNif()) && Objects.equal(getNombre(), proveedor.getNombre())
+                && Objects.equal(getTelefono(), proveedor.getTelefono())
+                && Objects.equal(getEmail(), proveedor.getEmail())
+                && Objects.equal(getDireccion(), proveedor.getDireccion())
+                && Objects.equal(getDescripcion(), proveedor.getDescripcion());
     }
 
     @Override
@@ -168,16 +165,7 @@ public class Proveedor extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("nif", nif)
-                .add("nombre", nombre)
-                .add("telefono", telefono)
-                .add("email", email)
-                .add("direccion", direccion)
-                .add("descripcion", descripcion)
-                .add("activo", activo)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("nif", nif).add("nombre", nombre).add("telefono", telefono).add("email", email).add("direccion", direccion).add("descripcion", descripcion).add("activo", isActivo()).toString();
     }
 
     @Override

@@ -10,22 +10,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.model.models.abstracts.IPersistible;
-import tiendaclub.model.models.abstracts.Persistible;
+import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.model.models.core.Persistible;
 import tiendaclub.model.utils.DateUtils;
 
 public class Compra extends Persistible {
 
     public static final String TABLE_NAME = "compras";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(
-            Arrays.asList("idUsuario", "idSede", "idProveedor", "fechahora"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idSede", "idProveedor", "fechahora"));
 
 
     protected int idUsuario;
-    private Usuario usuario;
     protected int idSede;
     protected int idProveedor;
     protected LocalDateTime fechahora;
+    private Usuario usuario;
     private Proveedor proveedor;
     private Sede sede;
 
@@ -110,8 +109,17 @@ public class Compra extends Persistible {
         return usuario;
     }
 
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        this.idUsuario = getUsuario().getId();
+    }
+
     public LocalDateTime getFechahora() {
         return fechahora;
+    }
+
+    public void setFechahora(LocalDateTime fechahora) {
+        this.fechahora = fechahora;
     }
 
     private void updateUsuario() {
@@ -122,27 +130,17 @@ public class Compra extends Persistible {
         return proveedor;
     }
 
-    public void setFechahora(LocalDateTime fechahora) {
-        this.fechahora = fechahora;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-        this.idUsuario = getUsuario().getId();
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+        this.idProveedor = getProveedor().getId();
     }
 
     private void updateProveedor() {
         setProveedor(DataStore.getProveedores().getIndexId().getCacheValue(getIdProveedor()));
     }
 
-
     public Sede getSede() {
         return sede;
-    }
-
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-        this.idProveedor = getProveedor().getId();
     }
 
     public void setSede(Sede sede) {
@@ -163,11 +161,8 @@ public class Compra extends Persistible {
             return false;
         }
         Compra compra = (Compra) o;
-        return getId() == compra.getId() &&
-                getIdUsuario() == compra.getIdUsuario() &&
-                getIdSede() == compra.getIdSede() &&
-                getIdProveedor() == compra.getIdProveedor() &&
-                Objects.equal(getFechahora(), compra.getFechahora());
+        return getId() == compra.getId() && getIdUsuario() == compra.getIdUsuario() && getIdSede() == compra.getIdSede()
+                && getIdProveedor() == compra.getIdProveedor() && Objects.equal(getFechahora(), compra.getFechahora());
     }
 
     @Override
@@ -177,15 +172,6 @@ public class Compra extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("idUsuario", idUsuario)
-                .add("usuario", usuario.toString())
-                .add("idSede", idSede)
-                .add("sede", sede.toString())
-                .add("idProveedor", idProveedor)
-                .add("proveedor", proveedor.toString())
-                .add("fechahora", fechahora)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("idUsuario", idUsuario).add("usuario", usuario.toString()).add("idSede", idSede).add("sede", sede.toString()).add("idProveedor", idProveedor).add("proveedor", proveedor.toString()).add("fechahora", fechahora).toString();
     }
 }

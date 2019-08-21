@@ -1,10 +1,10 @@
-package tiendaclub.model.models.abstracts;
+package tiendaclub.model.models.core;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import tiendaclub.data.framework.dao.PersistibleDao;
+import tiendaclub.data.framework.dao.core.PersistibleDao;
 
 public interface IPersistible {
 

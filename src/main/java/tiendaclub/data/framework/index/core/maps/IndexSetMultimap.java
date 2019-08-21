@@ -1,4 +1,4 @@
-package tiendaclub.data.framework.index.maps;
+package tiendaclub.data.framework.index.core.maps;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;

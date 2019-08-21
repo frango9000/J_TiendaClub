@@ -1,4 +1,4 @@
-package tiendaclub.model.models.abstracts;
+package tiendaclub.model.models.core;
 
 public abstract class Identifiable {
 

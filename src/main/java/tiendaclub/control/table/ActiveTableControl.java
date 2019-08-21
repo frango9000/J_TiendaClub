@@ -6,9 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import tiendaclub.data.framework.dao.IndexIdActiveDao;
+import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
 import tiendaclub.model.models.Usuario;
-import tiendaclub.model.models.abstracts.Activable;
+import tiendaclub.model.models.core.Activable;
 import tiendaclub.view.FxDialogs;
 
 public abstract class ActiveTableControl<T extends Activable> extends TableControl<T> {
