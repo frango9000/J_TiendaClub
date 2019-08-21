@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
-import tiendaclub.data.framework.datasource.DataSource;
+import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.maps.IndexHashMap;
 import tiendaclub.model.models.core.IPersistible;
 

@@ -1,7 +1,7 @@
 package tiendaclub.data.framework.index;
 
 import java.util.Set;
-import tiendaclub.data.framework.datasource.DataSource;
+import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.SetMultiMapIndex;
 import tiendaclub.data.framework.index.core.maps.IndexSetMultimap;
 import tiendaclub.model.models.core.Activable;

@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import tiendaclub.data.framework.datasource.DataSource;
+import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.maps.IIndexMap;
 import tiendaclub.model.models.core.IPersistible;
 

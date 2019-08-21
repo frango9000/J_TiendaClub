@@ -41,7 +41,7 @@ public class LoginPaneControl extends BorderPane {
 
     @FXML
     private void loginOnAct(ActionEvent actionEvent) {
-        Usuario user = DataStore.getUsuarios().getUsernameIndex().getCacheValue(usernameTextField.getText().trim());
+        Usuario user = DataStore.getUsuarios().getUsernameIndex().getValue(usernameTextField.getText().trim());
         Flogger.atInfo().log(user.toString());
         if (user == null) {
             alertMsg.setStyle("-fx-text-fill: red");

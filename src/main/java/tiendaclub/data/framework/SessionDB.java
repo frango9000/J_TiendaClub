@@ -1,4 +1,4 @@
-package tiendaclub.data;
+package tiendaclub.data.framework;
 
 import java.io.BufferedInputStream;
 import java.io.File;

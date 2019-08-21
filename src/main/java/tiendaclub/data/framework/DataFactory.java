@@ -1,4 +1,4 @@
-package tiendaclub.data;
+package tiendaclub.data.framework;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

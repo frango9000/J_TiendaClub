@@ -1,6 +1,6 @@
 package tiendaclub.data.framework.index;
 
-import tiendaclub.data.framework.datasource.DataSource;
+import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.SimpleMapIndex;
 import tiendaclub.model.models.core.IPersistible;
 

@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 import java.util.function.Function;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import tiendaclub.data.framework.datasource.DataSource;
+import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.SetMultiMapIndex;
 import tiendaclub.model.models.core.IPersistible;
 

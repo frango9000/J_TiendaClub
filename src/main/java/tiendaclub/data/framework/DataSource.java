@@ -1,4 +1,4 @@
-package tiendaclub.data.framework.datasource;
+package tiendaclub.data.framework;
 
 import com.google.common.collect.Sets;
 import java.sql.PreparedStatement;
@@ -10,8 +10,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import tiendaclub.data.DataFactory;
-import tiendaclub.data.SessionDB;
 import tiendaclub.data.framework.index.core.AbstractIndex;
 import tiendaclub.misc.Flogger;
 import tiendaclub.misc.Globals;

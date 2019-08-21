@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 import tiendaclub.control.MainPaneControl;
 import tiendaclub.control.PropsLoader;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.SessionDB;
 import tiendaclub.data.SessionStore;
+import tiendaclub.data.framework.SessionDB;
 import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Sede;
 import tiendaclub.view.FXMLStage;
@@ -48,7 +48,7 @@ public class MainFX extends Application {
         Pane root = MainPaneControl.loadFXML();
         primaryStage.setScene(new Scene(root));
 
-        if (!PropsLoader.isQuickstart() || !SessionDB.isConnValid()) {
+        if (!PropsLoader.isQuickstart() || !SessionDB.isConnValid() || !SessionDB.isCatalogValid()) {
             Stage configStage = new FXMLStage("/fxml/ConfigPane.fxml", "Config Stage");
             configStage.setOnCloseRequest(event -> System.exit(0));
             configStage.showAndWait();

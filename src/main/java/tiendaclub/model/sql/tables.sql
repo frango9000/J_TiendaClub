@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `usuarios`
     `idAcceso`    TINYINT(3) UNSIGNED NOT NULL,
     `activo`      TINYINT(1)          NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
+    UNIQUE INDEX `username` (`username`),
     INDEX `idAcceso` (`idAcceso`),
     CONSTRAINT `idAcceso` FOREIGN KEY (`idAcceso`) REFERENCES `accesos` (`id`)
 );
@@ -58,7 +59,8 @@ CREATE TABLE IF NOT EXISTS `sedes`
     `telefono`  VARCHAR(50)         NULL     DEFAULT NULL,
     `direccion` VARCHAR(100)        NULL     DEFAULT NULL,
     `activo`    TINYINT(1)          NOT NULL DEFAULT 0,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `nombre` (`nombre`)
 );
 
 CREATE TABLE IF NOT EXISTS `cajas`
@@ -88,7 +90,8 @@ CREATE TABLE IF NOT EXISTS `categorias`
     `id`     TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(20)         NOT NULL,
     `activo` TINYINT(1)          NOT NULL DEFAULT 0,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `nombre` (`nombre`)
 );
 
 CREATE TABLE IF NOT EXISTS `productos`

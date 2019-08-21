@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import tiendaclub.data.SessionDB;
+import tiendaclub.data.framework.SessionDB;
 import tiendaclub.misc.Globals;
 import tiendaclub.view.FxDialogs;
 

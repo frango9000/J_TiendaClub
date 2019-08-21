@@ -1,7 +1,15 @@
 package tiendaclub.data;
 
+import tiendaclub.data.framework.SessionDB;
 import tiendaclub.data.framework.dao.CajaDao;
+import tiendaclub.data.framework.dao.CierreZDao;
+import tiendaclub.data.framework.dao.CompraDao;
+import tiendaclub.data.framework.dao.CompradoDao;
+import tiendaclub.data.framework.dao.ProductoDao;
+import tiendaclub.data.framework.dao.TransferenciaDao;
 import tiendaclub.data.framework.dao.UsuarioDao;
+import tiendaclub.data.framework.dao.VendidoDao;
+import tiendaclub.data.framework.dao.VentaDao;
 import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
 import tiendaclub.data.framework.dao.core.IndexIdDao;
 import tiendaclub.model.models.Acceso;
@@ -26,16 +34,16 @@ public class DataStore {
     private static IndexIdActiveDao<Sede> sedes = new IndexIdActiveDao<>(Sede.TABLE_NAME);
     private static CajaDao cajas = new CajaDao();
     private static IndexIdActiveDao<Categoria> categorias = new IndexIdActiveDao<>(Categoria.TABLE_NAME);
-    private static IndexIdDao<CierreZ> cierreZs = new IndexIdDao<>(CierreZ.TABLE_NAME);
-    private static IndexIdDao<Compra> compras = new IndexIdDao<>(Compra.TABLE_NAME);
-    private static IndexIdDao<Comprado> comprados = new IndexIdDao<>(Comprado.TABLE_NAME);
-    private static IndexIdActiveDao<Producto> productos = new IndexIdActiveDao<>(Producto.TABLE_NAME);
+    private static CierreZDao cierreZs = new CierreZDao();
+    private static CompraDao compras = new CompraDao();
+    private static CompradoDao comprados = new CompradoDao();
+    private static ProductoDao productos = new ProductoDao();
     private static IndexIdActiveDao<Proveedor> proveedores = new IndexIdActiveDao<>(Proveedor.TABLE_NAME);
     private static IndexIdActiveDao<Socio> socios = new IndexIdActiveDao<>(Socio.TABLE_NAME);
-    private static IndexIdDao<Transferencia> transferencias = new IndexIdDao<>(Transferencia.TABLE_NAME);
+    private static TransferenciaDao transferencias = new TransferenciaDao();
     private static UsuarioDao usuarios = new UsuarioDao();
-    private static IndexIdDao<Vendido> vendidos = new IndexIdDao<>(Vendido.TABLE_NAME);
-    private static IndexIdDao<Venta> ventas = new IndexIdDao<>(Venta.TABLE_NAME);
+    private static VendidoDao vendidos = new VendidoDao();
+    private static VentaDao ventas = new VentaDao();
 
     public static IndexIdDao<Acceso> getAccesos() {
         return accesos;
