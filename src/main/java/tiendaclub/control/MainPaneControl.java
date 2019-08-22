@@ -8,8 +8,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.StatusBar;
-import tiendaclub.control.table.SedesPaneControl;
-import tiendaclub.control.table.UsuariosPaneControl;
+import tiendaclub.control.table.SedesTableControl;
+import tiendaclub.control.table.UsuariosTableControl;
 
 public class MainPaneControl {
 
@@ -46,14 +46,15 @@ public class MainPaneControl {
 
     @FXML
     private void fxMenuUsuariosAction(ActionEvent actionEvent) throws IOException {
-        Pane root = UsuariosPaneControl.getPane();
-        mainPane.setCenter(root);
+        //        Pane root = UsuariosPaneControl.getPane();
+        UsuariosTableControl u = new UsuariosTableControl();
+        mainPane.setCenter(u);
     }
 
     @FXML
     private void fxMenuSedesAction(ActionEvent actionEvent) throws IOException {
-        Pane root = SedesPaneControl.getPane();
-        mainPane.setCenter(root);
+        SedesTableControl u = new SedesTableControl();
+        mainPane.setCenter(u);
     }
 
     @FXML

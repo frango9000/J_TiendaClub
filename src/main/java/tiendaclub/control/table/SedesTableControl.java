@@ -9,9 +9,8 @@ import javafx.scene.layout.Pane;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
 import tiendaclub.model.models.Sede;
-import tiendaclub.view.FXMLStage;
 
-public class SedesPaneControl extends ActiveTableControl<Sede> {
+public class SedesTableControl extends ActiveTableControl<Sede> {
 
     @FXML
     private TableColumn<Sede, String> fxColumnSede;
@@ -20,9 +19,6 @@ public class SedesPaneControl extends ActiveTableControl<Sede> {
     @FXML
     private TableColumn<Sede, String> fxColumnDireccion;
 
-    public static Pane getPane() {
-        return FXMLStage.getPane("/fxml/tables/SedesPane.fxml");
-    }
 
     @FXML
     void initialize() {

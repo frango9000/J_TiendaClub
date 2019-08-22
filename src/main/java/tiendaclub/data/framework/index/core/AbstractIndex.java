@@ -47,7 +47,9 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
     }
 
     @Override
-    public abstract void deindex(int idValue);
+    public void deindex(int idValue) {
+        index.entries().removeIf(kvEntry -> kvEntry.getValue().getId() == idValue);
+    }
 
     @Override
     public Set<K> getKeys() {

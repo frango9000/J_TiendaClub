@@ -16,11 +16,6 @@ public class SimpleMapIndex<K, V extends IPersistible> extends AbstractIndex<K, 
     }
 
     @Override
-    public void deindex(int idValue) {
-        index.entries().removeIf(kvEntry -> kvEntry.getValue().getId() == idValue);
-    }
-
-    @Override
     public Set<V> getKeyValues(K key) {
         if (!cacheContainsKey(key)) {
             dataSource.query(indexColumnName, key);

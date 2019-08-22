@@ -4,20 +4,23 @@ import java.io.IOException;
 import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
-import tiendaclub.model.models.Usuario;
+import tiendaclub.misc.Flogger;
 import tiendaclub.model.models.core.Activable;
 import tiendaclub.view.FxDialogs;
 
 public abstract class ActiveTableControl<T extends Activable> extends TableControl<T> {
 
     protected boolean showInactive = false;
-    @FXML
-    protected Button fxBtnShowHide;
-    @FXML
-    protected TableColumn<Usuario, Boolean> fxColumnIsActive;
+
+    @Override
+    void initialize() {
+        fxColumnId.setCellValueFactory(new PropertyValueFactory<T, Integer>("id"));
+        fxColumnIsActive.setCellValueFactory(f -> f.getValue().activeProperty());
+        fxColumnIsActive.setCellFactory(tc -> new CheckBoxTableCell<>());
+    }
 
     @FXML
     protected void fxBtnShowHideAction(ActionEvent actionEvent) {
@@ -30,13 +33,17 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     }
 
     @FXML
-    protected void fxBtnDisableAction(ActionEvent actionEvent) throws CloneNotSupportedException {
+    protected void fxBtnDisableAction(ActionEvent actionEvent) {
         T selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             boolean isActive = selected.isActivo();
             if (FxDialogs.showConfirmBoolean("Cuidado",
                     "Deseas " + (isActive ? "des" : "") + "activar el id " + selected.getId() + " ?")) {
-                selected.setBackup();
+                try {
+                    selected.setBackup();
+                } catch (CloneNotSupportedException e) {
+                    Flogger.atSevere().withCause(e).log("Clone Fail: " + selected.toString());
+                }
                 selected.toggleActivo();
                 boolean success = selected.updateOnDb() == 1;
                 FxDialogs.showInfo("",
@@ -77,6 +84,7 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
         }
     }
 
+    @FXML
     @Override
     protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
         super.fxBtnEditAction(actionEvent);

@@ -71,8 +71,8 @@ public class UsuarioEditorPaneControl extends EditorControl<Usuario> {
 
     @Override
     protected Usuario buildNew() {
-        String pass = askPass();
         editee = new Usuario(getTextOrNull(fxUsername), fxCbxAcceso.getSelectionModel().getSelectedItem());
+        editee.setPass(askPass());
         updateEditee();
         return editee;
     }

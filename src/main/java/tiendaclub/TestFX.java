@@ -1,19 +1,24 @@
 package tiendaclub;
 
-public class TestFX {
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import tiendaclub.control.PropsLoader;
+import tiendaclub.control.table.UsuariosTableControl;
+import tiendaclub.data.DataStore;
 
-    public static void main(String[] args) {
+public class TestFX extends Application {
 
-        //        PropsLoader.loadProps();
-        //
-        //        DataStore.firstQuery();
-        //        DataStore.getUsuarios().getIndexAcceso().getValue(1);
-        //        DataStore.getUsuarios().getIndexAcceso().getValue(3);
-        //        DataStore.getUsuarios();
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        PropsLoader.loadProps();
 
-        System.out.println("java version: " + System.getProperty("java.version"));
-        System.out.println("javafx.version: " + System.getProperty("javafx.version"));
+        DataStore.firstQuery();
 
+        //        GenericActivableTablePane<Caja> genericTablePane =  new GenericActivableTablePane<>();
+        UsuariosTableControl pane = new UsuariosTableControl();
+        primaryStage.setScene(new Scene(pane));
+        primaryStage.show();
 
     }
 }
