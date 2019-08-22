@@ -84,6 +84,7 @@ public class Usuario extends Activable {
             setDireccion(newValues.getDireccion());
             setDescripcion(newValues.getDescripcion());
             setAcceso(newValues.getAcceso());
+            setActivo(newValues.isActivo());
             return true;
         }
         return false;

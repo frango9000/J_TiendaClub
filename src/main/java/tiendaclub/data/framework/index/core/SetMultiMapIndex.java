@@ -12,7 +12,6 @@ public abstract class SetMultiMapIndex<K, V extends IPersistible> extends Abstra
         this.index = new IndexSetMultimap<K, V>();
     }
 
-
     @Override
     public void deindex(int idValue) {
         index.keySet().forEach(key -> index.get(key).forEach(value -> {
@@ -21,4 +20,5 @@ public abstract class SetMultiMapIndex<K, V extends IPersistible> extends Abstra
             }
         }));
     }
+
 }

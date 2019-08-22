@@ -2,13 +2,13 @@ package tiendaclub.data.framework.dao.core;
 
 import java.util.ArrayList;
 import tiendaclub.data.framework.DataSource;
-import tiendaclub.data.framework.index.core.AbstractIndex;
+import tiendaclub.data.framework.index.core.IIndex;
 import tiendaclub.misc.Globals;
 import tiendaclub.model.models.core.IPersistible;
 
 public class PersistibleDao<V extends IPersistible> implements Globals {
 
-    protected ArrayList<AbstractIndex<?, V>> indexes = new ArrayList<>();
+    protected ArrayList<IIndex<?, V>> indexes = new ArrayList<>();
 
     DataSource<V> dataSource;
 
@@ -20,7 +20,7 @@ public class PersistibleDao<V extends IPersistible> implements Globals {
         return dataSource;
     }
 
-    public ArrayList<AbstractIndex<?, V>> getIndexes() {
+    public ArrayList<IIndex<?, V>> getIndexes() {
         return indexes;
     }
 }

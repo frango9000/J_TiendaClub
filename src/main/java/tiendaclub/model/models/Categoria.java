@@ -40,6 +40,12 @@ public class Categoria extends Activable {
 
     @Override
     public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
+        if (getId() == objectV.getId() && !this.equals(objectV)) {
+            Categoria newValues = (Categoria) objectV;
+            setNombre(newValues.getNombre());
+            setActivo(newValues.isActivo());
+            return true;
+        }
         return false;
     }
 

@@ -10,7 +10,6 @@ import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
-import tiendaclub.misc.Flogger;
 import tiendaclub.model.models.Usuario;
 
 public class LoginPaneControl extends BorderPane {
@@ -42,7 +41,6 @@ public class LoginPaneControl extends BorderPane {
     @FXML
     private void loginOnAct(ActionEvent actionEvent) {
         Usuario user = DataStore.getUsuarios().getUsernameIndex().getValue(usernameTextField.getText().trim());
-        Flogger.atInfo().log(user.toString());
         if (user == null) {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("User not found");

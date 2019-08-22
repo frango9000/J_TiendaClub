@@ -34,27 +34,30 @@ public class IndexHashMap<K, V> implements IIndexMap<K, V> {
 
     @Override
     public boolean containsKey(@Nullable Object key) {
-        return key == null || map.containsKey(key);
+        return key != null && map.containsKey(key);
     }
 
     @Override
     public boolean containsValue(@Nullable Object value) {
-        return value == null || map.containsValue(value);
+        return value != null && map.containsValue(value);
     }
 
+    @SuppressWarnings("unchecked")//TODO check casting and contains verification
     @Override
     public boolean containsEntry(@Nullable Object key, @Nullable Object value) {
-        return key == null || value == null || map.entrySet().contains(new AbstractMap.SimpleEntry<>(key, value));
+        return key != null && value != null
+                && map.entrySet().contains(new AbstractMap.SimpleEntry<K, V>((K) key, (V) value));
     }
 
     @Override
     public boolean put(@Nullable K key, @Nullable V value) {
-        return key == null || value == null || map.putIfAbsent(key, value) == null;
+        return key != null && value != null && map.putIfAbsent(key, value) == null;
     }
 
+    @SuppressWarnings("unchecked")//TODO check casting
     @Override
     public boolean remove(@Nullable Object key, @Nullable Object value) {
-        return key == null || value == null || map.remove(key, value);
+        return key != null && value != null && map.remove(key, value);
     }
 
     @Override

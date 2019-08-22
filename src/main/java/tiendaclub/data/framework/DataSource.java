@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import tiendaclub.data.framework.index.core.AbstractIndex;
+import tiendaclub.data.framework.index.core.IIndex;
 import tiendaclub.misc.Flogger;
 import tiendaclub.misc.Globals;
 import tiendaclub.model.models.core.IPersistible;
@@ -21,9 +21,9 @@ public class DataSource<V extends IPersistible> implements Globals {
     protected String ID_COL_NAME = "id";
     protected String TABLE_NAME;
 
-    protected ArrayList<AbstractIndex<?, V>> indexes;
+    protected ArrayList<IIndex<?, V>> indexes;
 
-    public DataSource(String TABLE_NAME, ArrayList<AbstractIndex<?, V>> indexes) {
+    public DataSource(String TABLE_NAME, ArrayList<IIndex<?, V>> indexes) {
         this.TABLE_NAME = TABLE_NAME;
         this.indexes = indexes;
     }
@@ -38,7 +38,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         this.ID_COL_NAME = ID_COL_NAME;
     }
 
-    public ArrayList<AbstractIndex<?, V>> getIndexes() {
+    public ArrayList<IIndex<?, V>> getIndexes() {
         return indexes;
     }
 
@@ -108,60 +108,118 @@ public class DataSource<V extends IPersistible> implements Globals {
 
     public Set<V> querySome(Set<Integer> ids) {
         HashSet<V> returnSet = Sets.newHashSetWithExpectedSize(ids.size());
-        if (SessionDB.connect() && ids.size() > 0) {
-            StringBuilder sql = new StringBuilder("SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
-            Iterator<Integer> iterator = ids.iterator();
-            while (iterator.hasNext()) {
-                sql.append(iterator.next());
-                if (iterator.hasNext()) {
-                    sql.append(", ");
-                } else {
-                    sql.append(" )");
+        if (ids.size() > 0)
+            if (SessionDB.connect()) {
+                StringBuilder sql = new StringBuilder(
+                        "SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
+                Iterator<Integer> iterator = ids.iterator();
+                while (iterator.hasNext()) {
+                    sql.append(iterator.next());
+                    if (iterator.hasNext()) {
+                        sql.append(", ");
+                    } else {
+                        sql.append(" )");
+                    }
+                }
+                try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                    while (rs.next()) {
+                        V objecT = (V) DataFactory.buildObject(rs);
+                        index(objecT);
+                        returnSet.add(objecT);
+                    }
+                    printSql(sql.toString());
+                } catch (SQLException ex) {
+                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                } finally {
+                    SessionDB.close();
                 }
             }
-            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
-                while (rs.next()) {
-                    V objecT = (V) DataFactory.buildObject(rs);
-                    index(objecT);
-                    returnSet.add(objecT);
-                }
-                printSql(sql.toString());
-            } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
-            } finally {
-                SessionDB.close();
-            }
-        }
         return returnSet;
     }
 
     public Set<V> querySome(String colName, Collection search) {
         HashSet<V> returnSet = Sets.newHashSetWithExpectedSize(search.size());
-        if (SessionDB.connect() && search.size() > 0) {
-            StringBuilder sql = new StringBuilder("SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
-            Iterator iterator = search.iterator();
-            while (iterator.hasNext()) {
-                sql.append(iterator.next().toString());
-                if (iterator.hasNext()) {
-                    sql.append(", ");
-                } else {
-                    sql.append(" )");
+        if (search.size() > 0)
+            if (SessionDB.connect()) {
+                StringBuilder sql = new StringBuilder("SELECT * FROM " + TABLE_NAME + " WHERE " + colName + " IN( ");
+                Iterator iterator = search.iterator();
+                while (iterator.hasNext()) {
+                    sql.append(iterator.next().toString());
+                    if (iterator.hasNext()) {
+                        sql.append(", ");
+                    } else {
+                        sql.append(" )");
+                    }
+                }
+                try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                    while (rs.next()) {
+                        V objecT = (V) DataFactory.buildObject(rs);
+                        index(objecT);
+                        returnSet.add(objecT);
+                    }
+                    printSql(sql.toString());
+                } catch (SQLException ex) {
+                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                } finally {
+                    SessionDB.close();
                 }
             }
-            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
-                while (rs.next()) {
-                    V objecT = (V) DataFactory.buildObject(rs);
-                    index(objecT);
-                    returnSet.add(objecT);
-                }
-                printSql(sql.toString());
-            } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
-            } finally {
-                SessionDB.close();
-            }
-        }
         return returnSet;
+    }
+
+    public Set<V> queryLike(String colName, String string, boolean like) {
+        HashSet<V> returnSet = Sets.newHashSet();
+        if (string != null && string.length() > 0)
+            if (SessionDB.connect()) {
+                StringBuilder sql = new StringBuilder(
+                        "SELECT * FROM " + TABLE_NAME + " WHERE " + colName + (like ? " " : " NOT ") + "LIKE '" + string
+                                + "'");
+                try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                    while (rs.next()) {
+                        V objecT = (V) DataFactory.buildObject(rs);
+                        index(objecT);
+                        returnSet.add(objecT);
+                    }
+                    printSql(sql.toString());
+                } catch (SQLException ex) {
+                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                } finally {
+                    SessionDB.close();
+                }
+            }
+        return returnSet;
+    }
+
+    public Set<V> queryLike(String colName, String string) {
+        return queryLike(colName, string, true);
+    }
+
+
+    public Set<V> queryBetween(String colName, String start, String end, boolean in) {
+        HashSet<V> returnSet = Sets.newHashSet();
+        if (start != null && start.length() > 0)
+            if (SessionDB.connect()) {
+                StringBuilder sql = new StringBuilder(
+                        "SELECT * FROM " + TABLE_NAME + " WHERE " + colName + (in ? " " : " NOT ") + "BETWEEN '" + start
+                                + "' AND '" + end + "'");
+                try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                    while (rs.next()) {
+                        V objecT = (V) DataFactory.buildObject(rs);
+                        index(objecT);
+                        returnSet.add(objecT);
+                    }
+                    printSql(sql.toString());
+                } catch (SQLException ex) {
+                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                } finally {
+                    SessionDB.close();
+                }
+            }
+        return returnSet;
+    }
+
+    public Set<V> queryBetween(String colName, String start, String end) {
+        return queryBetween(colName, start, end, true);
     }
 
     public Set<V> querySome(String colName, Object search) {
@@ -234,35 +292,36 @@ public class DataSource<V extends IPersistible> implements Globals {
 
     public int update(V objectV) {
         int rows = 0;
-        if (SessionDB.connect() && (!Globals.SAFE_UPDATE || objectV.getBackup() != null)) {
-            String sql = objectV.getUpdateString();
-            try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql)) {
-                objectV.buildStatement(pstmt);
-                rows = pstmt.executeUpdate();
-                if (rows > 1) {
-                    if (objectV.getBackup() != null) {
-                        deindex((V) objectV.getBackup());
-                        objectV.commit();
-                    } else {
-                        deindex(objectV.getId());
+        if (!Globals.SAFE_UPDATE || objectV.getBackup() != null) {
+            if (SessionDB.connect()) {
+                String sql = objectV.getUpdateString();
+                try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql)) {
+                    objectV.buildStatement(pstmt);
+                    rows = pstmt.executeUpdate();
+                    if (rows > 0) {
+                        reindex(objectV);
                     }
-                    index(objectV);
+                    printSql(sql);
+                } catch (SQLException ex) {
+                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                    Flogger.atSevere().log("Reverting object to backup");
+                    objectV.restoreFromBackup();
+                } finally {
+                    SessionDB.close();
+                    objectV.commit();
                 }
-                printSql(sql);
-            } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
-                Flogger.atSevere().log("Reverting object to backup");
-                objectV.restoreFromBackup();
-            } finally {
-                SessionDB.close();
             }
-        }
+        } else
+            Flogger.atInfo().log("no object backup and Safe Update on");
         return rows;
     }
 
     public boolean updateObject(V objectV) {
+        deindex(objectV);
         V freshObject = query(ID_COL_NAME, objectV.getId(), false);
-        return objectV.restoreFrom(freshObject);
+        boolean b = objectV.restoreFrom(freshObject);
+        index(objectV);
+        return b;
     }
 
     public int delete(V objecT) {

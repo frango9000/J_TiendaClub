@@ -16,7 +16,18 @@ public class UniqueIndexId<V extends IPersistible> extends SimpleMapIndex<Intege
     }
 
     @Override
+    public void reindex(V value) {
+        deindex(value);
+        index(value);
+    }
+
+    @Override
     public void deindex(int idValue) {
         index.remove(idValue);
+    }
+
+    @Override
+    public void deindex(V value) {
+        this.deindex(value.getId());
     }
 }

@@ -23,27 +23,25 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     protected void fxBtnShowHideAction(ActionEvent actionEvent) {
         showInactive = !showInactive;
         if (showInactive) {
-            getDataOrigin().getIndexActive().getActiveCache(false).forEach(e -> {
-                if (!listedObjects.contains(e)) {
-                    listedObjects.add(e);
-                }
-            });
+            listedObjects.addAll(getDataOrigin().getIndexActive().getActiveCache(false));
         } else {
             listedObjects.removeAll(getDataOrigin().getIndexActive().getActiveCache(false));
         }
     }
 
     @FXML
-    protected void fxBtnDisableAction(ActionEvent actionEvent) {
+    protected void fxBtnDisableAction(ActionEvent actionEvent) throws CloneNotSupportedException {
         T selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             boolean isActive = selected.isActivo();
             if (FxDialogs.showConfirmBoolean("Cuidado",
                     "Deseas " + (isActive ? "des" : "") + "activar el id " + selected.getId() + " ?")) {
+                selected.setBackup();
                 selected.toggleActivo();
                 boolean success = selected.updateOnDb() == 1;
                 FxDialogs.showInfo("",
-                        "Usuario " + selected.getId() + (success ? " " : "NO ") + (isActive ? "des" : "") + "activado");
+                        "Usuario " + selected.getId() + (success ? " " : " NO ") + (isActive ? "des" : "")
+                                + "activado");
                 if (!success) {
                     selected.toggleActivo();
                 } else if (!showInactive && !selected.isActivo()) {

@@ -37,7 +37,7 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
 
     @Override
     public void reindex(V value) {
-        deindex(value);
+        index.entries().removeIf(kvEntry -> kvEntry.getValue() == value);
         index(value);
     }
 

@@ -30,4 +30,11 @@ public abstract class Activable extends Persistible {
     public void toggleActivo() {
         setActivo(!isActivo());
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Activable clone = (Activable) super.clone();
+        clone.activo = new SimpleBooleanProperty(this.isActivo());
+        return clone;
+    }
 }

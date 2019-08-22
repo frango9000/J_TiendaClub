@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" minHeight="310.0" minWidth="265.0"
-  xmlns="http://javafx.com/javafx/11.0.1" fx:controller="tiendaclub.control.ConfigPaneControl">
+  xmlns="http://javafx.com/javafx/11" fx:controller="tiendaclub.control.ConfigPaneControl">
   <bottom>
     <BorderPane BorderPane.alignment="CENTER">
       <padding>
