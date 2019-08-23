@@ -9,7 +9,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
 import tiendaclub.misc.StaticHelpers;
@@ -43,7 +42,7 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
 
     public static EditorControl<Usuario> getPane() {
         EditorControl<Usuario> userControl = new EditorControl<>();
-        FXMLLoader loader = new FXMLLoader(UsuarioEditorControl.class.getResource("/fxml/editor/UserEditor.fxml"));
+        FXMLLoader loader = new FXMLLoader(UsuarioEditorControl.class.getResource("/fxml/editor/UsuarioEditorGridPane.fxml"));
         try {
             userControl.setGridPane(loader.load());
             userControl.setGridControl(loader.getController());
@@ -58,19 +57,10 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
         btnPassword = new MenuItem("Password");
         //        fxButtonMenu.getItems().add(btnPassword); TODO
         btnPassword.setOnAction(event -> fxBtnPasswordAction(event));
+        btnPassword.setVisible(false);
 
         fxCbxAcceso.getItems().addAll(DataStore.getAccesos().getIndexId().getCacheValues());
-        fxCbxAcceso.getSelectionModel().select(0);
-        btnPassword.setVisible(false);
-    }
-
-    @Override
-    public void setEditee(@NonNull Usuario editee) {
-        fxUsername.setEditable(false);
-        btnPassword.setVisible(true);
-        System.out.println(fxUsername.getText());
-        setFields(editee);
-        System.out.println(fxUsername.getText());
+        fxCbxAcceso.getSelectionModel().select(SessionStore.getUsuario().getAcceso());
     }
 
     @Override
@@ -94,8 +84,11 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
 
     @Override
     public void setFields(Usuario editee) {
-        System.out.println(editee.toString());
-        fxId.setText((editee.getId() + ""));
+        if (editee.getId() > 0) {
+            fxUsername.setEditable(false);
+            btnPassword.setVisible(true);
+            fxId.setText((editee.getId() + ""));
+        }
         fxUsername.setText(StaticHelpers.getNotNullText(editee.getUsername()));
         fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
         fxTelefono.setText(StaticHelpers.getNotNullText(editee.getTelefono()));

@@ -8,6 +8,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.StatusBar;
+import tiendaclub.control.table.CajasTableControl;
 import tiendaclub.control.table.SedesTableControl;
 import tiendaclub.control.table.UsuariosTableControl;
 
@@ -59,5 +60,7 @@ public class MainPaneControl {
 
     @FXML
     private void fxMenuCajasAction(ActionEvent actionEvent) {
+        CajasTableControl u = new CajasTableControl();
+        mainPane.setCenter(u);
     }
 }

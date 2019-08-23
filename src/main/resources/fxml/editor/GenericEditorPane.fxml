@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1"
+  fx:id="fxGenericEditorBorderPane">
+  <bottom>
+    <BorderPane BorderPane.alignment="CENTER">
+      <center>
+        <MenuButton BorderPane.alignment="CENTER" mnemonicParsing="false" text="Opciones" fx:id="fxButtonMenu">
+          <BorderPane.margin>
+            <Insets right="10.0"/>
+          </BorderPane.margin>
+        </MenuButton>
+      </center>
+      <padding>
+        <Insets top="10.0"/>
+      </padding>
+      <right>
+        <HBox BorderPane.alignment="CENTER" alignment="CENTER_RIGHT" spacing="10.0">
+          <children>
+            <Button mnemonicParsing="false" onAction="#fxBtnSaveAction" text="Guardar"/>
+            <Button mnemonicParsing="false" onAction="#fxBtnDiscardAction" text="Descartar"/>
+          </children>
+        </HBox>
+      </right>
+    </BorderPane>
+  </bottom>
+  <center>
+    <Region BorderPane.alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0"
+      prefWidth="230.0"/>
+  </center>
+  <padding>
+    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+  </padding>
+  <top>
+    <Label BorderPane.alignment="CENTER" text="&lt;title&gt;">
+      <font>
+        <Font size="25.0"/>
+      </font>
+      <padding>
+        <Insets bottom="10.0"/>
+      </padding>
+    </Label>
+  </top>
+</fx:root>

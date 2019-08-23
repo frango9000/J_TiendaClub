@@ -28,7 +28,7 @@ public class EditorControl<T extends Persistible> extends BorderPane {
 
     protected EditorControl() {
         try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/editor/GenericEditor.fxml"));
+            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/editor/GenericEditorPane.fxml"));
             fxmlLoader.setRoot(this);
             fxmlLoader.setController(this);
             fxmlLoader.load();
@@ -48,7 +48,7 @@ public class EditorControl<T extends Persistible> extends BorderPane {
     public void setEditee(@NonNull T editee) {
         this.editee = editee;
         creating = false;
-        gridControl.setEditee(editee);
+        gridControl.setFields(editee);
         System.out.println(editee.toString());
     }
 
@@ -87,18 +87,4 @@ public class EditorControl<T extends Persistible> extends BorderPane {
             FxDialogs.showError("Fail!", "Invalid Fields");
         }
     }
-
-}
-
-abstract class GridControl<T extends Persistible> extends GridPane {
-
-    public abstract void setEditee(@NonNull T editee);
-
-    public abstract void updateEditee(T editee);
-
-    public abstract T buildNew();
-
-    public abstract void setFields(T editee);
-
-    public abstract boolean validFields();
 }

@@ -89,7 +89,7 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
         super.fxBtnEditAction(actionEvent);
         T selected = fxTable.getSelectionModel().getSelectedItem();
-        if (!showInactive && !selected.isActivo()) {
+        if (selected != null && !showInactive && !selected.isActivo()) {
             listedObjects.remove(selected);
         }
     }

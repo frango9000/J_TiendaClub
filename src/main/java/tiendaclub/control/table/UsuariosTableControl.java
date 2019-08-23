@@ -11,17 +11,13 @@ import tiendaclub.model.models.Usuario;
 
 public class UsuariosTableControl extends ActiveTableControl<Usuario> {
 
-    private TableColumn<Usuario, String> fxColumnUser;
-    private TableColumn<Usuario, String> fxColumnName;
-    private TableColumn<Usuario, Acceso> fxColumnLevel;
-
 
     @Override
     public void initialize() {
         super.initialize();
-        fxColumnUser = new TableColumn<>("Usuario");
-        fxColumnName = new TableColumn<>("Nombre");
-        fxColumnLevel = new TableColumn<>("Nivel");
+        TableColumn<Usuario, String> fxColumnUser = new TableColumn<>("Usuario");
+        TableColumn<Usuario, String> fxColumnName = new TableColumn<>("Nombre");
+        TableColumn<Usuario, Acceso> fxColumnLevel = new TableColumn<>("Nivel");
         fxTable.getColumns().add(fxColumnUser);
         fxTable.getColumns().add(fxColumnName);
         fxTable.getColumns().add(fxColumnLevel);

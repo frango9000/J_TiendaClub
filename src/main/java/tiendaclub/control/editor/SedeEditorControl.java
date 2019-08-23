@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.misc.StaticHelpers;
 import tiendaclub.model.models.Sede;
 
@@ -25,7 +24,7 @@ public class SedeEditorControl extends GridControl<Sede> {
 
     public static EditorControl<Sede> getPane() {
         EditorControl<Sede> sedeControl = new EditorControl<>();
-        FXMLLoader loader = new FXMLLoader(UsuarioEditorControl.class.getResource("/fxml/editor/SedeEditor.fxml"));
+        FXMLLoader loader = new FXMLLoader(UsuarioEditorControl.class.getResource("/fxml/editor/SedeEditorGridPane.fxml"));
         try {
             sedeControl.setGridPane(loader.load());
             sedeControl.setGridControl(loader.getController());
@@ -40,10 +39,6 @@ public class SedeEditorControl extends GridControl<Sede> {
 
     }
 
-    @Override
-    public void setEditee(@NonNull Sede editee) {
-        //        setFields(editee);
-    }
 
     @Override
     public void updateEditee(Sede editee) {
@@ -62,8 +57,8 @@ public class SedeEditorControl extends GridControl<Sede> {
 
     @Override
     public void setFields(Sede editee) {
-        String txt = "";
-        fxId.setText((editee.getId() + ""));
+        if (editee.getId() > 0)
+            fxId.setText((editee.getId() + ""));
         fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
         fxTelefono.setText(StaticHelpers.getNotNullText(editee.getTelefono()));
         fxDireccion.setText(StaticHelpers.getNotNullText(editee.getDireccion()));

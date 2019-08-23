@@ -11,18 +11,16 @@ import tiendaclub.model.models.Sede;
 
 public class SedesTableControl extends ActiveTableControl<Sede> {
 
-    @FXML
-    private TableColumn<Sede, String> fxColumnSede;
-    @FXML
-    private TableColumn<Sede, String> fxColumnTelefono;
-    @FXML
-    private TableColumn<Sede, String> fxColumnDireccion;
-
 
     @FXML
     void initialize() {
-
-        fxColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        super.initialize();
+        TableColumn<Sede, String> fxColumnSede = new TableColumn<>("Sede");
+        TableColumn<Sede, String> fxColumnTelefono = new TableColumn<>("Telefono");
+        TableColumn<Sede, String> fxColumnDireccion = new TableColumn<>("Direccion");
+        fxTable.getColumns().add(fxColumnSede);
+        fxTable.getColumns().add(fxColumnTelefono);
+        fxTable.getColumns().add(fxColumnDireccion);
         fxColumnSede.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         fxColumnTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         fxColumnDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
