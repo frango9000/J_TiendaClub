@@ -39,6 +39,7 @@ public class EditorControl<T extends Persistible> extends BorderPane {
 
     public void setGridControl(GridControl<T> gridControl) {
         this.gridControl = gridControl;
+        gridControl.setFxButtonMenu(fxButtonMenu);
     }
 
     public void setGridPane(GridPane gridPane) {

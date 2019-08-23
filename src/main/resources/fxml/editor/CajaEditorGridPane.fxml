@@ -12,12 +12,12 @@
   <children>
     <CheckBox GridPane.columnIndex="1" GridPane.rowIndex="3" mnemonicParsing="false" fx:id="fxCheckActivo"/>
     <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200.0" fx:id="fxCbxSede"/>
-    <Label text="ID"/>
-    <Label GridPane.rowIndex="2" text="Nombre"/>
     <Label GridPane.rowIndex="3" text="activo"/>
     <Label GridPane.rowIndex="1" text="Sede"/>
-    <TextField GridPane.columnIndex="1" editable="false" layoutX="80.0" layoutY="70.0" fx:id="fxId"/>
+    <Label text="ID"/>
+    <Label GridPane.rowIndex="2" text="Nombre"/>
     <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="fxNombre"/>
+    <TextField GridPane.columnIndex="1" editable="false" layoutX="80.0" layoutY="70.0" fx:id="fxId"/>
   </children>
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="100.0" minWidth="70.0" prefWidth="70.0"/>

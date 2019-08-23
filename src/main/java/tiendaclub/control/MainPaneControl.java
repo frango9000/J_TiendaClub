@@ -9,11 +9,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.StatusBar;
 import tiendaclub.control.table.CajasTableControl;
+import tiendaclub.control.table.ProveedoresTableControl;
 import tiendaclub.control.table.SedesTableControl;
 import tiendaclub.control.table.UsuariosTableControl;
 
 public class MainPaneControl {
 
+    public MenuItem fxMenuUsuarios;
+    public MenuItem fxMenuProveedores;
+    public MenuItem fxMenuSocios;
+    public MenuItem fxMenuProductos;
+    public MenuItem fxMenuCategorias;
     @FXML
     private MenuItem menuUsuarios;
     @FXML
@@ -47,7 +53,6 @@ public class MainPaneControl {
 
     @FXML
     private void fxMenuUsuariosAction(ActionEvent actionEvent) throws IOException {
-        //        Pane root = UsuariosPaneControl.getPane();
         UsuariosTableControl u = new UsuariosTableControl();
         mainPane.setCenter(u);
     }
@@ -62,5 +67,19 @@ public class MainPaneControl {
     private void fxMenuCajasAction(ActionEvent actionEvent) {
         CajasTableControl u = new CajasTableControl();
         mainPane.setCenter(u);
+    }
+
+    public void fxMenuProveedoresAction(ActionEvent actionEvent) {
+        ProveedoresTableControl u = new ProveedoresTableControl();
+        mainPane.setCenter(u);
+    }
+
+    public void fxMenuSociosAction(ActionEvent actionEvent) {
+    }
+
+    public void fxMenuCategoriasAction(ActionEvent actionEvent) {
+    }
+
+    public void fxMenuProductosAction(ActionEvent actionEvent) {
     }
 }

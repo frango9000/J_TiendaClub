@@ -3,12 +3,12 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.StatusBar?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11"
-  fx:controller="tiendaclub.control.MainPaneControl"
-  fx:id="mainPane">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+  fx:controller="tiendaclub.control.MainPaneControl" fx:id="mainPane">
   <bottom>
     <StatusBar BorderPane.alignment="CENTER" fx:id="mainStatusBar"/>
   </bottom>
@@ -56,12 +56,18 @@
               <items>
                 <MenuItem mnemonicParsing="false" text="DB"/>
                 <MenuItem mnemonicParsing="false" text="Config"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuUsuariosAction" text="Users"
-                  fx:id="menuUsuarios"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuSedesAction" text="Sedes"
-                  fx:id="fxMenuSedes"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuCajasAction" text="Cajas"
-                  fx:id="fxMenuCajas"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuUsuariosAction" text="Usuarios"
+                  fx:id="fxMenuUsuarios"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuSedesAction" text="Sedes" fx:id="fxMenuSedes"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuCajasAction" text="Cajas" fx:id="fxMenuCajas"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuProveedoresAction" text="Proveedores"
+                  fx:id="fxMenuProveedores"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuSociosAction" text="Socios" fx:id="fxMenuSocios"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuProductosAction" text="Productos"
+                  fx:id="fxMenuProductos"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuCategoriasAction" text="Categorias"
+                  fx:id="fxMenuCategorias"/>
+                <SeparatorMenuItem mnemonicParsing="false"/>
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">

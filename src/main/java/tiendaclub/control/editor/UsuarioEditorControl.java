@@ -1,7 +1,6 @@
 package tiendaclub.control.editor;
 
 import java.io.IOException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
@@ -55,8 +54,6 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
     @FXML
     void initialize() {
         btnPassword = new MenuItem("Password");
-        //        fxButtonMenu.getItems().add(btnPassword); TODO
-        btnPassword.setOnAction(event -> fxBtnPasswordAction(event));
         btnPassword.setVisible(false);
 
         fxCbxAcceso.getItems().addAll(DataStore.getAccesos().getIndexId().getCacheValues());
@@ -88,6 +85,8 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
             fxUsername.setEditable(false);
             btnPassword.setVisible(true);
             fxId.setText((editee.getId() + ""));
+            fxButtonMenu.getItems().add(btnPassword);
+            btnPassword.setOnAction(event -> fxBtnPasswordAction(editee));
         }
         fxUsername.setText(StaticHelpers.getNotNullText(editee.getUsername()));
         fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
@@ -106,21 +105,20 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
         return fxCbxAcceso.getSelectionModel().getSelectedItem().getId() >= SessionStore.getUsuario().getIdAcceso();
     }
 
-    public void fxBtnPasswordAction(ActionEvent event) {
-        //        String pass = askPass();
-        //        if (!pass.equals(editee.getPass())) {
-        //            editee.setPass(pass);
-        //            editee.updateOnDb();
-        //        }
+    public void fxBtnPasswordAction(Usuario editee) {
+        String pass = askPass();
+        if (pass.length() > 4 && !pass.equals(editee.getPass())) {
+            editee.setPass(pass);
+        }
     }
 
     public String askPass() {
-        String pass1;
-        String pass2;
-        do {
-            pass1 = FxDialogs.showTextInput("Enter password", "Enter password").trim();
-            pass2 = FxDialogs.showTextInput("Verify password", "Verify password").trim();
-        } while (!pass1.equals(pass2) && pass1.length() < 1);
-        return pass1;
+        String pass1 = FxDialogs.showTextInput("Enter password", "Enter password").trim();
+        String pass2 = FxDialogs.showTextInput("Verify password", "Verify password").trim();
+        if (pass1.equals(pass2) && pass1.length() > 4)
+            return pass1;
+        else
+            FxDialogs.showInfo(null, "Invalid Password\nPasswords must be more than 4 digits.");
+        return "";
     }
 }

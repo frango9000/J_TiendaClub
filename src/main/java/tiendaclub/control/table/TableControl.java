@@ -23,7 +23,7 @@ import tiendaclub.view.FxDialogs;
 public abstract class TableControl<T extends Persistible> extends BorderPane {
 
     protected final ObservableList<T> listedObjects = FXCollections.observableArrayList();
-    EditorControl<T> editorControl;
+
     @FXML
     protected TableView<T> fxTable;
     @FXML
@@ -57,7 +57,8 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
 
     @FXML
     protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
-        FXMLStage stage = new FXMLStage(getEditorControl(), "Creator");
+        EditorControl<T> editorControl = getEditorControl();
+        FXMLStage stage = new FXMLStage(editorControl, "Creator");
         stage.showAndWait();
         fxTable.refresh();
         addContent();
@@ -67,7 +68,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
     protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
         T selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            editorControl = getEditorControl();
+            EditorControl<T> editorControl = getEditorControl();
             editorControl.setEditee(selected);
             FXMLStage stage = new FXMLStage(editorControl, selected.getClass().getSimpleName() + " Editor");
             stage.showAndWait();
