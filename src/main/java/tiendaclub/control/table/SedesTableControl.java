@@ -1,11 +1,10 @@
 package tiendaclub.control.table;
 
-import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
+import tiendaclub.control.editor.EditorControl;
+import tiendaclub.control.editor.SedeEditorControl;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
 import tiendaclub.model.models.Sede;
@@ -38,10 +37,7 @@ public class SedesTableControl extends ActiveTableControl<Sede> {
     }
 
     @Override
-    protected Pane getEditorPane() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/editor/SedeEditorPane.fxml"));
-        Pane pane = loader.load();
-        editorControl = loader.getController();
-        return pane;
+    protected EditorControl<Sede> getEditorControl() {
+        return SedeEditorControl.getPane();
     }
 }

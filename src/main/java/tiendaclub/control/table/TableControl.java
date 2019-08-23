@@ -11,7 +11,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import tiendaclub.MainFX;
 import tiendaclub.control.editor.EditorControl;
 import tiendaclub.data.DataStore;
@@ -24,9 +23,7 @@ import tiendaclub.view.FxDialogs;
 public abstract class TableControl<T extends Persistible> extends BorderPane {
 
     protected final ObservableList<T> listedObjects = FXCollections.observableArrayList();
-
-    protected EditorControl<T> editorControl;
-
+    EditorControl<T> editorControl;
     @FXML
     protected TableView<T> fxTable;
     @FXML
@@ -60,7 +57,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
 
     @FXML
     protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
-        FXMLStage stage = new FXMLStage(getEditorPane(), "Creator");
+        FXMLStage stage = new FXMLStage(getEditorControl(), "Creator");
         stage.showAndWait();
         fxTable.refresh();
         addContent();
@@ -70,8 +67,9 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
     protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
         T selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            FXMLStage stage = new FXMLStage(getEditorPane(), selected.getClass().getSimpleName() + " Editor");
-            getEditorControl().setEditee(selected);
+            editorControl = getEditorControl();
+            editorControl.setEditee(selected);
+            FXMLStage stage = new FXMLStage(editorControl, selected.getClass().getSimpleName() + " Editor");
             stage.showAndWait();
             fxTable.refresh();
         }
@@ -135,13 +133,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
         addContent(false);
     }
 
-    protected abstract Pane getEditorPane() throws IOException;
-
-    protected EditorControl<T> getEditorControl() {
-        return editorControl;
-    }
+    protected abstract EditorControl<T> getEditorControl();
 
     protected abstract IndexIdDao<T> getDataOrigin();
-
-
 }

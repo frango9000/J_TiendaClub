@@ -4,8 +4,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import tiendaclub.control.PropsLoader;
-import tiendaclub.control.table.UsuariosTableControl;
+import tiendaclub.control.editor.EditorControl;
+import tiendaclub.control.editor.UsuarioEditorControl;
 import tiendaclub.data.DataStore;
+import tiendaclub.model.models.Usuario;
 
 public class TestFX extends Application {
 
@@ -15,8 +17,8 @@ public class TestFX extends Application {
 
         DataStore.firstQuery();
 
-        //        GenericActivableTablePane<Caja> genericTablePane =  new GenericActivableTablePane<>();
-        UsuariosTableControl pane = new UsuariosTableControl();
+        EditorControl<Usuario> pane = UsuarioEditorControl.getPane();
+        pane.setEditee(DataStore.getUsuarios().getIndexId().getValue(4));
         primaryStage.setScene(new Scene(pane));
         primaryStage.show();
 

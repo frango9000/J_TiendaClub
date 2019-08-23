@@ -11,8 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import tiendaclub.misc.Flogger;
 import tiendaclub.misc.Globals;
 
 /**
@@ -127,7 +126,7 @@ public final class SessionDB implements Globals {
             }
             success = true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Flogger.atSevere().withCause(e).log();
         }
         return success;
     }
@@ -150,7 +149,7 @@ public final class SessionDB implements Globals {
             try {
                 valid = conn.isValid(30);
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+                Flogger.atSevere().withCause(ex).log();
             } finally {
                 close();
             }
@@ -164,7 +163,7 @@ public final class SessionDB implements Globals {
             try {
                 valid = conn.isValid(30);
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+                Flogger.atSevere().withCause(ex).log();
             } finally {
                 close();
             }
@@ -194,7 +193,7 @@ public final class SessionDB implements Globals {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Flogger.atSevere().withCause(e).log();
         }
     }
 
@@ -228,7 +227,7 @@ public final class SessionDB implements Globals {
                     System.out.println(sql);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+                Flogger.atSevere().withCause(ex).log();
             } finally {
                 close();
             }
@@ -244,7 +243,6 @@ public final class SessionDB implements Globals {
     public static ArrayList<String> listTables(String catalog) {
         String sql = "SHOW TABLES";
         ArrayList<String> tableNames = new ArrayList<>();
-        System.out.println(catalog);
         if (connect(catalog)) {
             try (Statement stmt = conn.createStatement()) {
                 ResultSet rs = stmt.executeQuery(sql);
@@ -255,7 +253,7 @@ public final class SessionDB implements Globals {
                     System.out.println(sql);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+                Flogger.atSevere().withCause(ex).log();
             } finally {
                 close();
             }
@@ -303,7 +301,7 @@ public final class SessionDB implements Globals {
                     System.out.println(sql);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, null, ex);
+                Flogger.atSevere().withCause(ex).log();
             } finally {
                 close();
             }
@@ -346,8 +344,9 @@ public final class SessionDB implements Globals {
                 "accesos\n" + "cajas\n" + "categorias\n" + "comprados\n" + "compras\n" + "monedero\n" + "productos\n"
                         + "proveedores\n" + "sedes\n" + "socios\n" + "stock\n" + "transferencias\n" + "usuarios\n"
                         + "vendidos\n" + "ventas\n" + "zs\n";
-        System.out.println(tablesString.toString());
-        System.out.println("Valid Schema: " + catalog + "->" + model.matches(tablesString.toString()));
+        if (SQL_DEBUG)
+            System.out.println(tablesString.toString());
+        Flogger.atInfo().log("Valid Schema: " + catalog + "->" + model.matches(tablesString.toString()));
         return model.matches(tablesString.toString());
     }
 
@@ -365,7 +364,7 @@ public final class SessionDB implements Globals {
                     System.out.println(sql);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Flogger.atSevere().withCause(e).log();
             } finally {
                 close();
             }
@@ -383,7 +382,7 @@ public final class SessionDB implements Globals {
                     System.out.println(sql);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Flogger.atSevere().withCause(e).log();
             } finally {
                 close();
             }
@@ -401,7 +400,7 @@ public final class SessionDB implements Globals {
                     System.out.println(sql);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Flogger.atSevere().withCause(e).log();
             } finally {
                 close();
             }
@@ -430,7 +429,7 @@ public final class SessionDB implements Globals {
                             System.out.println(sql);
                         }
                     } catch (SQLException ex) {
-                        Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, sql, ex);
+                        Flogger.atSevere().withCause(ex).log(sql);
                     }
                 }
             }
@@ -463,11 +462,12 @@ public final class SessionDB implements Globals {
                             System.out.println(sql);
                         }
                     } catch (SQLException ex) {
-                        Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, sql, ex);
+                        Flogger.atSevere().withCause(ex).log(sql);
                     }
                 }
             }
-        } catch (FileNotFoundException ignored) {
+        } catch (FileNotFoundException e) {
+            Flogger.atSevere().withCause(e).log();
         } finally {
             if (SQL_DEBUG) {
                 System.out.println("Views created: " + rows);
@@ -495,7 +495,7 @@ public final class SessionDB implements Globals {
                             System.out.println(sql);
                         }
                     } catch (SQLException ex) {
-                        Logger.getLogger(SessionDB.class.getName()).log(Level.SEVERE, sql, ex);
+                        Flogger.atSevere().withCause(ex).log(sql);
                     }
                 }
             }

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11"
-  fx:controller="tiendaclub.control.editor.SedeEditorPaneControl">
+  fx:controller="tiendaclub.control.editor.SedeEditorControl">
   <bottom>
     <BorderPane BorderPane.alignment="CENTER">
       <padding>

@@ -1,52 +1,56 @@
 package tiendaclub.control.editor;
 
 import com.google.common.flogger.StackSize;
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.TextInputControl;
+import javafx.scene.control.MenuButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.misc.Flogger;
 import tiendaclub.model.models.core.Persistible;
 import tiendaclub.view.FxDialogs;
 
-public abstract class EditorControl<T extends Persistible> extends BorderPane {
+public class EditorControl<T extends Persistible> extends BorderPane {
 
-    private static EditorControl controller;
     protected T editee;
+
+    @FXML
+    public BorderPane fxGenericEditorBorderPane;
+
     protected boolean creating = true;
+    @FXML
+    public MenuButton fxButtonMenu;
+    protected GridControl<T> gridControl;
 
     protected EditorControl() {
-        controller = this;
+        try {
+            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/editor/GenericEditor.fxml"));
+            fxmlLoader.setRoot(this);
+            fxmlLoader.setController(this);
+            fxmlLoader.load();
+        } catch (final IOException e) {
+            Flogger.atSevere().withCause(e).log();
+        }
     }
 
-    public static EditorControl getController() {
-        return controller;
+    public void setGridControl(GridControl<T> gridControl) {
+        this.gridControl = gridControl;
     }
 
-    protected static String getTextOrNull(TextInputControl control) {
-        String txt = control.getText().trim();
-        return txt.length() > 0 ? txt : null;
-    }
-
-    protected static String getNotNullText(String txt) {
-        return txt != null ? txt : "";
+    public void setGridPane(GridPane gridPane) {
+        setCenter(gridPane);
     }
 
     public void setEditee(@NonNull T editee) {
         this.editee = editee;
         creating = false;
-        setFields();
+        gridControl.setEditee(editee);
+        System.out.println(editee.toString());
     }
-
-    protected abstract void updateEditee();
-
-    protected abstract T buildNew();
-
-    protected abstract void setFields();
-
-    protected abstract boolean validFields();
 
     @FXML
     protected void fxBtnDiscardAction(ActionEvent actionEvent) {
@@ -55,15 +59,15 @@ public abstract class EditorControl<T extends Persistible> extends BorderPane {
 
     @FXML
     protected void fxBtnSaveAction(ActionEvent event) {
-        if (validFields()) {
+        if (gridControl.validFields()) {
             int rows = 0;
             if (creating) {
-                buildNew();
+                editee = gridControl.buildNew();
                 rows = editee.insertIntoDB();
             } else {
                 try {
                     editee.setBackup();
-                    updateEditee();
+                    gridControl.updateEditee(editee);
                     rows = editee.updateOnDb();
                 } catch (CloneNotSupportedException e) {
                     Flogger.atSevere().withStackTrace(StackSize.FULL).log("Failed creating backup");
@@ -76,11 +80,25 @@ public abstract class EditorControl<T extends Persistible> extends BorderPane {
             } else {
                 FxDialogs.showError("Fail!",
                         editee.getClass().getSimpleName() + " no " + (creating ? "creado" : "modificado"));
-                setFields();
+                gridControl.setFields(editee);
             }
         } else {
             Flogger.atWarning().log("Invalid Fields");
             FxDialogs.showError("Fail!", "Invalid Fields");
         }
     }
+
+}
+
+abstract class GridControl<T extends Persistible> extends GridPane {
+
+    public abstract void setEditee(@NonNull T editee);
+
+    public abstract void updateEditee(T editee);
+
+    public abstract T buildNew();
+
+    public abstract void setFields(T editee);
+
+    public abstract boolean validFields();
 }
