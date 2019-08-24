@@ -16,30 +16,12 @@ public class Proveedor extends Activable {
     public static final String TABLE_NAME = "proveedores";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion", "activo"));
 
-    //    int id;
-    ////    public int getId() {
-    ////        return id;
-    ////    }
-    ////    public void setId(int id) {
-    ////        this.id = id;
-    ////    }
-
     protected String nif;
     protected String nombre;
     protected String telefono;
     protected String email;
     protected String direccion;
     protected String descripcion;
-
-    //    boolean activo;
-    //    @Override
-    //    public boolean isActivo() {
-    //        return activo;
-    //    }
-    //    @Override
-    //    public void setActivo(boolean activo) {
-    //        this.activo = activo;
-    //    }
 
     {
         this.tableName   = TABLE_NAME;

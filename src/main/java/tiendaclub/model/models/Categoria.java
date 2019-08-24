@@ -14,9 +14,14 @@ import tiendaclub.model.models.core.IPersistible;
 public class Categoria extends Activable {
 
     public static final String TABLE_NAME = "categorias";
-    private static final ArrayList<String> COL_NAMES = new ArrayList<>(Arrays.asList("nombre", "activo"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nombre", "activo"));
 
     protected String nombre;
+
+    {
+        this.tableName   = TABLE_NAME;
+        this.columnNames = COLUMN_NAMES;
+    }
 
     public Categoria(int id, String nombre) {
         super(id);

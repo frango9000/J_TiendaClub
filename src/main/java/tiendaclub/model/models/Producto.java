@@ -35,15 +35,16 @@ public class Producto extends Activable {
         setIdCategoria(idCategoria);
     }
 
-    public Producto(String nombre, int precioVenta, int iva, int idCategoria) {
-        this(0, nombre, idCategoria);
-    }
-
     public Producto(int id, String nombre, Categoria categoria) {
         super(id);
         setNombre(nombre);
         setCategoria(categoria);
     }
+
+    public Producto(String nombre, Categoria categoria) {
+        this(0, nombre, categoria);
+    }
+
 
     public Producto(ResultSet rs) throws SQLException {
         this(rs.getInt(1), rs.getString(2), rs.getInt(6));

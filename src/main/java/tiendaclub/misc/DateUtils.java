@@ -1,4 +1,4 @@
-package tiendaclub.model.utils;
+package tiendaclub.misc;
 
 import java.sql.Timestamp;
 import java.time.Instant;

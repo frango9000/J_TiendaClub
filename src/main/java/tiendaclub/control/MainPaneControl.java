@@ -9,6 +9,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.StatusBar;
 import tiendaclub.control.table.CajasTableControl;
+import tiendaclub.control.table.CategoriasTableControl;
+import tiendaclub.control.table.ProductosTableControl;
 import tiendaclub.control.table.ProveedoresTableControl;
 import tiendaclub.control.table.SedesTableControl;
 import tiendaclub.control.table.SociosTableControl;
@@ -81,8 +83,12 @@ public class MainPaneControl {
     }
 
     public void fxMenuCategoriasAction(ActionEvent actionEvent) {
+        CategoriasTableControl u = new CategoriasTableControl();
+        mainPane.setCenter(u);
     }
 
     public void fxMenuProductosAction(ActionEvent actionEvent) {
+        ProductosTableControl u = new ProductosTableControl();
+        mainPane.setCenter(u);
     }
 }

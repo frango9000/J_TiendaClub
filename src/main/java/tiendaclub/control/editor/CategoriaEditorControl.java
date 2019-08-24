@@ -4,17 +4,12 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import tiendaclub.data.DataStore;
 import tiendaclub.misc.StaticHelpers;
-import tiendaclub.model.models.Caja;
-import tiendaclub.model.models.Sede;
+import tiendaclub.model.models.Categoria;
 
-public class CajaEditorControl extends GridControl<Caja> {
+public class CategoriaEditorControl extends GridControl<Categoria> {
 
-    @FXML
-    public ComboBox<Sede> fxCbxSede;
     @FXML
     public TextField fxNombre;
     @FXML
@@ -22,9 +17,9 @@ public class CajaEditorControl extends GridControl<Caja> {
     @FXML
     private CheckBox fxCheckActivo;
 
-    public static EditorControl<Caja> getPane() {
-        EditorControl<Caja> control = new EditorControl<>();
-        FXMLLoader loader = new FXMLLoader(EditorControl.class.getResource("/fxml/editor/CajaEditorGridPane.fxml"));
+    public static EditorControl<Categoria> getPane() {
+        EditorControl<Categoria> control = new EditorControl<>();
+        FXMLLoader loader = new FXMLLoader(EditorControl.class.getResource("/fxml/editor/CategoriaEditorGridPane.fxml"));
         try {
             control.setGridPane(loader.load());
             control.setGridControl(loader.getController());
@@ -36,35 +31,31 @@ public class CajaEditorControl extends GridControl<Caja> {
 
     @FXML
     void initialize() {
-        fxCbxSede.getItems().addAll(DataStore.getSedes().getIndexId().getCacheValues());
-        fxCbxSede.getSelectionModel().select(0);
     }
 
     @Override
-    public void updateEditee(Caja editee) {
-        editee.setSede(fxCbxSede.getSelectionModel().getSelectedItem());
+    public void updateEditee(Categoria editee) {
         editee.setNombre(StaticHelpers.getTextOrNull(fxNombre));
         editee.setActivo(fxCheckActivo.isSelected());
     }
 
     @Override
-    public Caja buildNew() {
-        Caja editee = new Caja(fxCbxSede.getSelectionModel().getSelectedItem(), StaticHelpers.getTextOrNull(fxNombre));
+    public Categoria buildNew() {
+        Categoria editee = new Categoria(StaticHelpers.getTextOrNull(fxNombre));
         editee.setActivo(fxCheckActivo.isSelected());
         return editee;
     }
 
     @Override
-    public void setFields(Caja editee) {
+    public void setFields(Categoria editee) {
         if (editee.getId() > 0)
             fxId.setText((editee.getId() + ""));
-        fxCbxSede.getSelectionModel().select(editee.getSede());
         fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
         fxCheckActivo.setSelected(editee.isActivo());
     }
 
     @Override
     public boolean validFields() {
-        return fxNombre.getText().trim().length() > 1 && fxCbxSede.getSelectionModel().getSelectedItem() != null;
+        return fxNombre.getText().trim().length() > 1;
     }
 }

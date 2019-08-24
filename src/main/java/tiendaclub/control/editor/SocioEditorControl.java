@@ -7,8 +7,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import tiendaclub.misc.StaticHelpers;
+import tiendaclub.misc.TabTraversalEventHandler;
 import tiendaclub.model.models.Socio;
 
 public class SocioEditorControl extends GridControl<Socio> {
@@ -34,7 +36,7 @@ public class SocioEditorControl extends GridControl<Socio> {
 
     public static EditorControl<Socio> getPane() {
         EditorControl<Socio> sedeControl = new EditorControl<>();
-        FXMLLoader loader = new FXMLLoader(UsuarioEditorControl.class.getResource("/fxml/editor/SocioEditorGridPane.fxml"));
+        FXMLLoader loader = new FXMLLoader(EditorControl.class.getResource("/fxml/editor/SocioEditorGridPane.fxml"));
         try {
             sedeControl.setGridPane(loader.load());
             sedeControl.setGridControl(loader.getController());
@@ -46,6 +48,8 @@ public class SocioEditorControl extends GridControl<Socio> {
 
     @FXML
     public void initialize() {
+        fxDescripcion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());
+        fxDireccion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());
     }
 
 

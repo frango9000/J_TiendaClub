@@ -8,9 +8,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
 import tiendaclub.misc.StaticHelpers;
+import tiendaclub.misc.TabTraversalEventHandler;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.view.FxDialogs;
@@ -40,15 +42,15 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
     private MenuItem btnPassword;
 
     public static EditorControl<Usuario> getPane() {
-        EditorControl<Usuario> userControl = new EditorControl<>();
-        FXMLLoader loader = new FXMLLoader(UsuarioEditorControl.class.getResource("/fxml/editor/UsuarioEditorGridPane.fxml"));
+        EditorControl<Usuario> control = new EditorControl<>();
+        FXMLLoader loader = new FXMLLoader(EditorControl.class.getResource("/fxml/editor/UsuarioEditorGridPane.fxml"));
         try {
-            userControl.setGridPane(loader.load());
-            userControl.setGridControl(loader.getController());
+            control.setGridPane(loader.load());
+            control.setGridControl(loader.getController());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return userControl;
+        return control;
     }
 
     @FXML
@@ -58,6 +60,8 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
 
         fxCbxAcceso.getItems().addAll(DataStore.getAccesos().getIndexId().getCacheValues());
         fxCbxAcceso.getSelectionModel().select(SessionStore.getUsuario().getAcceso());
+        fxDireccion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());
+        fxDescripcion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());
     }
 
     @Override

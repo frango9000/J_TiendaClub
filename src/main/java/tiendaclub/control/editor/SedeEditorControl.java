@@ -6,7 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import tiendaclub.misc.StaticHelpers;
+import tiendaclub.misc.TabTraversalEventHandler;
 import tiendaclub.model.models.Sede;
 
 public class SedeEditorControl extends GridControl<Sede> {
@@ -24,7 +26,7 @@ public class SedeEditorControl extends GridControl<Sede> {
 
     public static EditorControl<Sede> getPane() {
         EditorControl<Sede> sedeControl = new EditorControl<>();
-        FXMLLoader loader = new FXMLLoader(UsuarioEditorControl.class.getResource("/fxml/editor/SedeEditorGridPane.fxml"));
+        FXMLLoader loader = new FXMLLoader(EditorControl.class.getResource("/fxml/editor/SedeEditorGridPane.fxml"));
         try {
             sedeControl.setGridPane(loader.load());
             sedeControl.setGridControl(loader.getController());
@@ -36,7 +38,7 @@ public class SedeEditorControl extends GridControl<Sede> {
 
     @FXML
     public void initialize() {
-
+        fxDireccion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());
     }
 
 

@@ -9,49 +9,49 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11"
+<GridPane alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="tiendaclub.control.editor.UsuarioEditorControl">
   <children>
-    <CheckBox GridPane.columnIndex="1" GridPane.rowIndex="8" mnemonicParsing="false" fx:id="fxCheckActivo"/>
-    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="7" prefWidth="200.0" fx:id="fxCbxAcceso"/>
     <Label text="ID"/>
-    <Label GridPane.rowIndex="1" text="username"/>
-    <Label GridPane.rowIndex="2" text="nombre"/>
-    <Label GridPane.rowIndex="3" text="telefono"/>
-    <Label GridPane.rowIndex="4" text="email"/>
-    <Label GridPane.rowIndex="5" text="direccion"/>
-    <Label GridPane.rowIndex="6" text="descripcion"/>
-    <Label GridPane.rowIndex="7" text="idAcceso"/>
-    <Label GridPane.rowIndex="8" text="activo"/>
-    <TextArea style="-fx-wrap-text: true;" GridPane.columnIndex="1" GridPane.rowIndex="5" minHeight="-Infinity"
-      prefHeight="40.0" fx:id="fxDireccion">
+    <Label text="username" GridPane.rowIndex="1"/>
+    <Label text="nombre" GridPane.rowIndex="2"/>
+    <Label text="telefono" GridPane.rowIndex="3"/>
+    <Label text="email" GridPane.rowIndex="4"/>
+    <Label text="direccion" GridPane.rowIndex="5"/>
+    <Label text="descripcion" GridPane.rowIndex="6"/>
+    <Label text="idAcceso" GridPane.rowIndex="7"/>
+    <Label text="activo" GridPane.rowIndex="8"/>
+    <TextField fx:id="fxId" editable="false" layoutX="80.0" layoutY="70.0" GridPane.columnIndex="1"/>
+    <TextField fx:id="fxUsername" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <GridPane.margin>
+        <Insets/>
+      </GridPane.margin>
+    </TextField>
+    <TextField fx:id="fxNombre" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <GridPane.margin>
+        <Insets/>
+      </GridPane.margin>
+    </TextField>
+    <TextField fx:id="fxTelefono" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <GridPane.margin>
+        <Insets/>
+      </GridPane.margin>
+    </TextField>
+    <TextField fx:id="fxEmail" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <GridPane.margin>
+        <Insets/>
+      </GridPane.margin>
+    </TextField>
+    <TextArea fx:id="fxDireccion" minHeight="-Infinity" prefHeight="40.0" style="-fx-wrap-text: true;"
+      GridPane.columnIndex="1" GridPane.rowIndex="5">
       <GridPane.margin>
         <Insets/>
       </GridPane.margin>
     </TextArea>
-    <TextArea style="-fx-wrap-text: true;" GridPane.columnIndex="1" GridPane.rowIndex="6" minHeight="-Infinity"
-      prefHeight="70.0" fx:id="fxDescripcion"/>
-    <TextField GridPane.columnIndex="1" editable="false" layoutX="80.0" layoutY="70.0" fx:id="fxId"/>
-    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="fxUsername">
-      <GridPane.margin>
-        <Insets/>
-      </GridPane.margin>
-    </TextField>
-    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="fxNombre">
-      <GridPane.margin>
-        <Insets/>
-      </GridPane.margin>
-    </TextField>
-    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="fxTelefono">
-      <GridPane.margin>
-        <Insets/>
-      </GridPane.margin>
-    </TextField>
-    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" fx:id="fxEmail">
-      <GridPane.margin>
-        <Insets/>
-      </GridPane.margin>
-    </TextField>
+    <TextArea fx:id="fxDescripcion" minHeight="-Infinity" prefHeight="70.0" style="-fx-wrap-text: true;"
+      GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+    <ComboBox fx:id="fxCbxAcceso" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+    <CheckBox fx:id="fxCheckActivo" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
   </children>
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="100.0" minWidth="70.0" prefWidth="70.0"/>

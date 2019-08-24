@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -9,46 +10,35 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <GridPane alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="tiendaclub.control.editor.ProveedorEditorControl">
+  fx:controller="tiendaclub.control.editor.ProductoEditorControl">
   <children>
     <Label text="ID"/>
-    <Label text="NIF" GridPane.rowIndex="1"/>
-    <Label text="nombre" GridPane.rowIndex="2"/>
-    <Label text="telefono" GridPane.rowIndex="3"/>
-    <Label text="email" GridPane.rowIndex="4"/>
-    <Label text="direccion" GridPane.rowIndex="5"/>
-    <Label text="descripcion" GridPane.rowIndex="6"/>
-    <Label text="activo" GridPane.rowIndex="7"/>
+    <Label text="nombre" GridPane.rowIndex="1"/>
+    <Label text="precio" GridPane.rowIndex="2"/>
+    <Label text="iva" GridPane.rowIndex="3"/>
+    <Label text="categoria" GridPane.rowIndex="4"/>
+    <Label text="descripcion" GridPane.rowIndex="5"/>
+    <Label text="activo" GridPane.rowIndex="6"/>
     <TextField fx:id="fxId" editable="false" layoutX="80.0" layoutY="70.0" GridPane.columnIndex="1"/>
-    <TextField fx:id="fxNif" GridPane.columnIndex="1" GridPane.rowIndex="1">
+    <TextField fx:id="fxNombre" GridPane.columnIndex="1" GridPane.rowIndex="1">
       <GridPane.margin>
         <Insets/>
       </GridPane.margin>
     </TextField>
-    <TextField fx:id="fxNombre" GridPane.columnIndex="1" GridPane.rowIndex="2">
+    <TextField fx:id="fxPrecio" GridPane.columnIndex="1" GridPane.rowIndex="2">
       <GridPane.margin>
         <Insets/>
       </GridPane.margin>
     </TextField>
-    <TextField fx:id="fxTelefono" GridPane.columnIndex="1" GridPane.rowIndex="3">
+    <TextField fx:id="fxIva" GridPane.columnIndex="1" GridPane.rowIndex="3">
       <GridPane.margin>
         <Insets/>
       </GridPane.margin>
     </TextField>
-    <TextField fx:id="fxEmail" GridPane.columnIndex="1" GridPane.rowIndex="4">
-      <GridPane.margin>
-        <Insets/>
-      </GridPane.margin>
-    </TextField>
-    <TextArea fx:id="fxDireccion" minHeight="-Infinity" prefHeight="40.0" style="-fx-wrap-text: true;"
-      GridPane.columnIndex="1" GridPane.rowIndex="5">
-      <GridPane.margin>
-        <Insets/>
-      </GridPane.margin>
-    </TextArea>
+    <ComboBox fx:id="fxCbxCategoria" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
     <TextArea fx:id="fxDescripcion" minHeight="-Infinity" prefHeight="70.0" style="-fx-wrap-text: true;"
-      GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-    <CheckBox fx:id="fxCheckActivo" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+      GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+    <CheckBox fx:id="fxCheckActivo" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
   </children>
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="100.0" minWidth="70.0" prefWidth="70.0"/>
@@ -60,7 +50,6 @@
     <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
     <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
     <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES"/>
     <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="70.0" vgrow="SOMETIMES"/>
     <RowConstraints minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER"/>
   </rowConstraints>
