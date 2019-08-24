@@ -28,11 +28,6 @@
   </build>
   <dependencies>
     <dependency>
-      <artifactId>mariadb-java-client</artifactId>
-      <groupId>org.mariadb.jdbc</groupId>
-      <version>2.4.2</version>
-    </dependency>
-    <dependency>
       <artifactId>javafx-controls</artifactId>
       <groupId>org.openjfx</groupId>
       <version>11.0.2</version>
@@ -43,14 +38,14 @@
       <version>11.0.2</version>
     </dependency>
     <dependency>
-      <artifactId>controlsfx</artifactId>
-      <groupId>org.controlsfx</groupId>
-      <version>11.0.0</version>
-    </dependency>
-    <dependency>
       <artifactId>guava</artifactId>
       <groupId>com.google.guava</groupId>
       <version>28.0-jre</version>
+    </dependency>
+    <dependency>
+      <artifactId>mariadb-java-client</artifactId>
+      <groupId>org.mariadb.jdbc</groupId>
+      <version>2.4.2</version>
     </dependency>
     <dependency>
       <artifactId>flogger</artifactId>
@@ -61,6 +56,41 @@
       <artifactId>flogger-system-backend</artifactId>
       <groupId>com.google.flogger</groupId>
       <version>0.4</version>
+    </dependency>
+    <dependency>
+      <artifactId>controlsfx</artifactId>
+      <groupId>org.controlsfx</groupId>
+      <version>11.0.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>jfxtras-controls</artifactId>
+      <groupId>org.jfxtras</groupId>
+      <version>10.0-r1</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>junit</artifactId>
+      <groupId>junit</groupId>
+      <scope>test</scope>
+      <version>4.13-beta-3</version>
+    </dependency>
+    <dependency>
+      <artifactId>mockito-core</artifactId>
+      <groupId>org.mockito</groupId>
+      <scope>test</scope>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>testfx-core</artifactId>
+      <groupId>org.testfx</groupId>
+      <scope>test</scope>
+      <version>4.0.16-alpha</version>
+    </dependency>
+    <dependency>
+      <artifactId>truth</artifactId>
+      <groupId>com.google.truth</groupId>
+      <scope>test</scope>
+      <version>1.0</version>
     </dependency>
 
 

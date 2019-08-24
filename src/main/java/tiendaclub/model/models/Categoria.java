@@ -67,7 +67,7 @@ public class Categoria extends Activable {
         }
         Categoria categoria = (Categoria) o;
         return getId() == categoria.getId() && isActivo() == categoria.isActivo()
-                && Objects.equal(getNombre(), categoria.getNombre());
+               && Objects.equal(getNombre(), categoria.getNombre());
     }
 
     @Override
@@ -77,6 +77,10 @@ public class Categoria extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("nombre", nombre).add("activo", isActivo()).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("nombre", nombre)
+                          .add("activo", isActivo())
+                          .toString();
     }
 }

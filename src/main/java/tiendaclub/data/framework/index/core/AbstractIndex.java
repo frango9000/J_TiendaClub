@@ -20,8 +20,8 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
     protected Function<V, K> keyValueFunction;
 
     protected AbstractIndex(DataSource<V> dataSource, String indexColumnName, Function<V, K> keyValueFunction) {
-        this.dataSource = dataSource;
-        this.indexColumnName = indexColumnName;
+        this.dataSource       = dataSource;
+        this.indexColumnName  = indexColumnName;
         this.keyValueFunction = keyValueFunction;
     }
 

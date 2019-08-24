@@ -32,11 +32,12 @@ public class Transferencia extends Persistible {
     private Producto producto;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
-    public Transferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad, LocalDateTime fechahora) {
+    public Transferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad,
+                         LocalDateTime fechahora) {
         super(id);
         setCantidad(cantidad);
         setFechahora(fechahora);
@@ -46,11 +47,13 @@ public class Transferencia extends Persistible {
         setIdProducto(idProducto);
     }
 
-    public Transferencia(int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad, LocalDateTime fechahora) {
+    public Transferencia(int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad,
+                         LocalDateTime fechahora) {
         this(0, idUsuario, idSedeOrigen, idSedeDestino, idProducto, cantidad, fechahora);
     }
 
-    public Transferencia(Usuario usuario, Sede sedeOrigen, Sede sedeDestino, Producto producto, int cantidad, LocalDateTime fechahora) {
+    public Transferencia(Usuario usuario, Sede sedeOrigen, Sede sedeDestino, Producto producto, int cantidad,
+                         LocalDateTime fechahora) {
         super(0);
         setUsuario(usuario);
         setSedeOrigen(sedeOrigen);
@@ -131,7 +134,7 @@ public class Transferencia extends Persistible {
     }
 
     public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+        this.usuario   = usuario;
         this.idUsuario = getUsuario().getId();
     }
 
@@ -152,7 +155,7 @@ public class Transferencia extends Persistible {
     }
 
     public void setSedeOrigen(Sede sedeOrigen) {
-        this.sedeOrigen = sedeOrigen;
+        this.sedeOrigen   = sedeOrigen;
         this.idSedeOrigen = getSedeOrigen().getId();
     }
 
@@ -173,7 +176,7 @@ public class Transferencia extends Persistible {
     }
 
     public void setSedeDestino(Sede sedeDestino) {
-        this.sedeDestino = sedeDestino;
+        this.sedeDestino   = sedeDestino;
         this.idSedeDestino = getSedeDestino().getId();
     }
 
@@ -186,7 +189,7 @@ public class Transferencia extends Persistible {
     }
 
     public void setProducto(Producto producto) {
-        this.producto = producto;
+        this.producto   = producto;
         this.idProducto = getProducto().getId();
     }
 
@@ -204,9 +207,9 @@ public class Transferencia extends Persistible {
         }
         Transferencia that = (Transferencia) o;
         return getId() == that.getId() && getIdUsuario() == that.getIdUsuario()
-                && getIdSedeOrigen() == that.getIdSedeOrigen() && getIdSedeDestino() == that.getIdSedeDestino()
-                && getIdProducto() == that.getIdProducto() && getCantidad() == that.getCantidad()
-                && Objects.equal(getFechahora(), that.getFechahora());
+               && getIdSedeOrigen() == that.getIdSedeOrigen() && getIdSedeDestino() == that.getIdSedeDestino()
+               && getIdProducto() == that.getIdProducto() && getCantidad() == that.getCantidad()
+               && Objects.equal(getFechahora(), that.getFechahora());
     }
 
     @Override
@@ -216,6 +219,18 @@ public class Transferencia extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("idUsuario", idUsuario).add("usuario", usuario.toString()).add("idSedeOrigen", idSedeOrigen).add("sedeOrigen", sedeOrigen.toString()).add("idSedeDestino", idSedeDestino).add("sedeDestino", sedeDestino.toString()).add("idProducto", idProducto).add("producto", producto.toString()).add("cantidad", cantidad).add("fechahora", fechahora).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("idUsuario", idUsuario)
+                          .add("usuario", usuario.toString())
+                          .add("idSedeOrigen", idSedeOrigen)
+                          .add("sedeOrigen", sedeOrigen.toString())
+                          .add("idSedeDestino", idSedeDestino)
+                          .add("sedeDestino", sedeDestino.toString())
+                          .add("idProducto", idProducto)
+                          .add("producto", producto.toString())
+                          .add("cantidad", cantidad)
+                          .add("fechahora", fechahora)
+                          .toString();
     }
 }

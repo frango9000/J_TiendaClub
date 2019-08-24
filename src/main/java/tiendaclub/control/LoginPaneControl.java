@@ -5,19 +5,22 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import org.controlsfx.control.textfield.CustomPasswordField;
-import org.controlsfx.control.textfield.CustomTextField;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
 import tiendaclub.model.models.Usuario;
 
+//import org.controlsfx.control.textfield.CustomPasswordField;
+//import org.controlsfx.control.textfield.CustomTextField;
+
 public class LoginPaneControl extends BorderPane {
 
     @FXML
-    private CustomTextField usernameTextField;
+    private TextField usernameTextField;
     @FXML
-    private CustomPasswordField passwordTextField;
+    private PasswordField passwordTextField;
     @FXML
     private Button loginButton;
     @FXML

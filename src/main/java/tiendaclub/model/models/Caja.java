@@ -22,7 +22,7 @@ public class Caja extends Activable {
     private Sede sede;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -88,7 +88,7 @@ public class Caja extends Activable {
     }
 
     public void setSede(@NonNull Sede sede) {
-        this.sede = sede;
+        this.sede   = sede;
         this.idSede = getSede().getId();
     }
 
@@ -106,7 +106,7 @@ public class Caja extends Activable {
         }
         Caja caja = (Caja) o;
         return getId() == caja.getId() && getIdSede() == caja.getIdSede() && isActivo() == caja.isActivo()
-                && Objects.equal(getNombre(), caja.getNombre());
+               && Objects.equal(getNombre(), caja.getNombre());
     }
 
     @Override
@@ -116,7 +116,13 @@ public class Caja extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("idSede", idSede).add("sede", sede.toString()).add("nombre", nombre).add("activo", isActivo()).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("idSede", idSede)
+                          .add("sede", sede.toString())
+                          .add("nombre", nombre)
+                          .add("activo", isActivo())
+                          .toString();
     }
 
     @Override

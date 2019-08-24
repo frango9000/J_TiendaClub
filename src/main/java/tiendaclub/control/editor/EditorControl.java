@@ -16,14 +16,12 @@ import tiendaclub.view.FxDialogs;
 
 public class EditorControl<T extends Persistible> extends BorderPane {
 
-    protected T editee;
-
     @FXML
     public BorderPane fxGenericEditorBorderPane;
-
-    protected boolean creating = true;
     @FXML
     public MenuButton fxButtonMenu;
+    protected T editee;
+    protected boolean creating = true;
     protected GridControl<T> gridControl;
 
     protected EditorControl() {
@@ -48,7 +46,7 @@ public class EditorControl<T extends Persistible> extends BorderPane {
 
     public void setEditee(@NonNull T editee) {
         this.editee = editee;
-        creating = false;
+        creating    = false;
         gridControl.setFields(editee);
         System.out.println(editee.toString());
     }
@@ -64,7 +62,7 @@ public class EditorControl<T extends Persistible> extends BorderPane {
             int rows = 0;
             if (creating) {
                 editee = gridControl.buildNew();
-                rows = editee.insertIntoDB();
+                rows   = editee.insertIntoDB();
             } else {
                 try {
                     editee.setBackup();
@@ -76,11 +74,11 @@ public class EditorControl<T extends Persistible> extends BorderPane {
             }
             if (rows > 0) {
                 FxDialogs.showInfo("Success",
-                        editee.getClass().getSimpleName() + " " + (creating ? "creado" : "modificado"));
+                                   editee.getClass().getSimpleName() + " " + (creating ? "creado" : "modificado"));
                 ((Node) event.getSource()).getScene().getWindow().hide();
             } else {
                 FxDialogs.showError("Fail!",
-                        editee.getClass().getSimpleName() + " no " + (creating ? "creado" : "modificado"));
+                                    editee.getClass().getSimpleName() + " no " + (creating ? "creado" : "modificado"));
                 gridControl.setFields(editee);
             }
         } else {

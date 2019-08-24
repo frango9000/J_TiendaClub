@@ -28,7 +28,7 @@ public class Venta extends Persistible {
     private Socio socio;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -109,7 +109,7 @@ public class Venta extends Persistible {
     }
 
     public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+        this.usuario   = usuario;
         this.idUsuario = getUsuario().getId();
     }
 
@@ -130,7 +130,7 @@ public class Venta extends Persistible {
     }
 
     public void setCaja(Caja caja) {
-        this.caja = caja;
+        this.caja   = caja;
         this.idCaja = getCaja().getId();
     }
 
@@ -143,7 +143,7 @@ public class Venta extends Persistible {
     }
 
     public void setSocio(Socio socio) {
-        this.socio = socio;
+        this.socio   = socio;
         this.idSocio = getSocio().getId();
     }
 
@@ -161,7 +161,7 @@ public class Venta extends Persistible {
         }
         Venta venta = (Venta) o;
         return getId() == venta.getId() && getIdUsuario() == venta.getIdUsuario() && getIdCaja() == venta.getIdCaja()
-                && getIdSocio() == venta.getIdSocio() && Objects.equal(getFechahora(), venta.getFechahora());
+               && getIdSocio() == venta.getIdSocio() && Objects.equal(getFechahora(), venta.getFechahora());
     }
 
     @Override

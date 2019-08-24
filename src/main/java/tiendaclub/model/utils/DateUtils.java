@@ -11,7 +11,7 @@ public class DateUtils {
 
     public static Date toTimestamp(LocalDate localDate) {
         return localDate == null ? null
-                : Timestamp.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                                 : Timestamp.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static Timestamp toTimestamp(LocalDateTime localDateTime) {
@@ -24,6 +24,6 @@ public class DateUtils {
 
     public static LocalDateTime toLocalDateTime(Date date) {
         return date == null ? null
-                : Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+                            : Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 }

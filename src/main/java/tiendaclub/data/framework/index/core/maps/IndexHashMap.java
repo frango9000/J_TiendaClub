@@ -46,7 +46,7 @@ public class IndexHashMap<K, V> implements IIndexMap<K, V> {
     @Override
     public boolean containsEntry(@Nullable Object key, @Nullable Object value) {
         return key != null && value != null
-                && map.entrySet().contains(new AbstractMap.SimpleEntry<K, V>((K) key, (V) value));
+               && map.entrySet().contains(new AbstractMap.SimpleEntry<K, V>((K) key, (V) value));
     }
 
     @Override

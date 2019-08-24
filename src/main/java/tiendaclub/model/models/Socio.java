@@ -16,22 +16,24 @@ import tiendaclub.model.utils.DateUtils;
 public class Socio extends Activable {
 
     public static final String TABLE_NAME = "socios";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("dni", "nombre", "telefono", "direccion", "descripcion", "fecha_in", "activo"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("dni", "nombre", "telefono", "email", "direccion", "descripcion", "fecha_in", "activo"));
 
     protected String dni;
     protected String nombre;
     protected String telefono;
+    protected String email;
     protected String direccion;
     protected String descripcion;
     protected LocalDateTime fechaIn;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
     public Socio(int id, String dni) {
         super(id);
+        setDni(dni);
 
     }
 
@@ -43,10 +45,11 @@ public class Socio extends Activable {
         this(rs.getInt(1), rs.getString(2));
         setNombre(rs.getString(3));
         setTelefono(rs.getString(4));
-        setDireccion(rs.getString(5));
-        setDescripcion(rs.getString(6));
-        setFechaIn(DateUtils.toLocalDateTime(rs.getTimestamp(7)));
-        setActivo(rs.getBoolean(8));
+        setEmail(rs.getString(5));
+        setDireccion(rs.getString(6));
+        setDescripcion(rs.getString(7));
+        setFechaIn(DateUtils.toLocalDateTime(rs.getTimestamp(8)));
+        setActivo(rs.getBoolean(9));
     }
 
     @Override
@@ -54,10 +57,11 @@ public class Socio extends Activable {
         pst.setString(1, getDni());
         pst.setString(2, getNombre());
         pst.setString(3, getTelefono());
-        pst.setString(4, getDireccion());
-        pst.setString(5, getDescripcion());
-        pst.setTimestamp(6, DateUtils.toTimestamp(getFechaIn()));
-        pst.setBoolean(7, isActivo());
+        pst.setString(4, getEmail());
+        pst.setString(5, getDireccion());
+        pst.setString(6, getDescripcion());
+        pst.setTimestamp(7, DateUtils.toTimestamp(getFechaIn()));
+        pst.setBoolean(8, isActivo());
     }
 
     @Override
@@ -67,6 +71,7 @@ public class Socio extends Activable {
             setDni(newValues.getDni());
             setNombre(newValues.getNombre());
             setTelefono(newValues.getTelefono());
+            setEmail(newValues.getEmail());
             setDireccion(newValues.getDireccion());
             setDescripcion(newValues.getDescripcion());
             setFechaIn(newValues.getFechaIn());
@@ -98,6 +103,14 @@ public class Socio extends Activable {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDireccion() {
@@ -134,10 +147,12 @@ public class Socio extends Activable {
         }
         Socio socio = (Socio) o;
         return getId() == socio.getId() && isActivo() == socio.isActivo() && Objects.equal(getDni(), socio.getDni())
-                && Objects.equal(getNombre(), socio.getNombre()) && Objects.equal(getTelefono(), socio.getTelefono())
-                && Objects.equal(getDireccion(), socio.getDireccion())
-                && Objects.equal(getDescripcion(), socio.getDescripcion())
-                && Objects.equal(getFechaIn(), socio.getFechaIn());
+               && Objects.equal(getNombre(), socio.getNombre())
+               && Objects.equal(getTelefono(), socio.getTelefono())
+               && Objects.equal(getEmail(), socio.getEmail())
+               && Objects.equal(getDireccion(), socio.getDireccion())
+               && Objects.equal(getDescripcion(), socio.getDescripcion())
+               && Objects.equal(getFechaIn(), socio.getFechaIn());
     }
 
     @Override
@@ -147,7 +162,17 @@ public class Socio extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("dni", dni).add("nombre", nombre).add("telefono", telefono).add("direccion", direccion).add("descripcion", descripcion).add("fechaIn", fechaIn).add("activo", isActivo()).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("dni", dni)
+                          .add("nombre", nombre)
+                          .add("telefono", telefono)
+                          .add("email", email)
+                          .add("direccion", direccion)
+                          .add("descripcion", descripcion)
+                          .add("fechaIn", fechaIn)
+                          .add("activo", isActivo())
+                          .toString();
     }
 
     @Override

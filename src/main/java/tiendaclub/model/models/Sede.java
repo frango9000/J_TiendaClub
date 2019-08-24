@@ -21,7 +21,7 @@ public class Sede extends Activable {
     protected String direccion;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -99,8 +99,8 @@ public class Sede extends Activable {
         }
         Sede sede = (Sede) o;
         return getId() == sede.getId() && isActivo() == sede.isActivo() && Objects.equal(getNombre(), sede.getNombre())
-                && Objects.equal(getTelefono(), sede.getTelefono())
-                && Objects.equal(getDireccion(), sede.getDireccion());
+               && Objects.equal(getTelefono(), sede.getTelefono())
+               && Objects.equal(getDireccion(), sede.getDireccion());
     }
 
     @Override
@@ -110,7 +110,13 @@ public class Sede extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("nombre", nombre).add("telefono", telefono).add("direccion", direccion).add("activo", isActivo()).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("nombre", nombre)
+                          .add("telefono", telefono)
+                          .add("direccion", direccion)
+                          .add("activo", isActivo())
+                          .toString();
     }
 
     @Override

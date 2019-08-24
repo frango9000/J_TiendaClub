@@ -38,7 +38,8 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
         if (selected != null) {
             boolean isActive = selected.isActivo();
             if (FxDialogs.showConfirmBoolean("Cuidado",
-                    "Deseas " + (isActive ? "des" : "") + "activar el id " + selected.getId() + " ?")) {
+                                             "Deseas " + (isActive ? "des" : "") + "activar el id " + selected.getId() +
+                                             " ?")) {
                 try {
                     selected.setBackup();
                 } catch (CloneNotSupportedException e) {
@@ -47,8 +48,8 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
                 selected.toggleActivo();
                 boolean success = selected.updateOnDb() == 1;
                 FxDialogs.showInfo("",
-                        "Usuario " + selected.getId() + (success ? " " : " NO ") + (isActive ? "des" : "")
-                                + "activado");
+                                   "Usuario " + selected.getId() + (success ? " " : " NO ") + (isActive ? "des" : "")
+                                   + "activado");
                 if (!success) {
                     selected.toggleActivo();
                 } else if (!showInactive && !selected.isActivo()) {

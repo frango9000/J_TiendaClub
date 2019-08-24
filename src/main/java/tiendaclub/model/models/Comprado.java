@@ -25,7 +25,7 @@ public class Comprado extends Persistible {
     private Producto producto;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -106,7 +106,7 @@ public class Comprado extends Persistible {
     }
 
     public void setCompra(Compra compra) {
-        this.compra = compra;
+        this.compra   = compra;
         this.idCompra = getCompra().getId();
     }
 
@@ -127,7 +127,7 @@ public class Comprado extends Persistible {
     }
 
     public void setProducto(Producto producto) {
-        this.producto = producto;
+        this.producto   = producto;
         this.idProducto = getProducto().getId();
     }
 
@@ -145,8 +145,8 @@ public class Comprado extends Persistible {
         }
         Comprado comprado = (Comprado) o;
         return getId() == comprado.getId() && getIdCompra() == comprado.getIdCompra()
-                && getIdProducto() == comprado.getIdProducto() && getCantidad() == comprado.getCantidad()
-                && getPrecioUnidad() == comprado.getPrecioUnidad();
+               && getIdProducto() == comprado.getIdProducto() && getCantidad() == comprado.getCantidad()
+               && getPrecioUnidad() == comprado.getPrecioUnidad();
     }
 
     @Override
@@ -156,6 +156,14 @@ public class Comprado extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("idCompra", idCompra).add("compra", compra.toString()).add("idProducto", idProducto).add("producto", producto.toString()).add("cantidad", cantidad).add("precioUnidad", precioUnidad).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("idCompra", idCompra)
+                          .add("compra", compra.toString())
+                          .add("idProducto", idProducto)
+                          .add("producto", producto.toString())
+                          .add("cantidad", cantidad)
+                          .add("precioUnidad", precioUnidad)
+                          .toString();
     }
 }

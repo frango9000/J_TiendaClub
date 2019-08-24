@@ -73,7 +73,8 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
 
     @Override
     public Usuario buildNew() {
-        Usuario editee = new Usuario(StaticHelpers.getTextOrNull(fxUsername), fxCbxAcceso.getSelectionModel().getSelectedItem());
+        Usuario editee = new Usuario(StaticHelpers.getTextOrNull(fxUsername), fxCbxAcceso.getSelectionModel()
+                                                                                         .getSelectedItem());
         editee.setPass(askPass());
         updateEditee(editee);
         return editee;

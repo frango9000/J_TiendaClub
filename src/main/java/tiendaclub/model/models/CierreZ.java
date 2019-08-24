@@ -25,7 +25,7 @@ public class CierreZ extends Persistible {
     private Caja caja;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -41,7 +41,7 @@ public class CierreZ extends Persistible {
 
     public CierreZ(Caja caja, LocalDateTime apertura) {
         super(0);
-        this.caja = caja;
+        this.caja     = caja;
         this.apertura = apertura;
     }
 
@@ -99,7 +99,7 @@ public class CierreZ extends Persistible {
     }
 
     public void setCaja(Caja caja) {
-        this.caja = caja;
+        this.caja   = caja;
         this.idCaja = getCaja().getId();
     }
 
@@ -117,8 +117,8 @@ public class CierreZ extends Persistible {
         }
         CierreZ cierreZ = (CierreZ) o;
         return getId() == cierreZ.getId() && getIdCaja() == cierreZ.getIdCaja()
-                && Objects.equal(getCaja(), cierreZ.getCaja()) && Objects.equal(getApertura(), cierreZ.getApertura())
-                && Objects.equal(getCierre(), cierreZ.getCierre());
+               && Objects.equal(getCaja(), cierreZ.getCaja()) && Objects.equal(getApertura(), cierreZ.getApertura())
+               && Objects.equal(getCierre(), cierreZ.getCierre());
     }
 
     @Override
@@ -128,7 +128,13 @@ public class CierreZ extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("idCaja", idCaja).add("caja", caja.toString()).add("apertura", apertura).add("cierre", cierre).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("idCaja", idCaja)
+                          .add("caja", caja.toString())
+                          .add("apertura", apertura)
+                          .add("cierre", cierre)
+                          .toString();
     }
 
     @Override

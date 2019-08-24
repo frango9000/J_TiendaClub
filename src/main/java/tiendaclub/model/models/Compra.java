@@ -29,7 +29,7 @@ public class Compra extends Persistible {
     private Sede sede;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -110,7 +110,7 @@ public class Compra extends Persistible {
     }
 
     public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+        this.usuario   = usuario;
         this.idUsuario = getUsuario().getId();
     }
 
@@ -131,7 +131,7 @@ public class Compra extends Persistible {
     }
 
     public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
+        this.proveedor   = proveedor;
         this.idProveedor = getProveedor().getId();
     }
 
@@ -144,7 +144,7 @@ public class Compra extends Persistible {
     }
 
     public void setSede(Sede sede) {
-        this.sede = sede;
+        this.sede   = sede;
         this.idSede = getSede().getId();
     }
 
@@ -162,7 +162,7 @@ public class Compra extends Persistible {
         }
         Compra compra = (Compra) o;
         return getId() == compra.getId() && getIdUsuario() == compra.getIdUsuario() && getIdSede() == compra.getIdSede()
-                && getIdProveedor() == compra.getIdProveedor() && Objects.equal(getFechahora(), compra.getFechahora());
+               && getIdProveedor() == compra.getIdProveedor() && Objects.equal(getFechahora(), compra.getFechahora());
     }
 
     @Override
@@ -172,6 +172,15 @@ public class Compra extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("idUsuario", idUsuario).add("usuario", usuario.toString()).add("idSede", idSede).add("sede", sede.toString()).add("idProveedor", idProveedor).add("proveedor", proveedor.toString()).add("fechahora", fechahora).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("idUsuario", idUsuario)
+                          .add("usuario", usuario.toString())
+                          .add("idSede", idSede)
+                          .add("sede", sede.toString())
+                          .add("idProveedor", idProveedor)
+                          .add("proveedor", proveedor.toString())
+                          .add("fechahora", fechahora)
+                          .toString();
     }
 }

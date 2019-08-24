@@ -10,7 +10,8 @@ import tiendaclub.model.models.core.IPersistible;
 
 public class MultiIndexPersistible<R extends IPersistible, V extends IPersistible> extends SetMultiMapIndex<Integer, V> {
 
-    public MultiIndexPersistible(DataSource<V> dataSource, String indexColumnName, Function<V, Integer> keyValueFunction) {
+    public MultiIndexPersistible(DataSource<V> dataSource, String indexColumnName,
+                                 Function<V, Integer> keyValueFunction) {
         super(dataSource, indexColumnName, keyValueFunction);
     }
 

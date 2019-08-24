@@ -11,6 +11,7 @@ import org.controlsfx.control.StatusBar;
 import tiendaclub.control.table.CajasTableControl;
 import tiendaclub.control.table.ProveedoresTableControl;
 import tiendaclub.control.table.SedesTableControl;
+import tiendaclub.control.table.SociosTableControl;
 import tiendaclub.control.table.UsuariosTableControl;
 
 public class MainPaneControl {
@@ -75,6 +76,8 @@ public class MainPaneControl {
     }
 
     public void fxMenuSociosAction(ActionEvent actionEvent) {
+        SociosTableControl u = new SociosTableControl();
+        mainPane.setCenter(u);
     }
 
     public void fxMenuCategoriasAction(ActionEvent actionEvent) {

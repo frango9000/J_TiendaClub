@@ -7,6 +7,7 @@ module tiendaclub {
     requires org.mariadb.jdbc;
     requires org.checkerframework.checker.qual;
     requires flogger;
+    requires jfxtras.controls;
 
     opens tiendaclub.control to javafx.fxml;
     opens tiendaclub.control.editor to javafx.fxml;

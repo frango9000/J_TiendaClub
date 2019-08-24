@@ -18,7 +18,8 @@
         <Label BorderPane.alignment="CENTER" minHeight="30.0" minWidth="30.0" fx:id="alertMsg"/>
       </left>
       <right>
-        <Button BorderPane.alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loginOnAct"
+        <Button BorderPane.alignment="CENTER" defaultButton="true" mnemonicParsing="false"
+          onAction="#loginOnAct"
           text="Login" fx:id="loginButton">
           <BorderPane.margin>
             <Insets top="10.0"/>

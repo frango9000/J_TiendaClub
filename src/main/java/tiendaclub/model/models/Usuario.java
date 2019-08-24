@@ -28,7 +28,7 @@ public class Usuario extends Activable {
     private Acceso acceso;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -160,7 +160,7 @@ public class Usuario extends Activable {
     }
 
     public void setAcceso(@NonNull Acceso acceso) {
-        this.acceso = acceso;
+        this.acceso   = acceso;
         this.idAcceso = getAcceso().getId();
     }
 
@@ -179,11 +179,11 @@ public class Usuario extends Activable {
         }
         Usuario usuario = (Usuario) o;
         return getId() == usuario.getId() && getIdAcceso() == usuario.getIdAcceso()
-                && Objects.equal(getUsername(), usuario.getUsername()) && Objects.equal(getPass(), usuario.getPass())
-                && Objects.equal(getNombre(), usuario.getNombre())
-                && Objects.equal(getTelefono(), usuario.getTelefono()) && Objects.equal(getEmail(), usuario.getEmail())
-                && Objects.equal(getDireccion(), usuario.getDireccion())
-                && Objects.equal(getDescripcion(), usuario.getDescripcion());
+               && Objects.equal(getUsername(), usuario.getUsername()) && Objects.equal(getPass(), usuario.getPass())
+               && Objects.equal(getNombre(), usuario.getNombre())
+               && Objects.equal(getTelefono(), usuario.getTelefono()) && Objects.equal(getEmail(), usuario.getEmail())
+               && Objects.equal(getDireccion(), usuario.getDireccion())
+               && Objects.equal(getDescripcion(), usuario.getDescripcion());
     }
 
     @Override
@@ -193,7 +193,18 @@ public class Usuario extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("username", username).add("pass", pass).add("nombre", nombre).add("telefono", telefono).add("email", email).add("direccion", direccion).add("descripcion", descripcion).add("idAcceso", idAcceso).add("acceso", acceso.toString()).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("username", username)
+                          .add("pass", pass)
+                          .add("nombre", nombre)
+                          .add("telefono", telefono)
+                          .add("email", email)
+                          .add("direccion", direccion)
+                          .add("descripcion", descripcion)
+                          .add("idAcceso", idAcceso)
+                          .add("acceso", acceso.toString())
+                          .toString();
     }
 
     @Override

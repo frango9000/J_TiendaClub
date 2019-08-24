@@ -31,7 +31,7 @@ public class Acceso extends Persistible {
     //    }
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 

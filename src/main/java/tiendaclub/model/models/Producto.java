@@ -25,7 +25,7 @@ public class Producto extends Activable {
     private Categoria categoria;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -124,7 +124,7 @@ public class Producto extends Activable {
     }
 
     public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+        this.categoria   = categoria;
         this.idCategoria = getCategoria().getId();
     }
 
@@ -143,8 +143,8 @@ public class Producto extends Activable {
         }
         Producto producto = (Producto) o;
         return getId() == producto.getId() && precioVenta == producto.precioVenta && iva == producto.iva
-                && idCategoria == producto.idCategoria && isActivo() == producto.isActivo()
-                && Objects.equal(nombre, producto.nombre) && Objects.equal(descripcion, producto.descripcion);
+               && idCategoria == producto.idCategoria && isActivo() == producto.isActivo()
+               && Objects.equal(nombre, producto.nombre) && Objects.equal(descripcion, producto.descripcion);
     }
 
     @Override
@@ -154,7 +154,16 @@ public class Producto extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("nombre", nombre).add("descripcion", descripcion).add("precioVenta", precioVenta).add("iva", iva).add("idCategoria", idCategoria).add("categoria", categoria.toString()).add("activo", isActivo()).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("nombre", nombre)
+                          .add("descripcion", descripcion)
+                          .add("precioVenta", precioVenta)
+                          .add("iva", iva)
+                          .add("idCategoria", idCategoria)
+                          .add("categoria", categoria.toString())
+                          .add("activo", isActivo())
+                          .toString();
     }
 
     @Override

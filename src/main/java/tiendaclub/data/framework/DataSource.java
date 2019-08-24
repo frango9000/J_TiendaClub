@@ -25,7 +25,7 @@ public class DataSource<V extends IPersistible> implements Globals {
 
     public DataSource(String TABLE_NAME, ArrayList<IIndex<?, V>> indexes) {
         this.TABLE_NAME = TABLE_NAME;
-        this.indexes = indexes;
+        this.indexes    = indexes;
     }
 
     protected static void printSql(String sql) {
@@ -111,7 +111,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         if (ids.size() > 0)
             if (SessionDB.connect()) {
                 StringBuilder sql = new StringBuilder(
-                        "SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
+                    "SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COL_NAME + " IN( ");
                 Iterator<Integer> iterator = ids.iterator();
                 while (iterator.hasNext()) {
                     sql.append(iterator.next());
@@ -121,7 +121,8 @@ public class DataSource<V extends IPersistible> implements Globals {
                         sql.append(" )");
                     }
                 }
-                try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                try (Statement ps = SessionDB.getConn()
+                                             .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
                         V objecT = (V) DataFactory.buildObject(rs);
                         index(objecT);
@@ -151,7 +152,8 @@ public class DataSource<V extends IPersistible> implements Globals {
                         sql.append(" )");
                     }
                 }
-                try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                try (Statement ps = SessionDB.getConn()
+                                             .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
                         V objecT = (V) DataFactory.buildObject(rs);
                         index(objecT);
@@ -172,9 +174,10 @@ public class DataSource<V extends IPersistible> implements Globals {
         if (string != null && string.length() > 0)
             if (SessionDB.connect()) {
                 StringBuilder sql = new StringBuilder(
-                        "SELECT * FROM " + TABLE_NAME + " WHERE " + colName + (like ? " " : " NOT ") + "LIKE '" + string
-                                + "'");
-                try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                    "SELECT * FROM " + TABLE_NAME + " WHERE " + colName + (like ? " " : " NOT ") + "LIKE '" + string
+                    + "'");
+                try (Statement ps = SessionDB.getConn()
+                                             .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
                         V objecT = (V) DataFactory.buildObject(rs);
                         index(objecT);
@@ -200,9 +203,10 @@ public class DataSource<V extends IPersistible> implements Globals {
         if (start != null && start.length() > 0)
             if (SessionDB.connect()) {
                 StringBuilder sql = new StringBuilder(
-                        "SELECT * FROM " + TABLE_NAME + " WHERE " + colName + (in ? " " : " NOT ") + "BETWEEN '" + start
-                                + "' AND '" + end + "'");
-                try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                    "SELECT * FROM " + TABLE_NAME + " WHERE " + colName + (in ? " " : " NOT ") + "BETWEEN '" + start
+                    + "' AND '" + end + "'");
+                try (Statement ps = SessionDB.getConn()
+                                             .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
                         V objecT = (V) DataFactory.buildObject(rs);
                         index(objecT);
@@ -269,7 +273,8 @@ public class DataSource<V extends IPersistible> implements Globals {
         if (objectV.getId() == 0) {
             if (SessionDB.connect()) {
                 String sql = objectV.getInsertString();
-                try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                try (PreparedStatement pstmt = SessionDB.getConn()
+                                                        .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     objectV.buildStatement(pstmt);
                     rows = pstmt.executeUpdate();
 

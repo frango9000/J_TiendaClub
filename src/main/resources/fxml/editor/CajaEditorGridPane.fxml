@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1"
+<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11"
   fx:controller="tiendaclub.control.editor.CajaEditorControl">
   <children>
     <CheckBox GridPane.columnIndex="1" GridPane.rowIndex="3" mnemonicParsing="false" fx:id="fxCheckActivo"/>

@@ -94,7 +94,8 @@ public final class SessionDB implements Globals {
         SessionDB.jdbcPassword = jdbcPassword;
     }
 
-    public static void setValues(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser, String jdbcPassword) {
+    public static void setValues(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser,
+                                 String jdbcPassword) {
         setJdbcIP(jdbcIP);
         setJdbcPort(jdbcPort);
         setJdbcCatalog(jdbcCatalog);
@@ -108,16 +109,17 @@ public final class SessionDB implements Globals {
      *
      * @return true si la conexion fue establecida correctamente
      */
-    public static boolean connect(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser, String jdbcPassword) {
+    public static boolean connect(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser,
+                                  String jdbcPassword) {
         boolean success = false;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = DriverManager.getConnection(
-                        jdbcDriver + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog, jdbcUser, jdbcPassword);
+                    jdbcDriver + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog, jdbcUser, jdbcPassword);
                 if (SQL_CONN) {
                     System.out.println(
-                            "Connection to " + conn.getMetaData().getDriverName() + " has been established. Catalog: "
-                                    + conn.getCatalog());
+                        "Connection to " + conn.getMetaData().getDriverName() + " has been established. Catalog: "
+                        + conn.getCatalog());
                 }
             } else {
                 if (SQL_CONN) {
@@ -341,9 +343,9 @@ public final class SessionDB implements Globals {
         StringBuilder tablesString = new StringBuilder();
         tables.forEach(cnsmr -> tablesString.append(cnsmr).append("\n"));
         String model =
-                "accesos\n" + "cajas\n" + "categorias\n" + "comprados\n" + "compras\n" + "monedero\n" + "productos\n"
-                        + "proveedores\n" + "sedes\n" + "socios\n" + "stock\n" + "transferencias\n" + "usuarios\n"
-                        + "vendidos\n" + "ventas\n" + "zs\n";
+            "accesos\n" + "cajas\n" + "categorias\n" + "comprados\n" + "compras\n" + "monedero\n" + "productos\n"
+            + "proveedores\n" + "sedes\n" + "socios\n" + "stock\n" + "transferencias\n" + "usuarios\n"
+            + "vendidos\n" + "ventas\n" + "zs\n";
         if (SQL_DEBUG)
             System.out.println(tablesString.toString());
         Flogger.atInfo().log("Valid Schema: " + catalog + "->" + model.matches(tablesString.toString()));

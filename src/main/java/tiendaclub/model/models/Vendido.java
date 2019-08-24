@@ -26,7 +26,7 @@ public class Vendido extends Persistible {
     private Producto producto;
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -106,7 +106,7 @@ public class Vendido extends Persistible {
     }
 
     public void setVenta(Venta venta) {
-        this.venta = venta;
+        this.venta   = venta;
         this.idVenta = getVenta().getId();
     }
 
@@ -127,7 +127,7 @@ public class Vendido extends Persistible {
     }
 
     public void setProducto(Producto producto) {
-        this.producto = producto;
+        this.producto   = producto;
         this.idProducto = getProducto().getId();
     }
 
@@ -145,8 +145,8 @@ public class Vendido extends Persistible {
         }
         Vendido vendido = (Vendido) o;
         return getId() == vendido.getId() && getIdProducto() == vendido.getIdProducto()
-                && getIdVenta() == vendido.getIdVenta() && getCantidad() == vendido.getCantidad()
-                && getPrecioUnidad() == vendido.getPrecioUnidad();
+               && getIdVenta() == vendido.getIdVenta() && getCantidad() == vendido.getCantidad()
+               && getPrecioUnidad() == vendido.getPrecioUnidad();
     }
 
     @Override
@@ -156,6 +156,14 @@ public class Vendido extends Persistible {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("idProducto", idProducto).add("producto", producto.toString()).add("idVenta", idVenta).add("venta", venta.toString()).add("cantidad", cantidad).add("precioUnidad", precioUnidad).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("idProducto", idProducto)
+                          .add("producto", producto.toString())
+                          .add("idVenta", idVenta)
+                          .add("venta", venta.toString())
+                          .add("cantidad", cantidad)
+                          .add("precioUnidad", precioUnidad)
+                          .toString();
     }
 }

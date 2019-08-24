@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `socios`
     `dni`         CHAR(10)             NOT NULL,
     `nombre`      VARCHAR(50)          NOT NULL,
     `telefono`    VARCHAR(20)          NULL     DEFAULT NULL,
+    `email`       VARCHAR(50)          NULL     DEFAULT NULL,
     `direccion`   VARCHAR(50)          NULL     DEFAULT NULL,
     `descripcion` VARCHAR(127)         NULL     DEFAULT NULL,
     `fecha_in`    DATETIME             NOT NULL DEFAULT current_timestamp(),

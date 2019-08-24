@@ -42,7 +42,7 @@ public class Proveedor extends Activable {
     //    }
 
     {
-        this.tableName = TABLE_NAME;
+        this.tableName   = TABLE_NAME;
         this.columnNames = COLUMN_NAMES;
     }
 
@@ -151,11 +151,11 @@ public class Proveedor extends Activable {
         }
         Proveedor proveedor = (Proveedor) o;
         return getId() == proveedor.getId() && isActivo() == proveedor.isActivo()
-                && Objects.equal(getNif(), proveedor.getNif()) && Objects.equal(getNombre(), proveedor.getNombre())
-                && Objects.equal(getTelefono(), proveedor.getTelefono())
-                && Objects.equal(getEmail(), proveedor.getEmail())
-                && Objects.equal(getDireccion(), proveedor.getDireccion())
-                && Objects.equal(getDescripcion(), proveedor.getDescripcion());
+               && Objects.equal(getNif(), proveedor.getNif()) && Objects.equal(getNombre(), proveedor.getNombre())
+               && Objects.equal(getTelefono(), proveedor.getTelefono())
+               && Objects.equal(getEmail(), proveedor.getEmail())
+               && Objects.equal(getDireccion(), proveedor.getDireccion())
+               && Objects.equal(getDescripcion(), proveedor.getDescripcion());
     }
 
     @Override
@@ -165,7 +165,16 @@ public class Proveedor extends Activable {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("nif", nif).add("nombre", nombre).add("telefono", telefono).add("email", email).add("direccion", direccion).add("descripcion", descripcion).add("activo", isActivo()).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("nif", nif)
+                          .add("nombre", nombre)
+                          .add("telefono", telefono)
+                          .add("email", email)
+                          .add("direccion", direccion)
+                          .add("descripcion", descripcion)
+                          .add("activo", isActivo())
+                          .toString();
     }
 
     @Override
