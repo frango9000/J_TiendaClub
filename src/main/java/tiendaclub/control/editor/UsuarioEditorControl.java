@@ -1,5 +1,6 @@
 package tiendaclub.control.editor;
 
+import com.google.common.base.Strings;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,19 +67,19 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
 
     @Override
     public void updateEditee(Usuario editee) {
-        editee.setNombre(StaticHelpers.getTextOrNull(fxNombre));
-        editee.setTelefono(StaticHelpers.getTextOrNull(fxTelefono));
-        editee.setEmail(StaticHelpers.getTextOrNull(fxEmail));
-        editee.setDireccion(StaticHelpers.getTextOrNull(fxDireccion));
-        editee.setDescripcion(StaticHelpers.getTextOrNull(fxDescripcion));
+        editee.setNombre(StaticHelpers.textInputEmptyToNull(fxNombre));
+        editee.setTelefono(StaticHelpers.textInputEmptyToNull(fxTelefono));
+        editee.setEmail(StaticHelpers.textInputEmptyToNull(fxEmail));
+        editee.setDireccion(StaticHelpers.textInputEmptyToNull(fxDireccion));
+        editee.setDescripcion(StaticHelpers.textInputEmptyToNull(fxDescripcion));
         editee.setAcceso(fxCbxAcceso.getSelectionModel().getSelectedItem());
         editee.setActivo(fxCheckActivo.isSelected());
     }
 
     @Override
     public Usuario buildNew() {
-        Usuario editee = new Usuario(StaticHelpers.getTextOrNull(fxUsername), fxCbxAcceso.getSelectionModel()
-                                                                                         .getSelectedItem());
+        Usuario editee = new Usuario(StaticHelpers.textInputEmptyToNull(fxUsername), fxCbxAcceso.getSelectionModel()
+                                                                                                .getSelectedItem());
         editee.setPass(askPass());
         updateEditee(editee);
         return editee;
@@ -87,18 +88,18 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
     @Override
     public void setFields(Usuario editee) {
         if (editee.getId() > 0) {
+            fxId.setText((Integer.toString(editee.getId())));
             fxUsername.setEditable(false);
             btnPassword.setVisible(true);
-            fxId.setText((editee.getId() + ""));
             fxButtonMenu.getItems().add(btnPassword);
             btnPassword.setOnAction(event -> fxBtnPasswordAction(editee));
         }
-        fxUsername.setText(StaticHelpers.getNotNullText(editee.getUsername()));
-        fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
-        fxTelefono.setText(StaticHelpers.getNotNullText(editee.getTelefono()));
-        fxEmail.setText(StaticHelpers.getNotNullText(editee.getEmail()));
-        fxDireccion.setText(StaticHelpers.getNotNullText(editee.getDireccion()));
-        fxDescripcion.setText(StaticHelpers.getNotNullText(editee.getDescripcion()));
+        fxUsername.setText(Strings.nullToEmpty(editee.getUsername()));
+        fxNombre.setText(Strings.nullToEmpty(editee.getNombre()));
+        fxTelefono.setText(Strings.nullToEmpty(editee.getTelefono()));
+        fxEmail.setText(Strings.nullToEmpty(editee.getEmail()));
+        fxDireccion.setText(Strings.nullToEmpty(editee.getDireccion()));
+        fxDescripcion.setText(Strings.nullToEmpty(editee.getDescripcion()));
         fxCbxAcceso.getSelectionModel().select(editee.getAcceso());
         fxCheckActivo.setSelected(editee.isActivo());
     }

@@ -5,6 +5,7 @@
  */
 package tiendaclub.misc;
 
+import com.google.common.base.Strings;
 import javafx.scene.control.TextInputControl;
 
 /**
@@ -81,12 +82,7 @@ public class StaticHelpers {
         return byteSizeFormatter(bytes + "");
     }
 
-    public static String getTextOrNull(TextInputControl control) {
-        String txt = control.getText().trim();
-        return txt.length() > 0 ? txt : null;
-    }
-
-    public static String getNotNullText(String txt) {
-        return txt != null ? txt : "";
+    public static String textInputEmptyToNull(TextInputControl control) {
+        return Strings.emptyToNull(control.getText().trim());
     }
 }

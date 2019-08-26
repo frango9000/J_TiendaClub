@@ -1,10 +1,10 @@
 package tiendaclub.data.framework.index.core;
 
 import com.google.common.collect.Sets;
-import java.io.Writer;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.maps.IIndexMap;
 import tiendaclub.model.models.core.IPersistible;
@@ -65,7 +65,7 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
 
     @Override
     public Set<V> getKeyValues(K key) {
-        dataSource.querySome(indexColumnName, key);
+        dataSource.querySome(indexColumnName, key.toString());
         return getCacheKeyValues(key);
     }
 
@@ -109,7 +109,7 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
 
     @Override
     public V getValue(K key) {
-        dataSource.querySome(indexColumnName, key);
+        dataSource.querySome(indexColumnName, key.toString());
         return getCacheValue(key);
     }
 
@@ -123,8 +123,6 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
         if (!cacheContainsKey(key)) {
             getKeyValues(key);
         }
-        Writer out;
-
         return getCacheValueOptional(key);
     }
 
@@ -136,5 +134,55 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
             return Optional.empty();
         }
     }
+
+    public int getCacheKeySize() {
+        return getCacheKeys().size();
+    }
+
+    public int getCacheKeySize(K key) {
+        return getCacheKeyValues(key).size();
+    }
+
+    public int getKeySize() {
+        return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, "-1", false).size();
+    }
+
+    public int getKeySize(K key) {
+        return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, key.toString()).size();
+    }
+
+    public Set<Integer> getIds() {
+        return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, "0", false)
+                         .stream()
+                         .map(Integer::parseInt)
+                         .collect(Collectors.toSet());
+    }
+
+    public Set<Integer> getIds(K key) {
+        return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, key.toString())
+                         .stream()
+                         .map(Integer::parseInt)
+                         .collect(Collectors.toSet());
+    }
+
+    public Set<Integer> getIds(Set<K> keys) {
+        return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, keys.toString())
+                         .stream()
+                         .map(Integer::parseInt)
+                         .collect(Collectors.toSet());
+    }
+
+    public Set<Integer> getCachedIds() {
+        return getCacheValues().stream().map(V::getId).collect(Collectors.toSet());
+    }
+
+    public Set<Integer> getCachedIds(K key) {
+        return getCacheKeyValues(key).stream().map(V::getId).collect(Collectors.toSet());
+    }
+
+    public Set<Integer> getCachedIds(Set<K> keys) {
+        return getCacheKeyValues(keys).stream().map(V::getId).collect(Collectors.toSet());
+    }
+
 
 }

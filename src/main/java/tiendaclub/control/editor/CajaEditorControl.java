@@ -1,5 +1,6 @@
 package tiendaclub.control.editor;
 
+import com.google.common.base.Strings;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,13 +44,14 @@ public class CajaEditorControl extends GridControl<Caja> {
     @Override
     public void updateEditee(Caja editee) {
         editee.setSede(fxCbxSede.getSelectionModel().getSelectedItem());
-        editee.setNombre(StaticHelpers.getTextOrNull(fxNombre));
+        editee.setNombre(StaticHelpers.textInputEmptyToNull(fxNombre));
         editee.setActivo(fxCheckActivo.isSelected());
     }
 
     @Override
     public Caja buildNew() {
-        Caja editee = new Caja(fxCbxSede.getSelectionModel().getSelectedItem(), StaticHelpers.getTextOrNull(fxNombre));
+        Caja editee = new Caja(fxCbxSede.getSelectionModel()
+                                        .getSelectedItem(), StaticHelpers.textInputEmptyToNull(fxNombre));
         editee.setActivo(fxCheckActivo.isSelected());
         return editee;
     }
@@ -57,9 +59,9 @@ public class CajaEditorControl extends GridControl<Caja> {
     @Override
     public void setFields(Caja editee) {
         if (editee.getId() > 0)
-            fxId.setText((editee.getId() + ""));
+            fxId.setText((Integer.toString(editee.getId())));
         fxCbxSede.getSelectionModel().select(editee.getSede());
-        fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
+        fxNombre.setText(Strings.nullToEmpty(editee.getNombre()));
         fxCheckActivo.setSelected(editee.isActivo());
     }
 

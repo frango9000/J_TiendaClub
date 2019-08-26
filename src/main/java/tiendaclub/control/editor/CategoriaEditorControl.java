@@ -1,5 +1,6 @@
 package tiendaclub.control.editor;
 
+import com.google.common.base.Strings;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,13 +36,13 @@ public class CategoriaEditorControl extends GridControl<Categoria> {
 
     @Override
     public void updateEditee(Categoria editee) {
-        editee.setNombre(StaticHelpers.getTextOrNull(fxNombre));
+        editee.setNombre(StaticHelpers.textInputEmptyToNull(fxNombre));
         editee.setActivo(fxCheckActivo.isSelected());
     }
 
     @Override
     public Categoria buildNew() {
-        Categoria editee = new Categoria(StaticHelpers.getTextOrNull(fxNombre));
+        Categoria editee = new Categoria(StaticHelpers.textInputEmptyToNull(fxNombre));
         editee.setActivo(fxCheckActivo.isSelected());
         return editee;
     }
@@ -49,8 +50,8 @@ public class CategoriaEditorControl extends GridControl<Categoria> {
     @Override
     public void setFields(Categoria editee) {
         if (editee.getId() > 0)
-            fxId.setText((editee.getId() + ""));
-        fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
+            fxId.setText((Integer.toString(editee.getId())));
+        fxNombre.setText(Strings.nullToEmpty(editee.getNombre()));
         fxCheckActivo.setSelected(editee.isActivo());
     }
 

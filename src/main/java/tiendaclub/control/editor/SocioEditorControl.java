@@ -1,5 +1,6 @@
 package tiendaclub.control.editor;
 
+import com.google.common.base.Strings;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import javafx.fxml.FXML;
@@ -55,12 +56,12 @@ public class SocioEditorControl extends GridControl<Socio> {
 
     @Override
     public void updateEditee(Socio editee) {
-        editee.setDni(StaticHelpers.getTextOrNull(fxDni));
-        editee.setNombre(StaticHelpers.getTextOrNull(fxNombre));
-        editee.setTelefono(StaticHelpers.getTextOrNull(fxTelefono));
-        editee.setEmail(StaticHelpers.getTextOrNull(fxEmail));
-        editee.setDireccion(StaticHelpers.getTextOrNull(fxDireccion));
-        editee.setDescripcion(StaticHelpers.getTextOrNull(fxDescripcion));
+        editee.setDni(StaticHelpers.textInputEmptyToNull(fxDni));
+        editee.setNombre(StaticHelpers.textInputEmptyToNull(fxNombre));
+        editee.setTelefono(StaticHelpers.textInputEmptyToNull(fxTelefono));
+        editee.setEmail(StaticHelpers.textInputEmptyToNull(fxEmail));
+        editee.setDireccion(StaticHelpers.textInputEmptyToNull(fxDireccion));
+        editee.setDescripcion(StaticHelpers.textInputEmptyToNull(fxDescripcion));
         editee.setFechaIn(
             fxPickerFechaIn.getText().length() < 1 ? LocalDateTime.now() : fxPickerFechaIn.getLocalDateTime());
         editee.setActivo(fxCheckActivo.isSelected());
@@ -76,13 +77,13 @@ public class SocioEditorControl extends GridControl<Socio> {
     @Override
     public void setFields(Socio editee) {
         if (editee.getId() > 0)
-            fxId.setText((editee.getId() + ""));
-        fxDni.setText(StaticHelpers.getNotNullText(editee.getDni()));
-        fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
-        fxTelefono.setText(StaticHelpers.getNotNullText(editee.getTelefono()));
-        fxEmail.setText(StaticHelpers.getNotNullText(editee.getEmail()));
-        fxDireccion.setText(StaticHelpers.getNotNullText(editee.getDireccion()));
-        fxDescripcion.setText(StaticHelpers.getNotNullText(editee.getDescripcion()));
+            fxId.setText((Integer.toString(editee.getId())));
+        fxDni.setText(Strings.nullToEmpty(editee.getDni()));
+        fxNombre.setText(Strings.nullToEmpty(editee.getNombre()));
+        fxTelefono.setText(Strings.nullToEmpty(editee.getTelefono()));
+        fxEmail.setText(Strings.nullToEmpty(editee.getEmail()));
+        fxDireccion.setText(Strings.nullToEmpty(editee.getDireccion()));
+        fxDescripcion.setText(Strings.nullToEmpty(editee.getDescripcion()));
         fxPickerFechaIn.setLocalDateTime(editee.getFechaIn());
         fxCheckActivo.setSelected(editee.isActivo());
     }

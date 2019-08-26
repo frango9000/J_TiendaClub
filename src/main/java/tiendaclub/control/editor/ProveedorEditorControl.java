@@ -1,5 +1,6 @@
 package tiendaclub.control.editor;
 
+import com.google.common.base.Strings;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,12 +53,12 @@ public class ProveedorEditorControl extends GridControl<Proveedor> {
 
     @Override
     public void updateEditee(Proveedor editee) {
-        editee.setNif(StaticHelpers.getTextOrNull(fxNif));
-        editee.setNombre(StaticHelpers.getTextOrNull(fxNombre));
-        editee.setTelefono(StaticHelpers.getTextOrNull(fxTelefono));
-        editee.setEmail(StaticHelpers.getTextOrNull(fxEmail));
-        editee.setDireccion(StaticHelpers.getTextOrNull(fxDireccion));
-        editee.setDescripcion(StaticHelpers.getTextOrNull(fxDescripcion));
+        editee.setNif(StaticHelpers.textInputEmptyToNull(fxNif));
+        editee.setNombre(StaticHelpers.textInputEmptyToNull(fxNombre));
+        editee.setTelefono(StaticHelpers.textInputEmptyToNull(fxTelefono));
+        editee.setEmail(StaticHelpers.textInputEmptyToNull(fxEmail));
+        editee.setDireccion(StaticHelpers.textInputEmptyToNull(fxDireccion));
+        editee.setDescripcion(StaticHelpers.textInputEmptyToNull(fxDescripcion));
         editee.setActivo(fxCheckActivo.isSelected());
     }
 
@@ -71,13 +72,13 @@ public class ProveedorEditorControl extends GridControl<Proveedor> {
     @Override
     public void setFields(Proveedor editee) {
         if (editee.getId() > 0)
-            fxId.setText((editee.getId() + ""));
-        fxNif.setText(StaticHelpers.getNotNullText(editee.getNif()));
-        fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
-        fxTelefono.setText(StaticHelpers.getNotNullText(editee.getTelefono()));
-        fxEmail.setText(StaticHelpers.getNotNullText(editee.getEmail()));
-        fxDireccion.setText(StaticHelpers.getNotNullText(editee.getDireccion()));
-        fxDescripcion.setText(StaticHelpers.getNotNullText(editee.getDescripcion()));
+            fxId.setText((Integer.toString(editee.getId())));
+        fxNif.setText(Strings.nullToEmpty(editee.getNif()));
+        fxNombre.setText(Strings.nullToEmpty(editee.getNombre()));
+        fxTelefono.setText(Strings.nullToEmpty(editee.getTelefono()));
+        fxEmail.setText(Strings.nullToEmpty(editee.getEmail()));
+        fxDireccion.setText(Strings.nullToEmpty(editee.getDireccion()));
+        fxDescripcion.setText(Strings.nullToEmpty(editee.getDescripcion()));
         fxCheckActivo.setSelected(editee.isActivo());
     }
 

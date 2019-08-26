@@ -1,5 +1,6 @@
 package tiendaclub.control.editor;
 
+import com.google.common.base.Strings;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,18 +54,18 @@ public class ProductoEditorControl extends GridControl<Producto> {
 
     @Override
     public void updateEditee(Producto editee) {
-        editee.setNombre(StaticHelpers.getTextOrNull(fxNombre));
+        editee.setNombre(StaticHelpers.textInputEmptyToNull(fxNombre));
         editee.setPrecioVenta(Integer.parseInt(fxPrecio.getText()));
         editee.setIva(fxIva.getText().trim().length() > 0 ? Integer.parseInt(fxIva.getText().trim()) : 0);
         editee.setCategoria(fxCbxCategoria.getSelectionModel().getSelectedItem());
-        editee.setDescripcion(StaticHelpers.getTextOrNull(fxDescripcion));
+        editee.setDescripcion(StaticHelpers.textInputEmptyToNull(fxDescripcion));
         editee.setActivo(fxCheckActivo.isSelected());
     }
 
     @Override
     public Producto buildNew() {
-        Producto editee = new Producto(StaticHelpers.getTextOrNull(fxNombre), fxCbxCategoria.getSelectionModel()
-                                                                                            .getSelectedItem());
+        Producto editee = new Producto(StaticHelpers.textInputEmptyToNull(fxNombre), fxCbxCategoria.getSelectionModel()
+                                                                                                   .getSelectedItem());
         updateEditee(editee);
         return editee;
     }
@@ -72,13 +73,13 @@ public class ProductoEditorControl extends GridControl<Producto> {
     @Override
     public void setFields(Producto editee) {
         if (editee.getId() > 0) {
-            fxId.setText((editee.getId() + ""));
+            fxId.setText((Integer.toString(editee.getId())));
         }
-        fxNombre.setText(StaticHelpers.getNotNullText(editee.getNombre()));
+        fxNombre.setText(Strings.nullToEmpty(editee.getNombre()));
         fxPrecio.setText(Integer.toString(editee.getPrecioVenta()));
         fxIva.setText(Integer.toString(editee.getIva()));
         fxCbxCategoria.getSelectionModel().select(editee.getCategoria());
-        fxDescripcion.setText(StaticHelpers.getNotNullText(editee.getDescripcion()));
+        fxDescripcion.setText(Strings.nullToEmpty(editee.getDescripcion()));
         fxCheckActivo.setSelected(editee.isActivo());
     }
 
