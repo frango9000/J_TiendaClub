@@ -4,14 +4,14 @@ import java.util.Set;
 import java.util.function.Function;
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.SessionDB;
-import tiendaclub.data.framework.index.core.maps.IndexSetMultimap;
+import tiendaclub.data.framework.index.core.maps.SetIndexMultimap;
 import tiendaclub.model.models.core.IPersistible;
 
 public abstract class SetMultiMapIndex<K, V extends IPersistible> extends AbstractIndex<K, V> {
 
     public SetMultiMapIndex(DataSource<V> dataSource, String indexColumnName, Function<V, K> keyValueFunction) {
         super(dataSource, indexColumnName, keyValueFunction);
-        this.index = new IndexSetMultimap<K, V>();
+        this.index = new SetIndexMultimap<K, V>();
     }
 
     @Override

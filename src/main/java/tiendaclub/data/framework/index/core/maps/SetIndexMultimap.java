@@ -12,15 +12,15 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class IndexSetMultimap<K, V> implements IIndexMap<K, V> {
+public class SetIndexMultimap<K, V> implements IIndexMap<K, V> {
 
     private SetMultimap<K, V> map;
 
-    public IndexSetMultimap() {
+    public SetIndexMultimap() {
         this.map = MultimapBuilder.SetMultimapBuilder.hashKeys().hashSetValues().build();
     }
 
-    public IndexSetMultimap(int keysSize) {
+    public SetIndexMultimap(int keysSize) {
         this.map = MultimapBuilder.SetMultimapBuilder.hashKeys(keysSize).hashSetValues().build();
     }
 

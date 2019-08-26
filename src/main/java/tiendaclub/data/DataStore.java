@@ -6,6 +6,7 @@ import tiendaclub.data.framework.dao.CierreZDao;
 import tiendaclub.data.framework.dao.CompraDao;
 import tiendaclub.data.framework.dao.CompradoDao;
 import tiendaclub.data.framework.dao.ProductoDao;
+import tiendaclub.data.framework.dao.SocioDao;
 import tiendaclub.data.framework.dao.TransferenciaDao;
 import tiendaclub.data.framework.dao.UsuarioDao;
 import tiendaclub.data.framework.dao.VendidoDao;
@@ -39,7 +40,7 @@ public class DataStore {
     private static CompradoDao comprados = new CompradoDao();
     private static ProductoDao productos = new ProductoDao();
     private static IndexIdActiveDao<Proveedor> proveedores = new IndexIdActiveDao<>(Proveedor.TABLE_NAME);
-    private static IndexIdActiveDao<Socio> socios = new IndexIdActiveDao<>(Socio.TABLE_NAME);
+    private static SocioDao socios = new SocioDao();
     private static TransferenciaDao transferencias = new TransferenciaDao();
     private static UsuarioDao usuarios = new UsuarioDao();
     private static VendidoDao vendidos = new VendidoDao();
@@ -81,7 +82,7 @@ public class DataStore {
         return proveedores;
     }
 
-    public static IndexIdActiveDao<Socio> getSocios() {
+    public static SocioDao getSocios() {
         return socios;
     }
 

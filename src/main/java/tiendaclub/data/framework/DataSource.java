@@ -203,7 +203,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         return queryLike(colName, string, true);
     }
 
-    private Set<V> queryGreaterLesser(String colName, String string, boolean greaterThan, boolean inclusive) {
+    public Set<V> queryGreaterLesser(String colName, String string, boolean greaterThan, boolean inclusive) {
         HashSet<V> returnSet = Sets.newHashSet();
         if (string != null && string.length() > 0)
             if (SessionDB.connect()) {

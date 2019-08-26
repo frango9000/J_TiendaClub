@@ -1,12 +1,10 @@
 package tiendaclub.data.framework.index.core.maps;
 
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import java.util.AbstractMap;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -14,13 +12,10 @@ import java.util.function.BiConsumer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class IndexHashMap<K, V> implements IIndexMap<K, V> {
+public abstract class AbstractIndexMap<K, V> implements IIndexMap<K, V> {
 
-    private HashMap<K, V> map;
+    protected Map<K, V> map;
 
-    public IndexHashMap() {
-        this.map = Maps.newHashMap();
-    }
 
     @Override
     public int size() {

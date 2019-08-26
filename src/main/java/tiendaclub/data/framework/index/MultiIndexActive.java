@@ -3,14 +3,14 @@ package tiendaclub.data.framework.index;
 import java.util.Set;
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.SetMultiMapIndex;
-import tiendaclub.data.framework.index.core.maps.IndexSetMultimap;
+import tiendaclub.data.framework.index.core.maps.SetIndexMultimap;
 import tiendaclub.model.models.core.Activable;
 
 public class MultiIndexActive<V extends Activable> extends SetMultiMapIndex<Boolean, V> {
 
     public MultiIndexActive(DataSource<V> dataSource) {
         super(dataSource, "activo", Activable::isActivo);
-        this.index = new IndexSetMultimap<>(2);
+        this.index = new SetIndexMultimap<>(2);
     }
 
     @Override
