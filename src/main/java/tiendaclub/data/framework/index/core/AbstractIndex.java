@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.maps.IIndexMap;
-import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.data.framework.model.IPersistible;
 
 public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex<K, V> {
 

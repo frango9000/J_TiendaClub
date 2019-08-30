@@ -8,10 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import javafx.scene.layout.Pane;
+import tiendaclub.data.dao.core.PersistibleDao;
+import tiendaclub.data.framework.model.Persistible;
 import tiendaclub.misc.Flogger;
-import tiendaclub.model.models.core.Persistible;
 import tiendaclub.view.FxDialogs;
 
 public class EditorControl<T extends Persistible> extends BorderPane {
@@ -23,8 +23,9 @@ public class EditorControl<T extends Persistible> extends BorderPane {
     protected T editee;
     protected boolean creating = true;
     protected GridControl<T> gridControl;
+    protected PersistibleDao<T> dataOrigin;
 
-    protected EditorControl() {
+    {
         try {
             final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/editor/GenericEditorPane.fxml"));
             fxmlLoader.setRoot(this);
@@ -35,20 +36,15 @@ public class EditorControl<T extends Persistible> extends BorderPane {
         }
     }
 
-    public void setGridControl(GridControl<T> gridControl) {
+    public EditorControl(T editee, PersistibleDao<T> dataOrigin, GridControl<T> gridControl, Pane gridpane) {
+        this.dataOrigin  = dataOrigin;
         this.gridControl = gridControl;
-        gridControl.setFxButtonMenu(fxButtonMenu);
-    }
-
-    public void setGridPane(GridPane gridPane) {
-        setCenter(gridPane);
-    }
-
-    public void setEditee(@NonNull T editee) {
-        this.editee = editee;
-        creating    = false;
-        gridControl.setFields(editee);
-        System.out.println(editee.toString());
+        setCenter(gridpane);
+        if (editee != null) {
+            creating    = false;
+            this.editee = editee;
+            gridControl.setFields(this.editee);
+        }
     }
 
     @FXML

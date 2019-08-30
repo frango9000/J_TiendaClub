@@ -1,6 +1,6 @@
-package tiendaclub.data.framework.dao;
+package tiendaclub.data.dao;
 
-import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.data.framework.index.MultiIndexPersistible;
 import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Sede;

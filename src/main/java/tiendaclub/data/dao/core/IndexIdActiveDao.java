@@ -1,4 +1,4 @@
-package tiendaclub.data.framework.dao.core;
+package tiendaclub.data.dao.core;
 
 import tiendaclub.data.framework.index.MultiIndexActive;
 import tiendaclub.model.models.core.Activable;

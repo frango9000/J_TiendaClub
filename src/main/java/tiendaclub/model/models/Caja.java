@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.model.models.core.Activable;
-import tiendaclub.model.models.core.IPersistible;
 
 public class Caja extends Activable {
 

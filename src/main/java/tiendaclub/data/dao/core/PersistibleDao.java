@@ -1,10 +1,10 @@
-package tiendaclub.data.framework.dao.core;
+package tiendaclub.data.dao.core;
 
 import java.util.ArrayList;
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.IIndex;
+import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.misc.Globals;
-import tiendaclub.model.models.core.IPersistible;
 
 public class PersistibleDao<V extends IPersistible> implements Globals {
 

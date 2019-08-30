@@ -2,7 +2,7 @@ package tiendaclub.data.framework.index;
 
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.SimpleMapIndex;
-import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.data.framework.model.IPersistible;
 
 public class UniqueIndexId<V extends IPersistible> extends SimpleMapIndex<Integer, V> {
 

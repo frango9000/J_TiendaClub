@@ -12,9 +12,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import tiendaclub.data.framework.index.core.IIndex;
+import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.misc.Flogger;
 import tiendaclub.misc.Globals;
-import tiendaclub.model.models.core.IPersistible;
 
 @SuppressWarnings("unchecked") //TODO verify casting
 public class DataSource<V extends IPersistible> implements Globals {

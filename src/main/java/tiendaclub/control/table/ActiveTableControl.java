@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.misc.Flogger;
 import tiendaclub.model.models.core.Activable;
 import tiendaclub.view.FxDialogs;

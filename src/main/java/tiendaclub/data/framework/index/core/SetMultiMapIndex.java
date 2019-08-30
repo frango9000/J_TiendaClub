@@ -5,7 +5,7 @@ import java.util.function.Function;
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.SessionDB;
 import tiendaclub.data.framework.index.core.maps.SetIndexMultimap;
-import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.data.framework.model.IPersistible;
 
 public abstract class SetMultiMapIndex<K, V extends IPersistible> extends AbstractIndex<K, V> {
 

@@ -2,6 +2,7 @@ package tiendaclub.data.framework;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.misc.Globals;
 import tiendaclub.model.models.Acceso;
 import tiendaclub.model.models.Caja;
@@ -17,7 +18,6 @@ import tiendaclub.model.models.Transferencia;
 import tiendaclub.model.models.Usuario;
 import tiendaclub.model.models.Vendido;
 import tiendaclub.model.models.Venta;
-import tiendaclub.model.models.core.IPersistible;
 
 public class DataFactory implements Globals {
 

@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.misc.DateUtils;
 import tiendaclub.model.models.core.Activable;
-import tiendaclub.model.models.core.IPersistible;
 
 public class Socio extends Activable {
 

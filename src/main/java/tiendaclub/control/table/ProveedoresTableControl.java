@@ -2,10 +2,8 @@ package tiendaclub.control.table;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import tiendaclub.control.editor.EditorControl;
-import tiendaclub.control.editor.ProveedorEditorControl;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.model.models.Proveedor;
 
 public class ProveedoresTableControl extends ActiveTableControl<Proveedor> {
@@ -34,14 +32,15 @@ public class ProveedoresTableControl extends ActiveTableControl<Proveedor> {
         addContent();
     }
 
+    @Override
+    protected String fxmlLocation() {
+        return "/fxml/editor/ProveedorEditorGridPane.fxml";
+    }
+
 
     @Override
     protected IndexIdActiveDao<Proveedor> getDataOrigin() {
         return DataStore.getProveedores();
     }
 
-    @Override
-    protected EditorControl<Proveedor> getEditorControl() {
-        return ProveedorEditorControl.getPane();
-    }
 }

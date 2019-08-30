@@ -3,10 +3,8 @@ package tiendaclub.control.table;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import tiendaclub.control.editor.EditorControl;
-import tiendaclub.control.editor.SedeEditorControl;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.model.models.Sede;
 
 public class SedesTableControl extends ActiveTableControl<Sede> {
@@ -30,12 +28,12 @@ public class SedesTableControl extends ActiveTableControl<Sede> {
     }
 
     @Override
-    protected IndexIdActiveDao<Sede> getDataOrigin() {
-        return DataStore.getSedes();
+    protected String fxmlLocation() {
+        return "/fxml/editor/SedeEditorGridPane.fxml";
     }
 
     @Override
-    protected EditorControl<Sede> getEditorControl() {
-        return SedeEditorControl.getPane();
+    protected IndexIdActiveDao<Sede> getDataOrigin() {
+        return DataStore.getSedes();
     }
 }

@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import tiendaclub.model.models.core.IPersistible;
-import tiendaclub.model.models.core.Persistible;
+import tiendaclub.data.framework.model.IPersistible;
+import tiendaclub.data.framework.model.Persistible;
 
 public class Acceso extends Persistible {
 

@@ -2,10 +2,8 @@ package tiendaclub.control.table;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import tiendaclub.control.editor.EditorControl;
-import tiendaclub.control.editor.SocioEditorControl;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.model.models.Socio;
 
 public class SociosTableControl extends ActiveTableControl<Socio> {
@@ -34,14 +32,14 @@ public class SociosTableControl extends ActiveTableControl<Socio> {
         addContent();
     }
 
+    @Override
+    protected String fxmlLocation() {
+        return "/fxml/editor/SocioEditorGridPane.fxml";
+    }
+
 
     @Override
     protected IndexIdActiveDao<Socio> getDataOrigin() {
         return DataStore.getSocios();
-    }
-
-    @Override
-    protected EditorControl<Socio> getEditorControl() {
-        return SocioEditorControl.getPane();
     }
 }

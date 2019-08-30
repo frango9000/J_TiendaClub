@@ -1,7 +1,7 @@
-package tiendaclub.data.framework.dao.core;
+package tiendaclub.data.dao.core;
 
 import tiendaclub.data.framework.index.UniqueIndexId;
-import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.data.framework.model.IPersistible;
 
 public class IndexIdDao<V extends IPersistible> extends PersistibleDao<V> {
 

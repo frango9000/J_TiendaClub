@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.function.Function;
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.maps.TreeIndexMap;
-import tiendaclub.model.models.core.Persistible;
+import tiendaclub.data.framework.model.Persistible;
 
 public class SimpleTreeMapIndex<K extends Comparable, V extends Persistible> extends SimpleMapIndex<K, V> {
 

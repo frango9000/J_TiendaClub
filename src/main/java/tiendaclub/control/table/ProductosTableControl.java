@@ -2,10 +2,8 @@ package tiendaclub.control.table;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import tiendaclub.control.editor.EditorControl;
-import tiendaclub.control.editor.ProductoEditorControl;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.model.models.Categoria;
 import tiendaclub.model.models.Producto;
 
@@ -31,14 +29,16 @@ public class ProductosTableControl extends ActiveTableControl<Producto> {
         addContent();
     }
 
+    @Override
+    protected String fxmlLocation() {
+        return "/fxml/editor/ProductoEditorGridPane.fxml";
+    }
+
 
     @Override
     protected IndexIdActiveDao<Producto> getDataOrigin() {
         return DataStore.getProductos();
     }
 
-    @Override
-    protected EditorControl<Producto> getEditorControl() {
-        return ProductoEditorControl.getPane();
-    }
+
 }

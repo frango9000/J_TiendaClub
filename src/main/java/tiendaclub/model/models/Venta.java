@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.framework.model.IPersistible;
+import tiendaclub.data.framework.model.Persistible;
 import tiendaclub.misc.DateUtils;
-import tiendaclub.model.models.core.IPersistible;
-import tiendaclub.model.models.core.Persistible;
 
 public class Venta extends Persistible {
 

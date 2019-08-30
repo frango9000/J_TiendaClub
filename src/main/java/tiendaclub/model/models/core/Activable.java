@@ -2,6 +2,7 @@ package tiendaclub.model.models.core;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import tiendaclub.data.framework.model.Persistible;
 
 public abstract class Activable extends Persistible {
 

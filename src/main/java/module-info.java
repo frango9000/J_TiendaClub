@@ -14,5 +14,6 @@ module tiendaclub {
     opens tiendaclub.control.table to javafx.fxml;
     opens tiendaclub.model.models.core to javafx.base;
     opens tiendaclub.model.models to javafx.base;
+    opens tiendaclub.data.framework.model to javafx.base;
     exports tiendaclub;
 }

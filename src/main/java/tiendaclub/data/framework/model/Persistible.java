@@ -1,11 +1,11 @@
-package tiendaclub.model.models.core;
+package tiendaclub.data.framework.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.framework.dao.core.PersistibleDao;
+import tiendaclub.data.dao.core.PersistibleDao;
 
 public abstract class Persistible extends Identifiable implements IPersistible, Cloneable, Serializable {
 

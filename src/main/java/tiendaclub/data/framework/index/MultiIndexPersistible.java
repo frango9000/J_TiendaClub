@@ -6,7 +6,7 @@ import java.util.function.Function;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.SetMultiMapIndex;
-import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.data.framework.model.IPersistible;
 
 public class MultiIndexPersistible<R extends IPersistible, V extends IPersistible> extends SetMultiMapIndex<Integer, V> {
 

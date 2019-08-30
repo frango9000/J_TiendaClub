@@ -1,7 +1,7 @@
-package tiendaclub.data.framework.dao;
+package tiendaclub.data.dao;
 
 import java.time.LocalDateTime;
-import tiendaclub.data.framework.dao.core.IndexIdActiveDao;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.data.framework.index.core.SimpleTreeMapIndex;
 import tiendaclub.model.models.Socio;
 

@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.function.Function;
 import tiendaclub.data.framework.DataSource;
 import tiendaclub.data.framework.index.core.maps.HashIndexMap;
-import tiendaclub.model.models.core.IPersistible;
+import tiendaclub.data.framework.model.IPersistible;
 
 public class SimpleMapIndex<K, V extends IPersistible> extends AbstractIndex<K, V> {
 

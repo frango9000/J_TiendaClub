@@ -1,9 +1,7 @@
 package tiendaclub.control.editor;
 
 import com.google.common.base.Strings;
-import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -25,17 +23,6 @@ public class SedeEditorControl extends GridControl<Sede> {
     @FXML
     private CheckBox fxCheckActivo;
 
-    public static EditorControl<Sede> getPane() {
-        EditorControl<Sede> sedeControl = new EditorControl<>();
-        FXMLLoader loader = new FXMLLoader(EditorControl.class.getResource("/fxml/editor/SedeEditorGridPane.fxml"));
-        try {
-            sedeControl.setGridPane(loader.load());
-            sedeControl.setGridControl(loader.getController());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sedeControl;
-    }
 
     @FXML
     public void initialize() {
