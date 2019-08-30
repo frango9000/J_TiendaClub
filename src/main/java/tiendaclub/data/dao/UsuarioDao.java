@@ -12,7 +12,7 @@ public class UsuarioDao extends IndexIdActiveDao<Usuario> {
     private MultiIndexPersistible<Acceso, Usuario> indexAcceso = new MultiIndexPersistible<>(getDataSource(), "idAcceso", Usuario::getIdAcceso);
 
     public UsuarioDao() {
-        super(Usuario.TABLE_NAME);
+        super(Usuario.TABLE_NAME, Usuario.class);
         indexes.add(indexAcceso);
         indexes.add(usernameIndex);
     }

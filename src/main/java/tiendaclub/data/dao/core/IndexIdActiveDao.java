@@ -8,8 +8,8 @@ public class IndexIdActiveDao<V extends Activable> extends IndexIdDao<V> {
 
     private MultiIndexActive<V> indexActive = new MultiIndexActive<>(dataSource);
 
-    public IndexIdActiveDao(String tableName) {
-        super(tableName);
+    public IndexIdActiveDao(String tableName, Class<V> clazz) {
+        super(tableName, clazz);
         indexes.add(indexActive);
     }
 

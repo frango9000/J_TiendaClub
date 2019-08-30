@@ -71,6 +71,7 @@ public class CierreZ extends Persistible {
     public CierreZDao getDataStore() {
         return DataStore.getCierreZs();
     }
+
     public int getIdCaja() {
         return idCaja;
     }

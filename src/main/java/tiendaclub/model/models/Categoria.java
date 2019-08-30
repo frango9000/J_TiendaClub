@@ -19,6 +19,7 @@ public class Categoria extends Activable {
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nombre", "activo"));
 
     protected String nombre;
+
     public Categoria(int id, String nombre) {
         super(id);
         setNombre(nombre);

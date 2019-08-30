@@ -20,15 +20,15 @@ import tiendaclub.model.models.Sede;
 
 public class DataStore {
 
-    private static IndexIdDao<Acceso> accesos = new IndexIdDao<>(Acceso.TABLE_NAME);
-    private static IndexIdActiveDao<Sede> sedes = new IndexIdActiveDao<>(Sede.TABLE_NAME);
+    private static IndexIdDao<Acceso> accesos = new IndexIdDao<>(Acceso.TABLE_NAME, Acceso.class);
+    private static IndexIdActiveDao<Sede> sedes = new IndexIdActiveDao<>(Sede.TABLE_NAME, Sede.class);
     private static CajaDao cajas = new CajaDao();
-    private static IndexIdActiveDao<Categoria> categorias = new IndexIdActiveDao<>(Categoria.TABLE_NAME);
+    private static IndexIdActiveDao<Categoria> categorias = new IndexIdActiveDao<>(Categoria.TABLE_NAME, Categoria.class);
     private static CierreZDao cierreZs = new CierreZDao();
     private static CompraDao compras = new CompraDao();
     private static CompradoDao comprados = new CompradoDao();
     private static ProductoDao productos = new ProductoDao();
-    private static IndexIdActiveDao<Proveedor> proveedores = new IndexIdActiveDao<>(Proveedor.TABLE_NAME);
+    private static IndexIdActiveDao<Proveedor> proveedores = new IndexIdActiveDao<>(Proveedor.TABLE_NAME, Proveedor.class);
     private static SocioDao socios = new SocioDao();
     private static TransferenciaDao transferencias = new TransferenciaDao();
     private static UsuarioDao usuarios = new UsuarioDao();
@@ -103,43 +103,4 @@ public class DataStore {
         DataStore.getProductos().getDataSource().queryAll();
         SessionDB.setAutoclose(true);
     }
-
-//    public static <T extends Persistible> IndexIdDao getDataStore(T t) {
-//        switch (t.getClass()){
-//
-//        }
-//        switch (t.getTableName()) {
-//            case Acceso.TABLE_NAME:
-//                return DataStore.getAccesos();
-//            case Sede.TABLE_NAME:
-//                return DataStore.getSedes();
-//            case Caja.TABLE_NAME:
-//                return DataStore.getCajas();
-//            case Categoria.TABLE_NAME:
-//                return DataStore.getCategorias();
-//            case CierreZ.TABLE_NAME:
-//                return DataStore.getCierreZs();
-//            case Compra.TABLE_NAME:
-//                return DataStore.getCompras();
-//            case Comprado.TABLE_NAME:
-//                return DataStore.getComprados();
-//            case Producto.TABLE_NAME:
-//                return DataStore.getProductos();
-//            case Proveedor.TABLE_NAME:
-//                return DataStore.getProveedores();
-//            case Socio.TABLE_NAME:
-//                return DataStore.getSocios();
-//            case Transferencia.TABLE_NAME:
-//                return DataStore.getTransferencias();
-//            case Usuario.TABLE_NAME:
-//                return DataStore.getUsuarios();
-//            case Vendido.TABLE_NAME:
-//                return DataStore.getVendidos();
-//            case Venta.TABLE_NAME:
-//                return DataStore.getVentas();
-//            default:
-//                throw new IllegalStateException("Unexpected value: " + t.getTableName());
-//        }
-//    }
-
 }

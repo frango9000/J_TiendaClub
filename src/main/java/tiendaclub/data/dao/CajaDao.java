@@ -10,7 +10,7 @@ public class CajaDao extends IndexIdActiveDao<Caja> {
     private MultiIndexPersistible<Sede, Caja> indexSede = new MultiIndexPersistible<>(getDataSource(), "idSede", Caja::getIdSede);
 
     public CajaDao() {
-        super(Caja.TABLE_NAME);
+        super(Caja.TABLE_NAME, Caja.class);
         indexes.add(indexSede);
     }
 

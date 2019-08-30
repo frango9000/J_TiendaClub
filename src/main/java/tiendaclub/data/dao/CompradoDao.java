@@ -11,7 +11,7 @@ public class CompradoDao extends IndexIdDao<Comprado> {
     //private MultiIndexPersistible<Producto, Comprado> indexProducto = new MultiIndexPersistible<>(getDataSource(), "idProducto", Comprado::getIdProducto);
 
     public CompradoDao() {
-        super(Comprado.TABLE_NAME);
+        super(Comprado.TABLE_NAME, Comprado.class);
         indexes.add(indexCompra);
         //indexes.add(indexProducto);
     }

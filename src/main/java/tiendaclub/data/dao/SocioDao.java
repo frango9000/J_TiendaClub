@@ -10,7 +10,7 @@ public class SocioDao extends IndexIdActiveDao<Socio> {
     private SimpleTreeMapIndex<LocalDateTime, Socio> indexFechaIn = new SimpleTreeMapIndex<LocalDateTime, Socio>(getDataSource(), "fecha_in", Socio::getFechaIn);
 
     public SocioDao() {
-        super(Socio.TABLE_NAME);
+        super(Socio.TABLE_NAME, Socio.class);
         indexes.add(indexFechaIn);
     }
 

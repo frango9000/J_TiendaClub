@@ -15,7 +15,7 @@ public class TransferenciaDao extends IndexIdDao<Transferencia> {
     private MultiIndexPersistible<Producto, Transferencia> indexProducto = new MultiIndexPersistible<>(getDataSource(), "idProducto", Transferencia::getIdProducto);
 
     public TransferenciaDao() {
-        super(Transferencia.TABLE_NAME);
+        super(Transferencia.TABLE_NAME, Transferencia.class);
         indexes.add(indexUsuario);
         indexes.add(indexSedeOrigen);
         indexes.add(indexSedeDestino);

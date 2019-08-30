@@ -10,7 +10,7 @@ public class ProductoDao extends IndexIdActiveDao<Producto> {
     private MultiIndexPersistible<Categoria, Producto> indexCategoria = new MultiIndexPersistible<>(getDataSource(), "idCategoria", Producto::getIdCategoria);
 
     public ProductoDao() {
-        super(Producto.TABLE_NAME);
+        super(Producto.TABLE_NAME, Producto.class);
         indexes.add(indexCategoria);
     }
 

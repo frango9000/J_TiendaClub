@@ -1,6 +1,7 @@
 package tiendaclub.data.framework;
 
 import com.google.common.collect.Sets;
+import java.lang.reflect.ParameterizedType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,6 @@ import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.misc.Flogger;
 import tiendaclub.misc.Globals;
 
-@SuppressWarnings("unchecked") //TODO verify casting
 public class DataSource<V extends IPersistible> implements Globals {
 
     public String idColName = "id";
@@ -24,9 +24,26 @@ public class DataSource<V extends IPersistible> implements Globals {
 
     protected ArrayList<IIndex<?, V>> indexes;
 
-    public DataSource(String tableName, ArrayList<IIndex<?, V>> indexes) {
+    protected Class<V> clazz; // V = Entity Class
+
+    public DataSource(String tableName, ArrayList<IIndex<?, V>> indexes, Class<V> clazz) {
         this.tableName = tableName;
         this.indexes   = indexes;
+        if (clazz != null) {
+            this.clazz = clazz;
+        } else
+            findGenericClass();
+    }
+
+    public DataSource(String tableName, ArrayList<IIndex<?, V>> indexes) {
+        this(tableName, indexes, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Class<V> findGenericClass() {
+        if (clazz == null)
+            clazz = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        return clazz;
     }
 
     protected static void printSql(String sql) {
@@ -39,16 +56,16 @@ public class DataSource<V extends IPersistible> implements Globals {
         return idColName;
     }
 
+    public void setIdColName(String idColName) {
+        this.idColName = idColName;
+    }
+
     public String getTableName() {
         return tableName;
     }
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
-    }
-
-    public void setIdColName(String idColName) {
-        this.idColName = idColName;
     }
 
     public ArrayList<IIndex<?, V>> getIndexes() {
@@ -78,7 +95,7 @@ public class DataSource<V extends IPersistible> implements Globals {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", tableName, colName, unique.toString());
             try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    objecT = (V) DataFactory.buildObject(rs);
+                    objecT = DataFactory.buildObject(rs, clazz);
                     if (indexOn) {
                         index(objecT);
                     }
@@ -118,7 +135,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 try (Statement ps = SessionDB.getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        V objecT = (V) DataFactory.buildObject(rs);
+                        V objecT = DataFactory.buildObject(rs, clazz);
                         index(objecT);
                         returnSet.add(objecT);
                     }
@@ -159,7 +176,7 @@ public class DataSource<V extends IPersistible> implements Globals {
             try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 returnSet = Sets.newHashSetWithExpectedSize(rs.getFetchSize());
                 while (rs.next()) {
-                    V objecT = (V) DataFactory.buildObject(rs);
+                    V objecT = DataFactory.buildObject(rs, clazz);
                     index(objecT);
                     returnSet.add(objecT);
                 }
@@ -185,7 +202,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 try (Statement ps = SessionDB.getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        V objecT = (V) DataFactory.buildObject(rs);
+                        V objecT = DataFactory.buildObject(rs, clazz);
                         index(objecT);
                         returnSet.add(objecT);
                     }
@@ -212,7 +229,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 try (Statement ps = SessionDB.getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        V objecT = (V) DataFactory.buildObject(rs);
+                        V objecT = DataFactory.buildObject(rs, clazz);
                         index(objecT);
                         returnSet.add(objecT);
                     }
@@ -252,7 +269,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 try (Statement ps = SessionDB.getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        V objecT = (V) DataFactory.buildObject(rs);
+                        V objecT = DataFactory.buildObject(rs, clazz);
                         index(objecT);
                         returnSet.add(objecT);
                     }
@@ -312,7 +329,7 @@ public class DataSource<V extends IPersistible> implements Globals {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", tableName, col1Name, uni, col2Name, que);
             try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    objecT = (V) DataFactory.buildObject(rs);
+                    objecT = DataFactory.buildObject(rs, clazz);
                     index(objecT);
                 }
                 printSql(sql);
@@ -324,8 +341,6 @@ public class DataSource<V extends IPersistible> implements Globals {
         }
         return objecT;
     }
-
-
 
 
     public int insert(V objectV) {

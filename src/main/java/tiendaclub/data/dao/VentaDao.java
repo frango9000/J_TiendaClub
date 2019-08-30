@@ -17,7 +17,7 @@ public class VentaDao extends IndexIdDao<Venta> {
     private SimpleTreeMapIndex<LocalDateTime, Venta> indexFecha = new SimpleTreeMapIndex<>(getDataSource(), "fechahora", Venta::getFechahora);
 
     public VentaDao() {
-        super(Venta.TABLE_NAME);
+        super(Venta.TABLE_NAME, Venta.class);
         indexes.add(indexUsuario);
         indexes.add(indexCaja);
         indexes.add(indexSocio);

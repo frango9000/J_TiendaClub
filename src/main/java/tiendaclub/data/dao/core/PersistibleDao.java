@@ -12,10 +12,6 @@ public class PersistibleDao<V extends IPersistible> implements Globals {
 
     DataSource<V> dataSource;
 
-    public PersistibleDao(String tableName) {
-        this.dataSource = new DataSource<V>(tableName, getIndexes());
-    }
-
     public DataSource<V> getDataSource() {
         return dataSource;
     }

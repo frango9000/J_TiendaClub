@@ -10,7 +10,7 @@ public class CierreZDao extends IndexIdDao<CierreZ> {
     private MultiIndexPersistible<Caja, CierreZ> indexCaja = new MultiIndexPersistible<>(getDataSource(), "idCaja", CierreZ::getIdCaja);
 
     public CierreZDao() {
-        super(CierreZ.TABLE_NAME);
+        super(CierreZ.TABLE_NAME, CierreZ.class);
         indexes.add(indexCaja);
     }
 

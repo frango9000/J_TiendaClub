@@ -21,7 +21,7 @@ import tiendaclub.model.models.Venta;
 
 public class DataFactory implements Globals {
 
-    public static IPersistible buildObject(ResultSet rs) throws SQLException {
+    public static <T extends IPersistible> T buildObject(ResultSet rs, Class<T> clazz) throws SQLException {
         String originTable = rs.getMetaData().getTableName(1);
         IPersistible iPersistible = null;
         switch (originTable) {
@@ -73,6 +73,6 @@ public class DataFactory implements Globals {
         if (VERBOSE_FACTORY) {
             System.out.println(iPersistible.toString());
         }
-        return iPersistible;
+        return clazz.cast(iPersistible);
     }
 }

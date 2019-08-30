@@ -24,6 +24,7 @@ public class Comprado extends Persistible {
     protected int precioUnidad;
     private Compra compra;
     private Producto producto;
+
     private Comprado(int id, int idCompra, int idProducto, int cantidad, int precioUnidad) {
         super(id);
         setIdCompra(idCompra);
