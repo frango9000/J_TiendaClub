@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.model.models.core.Activable;
 
@@ -19,11 +21,6 @@ public class Sede extends Activable {
     protected String nombre;
     protected String telefono;
     protected String direccion;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public Sede(int id, String nombre) {
         super(id);
@@ -60,6 +57,17 @@ public class Sede extends Activable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public IndexIdActiveDao<Sede> getDataStore() {
+        return DataStore.getSedes();
     }
 
     public String getNombre() {

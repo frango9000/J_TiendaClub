@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.model.models.core.Activable;
 
@@ -17,12 +19,6 @@ public class Categoria extends Activable {
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nombre", "activo"));
 
     protected String nombre;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
-
     public Categoria(int id, String nombre) {
         super(id);
         setNombre(nombre);
@@ -54,12 +50,23 @@ public class Categoria extends Activable {
         return false;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public IndexIdActiveDao<Categoria> getDataStore() {
+        return DataStore.getCategorias();
+    }
+
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
     }
 
     @Override

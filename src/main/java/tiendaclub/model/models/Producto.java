@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.ProductoDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.model.models.core.Activable;
 
@@ -23,11 +24,6 @@ public class Producto extends Activable {
     protected int iva;
     protected int idCategoria;
     private Categoria categoria;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public Producto(int id, String nombre, int idCategoria) {
         super(id);
@@ -77,6 +73,17 @@ public class Producto extends Activable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public ProductoDao getDataStore() {
+        return DataStore.getProductos();
     }
 
     public String getNombre() {

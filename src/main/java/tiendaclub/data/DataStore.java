@@ -13,21 +13,10 @@ import tiendaclub.data.dao.VentaDao;
 import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.data.dao.core.IndexIdDao;
 import tiendaclub.data.framework.SessionDB;
-import tiendaclub.data.framework.model.Persistible;
 import tiendaclub.model.models.Acceso;
-import tiendaclub.model.models.Caja;
 import tiendaclub.model.models.Categoria;
-import tiendaclub.model.models.CierreZ;
-import tiendaclub.model.models.Compra;
-import tiendaclub.model.models.Comprado;
-import tiendaclub.model.models.Producto;
 import tiendaclub.model.models.Proveedor;
 import tiendaclub.model.models.Sede;
-import tiendaclub.model.models.Socio;
-import tiendaclub.model.models.Transferencia;
-import tiendaclub.model.models.Usuario;
-import tiendaclub.model.models.Vendido;
-import tiendaclub.model.models.Venta;
 
 public class DataStore {
 
@@ -54,7 +43,7 @@ public class DataStore {
         return sedes;
     }
 
-    public static IndexIdActiveDao<Caja> getCajas() {
+    public static CajaDao getCajas() {
         return cajas;
     }
 
@@ -62,19 +51,19 @@ public class DataStore {
         return categorias;
     }
 
-    public static IndexIdDao<CierreZ> getCierreZs() {
+    public static CierreZDao getCierreZs() {
         return cierreZs;
     }
 
-    public static IndexIdDao<Compra> getCompras() {
+    public static CompraDao getCompras() {
         return compras;
     }
 
-    public static IndexIdDao<Comprado> getComprados() {
+    public static CompradoDao getComprados() {
         return comprados;
     }
 
-    public static IndexIdActiveDao<Producto> getProductos() {
+    public static ProductoDao getProductos() {
         return productos;
     }
 
@@ -86,7 +75,7 @@ public class DataStore {
         return socios;
     }
 
-    public static IndexIdDao<Transferencia> getTransferencias() {
+    public static TransferenciaDao getTransferencias() {
         return transferencias;
     }
 
@@ -94,11 +83,11 @@ public class DataStore {
         return usuarios;
     }
 
-    public static IndexIdDao<Vendido> getVendidos() {
+    public static VendidoDao getVendidos() {
         return vendidos;
     }
 
-    public static IndexIdDao<Venta> getVentas() {
+    public static VentaDao getVentas() {
         return ventas;
     }
 
@@ -115,39 +104,42 @@ public class DataStore {
         SessionDB.setAutoclose(true);
     }
 
-    public static <T extends Persistible> IndexIdDao getDataStore(T t) {
-        switch (t.getTableName()) {
-            case Acceso.TABLE_NAME:
-                return DataStore.getAccesos();
-            case Sede.TABLE_NAME:
-                return DataStore.getSedes();
-            case Caja.TABLE_NAME:
-                return DataStore.getCajas();
-            case Categoria.TABLE_NAME:
-                return DataStore.getCategorias();
-            case CierreZ.TABLE_NAME:
-                return DataStore.getCierreZs();
-            case Compra.TABLE_NAME:
-                return DataStore.getCompras();
-            case Comprado.TABLE_NAME:
-                return DataStore.getComprados();
-            case Producto.TABLE_NAME:
-                return DataStore.getProductos();
-            case Proveedor.TABLE_NAME:
-                return DataStore.getProveedores();
-            case Socio.TABLE_NAME:
-                return DataStore.getSocios();
-            case Transferencia.TABLE_NAME:
-                return DataStore.getTransferencias();
-            case Usuario.TABLE_NAME:
-                return DataStore.getUsuarios();
-            case Vendido.TABLE_NAME:
-                return DataStore.getVendidos();
-            case Venta.TABLE_NAME:
-                return DataStore.getVentas();
-            default:
-                throw new IllegalStateException("Unexpected value: " + t.getTableName());
-        }
-    }
+//    public static <T extends Persistible> IndexIdDao getDataStore(T t) {
+//        switch (t.getClass()){
+//
+//        }
+//        switch (t.getTableName()) {
+//            case Acceso.TABLE_NAME:
+//                return DataStore.getAccesos();
+//            case Sede.TABLE_NAME:
+//                return DataStore.getSedes();
+//            case Caja.TABLE_NAME:
+//                return DataStore.getCajas();
+//            case Categoria.TABLE_NAME:
+//                return DataStore.getCategorias();
+//            case CierreZ.TABLE_NAME:
+//                return DataStore.getCierreZs();
+//            case Compra.TABLE_NAME:
+//                return DataStore.getCompras();
+//            case Comprado.TABLE_NAME:
+//                return DataStore.getComprados();
+//            case Producto.TABLE_NAME:
+//                return DataStore.getProductos();
+//            case Proveedor.TABLE_NAME:
+//                return DataStore.getProveedores();
+//            case Socio.TABLE_NAME:
+//                return DataStore.getSocios();
+//            case Transferencia.TABLE_NAME:
+//                return DataStore.getTransferencias();
+//            case Usuario.TABLE_NAME:
+//                return DataStore.getUsuarios();
+//            case Vendido.TABLE_NAME:
+//                return DataStore.getVendidos();
+//            case Venta.TABLE_NAME:
+//                return DataStore.getVentas();
+//            default:
+//                throw new IllegalStateException("Unexpected value: " + t.getTableName());
+//        }
+//    }
 
 }

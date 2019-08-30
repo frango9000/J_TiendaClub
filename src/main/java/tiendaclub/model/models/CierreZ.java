@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.CierreZDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.data.framework.model.Persistible;
 import tiendaclub.misc.DateUtils;
@@ -23,11 +24,6 @@ public class CierreZ extends Persistible {
     protected LocalDateTime apertura;
     protected LocalDateTime cierre;
     private Caja caja;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public CierreZ(int id, int idCaja, LocalDateTime apertura) {
         super(id);
@@ -69,6 +65,12 @@ public class CierreZ extends Persistible {
         return false;
     }
 
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public CierreZDao getDataStore() {
+        return DataStore.getCierreZs();
+    }
     public int getIdCaja() {
         return idCaja;
     }
@@ -105,6 +107,12 @@ public class CierreZ extends Persistible {
 
     private void updateCaja() {
         setCaja(DataStore.getCajas().getIndexId().getCacheValue(getIdCaja()));
+    }
+
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
     }
 
     @Override

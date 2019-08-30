@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.TransferenciaDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.data.framework.model.Persistible;
 import tiendaclub.misc.DateUtils;
@@ -30,11 +31,6 @@ public class Transferencia extends Persistible {
     private Sede sedeOrigen;
     private Sede sedeDestino;
     private Producto producto;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public Transferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad,
                          LocalDateTime fechahora) {
@@ -65,6 +61,17 @@ public class Transferencia extends Persistible {
 
     public Transferencia(ResultSet rs) throws SQLException {
         this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), DateUtils.toLocalDateTime(rs.getDate(7)));
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public TransferenciaDao getDataStore() {
+        return DataStore.getTransferencias();
     }
 
     @Override

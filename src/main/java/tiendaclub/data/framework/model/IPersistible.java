@@ -24,13 +24,13 @@ public interface IPersistible {
 
     <V extends IPersistible> boolean restoreFrom(@NonNull V objectV);
 
-    String getInsertString();
+    String getInsertString(String tableName);
 
-    String getUpdateString();
+    String getUpdateString(String tableName);
 
     <T extends IPersistible> PersistibleDao<T> getDataStore();
 
-    String getTableName();
+//    String getTableName();
 
     ArrayList<String> getColumnNames();
 

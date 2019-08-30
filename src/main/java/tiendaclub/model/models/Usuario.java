@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.UsuarioDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.model.models.core.Activable;
 
@@ -26,11 +27,6 @@ public class Usuario extends Activable {
     private String descripcion;
     private int idAcceso;
     private Acceso acceso;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public Usuario(int id, String username, int idAcceso) {
         super(id);
@@ -88,6 +84,17 @@ public class Usuario extends Activable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public UsuarioDao getDataStore() {
+        return DataStore.getUsuarios();
     }
 
     public String getUsername() {

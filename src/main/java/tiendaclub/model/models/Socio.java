@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.SocioDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.misc.DateUtils;
 import tiendaclub.model.models.core.Activable;
@@ -25,11 +27,6 @@ public class Socio extends Activable {
     protected String direccion;
     protected String descripcion;
     protected LocalDateTime fechaIn;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public Socio(int id, String dni) {
         super(id);
@@ -79,6 +76,17 @@ public class Socio extends Activable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public SocioDao getDataStore() {
+        return DataStore.getSocios();
     }
 
     public String getDni() {

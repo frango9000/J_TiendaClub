@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.CajaDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.model.models.core.Activable;
 
@@ -20,11 +21,6 @@ public class Caja extends Activable {
     protected int idSede;
     protected String nombre;
     private Sede sede;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public Caja(int id, int idSede, String nombre) {
         super(id);
@@ -66,6 +62,12 @@ public class Caja extends Activable {
         return false;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public CajaDao getDataStore() {
+        return DataStore.getCajas();
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -94,6 +96,11 @@ public class Caja extends Activable {
 
     private void updateSede() {
         setSede(DataStore.getSedes().getIndexId().getCacheValue(getIdSede()));
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
     }
 
     @Override

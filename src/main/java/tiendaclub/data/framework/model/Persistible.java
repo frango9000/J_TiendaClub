@@ -1,18 +1,11 @@
 package tiendaclub.data.framework.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import tiendaclub.data.DataStore;
 import tiendaclub.data.dao.core.PersistibleDao;
 
 public abstract class Persistible extends Identifiable implements IPersistible, Cloneable, Serializable {
-
-
-    protected String tableName;
-    protected ArrayList<String> columnNames;
-
 
     protected Object backup;
 
@@ -72,8 +65,8 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
     }
 
     @Override
-    public String getInsertString() {
-        final StringBuilder sql = new StringBuilder(String.format("INSERT INTO %s VALUES(NULL, ", getTableName()));
+    public String getInsertString(String tableName) {
+        final StringBuilder sql = new StringBuilder(String.format("INSERT INTO %s VALUES(NULL, ", tableName));
         int i = getColumnNames().size();
         while (i > 0) {
             sql.append("? ");
@@ -86,8 +79,8 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
     }
 
     @Override
-    public String getUpdateString() {
-        final StringBuilder sql = new StringBuilder(String.format("UPDATE %s SET ", getTableName()));
+    public String getUpdateString(String tableName) {
+        final StringBuilder sql = new StringBuilder(String.format("UPDATE %s SET ", tableName));
         Iterator<String> iterator = getColumnNames().iterator();
         while (iterator.hasNext()) {
             sql.append(iterator.next()).append(" = ? ");
@@ -99,25 +92,12 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
         return sql.toString();
     }
 
-    @SuppressWarnings("unchecked") // TODO verify cast
     @Override
-    public <V extends IPersistible> PersistibleDao<V> getDataStore() {
-        return DataStore.getDataStore(this);
-    }
+    public abstract <V extends IPersistible> PersistibleDao<V> getDataStore();
 
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
-    }
-
-    @Override
-    public String getTableName() {
-        return tableName;
-    }
-
-    @Override
-    public ArrayList<String> getColumnNames() {
-        return columnNames;
     }
 
     @Override

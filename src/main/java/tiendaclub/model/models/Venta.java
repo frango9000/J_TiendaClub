@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.VentaDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.data.framework.model.Persistible;
 import tiendaclub.misc.DateUtils;
@@ -26,11 +27,6 @@ public class Venta extends Persistible {
     private Usuario usuario;
     private Caja caja;
     private Socio socio;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public Venta(int id, int idUsuario, int idCaja, int idSocio, LocalDateTime fechahora) {
         super(id);
@@ -75,6 +71,17 @@ public class Venta extends Persistible {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public VentaDao getDataStore() {
+        return DataStore.getVentas();
     }
 
     public int getIdUsuario() {

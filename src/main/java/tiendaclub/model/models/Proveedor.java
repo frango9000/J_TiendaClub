@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.core.IndexIdActiveDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.model.models.core.Activable;
 
@@ -22,11 +24,6 @@ public class Proveedor extends Activable {
     protected String email;
     protected String direccion;
     protected String descripcion;
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public Proveedor(int id, String nif) {
         super(id);
@@ -73,6 +70,17 @@ public class Proveedor extends Activable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public IndexIdActiveDao<Proveedor> getDataStore() {
+        return DataStore.getProveedores();
     }
 
     public String getNif() {

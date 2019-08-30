@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import tiendaclub.data.DataStore;
+import tiendaclub.data.dao.core.IndexIdDao;
 import tiendaclub.data.framework.model.IPersistible;
 import tiendaclub.data.framework.model.Persistible;
 
@@ -17,23 +19,6 @@ public class Acceso extends Persistible {
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Collections.singletonList("nivel"));
 
     private String nivel;
-    //
-    //    int id;
-    //
-    //    @Override
-    //    public int getId() {
-    //        return id;
-    //    }
-    //
-    //    @Override
-    //    public void setId(int id) {
-    //        this.id = id;
-    //    }
-
-    {
-        this.tableName   = TABLE_NAME;
-        this.columnNames = COLUMN_NAMES;
-    }
 
     public Acceso(int id, String nivel) {
         super(id);
@@ -46,6 +31,12 @@ public class Acceso extends Persistible {
 
     public Acceso(ResultSet rs) throws SQLException {
         this(rs.getInt(1), rs.getString(2));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public IndexIdDao<Acceso> getDataStore() {
+        return DataStore.getAccesos();
     }
 
     public String getNivel() {
@@ -69,6 +60,11 @@ public class Acceso extends Persistible {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<String> getColumnNames() {
+        return COLUMN_NAMES;
     }
 
     @Override

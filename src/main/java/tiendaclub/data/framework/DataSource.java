@@ -332,7 +332,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         int rows = 0;
         if (objectV.getId() == 0) {
             if (SessionDB.connect()) {
-                String sql = objectV.getInsertString();
+                String sql = objectV.getInsertString(tableName);
                 try (PreparedStatement pstmt = SessionDB.getConn()
                                                         .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     objectV.buildStatement(pstmt);
@@ -359,7 +359,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         int rows = 0;
         if (!Globals.SAFE_UPDATE || objectV.getBackup() != null) {
             if (SessionDB.connect()) {
-                String sql = objectV.getUpdateString();
+                String sql = objectV.getUpdateString(tableName);
                 try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql)) {
                     objectV.buildStatement(pstmt);
                     rows = pstmt.executeUpdate();
