@@ -6,10 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import tiendaclub.data.dao.core.IndexIdActiveDao;
+import tiendaclub.data.casteldao.daomodel.Activable;
+import tiendaclub.data.casteldao.daomodel.IndexIdActiveDao;
 import tiendaclub.misc.Flogger;
-import tiendaclub.model.models.core.Activable;
-import tiendaclub.view.FxDialogs;
+import tiendaclub.misc.FxDialogs;
 
 public abstract class ActiveTableControl<T extends Activable> extends TableControl<T> {
 

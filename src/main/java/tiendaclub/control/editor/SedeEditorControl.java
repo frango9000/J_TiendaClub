@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import tiendaclub.misc.StaticHelpers;
 import tiendaclub.misc.TabTraversalEventHandler;
-import tiendaclub.model.models.Sede;
+import tiendaclub.model.Sede;
 
 public class SedeEditorControl extends GridControl<Sede> {
 

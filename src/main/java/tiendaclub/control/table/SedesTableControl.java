@@ -4,8 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.dao.core.IndexIdActiveDao;
-import tiendaclub.model.models.Sede;
+import tiendaclub.data.casteldao.daomodel.IndexIdActiveDao;
+import tiendaclub.model.Sede;
 
 public class SedesTableControl extends ActiveTableControl<Sede> {
 

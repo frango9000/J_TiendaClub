@@ -1,8 +1,8 @@
 package tiendaclub.data;
 
-import tiendaclub.model.models.Caja;
-import tiendaclub.model.models.Sede;
-import tiendaclub.model.models.Usuario;
+import tiendaclub.model.Caja;
+import tiendaclub.model.Sede;
+import tiendaclub.model.Usuario;
 
 public class SessionStore {
 

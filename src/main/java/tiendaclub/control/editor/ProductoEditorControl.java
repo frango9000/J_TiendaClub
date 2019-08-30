@@ -10,8 +10,8 @@ import javafx.scene.input.KeyEvent;
 import tiendaclub.data.DataStore;
 import tiendaclub.misc.StaticHelpers;
 import tiendaclub.misc.TabTraversalEventHandler;
-import tiendaclub.model.models.Categoria;
-import tiendaclub.model.models.Producto;
+import tiendaclub.model.Categoria;
+import tiendaclub.model.Producto;
 
 public class ProductoEditorControl extends GridControl<Producto> {
 

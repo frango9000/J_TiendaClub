@@ -3,9 +3,9 @@ package tiendaclub.control.table;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.dao.core.IndexIdActiveDao;
-import tiendaclub.model.models.Categoria;
-import tiendaclub.model.models.Producto;
+import tiendaclub.data.casteldao.daomodel.IndexIdActiveDao;
+import tiendaclub.model.Categoria;
+import tiendaclub.model.Producto;
 
 public class ProductosTableControl extends ActiveTableControl<Producto> {
 

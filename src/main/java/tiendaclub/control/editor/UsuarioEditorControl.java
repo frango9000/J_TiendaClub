@@ -10,11 +10,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
+import tiendaclub.misc.FxDialogs;
 import tiendaclub.misc.StaticHelpers;
 import tiendaclub.misc.TabTraversalEventHandler;
-import tiendaclub.model.models.Acceso;
-import tiendaclub.model.models.Usuario;
-import tiendaclub.view.FxDialogs;
+import tiendaclub.model.Acceso;
+import tiendaclub.model.Usuario;
 
 public class UsuarioEditorControl extends GridControl<Usuario> {
 

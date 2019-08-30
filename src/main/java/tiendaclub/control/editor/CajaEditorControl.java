@@ -7,8 +7,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import tiendaclub.data.DataStore;
 import tiendaclub.misc.StaticHelpers;
-import tiendaclub.model.models.Caja;
-import tiendaclub.model.models.Sede;
+import tiendaclub.model.Caja;
+import tiendaclub.model.Sede;
 
 public class CajaEditorControl extends GridControl<Caja> {
 

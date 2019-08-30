@@ -16,12 +16,12 @@ import tiendaclub.MainFX;
 import tiendaclub.control.editor.EditorControl;
 import tiendaclub.control.editor.GridControl;
 import tiendaclub.data.DataStore;
-import tiendaclub.data.dao.core.IndexIdDao;
-import tiendaclub.data.dao.core.PersistibleDao;
-import tiendaclub.data.framework.model.Persistible;
+import tiendaclub.data.casteldao.daomodel.IndexIdDao;
+import tiendaclub.data.casteldao.daomodel.Persistible;
+import tiendaclub.data.casteldao.daomodel.PersistibleDao;
+import tiendaclub.misc.FXMLStage;
 import tiendaclub.misc.Flogger;
-import tiendaclub.view.FXMLStage;
-import tiendaclub.view.FxDialogs;
+import tiendaclub.misc.FxDialogs;
 
 public abstract class TableControl<T extends Persistible> extends BorderPane {
 

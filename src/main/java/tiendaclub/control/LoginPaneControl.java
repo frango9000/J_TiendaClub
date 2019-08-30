@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
-import tiendaclub.model.models.Usuario;
+import tiendaclub.model.Usuario;
 
 //import org.controlsfx.control.textfield.CustomPasswordField;
 //import org.controlsfx.control.textfield.CustomTextField;

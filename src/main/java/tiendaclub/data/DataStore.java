@@ -1,22 +1,22 @@
 package tiendaclub.data;
 
-import tiendaclub.data.dao.CajaDao;
-import tiendaclub.data.dao.CierreZDao;
-import tiendaclub.data.dao.CompraDao;
-import tiendaclub.data.dao.CompradoDao;
-import tiendaclub.data.dao.ProductoDao;
-import tiendaclub.data.dao.SocioDao;
-import tiendaclub.data.dao.TransferenciaDao;
-import tiendaclub.data.dao.UsuarioDao;
-import tiendaclub.data.dao.VendidoDao;
-import tiendaclub.data.dao.VentaDao;
-import tiendaclub.data.dao.core.IndexIdActiveDao;
-import tiendaclub.data.dao.core.IndexIdDao;
-import tiendaclub.data.framework.SessionDB;
-import tiendaclub.model.models.Acceso;
-import tiendaclub.model.models.Categoria;
-import tiendaclub.model.models.Proveedor;
-import tiendaclub.model.models.Sede;
+import tiendaclub.data.appdao.CajaDao;
+import tiendaclub.data.appdao.CierreZDao;
+import tiendaclub.data.appdao.CompraDao;
+import tiendaclub.data.appdao.CompradoDao;
+import tiendaclub.data.appdao.ProductoDao;
+import tiendaclub.data.appdao.SocioDao;
+import tiendaclub.data.appdao.TransferenciaDao;
+import tiendaclub.data.appdao.UsuarioDao;
+import tiendaclub.data.appdao.VendidoDao;
+import tiendaclub.data.appdao.VentaDao;
+import tiendaclub.data.casteldao.SessionDB;
+import tiendaclub.data.casteldao.daomodel.IndexIdActiveDao;
+import tiendaclub.data.casteldao.daomodel.IndexIdDao;
+import tiendaclub.model.Acceso;
+import tiendaclub.model.Categoria;
+import tiendaclub.model.Proveedor;
+import tiendaclub.model.Sede;
 
 public class DataStore {
 

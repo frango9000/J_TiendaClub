@@ -2,7 +2,7 @@ package tiendaclub.control.editor;
 
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.GridPane;
-import tiendaclub.data.framework.model.Persistible;
+import tiendaclub.data.casteldao.daomodel.Persistible;
 
 public abstract class GridControl<T extends Persistible> extends GridPane {
 

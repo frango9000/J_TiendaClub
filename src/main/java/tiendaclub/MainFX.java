@@ -11,11 +11,11 @@ import tiendaclub.control.MainPaneControl;
 import tiendaclub.control.PropsLoader;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.SessionStore;
-import tiendaclub.data.framework.SessionDB;
-import tiendaclub.model.models.Caja;
-import tiendaclub.model.models.Sede;
-import tiendaclub.view.FXMLStage;
-import tiendaclub.view.FxDialogs;
+import tiendaclub.data.casteldao.SessionDB;
+import tiendaclub.misc.FXMLStage;
+import tiendaclub.misc.FxDialogs;
+import tiendaclub.model.Caja;
+import tiendaclub.model.Sede;
 
 public class MainFX extends Application {
 

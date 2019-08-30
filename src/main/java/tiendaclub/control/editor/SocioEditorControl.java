@@ -10,7 +10,7 @@ import javafx.scene.input.KeyEvent;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import tiendaclub.misc.StaticHelpers;
 import tiendaclub.misc.TabTraversalEventHandler;
-import tiendaclub.model.models.Socio;
+import tiendaclub.model.Socio;
 
 public class SocioEditorControl extends GridControl<Socio> {
 

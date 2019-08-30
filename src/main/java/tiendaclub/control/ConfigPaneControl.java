@@ -11,9 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import tiendaclub.data.framework.SessionDB;
+import tiendaclub.data.casteldao.SessionDB;
+import tiendaclub.misc.FxDialogs;
 import tiendaclub.misc.Globals;
-import tiendaclub.view.FxDialogs;
 
 public class ConfigPaneControl extends VBox {
 

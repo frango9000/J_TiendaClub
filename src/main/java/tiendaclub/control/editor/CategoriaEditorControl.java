@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import tiendaclub.misc.StaticHelpers;
-import tiendaclub.model.models.Categoria;
+import tiendaclub.model.Categoria;
 
 public class CategoriaEditorControl extends GridControl<Categoria> {
 

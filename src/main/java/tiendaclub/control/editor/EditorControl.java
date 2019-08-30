@@ -9,10 +9,10 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import tiendaclub.data.dao.core.PersistibleDao;
-import tiendaclub.data.framework.model.Persistible;
+import tiendaclub.data.casteldao.daomodel.Persistible;
+import tiendaclub.data.casteldao.daomodel.PersistibleDao;
 import tiendaclub.misc.Flogger;
-import tiendaclub.view.FxDialogs;
+import tiendaclub.misc.FxDialogs;
 
 public class EditorControl<T extends Persistible> extends BorderPane {
 
