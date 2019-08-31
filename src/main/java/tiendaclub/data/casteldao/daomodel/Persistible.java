@@ -1,6 +1,7 @@
 package tiendaclub.data.casteldao.daomodel;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -54,8 +55,8 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
     }
 
     @Override
-    public boolean refreshFromDb() {
-        return getDataStore().getDataSource().updateObject(this);
+    public int refreshFromDb() {
+        return getDataStore().getDataSource().refresh(this);
     }
 
     @Override
@@ -64,8 +65,8 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
     }
 
     @Override
-    public String getInsertString(String tableName) {
-        final StringBuilder sql = new StringBuilder(String.format("INSERT INTO %s VALUES(NULL, ", tableName));
+    public String getInsertString() {
+        final StringBuilder sql = new StringBuilder().append(" ( NULL, ");
         int i = getColumnNames().size();
         while (i > 0) {
             sql.append("? ");
@@ -74,12 +75,12 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
             }
             i--;
         }
-        return sql.append(")").toString();
+        return sql.append(") ").toString();
     }
 
     @Override
-    public String getUpdateString(String tableName) {
-        final StringBuilder sql = new StringBuilder(String.format("UPDATE %s SET ", tableName));
+    public String getUpdateString() {
+        final StringBuilder sql = new StringBuilder(" ");
         Iterator<String> iterator = getColumnNames().iterator();
         while (iterator.hasNext()) {
             sql.append(iterator.next()).append(" = ? ");
@@ -88,7 +89,7 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
             }
         }
         sql.append(String.format("WHERE %s = '%d'", getIdColName(), getId()));
-        return sql.toString();
+        return sql.append(" ").toString();
     }
 
     @Override
@@ -102,5 +103,15 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
     @Override
     public String toStringFormatted() {
         return Integer.toString(getId());
+    }
+
+    public static <T extends Persistible> void backupList(Collection<T> backupees) {
+        for (T t : backupees) {
+            try {
+                t.setBackup();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

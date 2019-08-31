@@ -172,7 +172,7 @@ public class Usuario extends Activable {
     }
 
     private void updateAcceso() {
-        setAcceso(DataStore.getAccesos().getIndexId().getCacheValue(getIdAcceso()));
+        setAcceso(DataStore.getAccesos().getById().getCacheValue(getIdAcceso()));
     }
 
 

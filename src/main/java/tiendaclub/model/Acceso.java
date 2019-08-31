@@ -81,7 +81,7 @@ public class Acceso extends Persistible {
 
     @Override
     public int hashCode() {
-        return id;
+        return getId();
     }
 
     @Override

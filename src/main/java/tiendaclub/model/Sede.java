@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.casteldao.daomodel.Activable;
@@ -92,6 +93,10 @@ public class Sede extends Activable {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public Set<Caja> getCajas() {
+        return DataStore.getCajas().getIndexSede().getCacheKeyValues(this);
     }
 
     @Override

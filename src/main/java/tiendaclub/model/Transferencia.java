@@ -154,7 +154,7 @@ public class Transferencia extends Persistible {
     }
 
     private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().getIndexId().getCacheValue(getIdUsuario()));
+        setUsuario(DataStore.getUsuarios().getById().getCacheValue(getIdUsuario()));
     }
 
     public Sede getSedeOrigen() {
@@ -175,7 +175,7 @@ public class Transferencia extends Persistible {
     }
 
     private void updateSedeOrigen() {
-        setSedeOrigen(DataStore.getSedes().getIndexId().getCacheValue(getIdSedeOrigen()));
+        setSedeOrigen(DataStore.getSedes().getById().getCacheValue(getIdSedeOrigen()));
     }
 
     public Sede getSedeDestino() {
@@ -188,7 +188,7 @@ public class Transferencia extends Persistible {
     }
 
     private void updateSedeDestino() {
-        setSedeDestino(DataStore.getSedes().getIndexId().getCacheValue(getIdSedeDestino()));
+        setSedeDestino(DataStore.getSedes().getById().getCacheValue(getIdSedeDestino()));
     }
 
     public Producto getProducto() {
@@ -201,7 +201,7 @@ public class Transferencia extends Persistible {
     }
 
     private void updateProducto() {
-        setProducto(DataStore.getProductos().getIndexId().getCacheValue(getIdProducto()));
+        setProducto(DataStore.getProductos().getById().getCacheValue(getIdProducto()));
     }
 
     @Override

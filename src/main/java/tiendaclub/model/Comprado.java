@@ -126,7 +126,7 @@ public class Comprado extends Persistible {
     }
 
     public void updateCompra() {
-        setCompra(DataStore.getCompras().getIndexId().getCacheValue(getIdCompra()));
+        setCompra(DataStore.getCompras().getById().getCacheValue(getIdCompra()));
     }
 
     public Producto getProducto() {
@@ -139,7 +139,7 @@ public class Comprado extends Persistible {
     }
 
     public void updateProducto() {
-        setProducto(DataStore.getProductos().getIndexId().getCacheValue(getIdProducto()));
+        setProducto(DataStore.getProductos().getById().getCacheValue(getIdProducto()));
     }
 
     @Override

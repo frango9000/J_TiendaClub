@@ -62,7 +62,7 @@ public class MainFX extends Application {
 
             primaryStage.show();
 
-            Set<Sede> sedes = DataStore.getSedes().getIndexId().getCacheValues();
+            Set<Sede> sedes = DataStore.getSedes().getById().getCacheValues();
             if (sedes.size() == 0) {
                 FxDialogs.showWarning("No Sede", "Debes crear una sede y una caja");
             } else {
@@ -72,7 +72,7 @@ public class MainFX extends Application {
                     SessionStore.setSede(FxDialogs.showChoices("Sede:", "Sedes:", null, sedes));
                 }
                 Collection<Caja> cajas = DataStore.getCajas()
-                                                  .getIndexId()
+                                                  .getById()
                                                   .getCacheValues();//SessionStore.getSede().getCajas().values();
                 if (cajas.size() == 0) {
                     FxDialogs.showWarning("No caja", "Debes crear una caja");

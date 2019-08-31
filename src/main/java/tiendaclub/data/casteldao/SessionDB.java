@@ -414,7 +414,7 @@ public final class SessionDB implements Globals {
 
     public static int createTables() {
         int rows = 0;
-        File sqlFile = new File(Globals.ROOT_PATH + "model/sql/tables.sql");
+        File sqlFile = new File(SessionDB.class.getResource("/sql/tables.sql").getPath());
         StringBuilder sqlcmd = new StringBuilder();
         try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
             while (scan.hasNext()) {
@@ -447,7 +447,7 @@ public final class SessionDB implements Globals {
 
     public static int createViews() {
         int rows = 0;
-        File sqlFile = new File(Globals.ROOT_PATH + "model/sql/views.sql");
+        File sqlFile = new File(SessionDB.class.getResource("/sql/views.sql").getPath());
         StringBuilder sqlcmd = new StringBuilder();
         try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
             while (scan.hasNext()) {
@@ -512,11 +512,11 @@ public final class SessionDB implements Globals {
     }
 
     public static int insertData() {
-        return insertData(Globals.ROOT_PATH + "model/sql/data.sql");
+        return insertData(SessionDB.class.getResource("/sql/data.sql").getPath());
     }
 
     public static int insertDemoData() {
-        return insertData(Globals.ROOT_PATH + "model/sql/demodata.sql");
+        return insertData(SessionDB.class.getResource("/sql/demodata.sql").getPath());
     }
 
     public static int createFullStructure() {

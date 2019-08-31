@@ -137,7 +137,7 @@ public class Producto extends Activable {
     }
 
     private void updateCategoria() {
-        setCategoria(DataStore.getCategorias().getIndexId().getCacheValue(getIdCategoria()));
+        setCategoria(DataStore.getCategorias().getById().getCacheValue(getIdCategoria()));
     }
 
 

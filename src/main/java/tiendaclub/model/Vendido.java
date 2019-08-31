@@ -26,16 +26,12 @@ public class Vendido extends Persistible {
     private Venta venta;
     private Producto producto;
 
-    public Vendido(int id, int idVenta, int idProducto, int cantidad, int precioUnidad) {
+    public Vendido(int id) {
         super(id);
-        setIdVenta(idVenta);
-        setIdProducto(idProducto);
-        setCantidad(cantidad);
-        setPrecioUnidad(precioUnidad);
     }
 
-    public Vendido(int idVenta, int idProducto, int cantidad, int precioUnidad) {
-        this(0, idVenta, idProducto, cantidad, precioUnidad);
+    public Vendido() {
+        this(0);
     }
 
     public Vendido(Venta venta, Producto producto, int cantidad, int precioUnidad) {
@@ -47,7 +43,11 @@ public class Vendido extends Persistible {
     }
 
     public Vendido(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(4));
+        this(rs.getInt(1));
+        setIdVenta(rs.getInt(2));
+        setIdProducto(rs.getInt(3));
+        setCantidad(rs.getInt(4));
+        setPrecioUnidad(rs.getInt(5));
     }
 
     @Override
@@ -126,7 +126,7 @@ public class Vendido extends Persistible {
     }
 
     private void updateVenta() {
-        setVenta(DataStore.getVentas().getIndexId().getCacheValue(getIdVenta()));
+        setVenta(DataStore.getVentas().getById().getCacheValue(getIdVenta()));
     }
 
     public Producto getProducto() {
@@ -139,7 +139,7 @@ public class Vendido extends Persistible {
     }
 
     private void updateProducto() {
-        setProducto(DataStore.getProductos().getIndexId().getCacheValue(getIdProducto()));
+        setProducto(DataStore.getProductos().getById().getCacheValue(getIdProducto()));
     }
 
     @Override

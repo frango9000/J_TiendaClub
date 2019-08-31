@@ -125,7 +125,7 @@ public class Compra extends Persistible {
     }
 
     private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().getIndexId().getCacheValue(getIdUsuario()));
+        setUsuario(DataStore.getUsuarios().getById().getCacheValue(getIdUsuario()));
     }
 
     public Proveedor getProveedor() {
@@ -138,7 +138,7 @@ public class Compra extends Persistible {
     }
 
     private void updateProveedor() {
-        setProveedor(DataStore.getProveedores().getIndexId().getCacheValue(getIdProveedor()));
+        setProveedor(DataStore.getProveedores().getById().getCacheValue(getIdProveedor()));
     }
 
     public Sede getSede() {
@@ -151,7 +151,7 @@ public class Compra extends Persistible {
     }
 
     private void updateSede() {
-        setSede(DataStore.getSedes().getIndexId().getCacheValue(getIdSede()));
+        setSede(DataStore.getSedes().getById().getCacheValue(getIdSede()));
     }
 
     @Override

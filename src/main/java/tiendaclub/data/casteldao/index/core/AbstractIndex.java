@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.casteldao.DataSource;
 import tiendaclub.data.casteldao.daomodel.IPersistible;
 import tiendaclub.data.casteldao.index.core.maps.IIndexMap;
@@ -19,7 +20,7 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
 
     protected Function<V, K> keyValueFunction;
 
-    protected AbstractIndex(DataSource<V> dataSource, String indexColumnName, Function<V, K> keyValueFunction) {
+    protected AbstractIndex(@NonNull DataSource<V> dataSource, String indexColumnName, Function<V, K> keyValueFunction) {
         this.dataSource       = dataSource;
         this.indexColumnName  = indexColumnName;
         this.keyValueFunction = keyValueFunction;

@@ -12,10 +12,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import tiendaclub.MainFX;
 import tiendaclub.control.editor.EditorControl;
 import tiendaclub.control.editor.GridControl;
-import tiendaclub.data.DataStore;
 import tiendaclub.data.casteldao.daomodel.IndexIdDao;
 import tiendaclub.data.casteldao.daomodel.Persistible;
 import tiendaclub.data.casteldao.daomodel.PersistibleDao;
@@ -79,10 +77,14 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
     }
 
     @FXML
-    protected abstract void fxBtnDisableAction(ActionEvent actionEvent);
+    protected void fxBtnDisableAction(ActionEvent actionEvent) {
+
+    }
 
     @FXML
-    protected abstract void fxBtnShowHideAction(ActionEvent actionEvent);
+    protected void fxBtnShowHideAction(ActionEvent actionEvent) {
+
+    }
 
     @FXML
     protected void fxBtnEliminarAction(ActionEvent actionEvent) {
@@ -115,13 +117,13 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
 
     @FXML
     protected void fxBtnPullAction(ActionEvent actionEvent) {
-        DataStore.getUsuarios().getDataSource().queryAll();
+        getDataOrigin().getDataSource().queryAll();
         addContent(true);
     }
 
     @FXML
     protected void fxButtonBackAction(ActionEvent actionEvent) {
-        ((BorderPane) MainFX.getMainStage().getScene().getRoot()).setCenter(null);
+        this.setVisible(false);
     }
 
 
@@ -129,7 +131,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
         if (clean) {
             listedObjects.clear();
         }
-        listedObjects.retainAll(getDataOrigin().getIndexId().getCacheValues());
+        listedObjects.setAll(getDataOrigin().getAllCache());
     }
 
     protected void addContent() {
@@ -139,14 +141,14 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
     public <T extends Persistible> EditorControl<T> getEditorControl(String fxml, T editee, PersistibleDao<T> dataOrigin) {
         FXMLLoader loader = new FXMLLoader(TableControl.class.getResource(fxml));
         Pane pane = null;
-        GridControl<T> control = null;
+        GridControl<T> tGridControl = null;
         try {
-            pane    = loader.load();
-            control = loader.getController();
+            pane         = loader.load();
+            tGridControl = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new EditorControl<>(editee, dataOrigin, control, pane);
+        return new EditorControl<>(editee, dataOrigin, tGridControl, pane);
 
     }
 

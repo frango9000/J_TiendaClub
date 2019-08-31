@@ -103,7 +103,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                Flogger.atSevere().withCause(ex).log(sql);
             } finally {
                 SessionDB.close();
             }
@@ -142,7 +142,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     }
                     printSql(sql.toString());
                 } catch (SQLException ex) {
-                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                    Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
                     SessionDB.close();
                 }
@@ -184,7 +184,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 printSql(sql);
             } catch (SQLException ex) {
                 returnSet = Set.of();
-                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                Flogger.atSevere().withCause(ex).log(sql);
             } finally {
                 SessionDB.close();
             }
@@ -209,7 +209,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     }
                     printSql(sql.toString());
                 } catch (SQLException ex) {
-                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                    Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
                     SessionDB.close();
                 }
@@ -236,7 +236,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     }
                     printSql(sql.toString());
                 } catch (SQLException ex) {
-                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                    Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
                     SessionDB.close();
                 }
@@ -276,7 +276,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     }
                     printSql(sql.toString());
                 } catch (SQLException ex) {
-                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                    Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
                     SessionDB.close();
                 }
@@ -308,7 +308,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 }
                 printSql(sql.toString());
             } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                Flogger.atSevere().withCause(ex).log(sql.toString());
             } finally {
                 SessionDB.close();
             }
@@ -335,7 +335,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 }
                 printSql(sql);
             } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                Flogger.atSevere().withCause(ex).log(sql);
             } finally {
                 SessionDB.close();
             }
@@ -348,12 +348,11 @@ public class DataSource<V extends IPersistible> implements Globals {
         int rows = 0;
         if (objectV.getId() == 0) {
             if (SessionDB.connect()) {
-                String sql = objectV.getInsertString(tableName);
+                String sql = String.format("INSERT INTO %s VALUES %s", tableName, objectV.getInsertString());
                 try (PreparedStatement pstmt = SessionDB.getConn()
                                                         .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     objectV.buildStatement(pstmt);
                     rows = pstmt.executeUpdate();
-
                     try (ResultSet rs = pstmt.getGeneratedKeys()) {
                         if (rs.next()) {
                             objectV.setId(rs.getInt(1));
@@ -362,7 +361,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     }
                     printSql(sql);
                 } catch (SQLException ex) {
-                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                    Flogger.atSevere().withCause(ex).log(sql);
                 } finally {
                     SessionDB.close();
                 }
@@ -371,11 +370,24 @@ public class DataSource<V extends IPersistible> implements Globals {
         return rows;
     }
 
+    public int insert(Iterable<V> objectsV) {
+        int rows = 0;
+        SessionDB.setAutoclose(false);
+        try {
+            for (V v : objectsV) {
+                rows += insert(v);
+            }
+        } finally {
+            SessionDB.setAutoclose(true);
+        }
+        return rows;
+    }
+
     public int update(V objectV) {
         int rows = 0;
         if (!Globals.SAFE_UPDATE || objectV.getBackup() != null) {
             if (SessionDB.connect()) {
-                String sql = objectV.getUpdateString(tableName);
+                String sql = String.format("UPDATE %s SET %s", tableName, objectV.getUpdateString());
                 try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql)) {
                     objectV.buildStatement(pstmt);
                     rows = pstmt.executeUpdate();
@@ -384,7 +396,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     }
                     printSql(sql);
                 } catch (SQLException ex) {
-                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                    Flogger.atSevere().withCause(ex).log(sql);
                     Flogger.atSevere().log("Reverting object to backup");
                     objectV.restoreFromBackup();
                 } finally {
@@ -397,13 +409,38 @@ public class DataSource<V extends IPersistible> implements Globals {
         return rows;
     }
 
-    public boolean updateObject(V objectV) {
+    public int update(Set<V> objectsV) {
+        int rows;
+        SessionDB.setAutoclose(false);
+        try {
+            rows = objectsV.stream().mapToInt(this::update).sum();
+        } finally {
+            SessionDB.setAutoclose(true);
+        }
+        return rows;
+    }
+
+    public int refresh(V objectV) {
         deindex(objectV);
         V freshObject = query(idColName, objectV.getId(), false);
         boolean b = objectV.restoreFrom(freshObject);
         index(objectV);
-        return b;
+        return b ? 1 : 0;
     }
+
+    public int refresh(Set<V> objectsV) {
+        int rows = 0;
+        SessionDB.setAutoclose(false);
+        try {
+            for (V v : objectsV) {
+                rows += refresh(v);
+            }
+        } finally {
+            SessionDB.setAutoclose(true);
+        }
+        return rows;
+    }
+
 
     public int delete(V objecT) {
         return delete(objecT.getId());
@@ -418,7 +455,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 deindex(key);
                 printSql(sql);
             } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                Flogger.atSevere().withCause(ex).log(sql);
             } finally {
                 SessionDB.close();
             }
@@ -458,7 +495,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     SessionDB.getConn().setAutoCommit(true);
                     printSql(sql.toString());
                 } catch (SQLException ex) {
-                    Flogger.atSevere().withCause(ex).log("\nSQL: ", sql);
+                    Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
                     SessionDB.close();
                 }

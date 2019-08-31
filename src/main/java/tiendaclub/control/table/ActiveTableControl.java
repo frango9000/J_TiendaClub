@@ -66,7 +66,7 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     protected void addContent(boolean clean) {
         Set<T> list = null;
         if (showInactive) {
-            list = getDataOrigin().getIndexId().getCacheValues();
+            list = getDataOrigin().getById().getCacheValues();
             fxBtnShowHide.setText("Todos");
         } else {
             list = getDataOrigin().getIndexActive().getActiveCache(true);

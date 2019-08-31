@@ -95,7 +95,7 @@ public class Caja extends Activable {
     }
 
     private void updateSede() {
-        setSede(DataStore.getSedes().getIndexId().getCacheValue(getIdSede()));
+        setSede(DataStore.getSedes().getById().getCacheValue(getIdSede()));
     }
 
     @Override

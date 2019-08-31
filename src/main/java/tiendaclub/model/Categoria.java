@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.casteldao.daomodel.Activable;
@@ -55,6 +56,10 @@ public class Categoria extends Activable {
     @SuppressWarnings("unchecked")
     public IndexIdActiveDao<Categoria> getDataStore() {
         return DataStore.getCategorias();
+    }
+
+    public Set<Producto> getProductos() {
+        return DataStore.getProductos().getIndexCategoria().getCacheKeyValues(this);
     }
 
     public String getNombre() {

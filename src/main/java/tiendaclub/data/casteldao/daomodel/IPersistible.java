@@ -15,7 +15,7 @@ public interface IPersistible {
 
     int updateOnDb();
 
-    boolean refreshFromDb();
+    int refreshFromDb();
 
     int deleteFromDb();
 
@@ -23,9 +23,9 @@ public interface IPersistible {
 
     <V extends IPersistible> boolean restoreFrom(@NonNull V objectV);
 
-    String getInsertString(String tableName);
+    String getInsertString();
 
-    String getUpdateString(String tableName);
+    String getUpdateString();
 
     <T extends IPersistible> PersistibleDao<T> getDataStore();
 

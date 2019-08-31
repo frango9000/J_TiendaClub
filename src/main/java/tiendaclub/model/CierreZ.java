@@ -107,7 +107,7 @@ public class CierreZ extends Persistible {
     }
 
     private void updateCaja() {
-        setCaja(DataStore.getCajas().getIndexId().getCacheValue(getIdCaja()));
+        setCaja(DataStore.getCajas().getById().getCacheValue(getIdCaja()));
     }
 
 

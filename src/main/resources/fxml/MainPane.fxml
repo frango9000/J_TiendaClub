@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.StatusBar?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11"
-  fx:controller="tiendaclub.control.MainPaneControl" fx:id="mainPane">
+<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="tiendaclub.control.MainPaneControl">
   <bottom>
-    <StatusBar BorderPane.alignment="CENTER" fx:id="mainStatusBar"/>
+    <StatusBar fx:id="mainStatusBar" BorderPane.alignment="CENTER"/>
   </bottom>
   <center>
     <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
@@ -56,21 +56,19 @@
               <items>
                 <MenuItem mnemonicParsing="false" text="DB"/>
                 <MenuItem mnemonicParsing="false" text="Config"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuUsuariosAction" text="Usuarios"
-                  fx:id="fxMenuUsuarios"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuSedesAction" text="Sedes"
-                  fx:id="fxMenuSedes"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuCajasAction" text="Cajas"
-                  fx:id="fxMenuCajas"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuProveedoresAction" text="Proveedores"
-                  fx:id="fxMenuProveedores"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuSociosAction" text="Socios"
-                  fx:id="fxMenuSocios"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuProductosAction" text="Productos"
-                  fx:id="fxMenuProductos"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuCategoriasAction" text="Categorias"
-                  fx:id="fxMenuCategorias"/>
                 <SeparatorMenuItem mnemonicParsing="false"/>
+                <MenuItem fx:id="fxMenuUsuarios" mnemonicParsing="false" onAction="#fxMenuUsuariosAction"
+                  text="Usuarios"/>
+                <MenuItem fx:id="fxMenuSedes" mnemonicParsing="false" onAction="#fxMenuSedesAction" text="Sedes"/>
+                <MenuItem fx:id="fxMenuCajas" mnemonicParsing="false" onAction="#fxMenuCajasAction" text="Cajas"/>
+                <MenuItem fx:id="fxMenuProveedores" mnemonicParsing="false" onAction="#fxMenuProveedoresAction"
+                  text="Proveedores"/>
+                <MenuItem fx:id="fxMenuSocios" mnemonicParsing="false" onAction="#fxMenuSociosAction" text="Socios"/>
+                <MenuItem fx:id="fxMenuProductos" mnemonicParsing="false" onAction="#fxMenuProductosAction"
+                  text="Productos"/>
+                <MenuItem fx:id="fxMenuCategorias" mnemonicParsing="false" onAction="#fxMenuCategoriasAction"
+                  text="Categorias"/>
+                <MenuItem fx:id="fxMenuVentas" mnemonicParsing="false" onAction="#fxMenuVentasAction" text="Ventas"/>
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">

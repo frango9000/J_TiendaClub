@@ -34,7 +34,7 @@ public class ProductoEditorControl extends GridControl<Producto> {
 
     @FXML
     void initialize() {
-        fxCbxCategoria.getItems().addAll(DataStore.getCategorias().getIndexId().getCacheValues());
+        fxCbxCategoria.getItems().addAll(DataStore.getCategorias().getById().getCacheValues());
         fxDescripcion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());
     }
 

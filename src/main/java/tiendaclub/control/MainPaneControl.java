@@ -15,6 +15,7 @@ import tiendaclub.control.table.ProveedoresTableControl;
 import tiendaclub.control.table.SedesTableControl;
 import tiendaclub.control.table.SociosTableControl;
 import tiendaclub.control.table.UsuariosTableControl;
+import tiendaclub.control.table.VentasTableControl;
 
 public class MainPaneControl {
 
@@ -23,6 +24,7 @@ public class MainPaneControl {
     public MenuItem fxMenuSocios;
     public MenuItem fxMenuProductos;
     public MenuItem fxMenuCategorias;
+    public MenuItem fxMenuVentas;
     @FXML
     private MenuItem menuUsuarios;
     @FXML
@@ -89,6 +91,11 @@ public class MainPaneControl {
 
     public void fxMenuProductosAction(ActionEvent actionEvent) {
         ProductosTableControl u = new ProductosTableControl();
+        mainPane.setCenter(u);
+    }
+
+    public void fxMenuVentasAction(ActionEvent actionEvent) {
+        VentasTableControl u = new VentasTableControl();
         mainPane.setCenter(u);
     }
 }

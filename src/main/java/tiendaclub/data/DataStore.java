@@ -93,14 +93,16 @@ public class DataStore {
 
     public static void firstQuery() {
         SessionDB.setAutoclose(false);
-        DataStore.getAccesos().getDataSource().queryAll();
-        DataStore.getUsuarios().getDataSource().queryAll();
-        DataStore.getProveedores().getDataSource().queryAll();
-        DataStore.getSocios().getDataSource().queryAll();
-        DataStore.getSedes().getDataSource().queryAll();
-        DataStore.getCajas().getDataSource().queryAll();
-        DataStore.getCategorias().getDataSource().queryAll();
-        DataStore.getProductos().getDataSource().queryAll();
+        getAccesos().getDataSource().queryAll();
+        getUsuarios().getAll();
+        getProveedores().getAll();
+        getSocios().getAll();
+        getSedes().getAll();
+        getCajas().getAll();
+        getCategorias().getAll();
+        getProductos().getAll();
+        getVentas().getAll();
+        getVendidos().getAll();
         SessionDB.setAutoclose(true);
     }
 }

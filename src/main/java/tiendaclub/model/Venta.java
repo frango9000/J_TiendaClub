@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import tiendaclub.data.DataStore;
 import tiendaclub.data.appdao.VentaDao;
@@ -28,29 +29,23 @@ public class Venta extends Persistible {
     private Caja caja;
     private Socio socio;
 
-    public Venta(int id, int idUsuario, int idCaja, int idSocio, LocalDateTime fechahora) {
+    public Venta(int id) {
         super(id);
-        setIdUsuario(idUsuario);
-        setIdCaja(idCaja);
-        setIdSocio(idSocio);
-        setFechahora(fechahora);
     }
 
-    public Venta(int idUsuario, int idCaja, int idSocio, LocalDateTime fechahora) {
-        this(0, idUsuario, idCaja, idSocio, fechahora);
+    public Venta() {
+        this(0);
     }
 
     public Venta(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), DateUtils.toLocalDateTime(rs.getDate(5)));
+        this(rs.getInt(1));
+        setIdUsuario(rs.getInt(2));
+        setIdCaja(rs.getInt(3));
+        setIdSocio(rs.getInt(4));
+        setFechahora(DateUtils.toLocalDateTime(rs.getDate(5)));
     }
 
-    public Venta(Usuario usuario, Caja caja, Socio socio, LocalDateTime fechahora) {
-        super(0);
-        setUsuario(usuario);
-        setCaja(caja);
-        setSocio(socio);
-        setFechahora(fechahora);
-    }
+
 
     @Override
     public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
@@ -129,7 +124,7 @@ public class Venta extends Persistible {
     }
 
     private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().getIndexId().getCacheValue(getIdUsuario()));
+        setUsuario(DataStore.getUsuarios().getById().getCacheValue(getIdUsuario()));
     }
 
     public Caja getCaja() {
@@ -142,7 +137,7 @@ public class Venta extends Persistible {
     }
 
     private void updateCaja() {
-        setCaja(DataStore.getCajas().getIndexId().getCacheValue(getIdCaja()));
+        setCaja(DataStore.getCajas().getById().getCacheValue(getIdCaja()));
     }
 
     public Socio getSocio() {
@@ -155,9 +150,12 @@ public class Venta extends Persistible {
     }
 
     private void updateSocio() {
-        setSocio(DataStore.getSocios().getIndexId().getCacheValue(getIdSocio()));
+        setSocio(DataStore.getSocios().getById().getCacheValue(getIdSocio()));
     }
 
+    public Set<Vendido> getVendidos() {
+        return DataStore.getVendidos().getIndexVenta().getCacheKeyValues(this);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

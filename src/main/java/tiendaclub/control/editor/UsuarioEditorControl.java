@@ -46,7 +46,7 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
         btnPassword = new MenuItem("Password");
         btnPassword.setVisible(false);
 
-        fxCbxAcceso.getItems().addAll(DataStore.getAccesos().getIndexId().getCacheValues());
+        fxCbxAcceso.getItems().addAll(DataStore.getAccesos().getById().getCacheValues());
         fxCbxAcceso.getSelectionModel().select(SessionStore.getUsuario().getAcceso());
         fxDireccion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());
         fxDescripcion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());

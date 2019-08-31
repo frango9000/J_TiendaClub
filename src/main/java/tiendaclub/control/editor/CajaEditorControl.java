@@ -24,7 +24,7 @@ public class CajaEditorControl extends GridControl<Caja> {
 
     @FXML
     void initialize() {
-        fxCbxSede.getItems().addAll(DataStore.getSedes().getIndexId().getCacheValues());
+        fxCbxSede.getItems().addAll(DataStore.getSedes().getById().getCacheValues());
         fxCbxSede.getSelectionModel().select(0);
     }
 
