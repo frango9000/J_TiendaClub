@@ -26,7 +26,7 @@ public abstract class SetMultiMapIndex<K, V extends IPersistible> extends Abstra
     @Override
     public Set<V> getKeyValues(Set<K> keys) {
         if (keys.size() > 0) {
-            SessionDB.setAutoclose(false);
+            SessionDB.getSessionDB().setAutoclose(false);
             try {
                 for (K key : keys) {
                     if (!cacheContainsKey(key))
@@ -35,7 +35,7 @@ public abstract class SetMultiMapIndex<K, V extends IPersistible> extends Abstra
                         dataSource.querySome(getCachedIds(key), false);
                 }
             } finally {
-                SessionDB.setAutoclose(true);
+                SessionDB.getSessionDB().setAutoclose(true);
             }
         }
         return getCacheKeyValues(keys);

@@ -1,11 +1,13 @@
 package app.data.casteldao;
 
-import app.data.DataFactory;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import app.data.casteldao.daomodel.IPersistible;
 import app.data.casteldao.index.core.IIndex;
 import app.misc.Flogger;
 import app.misc.Globals;
 import com.google.common.collect.Sets;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,12 +18,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 public class DataSource<V extends IPersistible> implements Globals {
 
     public String idColName = "id";
     public String tableName;
+
 
     protected ArrayList<IIndex<?, V>> indexes;
 
@@ -40,6 +44,15 @@ public class DataSource<V extends IPersistible> implements Globals {
         this(tableName, indexes, null);
     }
 
+    public Optional<V> buildObject(ResultSet rs) {
+        try {
+            return Optional.of(clazz.getConstructor(ResultSet.class).newInstance(rs));
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            Flogger.atSevere().withCause(e).log();
+        }
+        return Optional.empty();
+    }
+
     @SuppressWarnings("unchecked")
     public Class<V> findGenericClass() {
         if (clazz == null)
@@ -51,6 +64,29 @@ public class DataSource<V extends IPersistible> implements Globals {
         if (SQL_DEBUG) {
             Flogger.atInfo().log(sql);
         }
+    }
+
+    public static String getInsertString(int numOfColumns) {
+        final StringBuilder sql = new StringBuilder().append(" ( NULL, ");
+        while (numOfColumns > 0) {
+            sql.append("? ");
+            if (numOfColumns > 1) {
+                sql.append(", ");
+            }
+            numOfColumns--;
+        }
+        return sql.append(") ").toString();
+    }
+
+    public String getUpdateString(Iterator<String> columns) {
+        final StringBuilder sql = new StringBuilder(" ");
+        while (columns.hasNext()) {
+            sql.append(columns.next()).append(" = ? ");
+            if (columns.hasNext()) {
+                sql.append(", ");
+            }
+        }
+        return sql.toString();
     }
 
     public String getIdColName() {
@@ -90,39 +126,41 @@ public class DataSource<V extends IPersistible> implements Globals {
     }
 
 
-    private V query(String colName, Object unique, boolean indexOn) {
-        V objecT = null;
-        if (SessionDB.connect()) {
+    private Optional<V> query(String colName, Object unique, boolean indexOn) {
+        Optional<V> objecT = Optional.empty();
+        if (SessionDB.getSessionDB().connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", tableName, colName, unique.toString());
-            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
+            try (Statement ps = SessionDB.getSessionDB()
+                                         .getConn()
+                                         .createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    objecT = DataFactory.buildObject(rs, clazz);
+                    objecT = buildObject(rs);
                     if (indexOn) {
-                        index(objecT);
+                        objecT.ifPresent(this::index);
                     }
                 }
                 printSql(sql);
             } catch (SQLException ex) {
                 Flogger.atSevere().withCause(ex).log(sql);
             } finally {
-                SessionDB.close();
+                SessionDB.getSessionDB().close();
             }
         }
         return objecT;
     }
 
-    public V query(int id) {
+    public Optional<V> query(int id) {
         return query(idColName, Integer.toString(id));
     }
 
-    public V query(String colName, Object unique) {
+    public Optional<V> query(String colName, Object unique) {
         return query(colName, unique, true);
     }
 
     public Set<V> querySome(String colName, Collection search, boolean isIn) {
         HashSet<V> returnSet = Sets.newHashSetWithExpectedSize(search.size());
         if (search.size() > 0)
-            if (SessionDB.connect()) {
+            if (SessionDB.getSessionDB().connect()) {
                 StringBuilder sql = new StringBuilder(String.format("SELECT * FROM %s WHERE %s %s IN( ", tableName, isIn ? "" : "NOT", colName));
                 Iterator iterator = search.iterator();
                 while (iterator.hasNext()) {
@@ -133,18 +171,20 @@ public class DataSource<V extends IPersistible> implements Globals {
                         sql.append(" )");
                     }
                 }
-                try (Statement ps = SessionDB.getConn()
+                try (Statement ps = SessionDB.getSessionDB().getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        V objecT = DataFactory.buildObject(rs, clazz);
-                        index(objecT);
-                        returnSet.add(objecT);
+                        Optional<V> objecT = buildObject(rs);
+                        if (objecT.isPresent()) {
+                            index(objecT.get());
+                            returnSet.add(objecT.get());
+                        }
                     }
                     printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
-                    SessionDB.close();
+                    SessionDB.getSessionDB().close();
                 }
             }
         return returnSet;
@@ -172,21 +212,25 @@ public class DataSource<V extends IPersistible> implements Globals {
 
     public Set<V> queryAll() {
         Set<V> returnSet = null;
-        if (SessionDB.connect()) {
+        if (SessionDB.getSessionDB().connect()) {
             String sql = String.format("SELECT * FROM %s", tableName);
-            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
+            try (Statement ps = SessionDB.getSessionDB()
+                                         .getConn()
+                                         .createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 returnSet = Sets.newHashSetWithExpectedSize(rs.getFetchSize());
                 while (rs.next()) {
-                    V objecT = DataFactory.buildObject(rs, clazz);
-                    index(objecT);
-                    returnSet.add(objecT);
+                    Optional<V> objecT = buildObject(rs);
+                    if (objecT.isPresent()) {
+                        index(objecT.get());
+                        returnSet.add(objecT.get());
+                    }
                 }
                 printSql(sql);
             } catch (SQLException ex) {
                 returnSet = Set.of();
                 Flogger.atSevere().withCause(ex).log(sql);
             } finally {
-                SessionDB.close();
+                SessionDB.getSessionDB().close();
             }
         }
         return returnSet;
@@ -196,22 +240,24 @@ public class DataSource<V extends IPersistible> implements Globals {
     public Set<V> queryLike(String colName, String string, boolean like) {
         HashSet<V> returnSet = Sets.newHashSet();
         if (string != null && string.length() > 0)
-            if (SessionDB.connect()) {
+            if (SessionDB.getSessionDB().connect()) {
                 StringBuilder sql = new StringBuilder(
-                    "SELECT * FROM " + tableName + " WHERE " + colName + (like ? " " : " NOT ") + "LIKE '" + string
-                    + "'");
-                try (Statement ps = SessionDB.getConn()
-                                             .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                    "SELECT * FROM " + tableName + " WHERE " + colName + (like ? " " : " NOT ") + "LIKE '" + string +
+                    "'");
+                try (Statement ps = SessionDB.getSessionDB().getConn().createStatement();
+                     ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        V objecT = DataFactory.buildObject(rs, clazz);
-                        index(objecT);
-                        returnSet.add(objecT);
+                        Optional<V> objecT = buildObject(rs);
+                        if (objecT.isPresent()) {
+                            index(objecT.get());
+                            returnSet.add(objecT.get());
+                        }
                     }
                     printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
-                    SessionDB.close();
+                    SessionDB.getSessionDB().close();
                 }
             }
         return returnSet;
@@ -224,21 +270,24 @@ public class DataSource<V extends IPersistible> implements Globals {
     public Set<V> queryGreaterLesser(String colName, String string, boolean greaterThan, boolean inclusive) {
         HashSet<V> returnSet = Sets.newHashSet();
         if (string != null && string.length() > 0)
-            if (SessionDB.connect()) {
+            if (SessionDB.getSessionDB().connect()) {
                 StringBuilder sql = new StringBuilder(
                     String.format("SELECT * FROM %s WHERE %s %s%s '%s'", tableName, colName, greaterThan ? ">" : "<", inclusive ? "=" : "", string));
-                try (Statement ps = SessionDB.getConn()
+                try (Statement ps = SessionDB.getSessionDB()
+                                             .getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        V objecT = DataFactory.buildObject(rs, clazz);
-                        index(objecT);
-                        returnSet.add(objecT);
+                        Optional<V> objecT = buildObject(rs);
+                        if (objecT.isPresent()) {
+                            index(objecT.get());
+                            returnSet.add(objecT.get());
+                        }
                     }
                     printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
-                    SessionDB.close();
+                    SessionDB.getSessionDB().close();
                 }
             }
         return returnSet;
@@ -263,22 +312,24 @@ public class DataSource<V extends IPersistible> implements Globals {
     public Set<V> queryBetween(String colName, String start, String end, boolean in) {
         HashSet<V> returnSet = Sets.newHashSet();
         if (start != null && start.length() > 0)
-            if (SessionDB.connect()) {
+            if (SessionDB.getSessionDB().connect()) {
                 StringBuilder sql = new StringBuilder(
                     "SELECT * FROM " + tableName + " WHERE " + colName + (in ? " " : " NOT ") + "BETWEEN '" + start
                     + "' AND '" + end + "'");
-                try (Statement ps = SessionDB.getConn()
+                try (Statement ps = SessionDB.getSessionDB().getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        V objecT = DataFactory.buildObject(rs, clazz);
-                        index(objecT);
-                        returnSet.add(objecT);
+                        Optional<V> objecT = buildObject(rs);
+                        if (objecT.isPresent()) {
+                            index(objecT.get());
+                            returnSet.add(objecT.get());
+                        }
                     }
                     printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
-                    SessionDB.close();
+                    SessionDB.getSessionDB().close();
                 }
             }
         return returnSet;
@@ -291,7 +342,7 @@ public class DataSource<V extends IPersistible> implements Globals {
     public Set<String> queryOneColumn(String returnColName, String whereColName, Collection equalsCondition,
                                       boolean isIn) {
         Set<String> strings = Sets.newHashSet();
-        if (SessionDB.connect()) {
+        if (SessionDB.getSessionDB().connect()) {
             StringBuilder sql = new StringBuilder(String.format("SELECT %s FROM %s WHERE %s %s IN( ", returnColName, tableName, whereColName, isIn ? "" : "NOT"));
             Iterator iterator = equalsCondition.iterator();
             while (iterator.hasNext()) {
@@ -302,7 +353,9 @@ public class DataSource<V extends IPersistible> implements Globals {
                     sql.append(" )");
                 }
             }
-            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+            try (Statement ps = SessionDB.getSessionDB()
+                                         .getConn()
+                                         .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
                     strings.add(rs.getString(1));
                 }
@@ -310,7 +363,7 @@ public class DataSource<V extends IPersistible> implements Globals {
             } catch (SQLException ex) {
                 Flogger.atSevere().withCause(ex).log(sql.toString());
             } finally {
-                SessionDB.close();
+                SessionDB.getSessionDB().close();
             }
         }
         return strings;
@@ -324,20 +377,25 @@ public class DataSource<V extends IPersistible> implements Globals {
         return queryOneColumn(returnColName, whereColName, equalsCondition, true);
     }
 
-    public V queryBiUnique(String col1Name, String uni, String col2Name, String que) {
-        V objecT = null;
-        if (SessionDB.connect()) {
+    public Optional<V> queryBiUnique(String col1Name, String uni, String col2Name, String que) {
+        Optional<V> objecT = Optional.empty();
+        if (SessionDB.getSessionDB().connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", tableName, col1Name, uni, col2Name, que);
-            try (Statement ps = SessionDB.getConn().createStatement(); ResultSet rs = ps.executeQuery(sql)) {
+            try (Statement ps = SessionDB.getSessionDB()
+                                         .getConn()
+                                         .createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
-                    objecT = DataFactory.buildObject(rs, clazz);
-                    index(objecT);
+                    objecT = buildObject(rs);
+                    if (objecT.isPresent()) {
+                        index(objecT.get());
+                        return objecT;
+                    }
                 }
                 printSql(sql);
             } catch (SQLException ex) {
                 Flogger.atSevere().withCause(ex).log(sql);
             } finally {
-                SessionDB.close();
+                SessionDB.getSessionDB().close();
             }
         }
         return objecT;
@@ -345,11 +403,14 @@ public class DataSource<V extends IPersistible> implements Globals {
 
 
     public int insert(V objectV) {
+        checkNotNull(objectV);
         int rows = 0;
         if (objectV.getId() == 0) {
-            if (SessionDB.connect()) {
-                String sql = String.format("INSERT INTO %s VALUES %s", tableName, objectV.getInsertString());
-                try (PreparedStatement pstmt = SessionDB.getConn()
+            if (SessionDB.getSessionDB().connect()) {
+                String sql = String.format("INSERT INTO %s VALUES %s", tableName, getInsertString(objectV.getColumnNames()
+                                                                                                         .size()));
+                try (PreparedStatement pstmt = SessionDB.getSessionDB()
+                                                        .getConn()
                                                         .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     objectV.buildStatement(pstmt);
                     rows = pstmt.executeUpdate();
@@ -363,7 +424,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql);
                 } finally {
-                    SessionDB.close();
+                    SessionDB.getSessionDB().close();
                 }
             }
         }
@@ -372,23 +433,26 @@ public class DataSource<V extends IPersistible> implements Globals {
 
     public int insert(Iterable<V> objectsV) {
         int rows = 0;
-        SessionDB.setAutoclose(false);
+        SessionDB.getSessionDB().setAutoclose(false);
         try {
             for (V v : objectsV) {
                 rows += insert(v);
             }
         } finally {
-            SessionDB.setAutoclose(true);
+            SessionDB.getSessionDB().setAutoclose(true);
         }
         return rows;
     }
 
     public int update(V objectV) {
+        checkNotNull(objectV);
         int rows = 0;
         if (!Globals.SAFE_UPDATE || objectV.getBackup() != null) {
-            if (SessionDB.connect()) {
-                String sql = String.format("UPDATE %s SET %s", tableName, objectV.getUpdateString());
-                try (PreparedStatement pstmt = SessionDB.getConn().prepareStatement(sql)) {
+            if (SessionDB.getSessionDB().connect()) {
+                String sql = String.format("UPDATE %s SET %s WHERE %s = '%d'", tableName, getUpdateString(objectV.getColumnNames()
+                                                                                                                 .iterator()), idColName, objectV
+                                               .getId());
+                try (PreparedStatement pstmt = SessionDB.getSessionDB().getConn().prepareStatement(sql)) {
                     objectV.buildStatement(pstmt);
                     rows = pstmt.executeUpdate();
                     if (rows > 0) {
@@ -400,7 +464,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     Flogger.atSevere().log("Reverting object to backup");
                     objectV.restoreFromBackup();
                 } finally {
-                    SessionDB.close();
+                    SessionDB.getSessionDB().close();
                     objectV.commit();
                 }
             }
@@ -411,53 +475,57 @@ public class DataSource<V extends IPersistible> implements Globals {
 
     public int update(Set<V> objectsV) {
         int rows;
-        SessionDB.setAutoclose(false);
+        SessionDB.getSessionDB().setAutoclose(false);
         try {
             rows = objectsV.stream().mapToInt(this::update).sum();
         } finally {
-            SessionDB.setAutoclose(true);
+            SessionDB.getSessionDB().setAutoclose(true);
         }
         return rows;
     }
 
     public int refresh(V objectV) {
+        checkNotNull(objectV);
         deindex(objectV);
-        V freshObject = query(idColName, objectV.getId(), false);
-        boolean b = objectV.restoreFrom(freshObject);
-        index(objectV);
-        return b ? 1 : 0;
+        Optional<V> freshObject = query(idColName, objectV.getId(), false);
+        if (freshObject.isPresent()) {
+            if (!freshObject.get().equals(objectV))
+                return objectV.restoreFrom(freshObject.get()) ? 1 : 0;
+        }
+        return 0;
     }
 
     public int refresh(Set<V> objectsV) {
         int rows = 0;
-        SessionDB.setAutoclose(false);
+        SessionDB.getSessionDB().setAutoclose(false);
         try {
             for (V v : objectsV) {
                 rows += refresh(v);
             }
         } finally {
-            SessionDB.setAutoclose(true);
+            SessionDB.getSessionDB().setAutoclose(true);
         }
         return rows;
     }
 
 
     public int delete(V objecT) {
+        checkNotNull(objecT);
         return delete(objecT.getId());
     }
 
     public int delete(Integer key) {
         int rows = 0;
-        if (SessionDB.connect()) {
+        if (SessionDB.getSessionDB().connect()) {
             String sql = String.format("DELETE FROM %s WHERE %s = '%d' ", tableName, idColName, key);
-            try (Statement stmt = SessionDB.getConn().createStatement()) {
+            try (Statement stmt = SessionDB.getSessionDB().getConn().createStatement()) {
                 rows = stmt.executeUpdate(sql);
                 deindex(key);
                 printSql(sql);
             } catch (SQLException ex) {
                 Flogger.atSevere().withCause(ex).log(sql);
             } finally {
-                SessionDB.close();
+                SessionDB.getSessionDB().close();
             }
         }
         return rows;
@@ -472,7 +540,7 @@ public class DataSource<V extends IPersistible> implements Globals {
     public int deleteSomeKeys(Set<Integer> keys) {
         int rows = 0;
         if (keys.size() > 0)
-            if (SessionDB.connect()) {
+            if (SessionDB.getSessionDB().connect()) {
                 StringBuilder sql = new StringBuilder("DELETE FROM " + tableName + " WHERE " + idColName + " IN( ");
                 Iterator<Integer> iterator = keys.iterator();
                 while (iterator.hasNext()) {
@@ -483,21 +551,21 @@ public class DataSource<V extends IPersistible> implements Globals {
                         sql.append(" )");
                     }
                 }
-                try (Statement ps = SessionDB.getConn().createStatement()) {
-                    SessionDB.getConn().setAutoCommit(false);
+                try (Statement ps = SessionDB.getSessionDB().getConn().createStatement()) {
+                    SessionDB.getSessionDB().getConn().setAutoCommit(false);
                     rows = ps.executeUpdate(sql.toString());
                     if (rows == keys.size()) {
-                        SessionDB.getConn().commit();
+                        SessionDB.getSessionDB().getConn().commit();
                         keys.forEach(e -> deindex(e));
                     } else {
-                        SessionDB.getConn().rollback();
+                        SessionDB.getSessionDB().getConn().rollback();
                     }
-                    SessionDB.getConn().setAutoCommit(true);
+                    SessionDB.getSessionDB().getConn().setAutoCommit(true);
                     printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
-                    SessionDB.close();
+                    SessionDB.getSessionDB().close();
                 }
             }
         return rows;

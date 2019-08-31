@@ -21,15 +21,7 @@ public interface IPersistible {
 
     void buildStatement(@NonNull PreparedStatement pst) throws SQLException;
 
-    <V extends IPersistible> boolean restoreFrom(@NonNull V objectV);
-
-    String getInsertString();
-
-    String getUpdateString();
-
     <T extends IPersistible> PersistibleDao<T> getDataStore();
-
-//    String getTableName();
 
     ArrayList<String> getColumnNames();
 
@@ -42,5 +34,7 @@ public interface IPersistible {
     void restoreFromBackup();
 
     void commit();
+
+    <V extends IPersistible> boolean restoreFrom(@NonNull V objectV);
 
 }

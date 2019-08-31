@@ -92,7 +92,7 @@ public class DataStore {
     }
 
     public static void firstQuery() {
-        SessionDB.setAutoclose(false);
+        SessionDB.getSessionDB().setAutoclose(false);
         getAccesos().getDataSource().queryAll();
         getUsuarios().getAll();
         getProveedores().getAll();
@@ -103,6 +103,7 @@ public class DataStore {
         getProductos().getAll();
         getVentas().getAll();
         getVendidos().getAll();
-        SessionDB.setAutoclose(true);
+        SessionDB.getSessionDB().setAutoclose(true);
     }
+
 }

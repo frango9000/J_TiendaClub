@@ -2,7 +2,6 @@ package app.data.casteldao.daomodel;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Iterator;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public abstract class Persistible extends Identifiable implements IPersistible, Cloneable, Serializable {
@@ -62,34 +61,6 @@ public abstract class Persistible extends Identifiable implements IPersistible, 
     @Override
     public int deleteFromDb() {
         return getDataStore().getDataSource().delete(this);
-    }
-
-    @Override
-    public String getInsertString() {
-        final StringBuilder sql = new StringBuilder().append(" ( NULL, ");
-        int i = getColumnNames().size();
-        while (i > 0) {
-            sql.append("? ");
-            if (i > 1) {
-                sql.append(", ");
-            }
-            i--;
-        }
-        return sql.append(") ").toString();
-    }
-
-    @Override
-    public String getUpdateString() {
-        final StringBuilder sql = new StringBuilder(" ");
-        Iterator<String> iterator = getColumnNames().iterator();
-        while (iterator.hasNext()) {
-            sql.append(iterator.next()).append(" = ? ");
-            if (iterator.hasNext()) {
-                sql.append(", ");
-            }
-        }
-        sql.append(String.format("WHERE %s = '%d'", getIdColName(), getId()));
-        return sql.append(" ").toString();
     }
 
     @Override

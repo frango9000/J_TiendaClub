@@ -28,12 +28,12 @@ public class PropsLoader {
             Properties props = new Properties();
             props.load(f);
 
-            SessionDB.setJdbcIP(props.getProperty("ip"));
-            SessionDB.setJdbcPort(props.getProperty("port"));
-            SessionDB.setJdbcCatalog(props.getProperty("dbname"));
+            SessionDB.getSessionDB().setJdbcIP(props.getProperty("ip"));
+            SessionDB.getSessionDB().setJdbcPort(props.getProperty("port"));
+            SessionDB.getSessionDB().setJdbcCatalog(props.getProperty("dbname"));
 
-            SessionDB.setJdbcUser(props.getProperty("user"));
-            SessionDB.setJdbcPassword(props.getProperty("password"));
+            SessionDB.getSessionDB().setJdbcUser(props.getProperty("user"));
+            SessionDB.getSessionDB().setJdbcPassword(props.getProperty("password"));
 
             quickstart = Boolean.parseBoolean(props.getProperty("quickstart", "false"));
 
@@ -54,16 +54,16 @@ public class PropsLoader {
 
     public static boolean saveProps(File file) {
         Properties props = new Properties();
-        props.put("ip", SessionDB.getJdbcIP());
-        props.put("port", SessionDB.getJdbcPort());
-        if (SessionDB.getJdbcCatalog().length() > 0) {
-            props.put("dbname", SessionDB.getJdbcCatalog());
+        props.put("ip", SessionDB.getSessionDB().getJdbcIP());
+        props.put("port", SessionDB.getSessionDB().getJdbcPort());
+        if (SessionDB.getSessionDB().getJdbcCatalog().length() > 0) {
+            props.put("dbname", SessionDB.getSessionDB().getJdbcCatalog());
         }
-        if (SessionDB.getJdbcUser().length() > 0) {
-            props.put("user", SessionDB.getJdbcUser());
+        if (SessionDB.getSessionDB().getJdbcUser().length() > 0) {
+            props.put("user", SessionDB.getSessionDB().getJdbcUser());
         }
-        if (SessionDB.getJdbcPassword().length() > 0) {
-            props.put("password", SessionDB.getJdbcPassword());
+        if (SessionDB.getSessionDB().getJdbcPassword().length() > 0) {
+            props.put("password", SessionDB.getSessionDB().getJdbcPassword());
         }
 
         props.put("quickstart", quickstart ? "true" : "false");

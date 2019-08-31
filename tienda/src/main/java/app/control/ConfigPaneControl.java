@@ -43,11 +43,11 @@ public class ConfigPaneControl extends VBox {
 
 
     private void setJdbcFields() {
-        fxUsername.setText(SessionDB.getJdbcUser().trim());
-        fxPassword.setText(SessionDB.getJdbcPassword());
-        fxDbIp.setText(SessionDB.getJdbcIP().trim());
-        fxDbPort.setText(SessionDB.getJdbcPort().trim());
-        fxDbCatalog.setText(SessionDB.getJdbcCatalog());
+        fxUsername.setText(SessionDB.getSessionDB().getJdbcUser().trim());
+        fxPassword.setText(SessionDB.getSessionDB().getJdbcPassword());
+        fxDbIp.setText(SessionDB.getSessionDB().getJdbcIP().trim());
+        fxDbPort.setText(SessionDB.getSessionDB().getJdbcPort().trim());
+        fxDbCatalog.setText(SessionDB.getSessionDB().getJdbcCatalog());
     }
 
     @FXML
@@ -86,13 +86,13 @@ public class ConfigPaneControl extends VBox {
     @FXML
     public void fxBtnEnterAction(ActionEvent actionEvent) {
         setJdbcFields();
-        if (SessionDB.isConnValid()) {
-            ArrayList<String> catalogList = SessionDB.listValidCatalogs();
+        if (SessionDB.getSessionDB().isConnValid()) {
+            ArrayList<String> catalogList = SessionDB.getSessionDB().listValidCatalogs();
             if (catalogList.size() > 0) {
                 String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", fxDbCatalog.getText(), catalogList);
                 if (catalog != null && !catalog.equals("")) {
-                    SessionDB.setJdbcCatalog(catalog);
-                    if (SessionDB.isSessionValid()) {
+                    SessionDB.getSessionDB().setJdbcCatalog(catalog);
+                    if (SessionDB.getSessionDB().isSessionValid()) {
                         //Start
                         ((Node) actionEvent.getSource()).getScene().getWindow().hide();
                     } else {
@@ -109,10 +109,11 @@ public class ConfigPaneControl extends VBox {
 
     @FXML
     private void fxBtnTestConnAction(ActionEvent actionEvent) {
-        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(), fxUsername
+        SessionDB.getSessionDB()
+                 .setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(), fxUsername
             .getText()
             .trim(), fxPassword.getText().trim());
-        if (SessionDB.isConnValid()) {
+        if (SessionDB.getSessionDB().isConnValid()) {
             fxBtnTestConn.setStyle("-fx-background-color: #75ff8a");
         } else {
             fxBtnTestConn.setStyle("-fx-background-color: red");
@@ -121,12 +122,13 @@ public class ConfigPaneControl extends VBox {
 
     @FXML
     private void fxBtnTestCatalogAction(ActionEvent actionEvent) {
-        SessionDB.setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(), fxUsername
+        SessionDB.getSessionDB()
+                 .setValues(fxDbIp.getText().trim(), fxDbPort.getText().trim(), fxDbCatalog.getText().trim(), fxUsername
             .getText()
             .trim(), fxPassword.getText().trim());
-        ArrayList<String> listCatalogs = SessionDB.listCatalogs();
+        ArrayList<String> listCatalogs = SessionDB.getSessionDB().listCatalogs();
         if (listCatalogs.size() == 0) {//TODO move db creation to DB section inside main prog
-            if (!SessionDB.isRoot()) {
+            if (!SessionDB.getSessionDB().isRoot()) {
                 FxDialogs.showWarning("Catalog Wizard", "No valid Catalogs and no access to create.");
             } else {
                 createCatalog(listCatalogs);
@@ -134,7 +136,7 @@ public class ConfigPaneControl extends VBox {
         } else {
             String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", null, listCatalogs);
             if (catalog != null && !catalog.equals("")) {
-                if (SessionDB.isCatalogValid(catalog)) {
+                if (SessionDB.getSessionDB().isCatalogValid(catalog)) {
                     fxBtnTestCatalog.setStyle("-fx-background-color: #75ff8a");
                     fxDbCatalog.setText(catalog);
                 } else {
@@ -151,23 +153,23 @@ public class ConfigPaneControl extends VBox {
         do {
             catalog = FxDialogs.showTextInput("Catalog Name", "Enter new Catalog name").trim();
         } while (catalog.length() < 1 || listCatalogs.contains(Globals.DB_PREFIX + catalog));
-        boolean success = SessionDB.createCatalog(catalog);
+        boolean success = SessionDB.getSessionDB().createCatalog(catalog);
         System.out.println("# Create catalog OK: " + success);
-        success = success && SessionDB.hasCatalog(catalog);
+        success = success && SessionDB.getSessionDB().hasCatalog(catalog);
         System.out.println("# Has catalog: " + success);
         if (success) {
-            SessionDB.setJdbcCatalog(Globals.DB_PREFIX + catalog);
-            System.out.println("# " + SessionDB.getJdbcCatalog());
-            int n = SessionDB.createFullStructure();
+            SessionDB.getSessionDB().setJdbcCatalog(Globals.DB_PREFIX + catalog);
+            System.out.println("# " + SessionDB.getSessionDB().getJdbcCatalog());
+            int n = SessionDB.getSessionDB().createFullStructure();
             System.out.println("# Creation n: " + n);
             FxDialogs.showInfo("DB Wizard", "Building Catalog " + ((n == 16) ? "Success" : "Fail"));
-            boolean valid = SessionDB.isCatalogValid();
+            boolean valid = SessionDB.getSessionDB().isCatalogValid();
             if (valid) {
                 fxBtnTestCatalog.setStyle("-fx-background-color: #75ff8a");
                 fxDbCatalog.setText(Globals.DB_PREFIX + catalog);
             } else {
                 fxBtnTestCatalog.setStyle("-fx-background-color: Yellow");
-                SessionDB.dropCatalog(Globals.DB_PREFIX + catalog);
+                SessionDB.getSessionDB().dropCatalog(Globals.DB_PREFIX + catalog);
                 FxDialogs.showWarning("DB Wizard", "Catalog invalid");
             }
         } else {
@@ -178,15 +180,16 @@ public class ConfigPaneControl extends VBox {
 
     @FXML
     private void fxHiddenCreateCatalog(ActionEvent actionEvent) {
-        createCatalog(SessionDB.listCatalogs());
+        createCatalog(SessionDB.getSessionDB().listCatalogs());
     }
 
     @FXML
     private void fxHiddenDropCatalog(ActionEvent actionEvent) {
-        String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", "", SessionDB.listCatalogs());
+        String catalog = FxDialogs.showChoices("Pick a DB", "Pick a DB", "Pick a DB", "", SessionDB.getSessionDB()
+                                                                                                   .listCatalogs());
         if (catalog != null && catalog.length() > 1 && FxDialogs.showConfirmBoolean(
             "Droping Catalog: " + catalog, "This is irreversible, data will be lost.")) {
-            SessionDB.dropCatalog(catalog);
+            SessionDB.getSessionDB().dropCatalog(catalog);
         }
     }
 }

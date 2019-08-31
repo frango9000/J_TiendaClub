@@ -48,12 +48,13 @@ public class MainFX extends Application {
         Pane root = MainPaneControl.loadFXML();
         primaryStage.setScene(new Scene(root));
 
-        if (!PropsLoader.isQuickstart() || !SessionDB.isConnValid() || !SessionDB.isCatalogValid()) {
+        if (!PropsLoader.isQuickstart() || !SessionDB.getSessionDB().isConnValid() ||
+            !SessionDB.getSessionDB().isCatalogValid()) {
             Stage configStage = new FXMLStage("/fxml/ConfigPane.fxml", "Config Stage");
             configStage.setOnCloseRequest(event -> System.exit(0));
             configStage.showAndWait();
         }
-        if (SessionDB.isCatalogValid()) {
+        if (SessionDB.getSessionDB().isCatalogValid()) {
             DataStore.firstQuery();
 
             Stage loginStage = new FXMLStage("/fxml/LoginPane.fxml", "Login Stage");

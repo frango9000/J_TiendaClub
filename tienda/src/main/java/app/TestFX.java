@@ -25,7 +25,7 @@ public class TestFX extends Application {
     }
 
     private void createMockData(boolean clean) {
-        SessionDB.setAutoclose(false);
+        SessionDB.getSessionDB().setAutoclose(false);
 
         if (clean) {
             DataStore.getProductos().getDataSource().deleteSome(DataStore.getProductos().getAllCache());
@@ -60,6 +60,6 @@ public class TestFX extends Application {
                 caja.insertIntoDB();
             }
         }
-        SessionDB.setAutoclose(true);
+        SessionDB.getSessionDB().setAutoclose(true);
     }
 }
