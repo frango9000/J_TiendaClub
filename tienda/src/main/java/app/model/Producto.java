@@ -2,8 +2,8 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.ProductoDao;
-import app.data.casteldao.daomodel.Activable;
-import app.data.casteldao.daomodel.IPersistible;
+import app.misc.Flogger;
+import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Producto extends Activable {
+public class Producto extends ActivablePropertyEntity {
 
     public static final String TABLE_NAME = "productos";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nombre", "descripcion", "precio_venta", "iva", "idCategoria", "activo"));
@@ -25,51 +25,58 @@ public class Producto extends Activable {
     protected int idCategoria;
     private Categoria categoria;
 
-    public Producto(int id, String nombre, int idCategoria) {
-        super(id);
+    public Producto() {
+        super(0);
+    }
+
+    public Producto(String nombre, Categoria categoria) {
+        super(0);
         setNombre(nombre);
         setIdCategoria(idCategoria);
     }
 
-    public Producto(int id, String nombre, Categoria categoria) {
-        super(id);
-        setNombre(nombre);
-        setCategoria(categoria);
+    @Override
+    public boolean setEntity(@NonNull ResultSet rs) {
+        try {
+            setId(rs.getInt(1));
+            setNombre(rs.getString(2));
+            setDescripcion(rs.getString(3));
+            setPrecioVenta(rs.getInt(4));
+            setIva(rs.getInt(5));
+            setIdCategoria(rs.getInt(6));
+            setActive(rs.getBoolean(7));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
-
-    public Producto(String nombre, Categoria categoria) {
-        this(0, nombre, categoria);
-    }
-
-
-    public Producto(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getInt(6));
-        setDescripcion(rs.getString(3));
-        setPrecioVenta(rs.getInt(4));
-        setIva(rs.getInt(5));
-        setActivo(rs.getBoolean(7));
+    @Override
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setString(1, getNombre());
+            pst.setString(2, getDescripcion());
+            pst.setInt(3, getPrecioVenta());
+            pst.setInt(4, getIva());
+            pst.setInt(5, getIdCategoria());
+            pst.setBoolean(6, isActive());
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setString(1, getNombre());
-        pst.setString(2, getDescripcion());
-        pst.setInt(3, getPrecioVenta());
-        pst.setInt(4, getIva());
-        pst.setInt(5, getIdCategoria());
-        pst.setBoolean(6, isActivo());
-    }
-
-    @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Producto newValues = (Producto) objectV;
             setNombre(newValues.getNombre());
             setDescripcion(newValues.getDescripcion());
             setPrecioVenta(newValues.getPrecioVenta());
             setIva(newValues.getIva());
             setCategoria(newValues.getCategoria());
-            setActivo(newValues.isActivo());
+            setActive(newValues.isActive());
             return true;
         }
         return false;
@@ -123,8 +130,7 @@ public class Producto extends Activable {
     }
 
     public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
-        updateCategoria();
+        setCategoria(DataStore.getCategorias().getById().getCacheValue(idCategoria));
     }
 
     public Categoria getCategoria() {
@@ -136,11 +142,6 @@ public class Producto extends Activable {
         this.idCategoria = getCategoria().getId();
     }
 
-    private void updateCategoria() {
-        setCategoria(DataStore.getCategorias().getById().getCacheValue(getIdCategoria()));
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -150,14 +151,13 @@ public class Producto extends Activable {
             return false;
         }
         Producto producto = (Producto) o;
-        return getId() == producto.getId() && precioVenta == producto.precioVenta && iva == producto.iva
-               && idCategoria == producto.idCategoria && isActivo() == producto.isActivo()
-               && Objects.equal(nombre, producto.nombre) && Objects.equal(descripcion, producto.descripcion);
-    }
-
-    @Override
-    public int hashCode() {
-        return getId();
+        return getId().equals(producto.getId())
+               && precioVenta == producto.precioVenta
+               && iva == producto.iva
+               && idCategoria == producto.idCategoria
+               && isActive() == producto.isActive()
+               && Objects.equal(nombre, producto.nombre)
+               && Objects.equal(descripcion, producto.descripcion);
     }
 
     @Override
@@ -170,7 +170,7 @@ public class Producto extends Activable {
                           .add("iva", iva)
                           .add("idCategoria", idCategoria)
                           .add("categoria", categoria.toString())
-                          .add("activo", isActivo())
+                          .add("activo", isActive())
                           .toString();
     }
 

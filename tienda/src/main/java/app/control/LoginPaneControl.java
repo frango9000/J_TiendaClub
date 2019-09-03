@@ -50,7 +50,7 @@ public class LoginPaneControl extends BorderPane {
         } else if (!user.getPass().equals(passwordTextField.getText().trim())) {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("Access Denied");
-        } else if (!user.isActivo()) {
+        } else if (!user.isActive()) {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("Account Locked");
         } else {

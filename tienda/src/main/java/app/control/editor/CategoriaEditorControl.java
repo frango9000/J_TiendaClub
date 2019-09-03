@@ -23,13 +23,13 @@ public class CategoriaEditorControl extends GridControl<Categoria> {
     @Override
     public void updateEditee(Categoria editee) {
         editee.setNombre(StaticHelpers.textInputEmptyToNull(fxNombre));
-        editee.setActivo(fxCheckActivo.isSelected());
+        editee.setActive(fxCheckActivo.isSelected());
     }
 
     @Override
     public Categoria buildNew() {
         Categoria editee = new Categoria(StaticHelpers.textInputEmptyToNull(fxNombre));
-        editee.setActivo(fxCheckActivo.isSelected());
+        editee.setActive(fxCheckActivo.isSelected());
         return editee;
     }
 
@@ -38,7 +38,7 @@ public class CategoriaEditorControl extends GridControl<Categoria> {
         if (editee.getId() > 0)
             fxId.setText((Integer.toString(editee.getId())));
         fxNombre.setText(Strings.nullToEmpty(editee.getNombre()));
-        fxCheckActivo.setSelected(editee.isActivo());
+        fxCheckActivo.setSelected(editee.isActive());
     }
 
     @Override

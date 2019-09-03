@@ -2,9 +2,10 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.TransferenciaDao;
-import app.data.casteldao.daomodel.IPersistible;
-import app.data.casteldao.daomodel.Persistible;
 import app.misc.DateUtils;
+import app.misc.Flogger;
+import casteldao.model.EntityInt;
+import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Transferencia extends Persistible {
+public class Transferencia extends EntityInt {
 
     public static final String TABLE_NAME = "transferencias";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idSedeOrigen", "idSedeDestino", "idProducto", "cantidad", "fechahora"));
@@ -32,20 +33,8 @@ public class Transferencia extends Persistible {
     private Sede sedeDestino;
     private Producto producto;
 
-    public Transferencia(int id, int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad,
-                         LocalDateTime fechahora) {
-        super(id);
-        setCantidad(cantidad);
-        setFechahora(fechahora);
-        setIdUsuario(idUsuario);
-        setIdSedeOrigen(idSedeOrigen);
-        setIdSedeDestino(idSedeDestino);
-        setIdProducto(idProducto);
-    }
-
-    public Transferencia(int idUsuario, int idSedeOrigen, int idSedeDestino, int idProducto, int cantidad,
-                         LocalDateTime fechahora) {
-        this(0, idUsuario, idSedeOrigen, idSedeDestino, idProducto, cantidad, fechahora);
+    public Transferencia() {
+        super(0);
     }
 
     public Transferencia(Usuario usuario, Sede sedeOrigen, Sede sedeDestino, Producto producto, int cantidad,
@@ -59,10 +48,22 @@ public class Transferencia extends Persistible {
         setFechahora(fechahora);
     }
 
-    public Transferencia(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), DateUtils.toLocalDateTime(rs.getDate(7)));
+    @Override
+    public boolean setEntity(@NonNull ResultSet rs) {
+        try {
+            setId(rs.getInt(1));
+            setIdUsuario(rs.getInt(2));
+            setIdSedeOrigen(rs.getInt(3));
+            setIdSedeDestino(rs.getInt(4));
+            setIdProducto(rs.getInt(5));
+            setCantidad(rs.getInt(6));
+            setFechahora(DateUtils.toLocalDateTime(rs.getDate(7)));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
-
     @Override
     public ArrayList<String> getColumnNames() {
         return COLUMN_NAMES;
@@ -75,18 +76,23 @@ public class Transferencia extends Persistible {
     }
 
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setInt(1, getIdUsuario());
-        pst.setInt(2, getIdSedeOrigen());
-        pst.setInt(3, getIdSedeDestino());
-        pst.setInt(4, getIdProducto());
-        pst.setInt(5, getCantidad());
-        pst.setTimestamp(6, DateUtils.toTimestamp(getFechahora()));
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setInt(1, getIdUsuario());
+            pst.setInt(2, getIdSedeOrigen());
+            pst.setInt(3, getIdSedeDestino());
+            pst.setInt(4, getIdProducto());
+            pst.setInt(5, getCantidad());
+            pst.setTimestamp(6, DateUtils.toTimestamp(getFechahora()));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
-
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Transferencia newValues = (Transferencia) objectV;
             setUsuario(newValues.getUsuario());
             setSedeOrigen(newValues.getSedeOrigen());
@@ -104,8 +110,7 @@ public class Transferencia extends Persistible {
     }
 
     public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-        updateUsuario();
+        setUsuario(DataStore.getUsuarios().getById().getCacheValue(idUsuario));
     }
 
     public int getIdSedeOrigen() {
@@ -113,8 +118,7 @@ public class Transferencia extends Persistible {
     }
 
     public void setIdSedeOrigen(int idSedeOrigen) {
-        this.idSedeOrigen = idSedeOrigen;
-        updateSedeOrigen();
+        setSedeOrigen(DataStore.getSedes().getById().getCacheValue(idSedeOrigen));
     }
 
     public int getIdSedeDestino() {
@@ -122,8 +126,7 @@ public class Transferencia extends Persistible {
     }
 
     public void setIdSedeDestino(int idSedeDestino) {
-        this.idSedeDestino = idSedeDestino;
-        updateSedeDestino();
+        setSedeDestino(DataStore.getSedes().getById().getCacheValue(idSedeDestino));
     }
 
     public int getIdProducto() {
@@ -131,8 +134,7 @@ public class Transferencia extends Persistible {
     }
 
     public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-        updateProducto();
+        setProducto(DataStore.getProductos().getById().getCacheValue(idProducto));
     }
 
 
@@ -153,10 +155,6 @@ public class Transferencia extends Persistible {
         this.cantidad = cantidad;
     }
 
-    private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().getById().getCacheValue(getIdUsuario()));
-    }
-
     public Sede getSedeOrigen() {
         return sedeOrigen;
     }
@@ -174,9 +172,6 @@ public class Transferencia extends Persistible {
         this.fechahora = fechahora;
     }
 
-    private void updateSedeOrigen() {
-        setSedeOrigen(DataStore.getSedes().getById().getCacheValue(getIdSedeOrigen()));
-    }
 
     public Sede getSedeDestino() {
         return sedeDestino;
@@ -185,10 +180,6 @@ public class Transferencia extends Persistible {
     public void setSedeDestino(Sede sedeDestino) {
         this.sedeDestino   = sedeDestino;
         this.idSedeDestino = getSedeDestino().getId();
-    }
-
-    private void updateSedeDestino() {
-        setSedeDestino(DataStore.getSedes().getById().getCacheValue(getIdSedeDestino()));
     }
 
     public Producto getProducto() {
@@ -200,10 +191,6 @@ public class Transferencia extends Persistible {
         this.idProducto = getProducto().getId();
     }
 
-    private void updateProducto() {
-        setProducto(DataStore.getProductos().getById().getCacheValue(getIdProducto()));
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -213,16 +200,15 @@ public class Transferencia extends Persistible {
             return false;
         }
         Transferencia that = (Transferencia) o;
-        return getId() == that.getId() && getIdUsuario() == that.getIdUsuario()
-               && getIdSedeOrigen() == that.getIdSedeOrigen() && getIdSedeDestino() == that.getIdSedeDestino()
-               && getIdProducto() == that.getIdProducto() && getCantidad() == that.getCantidad()
+        return getId().equals(that.getId())
+               && getIdUsuario() == that.getIdUsuario()
+               && getIdSedeOrigen() == that.getIdSedeOrigen()
+               && getIdSedeDestino() == that.getIdSedeDestino()
+               && getIdProducto() == that.getIdProducto()
+               && getCantidad() == that.getCantidad()
                && Objects.equal(getFechahora(), that.getFechahora());
     }
 
-    @Override
-    public int hashCode() {
-        return getId();
-    }
 
     @Override
     public String toString() {

@@ -1,9 +1,9 @@
 package app.control;
 
 import app.MainFX;
-import app.data.casteldao.SessionDB;
 import app.misc.FxDialogs;
 import app.misc.Globals;
+import casteldao.SessionDB;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;

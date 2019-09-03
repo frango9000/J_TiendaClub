@@ -2,10 +2,10 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.VendidoDao;
-import app.data.casteldao.daomodel.IPersistible;
-import app.data.casteldao.daomodel.Persistible;
+import app.misc.Flogger;
+import casteldao.model.EntityInt;
+import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Vendido extends Persistible {
+public class Vendido extends EntityInt {
 
     public static final String TABLE_NAME = "vendidos";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idVenta", "idProducto", "cantidad", "precio_unidad"));
@@ -26,41 +26,49 @@ public class Vendido extends Persistible {
     private Venta venta;
     private Producto producto;
 
-    public Vendido(int id) {
-        super(id);
-    }
 
     public Vendido() {
-        this(0);
+        super(0);
     }
 
-    public Vendido(Venta venta, Producto producto, int cantidad, int precioUnidad) {
+    public Vendido(Producto producto, int cantidad, int precioUnidad) {
         super(0);
-        setVenta(venta);
         setProducto(producto);
         setCantidad(cantidad);
         setPrecioUnidad(precioUnidad);
     }
 
-    public Vendido(ResultSet rs) throws SQLException {
-        this(rs.getInt(1));
-        setIdVenta(rs.getInt(2));
-        setIdProducto(rs.getInt(3));
-        setCantidad(rs.getInt(4));
-        setPrecioUnidad(rs.getInt(5));
+    @Override
+    public boolean setEntity(@NonNull ResultSet rs) {
+        try {
+            setId(rs.getInt(1));
+            setIdVenta(rs.getInt(2));
+            setIdProducto(rs.getInt(3));
+            setCantidad(rs.getInt(4));
+            setPrecioUnidad(rs.getInt(5));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setInt(1, getIdVenta());
-        pst.setInt(2, getIdProducto());
-        pst.setInt(3, getCantidad());
-        pst.setInt(4, getPrecioUnidad());
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setInt(1, getIdVenta());
+            pst.setInt(2, getIdProducto());
+            pst.setInt(3, getCantidad());
+            pst.setInt(4, getPrecioUnidad());
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
-
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Vendido newValues = (Vendido) objectV;
             setVenta(newValues.getVenta());
             setProducto(newValues.getProducto());
@@ -87,8 +95,7 @@ public class Vendido extends Persistible {
     }
 
     public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-        updateProducto();
+        setProducto(DataStore.getProductos().getById().getCacheValue(idProducto));
     }
 
     public int getIdVenta() {
@@ -96,8 +103,7 @@ public class Vendido extends Persistible {
     }
 
     public void setIdVenta(int idVenta) {
-        this.idVenta = idVenta;
-        updateVenta();
+        setVenta(DataStore.getVentas().getById().getCacheValue(idVenta));
     }
 
     public int getCantidad() {
@@ -125,9 +131,6 @@ public class Vendido extends Persistible {
         this.precioUnidad = precioUnidad;
     }
 
-    private void updateVenta() {
-        setVenta(DataStore.getVentas().getById().getCacheValue(getIdVenta()));
-    }
 
     public Producto getProducto() {
         return producto;
@@ -136,10 +139,6 @@ public class Vendido extends Persistible {
     public void setProducto(Producto producto) {
         this.producto   = producto;
         this.idProducto = getProducto().getId();
-    }
-
-    private void updateProducto() {
-        setProducto(DataStore.getProductos().getById().getCacheValue(getIdProducto()));
     }
 
     @Override
@@ -151,14 +150,11 @@ public class Vendido extends Persistible {
             return false;
         }
         Vendido vendido = (Vendido) o;
-        return getId() == vendido.getId() && getIdProducto() == vendido.getIdProducto()
-               && getIdVenta() == vendido.getIdVenta() && getCantidad() == vendido.getCantidad()
+        return getId().equals(vendido.getId())
+               && getIdProducto() == vendido.getIdProducto()
+               && getIdVenta() == vendido.getIdVenta()
+               && getCantidad() == vendido.getCantidad()
                && getPrecioUnidad() == vendido.getPrecioUnidad();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
     }
 
     @Override

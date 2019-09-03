@@ -46,7 +46,7 @@ public class ProveedorEditorControl extends GridControl<Proveedor> {
         editee.setEmail(StaticHelpers.textInputEmptyToNull(fxEmail));
         editee.setDireccion(StaticHelpers.textInputEmptyToNull(fxDireccion));
         editee.setDescripcion(StaticHelpers.textInputEmptyToNull(fxDescripcion));
-        editee.setActivo(fxCheckActivo.isSelected());
+        editee.setActive(fxCheckActivo.isSelected());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ProveedorEditorControl extends GridControl<Proveedor> {
         fxEmail.setText(Strings.nullToEmpty(editee.getEmail()));
         fxDireccion.setText(Strings.nullToEmpty(editee.getDireccion()));
         fxDescripcion.setText(Strings.nullToEmpty(editee.getDescripcion()));
-        fxCheckActivo.setSelected(editee.isActivo());
+        fxCheckActivo.setSelected(editee.isActive());
     }
 
     @Override

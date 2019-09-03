@@ -2,8 +2,9 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.CompradoDao;
-import app.data.casteldao.daomodel.IPersistible;
-import app.data.casteldao.daomodel.Persistible;
+import app.misc.Flogger;
+import casteldao.model.EntityInt;
+import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Comprado extends Persistible {
+public class Comprado extends EntityInt {
 
     public static final String TABLE_NAME = "comprados";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idCompra", "idProducto", "cantidad", "precio_unidad"));
@@ -24,6 +25,10 @@ public class Comprado extends Persistible {
     protected int precioUnidad;
     private Compra compra;
     private Producto producto;
+
+    public Comprado() {
+        super(0);
+    }
 
     private Comprado(int id, int idCompra, int idProducto, int cantidad, int precioUnidad) {
         super(id);
@@ -45,21 +50,37 @@ public class Comprado extends Persistible {
         setPrecioUnidad(precioUnidad);
     }
 
-    public Comprado(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5));
+    @Override
+    public boolean setEntity(@NonNull ResultSet rs) {
+        try {
+            setId(rs.getInt(1));
+            setIdCompra(rs.getInt(2));
+            setIdProducto(rs.getInt(3));
+            setCantidad(rs.getInt(4));
+            setPrecioUnidad(rs.getInt(5));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
+    }
+    @Override
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setInt(1, getIdCompra());
+            pst.setInt(2, getIdProducto());
+            pst.setInt(3, getCantidad());
+            pst.setInt(4, getPrecioUnidad());
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setInt(1, getIdCompra());
-        pst.setInt(2, getIdProducto());
-        pst.setInt(3, getCantidad());
-        pst.setInt(4, getPrecioUnidad());
-    }
-
-    @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Comprado newValues = (Comprado) objectV;
             setCompra(newValues.getCompra());
             setProducto(newValues.getProducto());
@@ -86,8 +107,7 @@ public class Comprado extends Persistible {
     }
 
     public void setIdCompra(int idCompra) {
-        this.idCompra = idCompra;
-        updateCompra();
+        setCompra(DataStore.getCompras().getById().getCacheValue(idCompra));
     }
 
     public int getIdProducto() {
@@ -95,8 +115,7 @@ public class Comprado extends Persistible {
     }
 
     public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-        updateProducto();
+        setProducto(DataStore.getProductos().getById().getCacheValue(idProducto));
     }
 
     public int getCantidad() {
@@ -125,10 +144,6 @@ public class Comprado extends Persistible {
         this.precioUnidad = precioUnidad;
     }
 
-    public void updateCompra() {
-        setCompra(DataStore.getCompras().getById().getCacheValue(getIdCompra()));
-    }
-
     public Producto getProducto() {
         return producto;
     }
@@ -137,11 +152,6 @@ public class Comprado extends Persistible {
         this.producto   = producto;
         this.idProducto = getProducto().getId();
     }
-
-    public void updateProducto() {
-        setProducto(DataStore.getProductos().getById().getCacheValue(getIdProducto()));
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -151,15 +161,12 @@ public class Comprado extends Persistible {
             return false;
         }
         Comprado comprado = (Comprado) o;
-        return getId() == comprado.getId() && getIdCompra() == comprado.getIdCompra()
+        return getId().equals(comprado.getId())
+               && getIdCompra() == comprado.getIdCompra()
                && getIdProducto() == comprado.getIdProducto() && getCantidad() == comprado.getCantidad()
                && getPrecioUnidad() == comprado.getPrecioUnidad();
     }
 
-    @Override
-    public int hashCode() {
-        return getId();
-    }
 
     @Override
     public String toString() {

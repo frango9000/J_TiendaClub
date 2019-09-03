@@ -1,9 +1,9 @@
 package app.control.table;
 
 import app.data.DataStore;
-import app.data.casteldao.daomodel.IndexIdActiveDao;
 import app.model.Acceso;
 import app.model.Usuario;
+import casteldao.dao.DataSourceIdActive;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -34,7 +34,7 @@ public class UsuariosTableControl extends ActiveTableControl<Usuario> {
 
 
     @Override
-    protected IndexIdActiveDao<Usuario> getDataOrigin() {
+    protected DataSourceIdActive<Usuario> getDataOrigin() {
         return DataStore.getUsuarios();
     }
 

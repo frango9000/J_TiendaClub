@@ -1,9 +1,9 @@
 package app.control.editor;
 
-import app.data.casteldao.daomodel.Persistible;
-import app.data.casteldao.daomodel.PersistibleDao;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
+import casteldao.dao.DataSourceIdImpl;
+import casteldao.model.EntityInt;
 import com.google.common.flogger.StackSize;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -13,8 +13,9 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
-public class EditorControl<T extends Persistible> extends BorderPane {
+public class EditorControl<T extends EntityInt> extends BorderPane {
 
     @FXML
     public BorderPane fxGenericEditorBorderPane;
@@ -23,7 +24,7 @@ public class EditorControl<T extends Persistible> extends BorderPane {
     protected T editee;
     protected boolean creating = true;
     protected GridControl<T> gridControl;
-    protected PersistibleDao<T> dataOrigin;
+    protected DataSourceIdImpl<T> dataOrigin;
 
     {
         try {
@@ -36,22 +37,22 @@ public class EditorControl<T extends Persistible> extends BorderPane {
         }
     }
 
-    public EditorControl(T editee, PersistibleDao<T> dataOrigin, GridControl<T> gridControl, Pane gridpane) {
+    public EditorControl(T editee, DataSourceIdImpl<T> dataOrigin, GridControl<T> gridControl, Pane gridpane) {
         this.dataOrigin  = dataOrigin;
         this.gridControl = gridControl;
-        setCenter(gridpane);
+        gridControl.setFxButtonMenu(fxButtonMenu);
+        this.editee = editee;
         if (editee != null) {
             creating    = false;
-            this.editee = editee;
             gridControl.setFields(this.editee);
         }
+        setCenter(gridpane);
     }
 
     @FXML
     protected void fxBtnDiscardAction(ActionEvent actionEvent) {
-        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+        ((Stage) this.getScene().getWindow()).close();
     }
-
     @FXML
     protected void fxBtnSaveAction(ActionEvent event) {
         if (gridControl.validFields()) {

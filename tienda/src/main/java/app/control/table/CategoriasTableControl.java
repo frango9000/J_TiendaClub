@@ -1,8 +1,8 @@
 package app.control.table;
 
 import app.data.DataStore;
-import app.data.casteldao.daomodel.IndexIdActiveDao;
 import app.model.Categoria;
+import casteldao.dao.DataSourceIdActive;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -28,7 +28,7 @@ public class CategoriasTableControl extends ActiveTableControl<Categoria> {
 
 
     @Override
-    protected IndexIdActiveDao<Categoria> getDataOrigin() {
+    protected DataSourceIdActive<Categoria> getDataOrigin() {
         return DataStore.getCategorias();
     }
 

@@ -1,20 +1,20 @@
 package app.data.appdao;
 
-import app.data.casteldao.daomodel.IndexIdActiveDao;
-import app.data.casteldao.index.core.SimpleTreeMapIndex;
 import app.model.Socio;
+import casteldao.dao.DataSourceIdActive;
+import casteldao.index.SimpleTreeMapIndexImpl;
 import java.time.LocalDateTime;
 
-public class SocioDao extends IndexIdActiveDao<Socio> {
+public class SocioDao extends DataSourceIdActive<Socio> {
 
-    private SimpleTreeMapIndex<LocalDateTime, Socio> indexFechaIn = new SimpleTreeMapIndex<LocalDateTime, Socio>(getDataSource(), "fecha_in", Socio::getFechaIn);
+    private SimpleTreeMapIndexImpl<LocalDateTime, Socio> indexFechaIn = new SimpleTreeMapIndexImpl<>(getDao(), "fecha_in", Socio::getFechaIn);
 
     public SocioDao() {
         super(Socio.TABLE_NAME, Socio.class);
         indexes.add(indexFechaIn);
     }
 
-    public SimpleTreeMapIndex<LocalDateTime, Socio> getIndexFechaIn() {
+    public SimpleTreeMapIndexImpl<LocalDateTime, Socio> getIndexFechaIn() {
         return indexFechaIn;
     }
 }

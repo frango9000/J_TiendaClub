@@ -1,8 +1,8 @@
 package app.control.table;
 
 import app.data.DataStore;
-import app.data.casteldao.daomodel.IndexIdActiveDao;
 import app.model.Sede;
+import casteldao.dao.DataSourceIdActive;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -33,7 +33,7 @@ public class SedesTableControl extends ActiveTableControl<Sede> {
     }
 
     @Override
-    protected IndexIdActiveDao<Sede> getDataOrigin() {
+    protected DataSourceIdActive<Sede> getDataOrigin() {
         return DataStore.getSedes();
     }
 }

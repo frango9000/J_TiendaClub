@@ -2,9 +2,10 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.CompraDao;
-import app.data.casteldao.daomodel.IPersistible;
-import app.data.casteldao.daomodel.Persistible;
 import app.misc.DateUtils;
+import app.misc.Flogger;
+import casteldao.model.EntityInt;
+import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Compra extends Persistible {
+public class Compra extends EntityInt {
 
     public static final String TABLE_NAME = "compras";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idUsuario", "idSede", "idProveedor", "fechahora"));
@@ -28,6 +29,10 @@ public class Compra extends Persistible {
     private Usuario usuario;
     private Proveedor proveedor;
     private Sede sede;
+
+    public Compra() {
+        super(0);
+    }
 
     public Compra(int id, int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
         super(id);
@@ -49,21 +54,38 @@ public class Compra extends Persistible {
         setFechahora(fechahora);
     }
 
-    public Compra(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), DateUtils.toLocalDateTime(rs.getDate(5)));
+    @Override
+    public boolean setEntity(@NonNull ResultSet rs) {
+        try {
+            setId(rs.getInt(1));
+            setIdUsuario(rs.getInt(2));
+            setIdSede(rs.getInt(3));
+            setIdProveedor(rs.getInt(4));
+            setFechahora(DateUtils.toLocalDateTime(rs.getDate(5)));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setInt(1, getIdUsuario());
-        pst.setInt(2, getIdSede());
-        pst.setInt(3, getIdProveedor());
-        pst.setTimestamp(4, DateUtils.toTimestamp(getFechahora()));
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setInt(1, getIdUsuario());
+            pst.setInt(2, getIdSede());
+            pst.setInt(3, getIdProveedor());
+            pst.setTimestamp(4, DateUtils.toTimestamp(getFechahora()));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Compra newValues = (Compra) objectV;
             setUsuario(newValues.getUsuario());
             setSede(newValues.getSede());
@@ -85,8 +107,7 @@ public class Compra extends Persistible {
     }
 
     public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-        updateUsuario();
+        setUsuario(DataStore.getUsuarios().getById().getCacheValue(idUsuario));
     }
 
     public int getIdSede() {
@@ -94,8 +115,7 @@ public class Compra extends Persistible {
     }
 
     public void setIdSede(int idSede) {
-        this.idSede = idSede;
-        updateSede();
+        setSede(DataStore.getSedes().getById().getCacheValue(idSede));
     }
 
     public int getIdProveedor() {
@@ -103,8 +123,7 @@ public class Compra extends Persistible {
     }
 
     public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
-        updateProveedor();
+        setProveedor(DataStore.getProveedores().getById().getCacheValue(idProveedor));
     }
 
     public Usuario getUsuario() {
@@ -124,10 +143,6 @@ public class Compra extends Persistible {
         this.fechahora = fechahora;
     }
 
-    private void updateUsuario() {
-        setUsuario(DataStore.getUsuarios().getById().getCacheValue(getIdUsuario()));
-    }
-
     public Proveedor getProveedor() {
         return proveedor;
     }
@@ -137,10 +152,6 @@ public class Compra extends Persistible {
         this.idProveedor = getProveedor().getId();
     }
 
-    private void updateProveedor() {
-        setProveedor(DataStore.getProveedores().getById().getCacheValue(getIdProveedor()));
-    }
-
     public Sede getSede() {
         return sede;
     }
@@ -148,10 +159,6 @@ public class Compra extends Persistible {
     public void setSede(Sede sede) {
         this.sede   = sede;
         this.idSede = getSede().getId();
-    }
-
-    private void updateSede() {
-        setSede(DataStore.getSedes().getById().getCacheValue(getIdSede()));
     }
 
     @Override
@@ -168,14 +175,13 @@ public class Compra extends Persistible {
             return false;
         }
         Compra compra = (Compra) o;
-        return getId() == compra.getId() && getIdUsuario() == compra.getIdUsuario() && getIdSede() == compra.getIdSede()
-               && getIdProveedor() == compra.getIdProveedor() && Objects.equal(getFechahora(), compra.getFechahora());
+        return getId().equals(compra.getId()) &&
+               getIdUsuario() == compra.getIdUsuario() &&
+               getIdSede() == compra.getIdSede() &&
+               getIdProveedor() == compra.getIdProveedor() &&
+               Objects.equal(getFechahora(), compra.getFechahora());
     }
 
-    @Override
-    public int hashCode() {
-        return getId();
-    }
 
     @Override
     public String toString() {

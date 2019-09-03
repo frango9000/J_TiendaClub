@@ -1,17 +1,17 @@
 package app.data.appdao;
 
-import app.data.casteldao.daomodel.IndexIdDao;
-import app.data.casteldao.index.MultiIndexPersistible;
 import app.model.Compra;
 import app.model.Proveedor;
 import app.model.Sede;
 import app.model.Usuario;
+import casteldao.dao.DataSourceIdImpl;
+import casteldao.index.SetMultiMapIndexEntityImpl;
 
-public class CompraDao extends IndexIdDao<Compra> {
+public class CompraDao extends DataSourceIdImpl<Compra> {
 
-    private MultiIndexPersistible<Usuario, Compra> indexUsuario = new MultiIndexPersistible<>(getDataSource(), "idUsuario", Compra::getIdUsuario);
-    private MultiIndexPersistible<Sede, Compra> indexSede = new MultiIndexPersistible<>(getDataSource(), "idSede", Compra::getIdSede);
-    private MultiIndexPersistible<Proveedor, Compra> indexProveedor = new MultiIndexPersistible<>(getDataSource(), "idProveedor", Compra::getIdProveedor);
+    private SetMultiMapIndexEntityImpl<Usuario, Compra> indexUsuario = new SetMultiMapIndexEntityImpl<>(getDao(), "idUsuario", Compra::getIdUsuario);
+    private SetMultiMapIndexEntityImpl<Sede, Compra> indexSede = new SetMultiMapIndexEntityImpl<>(getDao(), "idSede", Compra::getIdSede);
+    private SetMultiMapIndexEntityImpl<Proveedor, Compra> indexProveedor = new SetMultiMapIndexEntityImpl<>(getDao(), "idProveedor", Compra::getIdProveedor);
 
     public CompraDao() {
         super(Compra.TABLE_NAME, Compra.class);
@@ -20,15 +20,15 @@ public class CompraDao extends IndexIdDao<Compra> {
         indexes.add(indexProveedor);
     }
 
-    public MultiIndexPersistible<Usuario, Compra> getIndexUsuario() {
+    public SetMultiMapIndexEntityImpl<Usuario, Compra> getIndexUsuario() {
         return indexUsuario;
     }
 
-    public MultiIndexPersistible<Sede, Compra> getIndexSede() {
+    public SetMultiMapIndexEntityImpl<Sede, Compra> getIndexSede() {
         return indexSede;
     }
 
-    public MultiIndexPersistible<Proveedor, Compra> getIndexProveedor() {
+    public SetMultiMapIndexEntityImpl<Proveedor, Compra> getIndexProveedor() {
         return indexProveedor;
     }
 }

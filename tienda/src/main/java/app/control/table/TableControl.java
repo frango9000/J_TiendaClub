@@ -2,12 +2,11 @@ package app.control.table;
 
 import app.control.editor.EditorControl;
 import app.control.editor.GridControl;
-import app.data.casteldao.daomodel.IndexIdDao;
-import app.data.casteldao.daomodel.Persistible;
-import app.data.casteldao.daomodel.PersistibleDao;
 import app.misc.FXMLStage;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
+import casteldao.dao.DataSourceIdImpl;
+import casteldao.model.EntityInt;
 import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
-public abstract class TableControl<T extends Persistible> extends BorderPane {
+public abstract class TableControl<T extends EntityInt> extends BorderPane {
 
     protected final ObservableList<T> listedObjects = FXCollections.observableArrayList();
 
@@ -117,7 +116,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
 
     @FXML
     protected void fxBtnPullAction(ActionEvent actionEvent) {
-        getDataOrigin().getDataSource().queryAll();
+        getDataOrigin().getDao().queryAll();
         addContent(true);
     }
 
@@ -138,7 +137,7 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
         addContent(false);
     }
 
-    public <T extends Persistible> EditorControl<T> getEditorControl(String fxml, T editee, PersistibleDao<T> dataOrigin) {
+    public <T extends EntityInt> EditorControl<T> getEditorControl(String fxml, T editee, DataSourceIdImpl<T> dataOrigin) {
         FXMLLoader loader = new FXMLLoader(TableControl.class.getResource(fxml));
         Pane pane = null;
         GridControl<T> tGridControl = null;
@@ -146,13 +145,14 @@ public abstract class TableControl<T extends Persistible> extends BorderPane {
             pane         = loader.load();
             tGridControl = loader.getController();
         } catch (IOException e) {
-            e.printStackTrace();
+            Flogger.atWarning().withCause(e).log();
         }
+        assert tGridControl != null;
         return new EditorControl<>(editee, dataOrigin, tGridControl, pane);
 
     }
 
     protected abstract String fxmlLocation();
 
-    protected abstract IndexIdDao<T> getDataOrigin();
+    protected abstract DataSourceIdImpl<T> getDataOrigin();
 }

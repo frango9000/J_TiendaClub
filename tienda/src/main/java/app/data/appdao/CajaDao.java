@@ -1,20 +1,20 @@
 package app.data.appdao;
 
-import app.data.casteldao.daomodel.IndexIdActiveDao;
-import app.data.casteldao.index.MultiIndexPersistible;
 import app.model.Caja;
 import app.model.Sede;
+import casteldao.dao.DataSourceIdActive;
+import casteldao.index.SetMultiMapIndexEntityImpl;
 
-public class CajaDao extends IndexIdActiveDao<Caja> {
+public class CajaDao extends DataSourceIdActive<Caja> {
 
-    private MultiIndexPersistible<Sede, Caja> indexSede = new MultiIndexPersistible<>(getDataSource(), "idSede", Caja::getIdSede);
+    private SetMultiMapIndexEntityImpl<Sede, Caja> indexSede = new SetMultiMapIndexEntityImpl<Sede, Caja>(getDao(), "idSede", Caja::getIdSede);
 
     public CajaDao() {
         super(Caja.TABLE_NAME, Caja.class);
         indexes.add(indexSede);
     }
 
-    public MultiIndexPersistible<Sede, Caja> getIndexSede() {
+    public SetMultiMapIndexEntityImpl<Sede, Caja> getIndexSede() {
         return indexSede;
     }
 }

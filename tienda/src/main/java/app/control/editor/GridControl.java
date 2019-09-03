@@ -1,10 +1,11 @@
 package app.control.editor;
 
-import app.data.casteldao.daomodel.Persistible;
+
+import casteldao.model.EntityInt;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.GridPane;
 
-public abstract class GridControl<T extends Persistible> extends GridPane {
+public abstract class GridControl<T extends EntityInt> extends GridPane {
 
     protected MenuButton fxButtonMenu;
 
