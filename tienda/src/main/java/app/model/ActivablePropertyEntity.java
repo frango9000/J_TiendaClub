@@ -1,6 +1,6 @@
 package app.model;
 
-import app.data.casteldao.model.ActivableEntity;
+import casteldao.model.ActivableEntity;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 

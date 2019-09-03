@@ -1,10 +1,10 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.DataSourceIdActive;
-import app.data.casteldao.index.SetMultiMapIndexEntityImpl;
-import app.data.casteldao.index.SimpleUniqueIndexStringImpl;
 import app.model.Acceso;
 import app.model.Usuario;
+import casteldao.dao.DataSourceIdActive;
+import casteldao.index.SetMultiMapIndexEntityImpl;
+import casteldao.index.SimpleUniqueIndexStringImpl;
 
 public class UsuarioDao extends DataSourceIdActive<Usuario> {
 

@@ -2,7 +2,6 @@ package app.control.editor;
 
 import app.data.DataStore;
 import app.data.SessionStore;
-import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
 import app.model.Caja;
@@ -13,6 +12,7 @@ import app.model.Socio;
 import app.model.Usuario;
 import app.model.Vendido;
 import app.model.Venta;
+import casteldao.model.IEntity;
 import com.google.common.collect.Sets;
 import java.io.IOException;
 import java.time.LocalDateTime;

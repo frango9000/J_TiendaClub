@@ -1,7 +1,7 @@
 package app.control;
 
-import app.data.casteldao.SessionDB;
 import app.misc.Flogger;
+import casteldao.SessionDB;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

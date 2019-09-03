@@ -2,9 +2,9 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.VendidoDao;
-import app.data.casteldao.model.EntityInt;
-import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
+import casteldao.model.EntityInt;
+import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

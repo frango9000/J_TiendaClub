@@ -1,9 +1,9 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.DataSourceIdImpl;
-import app.data.casteldao.index.SetMultiMapIndexEntityImpl;
 import app.model.Vendido;
 import app.model.Venta;
+import casteldao.dao.DataSourceIdImpl;
+import casteldao.index.SetMultiMapIndexEntityImpl;
 
 public class VendidoDao extends DataSourceIdImpl<Vendido> {
 

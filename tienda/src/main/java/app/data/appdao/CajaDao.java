@@ -1,9 +1,9 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.DataSourceIdActive;
-import app.data.casteldao.index.SetMultiMapIndexEntityImpl;
 import app.model.Caja;
 import app.model.Sede;
+import casteldao.dao.DataSourceIdActive;
+import casteldao.index.SetMultiMapIndexEntityImpl;
 
 public class CajaDao extends DataSourceIdActive<Caja> {
 

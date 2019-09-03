@@ -1,8 +1,8 @@
 package app.control.table;
 
 import app.data.DataStore;
-import app.data.casteldao.dao.DataSourceIdActive;
 import app.model.Sede;
+import casteldao.dao.DataSourceIdActive;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;

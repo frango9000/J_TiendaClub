@@ -1,7 +1,7 @@
 package app.control.editor;
 
 
-import app.data.casteldao.model.EntityInt;
+import casteldao.model.EntityInt;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.GridPane;
 

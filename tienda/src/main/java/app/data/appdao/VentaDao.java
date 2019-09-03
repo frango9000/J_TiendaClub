@@ -1,12 +1,12 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.DataSourceIdImpl;
-import app.data.casteldao.index.SetMultiMapIndexEntityImpl;
-import app.data.casteldao.index.SimpleTreeMapIndexImpl;
 import app.model.Caja;
 import app.model.Socio;
 import app.model.Usuario;
 import app.model.Venta;
+import casteldao.dao.DataSourceIdImpl;
+import casteldao.index.SetMultiMapIndexEntityImpl;
+import casteldao.index.SimpleTreeMapIndexImpl;
 import java.time.LocalDateTime;
 
 public class VentaDao extends DataSourceIdImpl<Venta> {

@@ -10,13 +10,13 @@ import app.data.appdao.TransferenciaDao;
 import app.data.appdao.UsuarioDao;
 import app.data.appdao.VendidoDao;
 import app.data.appdao.VentaDao;
-import app.data.casteldao.SessionDB;
-import app.data.casteldao.dao.DataSourceIdActive;
-import app.data.casteldao.dao.DataSourceIdImpl;
 import app.model.Acceso;
 import app.model.Categoria;
 import app.model.Proveedor;
 import app.model.Sede;
+import casteldao.SessionDB;
+import casteldao.dao.DataSourceIdActive;
+import casteldao.dao.DataSourceIdImpl;
 
 public class DataStore {
 

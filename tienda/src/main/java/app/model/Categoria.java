@@ -1,9 +1,9 @@
 package app.model;
 
 import app.data.DataStore;
-import app.data.casteldao.dao.DataSourceIdActive;
-import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
+import casteldao.dao.DataSourceIdActive;
+import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;

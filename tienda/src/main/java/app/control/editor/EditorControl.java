@@ -1,9 +1,9 @@
 package app.control.editor;
 
-import app.data.casteldao.dao.DataSourceIdImpl;
-import app.data.casteldao.model.EntityInt;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
+import casteldao.dao.DataSourceIdImpl;
+import casteldao.model.EntityInt;
 import com.google.common.flogger.StackSize;
 import java.io.IOException;
 import javafx.event.ActionEvent;

@@ -2,11 +2,11 @@ package app.control.table;
 
 import app.control.editor.EditorControl;
 import app.control.editor.GridControl;
-import app.data.casteldao.dao.DataSourceIdImpl;
-import app.data.casteldao.model.EntityInt;
 import app.misc.FXMLStage;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
+import casteldao.dao.DataSourceIdImpl;
+import casteldao.model.EntityInt;
 import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

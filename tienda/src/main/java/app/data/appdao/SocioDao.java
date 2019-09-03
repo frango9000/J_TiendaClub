@@ -1,8 +1,8 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.DataSourceIdActive;
-import app.data.casteldao.index.SimpleTreeMapIndexImpl;
 import app.model.Socio;
+import casteldao.dao.DataSourceIdActive;
+import casteldao.index.SimpleTreeMapIndexImpl;
 import java.time.LocalDateTime;
 
 public class SocioDao extends DataSourceIdActive<Socio> {

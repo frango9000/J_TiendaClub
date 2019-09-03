@@ -1,10 +1,10 @@
 package app.model;
 
 import app.data.DataStore;
-import app.data.casteldao.dao.DataSourceIdImpl;
-import app.data.casteldao.model.EntityInt;
-import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
+import casteldao.dao.DataSourceIdImpl;
+import casteldao.model.EntityInt;
+import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

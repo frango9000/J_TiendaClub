@@ -2,13 +2,13 @@ package app;
 
 import app.control.PropsLoader;
 import app.data.DataStore;
-import app.data.casteldao.SessionDB;
 import app.model.Caja;
 import app.model.Categoria;
 import app.model.Producto;
 import app.model.Proveedor;
 import app.model.Sede;
 import app.model.Socio;
+import casteldao.SessionDB;
 import java.time.LocalDateTime;
 import javafx.application.Application;
 import javafx.stage.Stage;

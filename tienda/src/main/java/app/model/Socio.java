@@ -2,9 +2,9 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.SocioDao;
-import app.data.casteldao.model.IEntity;
 import app.misc.DateUtils;
 import app.misc.Flogger;
+import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;

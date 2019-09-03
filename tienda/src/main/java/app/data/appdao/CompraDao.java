@@ -1,11 +1,11 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.DataSourceIdImpl;
-import app.data.casteldao.index.SetMultiMapIndexEntityImpl;
 import app.model.Compra;
 import app.model.Proveedor;
 import app.model.Sede;
 import app.model.Usuario;
+import casteldao.dao.DataSourceIdImpl;
+import casteldao.index.SetMultiMapIndexEntityImpl;
 
 public class CompraDao extends DataSourceIdImpl<Compra> {
 

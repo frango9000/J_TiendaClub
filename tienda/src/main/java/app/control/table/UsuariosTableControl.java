@@ -1,9 +1,9 @@
 package app.control.table;
 
 import app.data.DataStore;
-import app.data.casteldao.dao.DataSourceIdActive;
 import app.model.Acceso;
 import app.model.Usuario;
+import casteldao.dao.DataSourceIdActive;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
