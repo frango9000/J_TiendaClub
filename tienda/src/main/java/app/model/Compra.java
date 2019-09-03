@@ -30,6 +30,10 @@ public class Compra extends EntityInt {
     private Proveedor proveedor;
     private Sede sede;
 
+    public Compra() {
+        super(0);
+    }
+
     public Compra(int id, int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
         super(id);
         setIdUsuario(idUsuario);

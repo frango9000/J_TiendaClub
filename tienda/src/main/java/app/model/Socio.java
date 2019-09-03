@@ -2,7 +2,6 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.SocioDao;
-import app.data.casteldao.model.ActivableEntity;
 import app.data.casteldao.model.IEntity;
 import app.misc.DateUtils;
 import app.misc.Flogger;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Socio extends ActivableEntity {
+public class Socio extends ActivablePropertyEntity {
 
     public static final String TABLE_NAME = "socios";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("dni", "nombre", "telefono", "email", "direccion", "descripcion", "fecha_in", "activo"));
@@ -28,6 +27,10 @@ public class Socio extends ActivableEntity {
     protected String direccion;
     protected String descripcion;
     protected LocalDateTime fechaIn;
+
+    public Socio() {
+        super(0);
+    }
 
     public Socio(int id, String dni) {
         super(id);

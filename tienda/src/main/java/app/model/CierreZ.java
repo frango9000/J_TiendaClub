@@ -26,6 +26,10 @@ public class CierreZ extends EntityInt {
     protected LocalDateTime cierre;
     private Caja caja;
 
+    public CierreZ() {
+        super(0);
+    }
+
     public CierreZ(int id, int idCaja, LocalDateTime apertura) {
         super(id);
         setIdCaja(idCaja);

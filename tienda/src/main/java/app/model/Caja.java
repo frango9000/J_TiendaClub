@@ -2,7 +2,6 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.CajaDao;
-import app.data.casteldao.model.ActivableEntity;
 import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
 import com.google.common.base.MoreObjects;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 
-public class Caja extends ActivableEntity {
+public class Caja extends ActivablePropertyEntity {
 
     public static final String TABLE_NAME = "cajas";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idSede", "nombre", "activo"));
@@ -23,6 +22,10 @@ public class Caja extends ActivableEntity {
     protected int idSede;
     protected String nombre;
     private Sede sede;
+
+    public Caja() {
+        super(0);
+    }
 
     public Caja(Sede sede, String nombre) {
         super(0);
@@ -86,7 +89,7 @@ public class Caja extends ActivableEntity {
     }
 
     public void setIdSede(int idSede) {
-        setSede(DataStore.getSedes().getById().getCacheValue(getIdSede()));
+        setSede(DataStore.getSedes().getById().getCacheValue(idSede));
     }
 
     public Sede getSede() {

@@ -2,7 +2,6 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.casteldao.dao.DataSourceIdActive;
-import app.data.casteldao.model.ActivableEntity;
 import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
 import com.google.common.base.MoreObjects;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Proveedor extends ActivableEntity {
+public class Proveedor extends ActivablePropertyEntity {
 
     public static final String TABLE_NAME = "proveedores";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion", "activo"));
@@ -25,6 +24,10 @@ public class Proveedor extends ActivableEntity {
     protected String email;
     protected String direccion;
     protected String descripcion;
+
+    public Proveedor() {
+        super(0);
+    }
 
     public Proveedor(String nif) {
         super(0);

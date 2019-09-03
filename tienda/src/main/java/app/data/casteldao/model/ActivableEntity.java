@@ -2,9 +2,10 @@ package app.data.casteldao.model;
 
 public abstract class ActivableEntity extends EntityInt implements IActivable {
 
-    protected boolean active;
+    private boolean active;
 
     public ActivableEntity() {
+        super(0);
     }
 
     protected ActivableEntity(Integer id) {

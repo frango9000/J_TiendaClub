@@ -145,8 +145,9 @@ public abstract class TableControl<T extends EntityInt> extends BorderPane {
             pane         = loader.load();
             tGridControl = loader.getController();
         } catch (IOException e) {
-            e.printStackTrace();
+            Flogger.atWarning().withCause(e).log();
         }
+        assert tGridControl != null;
         return new EditorControl<>(editee, dataOrigin, tGridControl, pane);
 
     }

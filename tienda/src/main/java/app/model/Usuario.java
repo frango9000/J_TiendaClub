@@ -2,7 +2,6 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.UsuarioDao;
-import app.data.casteldao.model.ActivableEntity;
 import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
 import com.google.common.base.MoreObjects;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Usuario extends ActivableEntity {
+public class Usuario extends ActivablePropertyEntity {
 
     public static final String TABLE_NAME = "usuarios";
     public static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso", "activo"));
@@ -28,6 +27,10 @@ public class Usuario extends ActivableEntity {
     private String descripcion;
     private int idAcceso;
     private Acceso acceso;
+
+    public Usuario() {
+        super(0);
+    }
 
     public Usuario(String username, Acceso acceso) {
         super(0);

@@ -5,6 +5,7 @@ import app.data.casteldao.dao.DataSourceIdImpl;
 import app.data.casteldao.model.EntityInt;
 import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
+import com.google.common.base.MoreObjects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +20,10 @@ public class Acceso extends EntityInt {
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Collections.singletonList("nivel"));
 
     private String nivel;
+
+    public Acceso() {
+        super(0);
+    }
 
     public Acceso(int id, String nivel) {
         super(id);
@@ -91,6 +96,14 @@ public class Acceso extends EntityInt {
         Acceso acceso = (Acceso) o;
         return getId().equals(acceso.getId()) &&
                Objects.equals(getNivel(), acceso.getNivel());
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("nivel", nivel)
+                          .toString();
     }
 
     @Override

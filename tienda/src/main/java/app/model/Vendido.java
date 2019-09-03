@@ -27,6 +27,10 @@ public class Vendido extends EntityInt {
     private Producto producto;
 
 
+    public Vendido() {
+        super(0);
+    }
+
     public Vendido(Producto producto, int cantidad, int precioUnidad) {
         super(0);
         setProducto(producto);

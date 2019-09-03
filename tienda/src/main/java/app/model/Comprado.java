@@ -26,6 +26,10 @@ public class Comprado extends EntityInt {
     private Compra compra;
     private Producto producto;
 
+    public Comprado() {
+        super(0);
+    }
+
     private Comprado(int id, int idCompra, int idProducto, int cantidad, int precioUnidad) {
         super(id);
         setIdCompra(idCompra);

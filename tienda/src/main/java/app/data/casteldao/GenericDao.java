@@ -3,12 +3,12 @@ package app.data.casteldao;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.data.casteldao.index.core.IIndex;
-import app.data.casteldao.model.EntityFactory;
 import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
 import app.misc.Globals;
 import com.google.common.collect.Sets;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,7 +44,12 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
             this.clazz = clazz;
         } else
             findGenericClass();
-        clone = (E) new EntityFactory<E, I>().getNewInstance();
+        try {
+            assert clazz != null;
+            clone = clazz.getConstructor().newInstance();
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
+            Flogger.atSevere().withCause(e).log();
+        }
     }
 
     public GenericDao(String tableName, ArrayList<IIndex<?, E, I>> indexes) {

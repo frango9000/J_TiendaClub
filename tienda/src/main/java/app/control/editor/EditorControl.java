@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class EditorControl<T extends EntityInt> extends BorderPane {
 
@@ -39,19 +40,19 @@ public class EditorControl<T extends EntityInt> extends BorderPane {
     public EditorControl(T editee, DataSourceIdImpl<T> dataOrigin, GridControl<T> gridControl, Pane gridpane) {
         this.dataOrigin  = dataOrigin;
         this.gridControl = gridControl;
-        setCenter(gridpane);
+        gridControl.setFxButtonMenu(fxButtonMenu);
+        this.editee = editee;
         if (editee != null) {
             creating    = false;
-            this.editee = editee;
             gridControl.setFields(this.editee);
         }
+        setCenter(gridpane);
     }
 
     @FXML
     protected void fxBtnDiscardAction(ActionEvent actionEvent) {
-        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+        ((Stage) this.getScene().getWindow()).close();
     }
-
     @FXML
     protected void fxBtnSaveAction(ActionEvent event) {
         if (gridControl.validFields()) {
