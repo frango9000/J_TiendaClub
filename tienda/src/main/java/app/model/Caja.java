@@ -2,8 +2,9 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.CajaDao;
-import app.data.casteldao.daomodel.Activable;
-import app.data.casteldao.daomodel.IPersistible;
+import app.data.casteldao.model.ActivableEntity;
+import app.data.casteldao.model.IEntity;
+import app.misc.Flogger;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Caja extends Activable {
+
+public class Caja extends ActivableEntity {
 
     public static final String TABLE_NAME = "cajas";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idSede", "nombre", "activo"));
@@ -22,41 +24,44 @@ public class Caja extends Activable {
     protected String nombre;
     private Sede sede;
 
-    public Caja(int id, int idSede, String nombre) {
-        super(id);
-        setIdSede(idSede);
-        setNombre(nombre);
-    }
-
-    public Caja(int idSede, String nombre) {
-        this(0, idSede, nombre);
-    }
-
     public Caja(Sede sede, String nombre) {
         super(0);
         setSede(sede);
         setNombre(nombre);
     }
 
-    public Caja(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), rs.getString(3));
-        setActivo(rs.getBoolean(4));
+    public boolean setEntity(@NonNull ResultSet resultSet) {
+        try {
+            setId(resultSet.getInt(1));
+            setIdSede(resultSet.getInt(2));
+            setNombre(resultSet.getString(3));
+            setActive(resultSet.getBoolean(4));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setInt(1, getIdSede());
-        pst.setString(2, getNombre());
-        pst.setBoolean(3, isActivo());
+    public boolean buildStatement(@NonNull PreparedStatement preparedStatement) {
+        try {
+            preparedStatement.setInt(1, getIdSede());
+            preparedStatement.setString(2, getNombre());
+            preparedStatement.setBoolean(3, isActive());
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
-
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Caja newValues = (Caja) objectV;
             setSede(newValues.getSede());
             setNombre(newValues.getNombre());
-            setActivo(newValues.isActivo());
+            setActive(newValues.isActive());
             return true;
         }
         return false;
@@ -81,8 +86,7 @@ public class Caja extends Activable {
     }
 
     public void setIdSede(int idSede) {
-        this.idSede = idSede;
-        updateSede();
+        setSede(DataStore.getSedes().getById().getCacheValue(getIdSede()));
     }
 
     public Sede getSede() {
@@ -92,10 +96,6 @@ public class Caja extends Activable {
     public void setSede(@NonNull Sede sede) {
         this.sede   = sede;
         this.idSede = getSede().getId();
-    }
-
-    private void updateSede() {
-        setSede(DataStore.getSedes().getById().getCacheValue(getIdSede()));
     }
 
     @Override
@@ -112,13 +112,10 @@ public class Caja extends Activable {
             return false;
         }
         Caja caja = (Caja) o;
-        return getId() == caja.getId() && getIdSede() == caja.getIdSede() && isActivo() == caja.isActivo()
+        return getId().equals(caja.getId())
+               && getIdSede() == caja.getIdSede()
+               && isActive() == caja.isActive()
                && Objects.equal(getNombre(), caja.getNombre());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId();
     }
 
     @Override
@@ -128,7 +125,7 @@ public class Caja extends Activable {
                           .add("idSede", idSede)
                           .add("sede", sede.toString())
                           .add("nombre", nombre)
-                          .add("activo", isActivo())
+                          .add("activo", isActive())
                           .toString();
     }
 

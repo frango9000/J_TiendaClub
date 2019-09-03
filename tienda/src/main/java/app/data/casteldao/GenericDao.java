@@ -2,11 +2,12 @@ package app.data.casteldao;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import app.data.casteldao.daomodel.IPersistible;
 import app.data.casteldao.index.core.IIndex;
+import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
 import app.misc.Globals;
 import com.google.common.collect.Sets;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.sql.PreparedStatement;
@@ -20,18 +21,23 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class DataSource<V extends IPersistible> implements Globals {
+public class GenericDao<I extends Serializable, E extends IEntity<I>> implements Globals {
 
-    public String idColName = "id";
+    public String idColName = IEntity.ID_COL_NAME;
     public String tableName;
+    public String newObjectId = "0";
 
 
-    protected ArrayList<IIndex<?, V>> indexes;
+    protected ArrayList<IIndex<?, E, I>> indexes;
 
-    protected Class<V> clazz; // V = Entity Class
+    protected Class<E> clazz; // V = Entity Class
+    private E clone;
 
-    public DataSource(String tableName, ArrayList<IIndex<?, V>> indexes, Class<V> clazz) {
+
+    public GenericDao(String tableName, ArrayList<IIndex<?, E, I>> indexes, Class<E> clazz) {
         this.tableName = tableName;
         this.indexes   = indexes;
         if (clazz != null) {
@@ -40,11 +46,11 @@ public class DataSource<V extends IPersistible> implements Globals {
             findGenericClass();
     }
 
-    public DataSource(String tableName, ArrayList<IIndex<?, V>> indexes) {
+    public GenericDao(String tableName, ArrayList<IIndex<?, E, I>> indexes) {
         this(tableName, indexes, null);
     }
 
-    public Optional<V> buildObject(ResultSet rs) {
+    public Optional<E> buildObject(ResultSet rs) {
         try {
             return Optional.of(clazz.getConstructor(ResultSet.class).newInstance(rs));
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -54,9 +60,9 @@ public class DataSource<V extends IPersistible> implements Globals {
     }
 
     @SuppressWarnings("unchecked")
-    public Class<V> findGenericClass() {
+    public Class<E> findGenericClass() {
         if (clazz == null)
-            clazz = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            clazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return clazz;
     }
 
@@ -89,6 +95,10 @@ public class DataSource<V extends IPersistible> implements Globals {
         return sql.toString();
     }
 
+    public Function<String, @Nullable I> mapToId() {
+        return s -> (I) Integer.valueOf(s);
+    }
+
     public String getIdColName() {
         return idColName;
     }
@@ -105,29 +115,37 @@ public class DataSource<V extends IPersistible> implements Globals {
         this.tableName = tableName;
     }
 
-    public ArrayList<IIndex<?, V>> getIndexes() {
+    public String getNewObjectId() {
+        return newObjectId;
+    }
+
+    public void setNewObjectId(String newObjectId) {
+        this.newObjectId = newObjectId;
+    }
+
+    public ArrayList<IIndex<?, E, I>> getIndexes() {
         return indexes;
     }
 
-    protected void index(V objectV) {
+    protected void index(E objectV) {
         indexes.forEach(e -> e.index(objectV));
     }
 
-    protected void deindex(int key) {
+    protected void deindex(I key) {
         indexes.forEach(e -> e.deindex(key));
     }
 
-    protected void deindex(V objectV) {
+    protected void deindex(E objectV) {
         indexes.forEach(e -> e.deindex(objectV));
     }
 
-    protected void reindex(V objectV) {
+    protected void reindex(E objectV) {
         indexes.forEach(e -> e.reindex(objectV));
     }
 
 
-    private Optional<V> query(String colName, Object unique, boolean indexOn) {
-        Optional<V> objecT = Optional.empty();
+    private Optional<E> query(String colName, Object unique, boolean indexOn) {
+        Optional<E> objecT = Optional.empty();
         if (SessionDB.getSessionDB().connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", tableName, colName, unique.toString());
             try (Statement ps = SessionDB.getSessionDB()
@@ -149,20 +167,20 @@ public class DataSource<V extends IPersistible> implements Globals {
         return objecT;
     }
 
-    public Optional<V> query(int id) {
-        return query(idColName, Integer.toString(id));
+    public Optional<E> query(I id) {
+        return query(idColName, id.toString());
     }
 
-    public Optional<V> query(String colName, Object unique) {
+    public Optional<E> query(String colName, Object unique) {
         return query(colName, unique, true);
     }
 
-    public Set<V> querySome(String colName, Collection search, boolean isIn) {
-        HashSet<V> returnSet = Sets.newHashSetWithExpectedSize(search.size());
+    public Set<E> querySome(String colName, Collection<? extends Object> search, boolean isIn) {
+        HashSet<E> returnSet = Sets.newHashSetWithExpectedSize(search.size());
         if (search.size() > 0)
             if (SessionDB.getSessionDB().connect()) {
-                StringBuilder sql = new StringBuilder(String.format("SELECT * FROM %s WHERE %s %s IN( ", tableName, isIn ? "" : "NOT", colName));
-                Iterator iterator = search.iterator();
+                StringBuilder sql = new StringBuilder(String.format("SELECT * FROM %s WHERE %s %s IN( ", tableName, colName, isIn ? "" : "NOT"));
+                Iterator<? extends Object> iterator = search.iterator();
                 while (iterator.hasNext()) {
                     sql.append("'").append(iterator.next().toString()).append("'");
                     if (iterator.hasNext()) {
@@ -174,7 +192,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 try (Statement ps = SessionDB.getSessionDB().getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        Optional<V> objecT = buildObject(rs);
+                        Optional<E> objecT = buildObject(rs);
                         if (objecT.isPresent()) {
                             index(objecT.get());
                             returnSet.add(objecT.get());
@@ -190,28 +208,108 @@ public class DataSource<V extends IPersistible> implements Globals {
         return returnSet;
     }
 
-    public Set<V> querySome(String colName, Collection search) {
+    public Set<E> querySome(String colName, Collection<? extends Object> search) {
         return querySome(colName, search, true);
     }
 
-    public Set<V> querySome(String colName, String search) {
+    public Set<E> querySome(String colName, String search) {
         return querySome(colName, Collections.singletonList(search));
     }
 
-    public Set<V> querySome(String colName, String search, Boolean isIn) {
+    public Set<E> querySome(String colName, String search, Boolean isIn) {
         return querySome(colName, Collections.singletonList(search), isIn);
     }
 
-    public Set<V> querySome(Set<Integer> ids) {
-        return querySome(idColName, ids);
+    public Set<E> querySome(Set<I> ids) {
+        return querySome(idColName, ids, true);
     }
 
-    public Set<V> querySome(Set<Integer> ids, boolean isIn) {
-        return querySome(idColName, ids, false);
+    public Set<E> querySome(Set<I> ids, boolean isIn) {
+        return querySome(idColName, ids, isIn);
     }
 
-    public Set<V> queryAll() {
-        Set<V> returnSet = null;
+
+    public Set<I> getOnlyIds(String colName, Collection search, boolean isIn) {
+        HashSet<I> returnSet = Sets.newHashSetWithExpectedSize(search.size());
+        if (search.size() > 0)
+            if (SessionDB.getSessionDB().connect()) {
+                StringBuilder sql = new StringBuilder(String.format("SELECT * FROM %s WHERE %s %s IN( ", tableName, colName, isIn ? "" : "NOT"));
+                Iterator iterator = search.iterator();
+                while (iterator.hasNext()) {
+                    sql.append("'").append(iterator.next().toString()).append("'");
+                    if (iterator.hasNext()) {
+                        sql.append(", ");
+                    } else {
+                        sql.append(" )");
+                    }
+                }
+                try (Statement ps = SessionDB.getSessionDB()
+                                             .getConn()
+                                             .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                    while (rs.next()) {
+                        returnSet.add(mapToId().apply(rs.getString(1)));
+                    }
+                    printSql(sql.toString());
+                } catch (SQLException ex) {
+                    Flogger.atSevere().withCause(ex).log(sql.toString());
+                } finally {
+                    SessionDB.getSessionDB().close();
+                }
+            }
+        return returnSet;
+    }
+
+    public Set<I> getAllIds() {
+        return getOnlyIds(idColName, Collections.singletonList(getNewObjectId()), false);
+    }
+
+
+    public Set<E> querySomeBi(String colName, Collection search, boolean isIn, String colName2, Collection search2, boolean isIn2) {
+        HashSet<E> returnSet = Sets.newHashSetWithExpectedSize(search.size());
+        if (search.size() > 0)
+            if (SessionDB.getSessionDB().connect()) {
+                StringBuilder sql = new StringBuilder(String.format("SELECT * FROM %s WHERE %s %s IN( ", tableName, colName, isIn ? "" : "NOT"));
+                Iterator iterator = search.iterator();
+                while (iterator.hasNext()) {
+                    sql.append("'").append(iterator.next().toString()).append("'");
+                    if (iterator.hasNext()) {
+                        sql.append(", ");
+                    } else {
+                        sql.append(" )");
+                    }
+                }
+                sql.append(String.format("AND %s %s IN( ", colName2, isIn ? "" : "NOT"));
+                Iterator iterator2 = search2.iterator();
+                while (iterator.hasNext()) {
+                    sql.append("'").append(iterator.next().toString()).append("'");
+                    if (iterator.hasNext()) {
+                        sql.append(", ");
+                    } else {
+                        sql.append(" )");
+                    }
+                }
+                try (Statement ps = SessionDB.getSessionDB().getConn()
+                                             .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                    while (rs.next()) {
+                        Optional<E> objecT = buildObject(rs);
+                        if (objecT.isPresent()) {
+                            index(objecT.get());
+                            returnSet.add(objecT.get());
+                        }
+                    }
+                    printSql(sql.toString());
+                } catch (SQLException ex) {
+                    Flogger.atSevere().withCause(ex).log(sql.toString());
+                } finally {
+                    SessionDB.getSessionDB().close();
+                }
+            }
+        return returnSet;
+    }
+
+
+    public Set<E> queryAll() {
+        Set<E> returnSet = null;
         if (SessionDB.getSessionDB().connect()) {
             String sql = String.format("SELECT * FROM %s", tableName);
             try (Statement ps = SessionDB.getSessionDB()
@@ -219,7 +317,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                                          .createStatement(); ResultSet rs = ps.executeQuery(sql)) {
                 returnSet = Sets.newHashSetWithExpectedSize(rs.getFetchSize());
                 while (rs.next()) {
-                    Optional<V> objecT = buildObject(rs);
+                    Optional<E> objecT = buildObject(rs);
                     if (objecT.isPresent()) {
                         index(objecT.get());
                         returnSet.add(objecT.get());
@@ -237,8 +335,8 @@ public class DataSource<V extends IPersistible> implements Globals {
     }
 
 
-    public Set<V> queryLike(String colName, String string, boolean like) {
-        HashSet<V> returnSet = Sets.newHashSet();
+    public Set<E> queryLike(String colName, String string, boolean like) {
+        HashSet<E> returnSet = Sets.newHashSet();
         if (string != null && string.length() > 0)
             if (SessionDB.getSessionDB().connect()) {
                 StringBuilder sql = new StringBuilder(
@@ -247,7 +345,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 try (Statement ps = SessionDB.getSessionDB().getConn().createStatement();
                      ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        Optional<V> objecT = buildObject(rs);
+                        Optional<E> objecT = buildObject(rs);
                         if (objecT.isPresent()) {
                             index(objecT.get());
                             returnSet.add(objecT.get());
@@ -263,12 +361,12 @@ public class DataSource<V extends IPersistible> implements Globals {
         return returnSet;
     }
 
-    public Set<V> queryLike(String colName, String string) {
+    public Set<E> queryLike(String colName, String string) {
         return queryLike(colName, string, true);
     }
 
-    public Set<V> queryGreaterLesser(String colName, String string, boolean greaterThan, boolean inclusive) {
-        HashSet<V> returnSet = Sets.newHashSet();
+    public Set<E> queryGreaterLesser(String colName, String string, boolean greaterThan, boolean inclusive) {
+        HashSet<E> returnSet = Sets.newHashSet();
         if (string != null && string.length() > 0)
             if (SessionDB.getSessionDB().connect()) {
                 StringBuilder sql = new StringBuilder(
@@ -277,7 +375,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                                              .getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        Optional<V> objecT = buildObject(rs);
+                        Optional<E> objecT = buildObject(rs);
                         if (objecT.isPresent()) {
                             index(objecT.get());
                             returnSet.add(objecT.get());
@@ -293,24 +391,24 @@ public class DataSource<V extends IPersistible> implements Globals {
         return returnSet;
     }
 
-    public Set<V> queryGreaterThan(String colName, String string) {
+    public Set<E> queryGreaterThan(String colName, String string) {
         return queryGreaterLesser(colName, string, true, false);
     }
 
-    public Set<V> queryGreaterOrEqualThan(String colName, String string) {
+    public Set<E> queryGreaterOrEqualThan(String colName, String string) {
         return queryGreaterLesser(colName, string, true, true);
     }
 
-    public Set<V> queryLesserThan(String colName, String string) {
+    public Set<E> queryLesserThan(String colName, String string) {
         return queryGreaterLesser(colName, string, false, false);
     }
 
-    public Set<V> queryLesserOrEqualThan(String colName, String string) {
+    public Set<E> queryLesserOrEqualThan(String colName, String string) {
         return queryGreaterLesser(colName, string, false, true);
     }
 
-    public Set<V> queryBetween(String colName, String start, String end, boolean in) {
-        HashSet<V> returnSet = Sets.newHashSet();
+    public Set<E> queryBetween(String colName, String start, String end, boolean in) {
+        HashSet<E> returnSet = Sets.newHashSet();
         if (start != null && start.length() > 0)
             if (SessionDB.getSessionDB().connect()) {
                 StringBuilder sql = new StringBuilder(
@@ -319,7 +417,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                 try (Statement ps = SessionDB.getSessionDB().getConn()
                                              .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
-                        Optional<V> objecT = buildObject(rs);
+                        Optional<E> objecT = buildObject(rs);
                         if (objecT.isPresent()) {
                             index(objecT.get());
                             returnSet.add(objecT.get());
@@ -335,18 +433,18 @@ public class DataSource<V extends IPersistible> implements Globals {
         return returnSet;
     }
 
-    public Set<V> queryBetween(String colName, String start, String end) {
+    public Set<E> queryBetween(String colName, String start, String end) {
         return queryBetween(colName, start, end, true);
     }
 
-    public Set<String> queryOneColumn(String returnColName, String whereColName, Collection equalsCondition,
+    public Set<String> queryOneColumn(String returnColName, String whereColName, Collection<? extends String> equalsCondition,
                                       boolean isIn) {
         Set<String> strings = Sets.newHashSet();
         if (SessionDB.getSessionDB().connect()) {
             StringBuilder sql = new StringBuilder(String.format("SELECT %s FROM %s WHERE %s %s IN( ", returnColName, tableName, whereColName, isIn ? "" : "NOT"));
-            Iterator iterator = equalsCondition.iterator();
+            Iterator<? extends String> iterator = equalsCondition.iterator();
             while (iterator.hasNext()) {
-                sql.append("'").append(iterator.next().toString()).append("'");
+                sql.append("'").append(iterator.next()).append("'");
                 if (iterator.hasNext()) {
                     sql.append(", ");
                 } else {
@@ -377,8 +475,8 @@ public class DataSource<V extends IPersistible> implements Globals {
         return queryOneColumn(returnColName, whereColName, equalsCondition, true);
     }
 
-    public Optional<V> queryBiUnique(String col1Name, String uni, String col2Name, String que) {
-        Optional<V> objecT = Optional.empty();
+    public Optional<E> queryBiUnique(String col1Name, String uni, String col2Name, String que) {
+        Optional<E> objecT = Optional.empty();
         if (SessionDB.getSessionDB().connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", tableName, col1Name, uni, col2Name, que);
             try (Statement ps = SessionDB.getSessionDB()
@@ -402,10 +500,10 @@ public class DataSource<V extends IPersistible> implements Globals {
     }
 
 
-    public int insert(V objectV) {
+    public int insert(E objectV) {
         checkNotNull(objectV);
         int rows = 0;
-        if (objectV.getId() == 0) {
+        if (objectV.getId().toString().equals(newObjectId)) {
             if (SessionDB.getSessionDB().connect()) {
                 String sql = String.format("INSERT INTO %s VALUES %s", tableName, getInsertString(objectV.getColumnNames()
                                                                                                          .size()));
@@ -416,7 +514,7 @@ public class DataSource<V extends IPersistible> implements Globals {
                     rows = pstmt.executeUpdate();
                     try (ResultSet rs = pstmt.getGeneratedKeys()) {
                         if (rs.next()) {
-                            objectV.setId(rs.getInt(1));
+                            objectV.setId(rs);
                             index(objectV);
                         }
                     }
@@ -431,11 +529,11 @@ public class DataSource<V extends IPersistible> implements Globals {
         return rows;
     }
 
-    public int insert(Iterable<V> objectsV) {
+    public int insert(Iterable<E> objectsV) {
         int rows = 0;
         SessionDB.getSessionDB().setAutoclose(false);
         try {
-            for (V v : objectsV) {
+            for (E v : objectsV) {
                 rows += insert(v);
             }
         } finally {
@@ -444,7 +542,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         return rows;
     }
 
-    public int update(V objectV) {
+    public int update(E objectV) {
         checkNotNull(objectV);
         int rows = 0;
         if (!Globals.SAFE_UPDATE || objectV.getBackup() != null) {
@@ -473,7 +571,7 @@ public class DataSource<V extends IPersistible> implements Globals {
         return rows;
     }
 
-    public int update(Set<V> objectsV) {
+    public int update(Set<E> objectsV) {
         int rows;
         SessionDB.getSessionDB().setAutoclose(false);
         try {
@@ -484,10 +582,10 @@ public class DataSource<V extends IPersistible> implements Globals {
         return rows;
     }
 
-    public int refresh(V objectV) {
+    public int refresh(E objectV) {
         checkNotNull(objectV);
         deindex(objectV);
-        Optional<V> freshObject = query(idColName, objectV.getId(), false);
+        Optional<E> freshObject = query(idColName, objectV.getId(), false);
         if (freshObject.isPresent()) {
             if (!freshObject.get().equals(objectV))
                 return objectV.restoreFrom(freshObject.get()) ? 1 : 0;
@@ -495,11 +593,11 @@ public class DataSource<V extends IPersistible> implements Globals {
         return 0;
     }
 
-    public int refresh(Set<V> objectsV) {
+    public int refresh(Set<E> objectsV) {
         int rows = 0;
         SessionDB.getSessionDB().setAutoclose(false);
         try {
-            for (V v : objectsV) {
+            for (E v : objectsV) {
                 rows += refresh(v);
             }
         } finally {
@@ -509,15 +607,21 @@ public class DataSource<V extends IPersistible> implements Globals {
     }
 
 
-    public int delete(V objecT) {
+    public int delete(E objecT) {
         checkNotNull(objecT);
-        return delete(objecT.getId());
+        return deleteKey(mapToId().apply(objecT.getId().toString()));
     }
 
-    public int delete(Integer key) {
+    public int deleteSome(Set<E> toDelete) {
+        HashSet<I> idsToDelete = Sets.newHashSet();
+        toDelete.forEach(e -> idsToDelete.add(e.getId()));
+        return deleteSomeKeys(idsToDelete);
+    }
+
+    public int deleteKey(I key) {
         int rows = 0;
         if (SessionDB.getSessionDB().connect()) {
-            String sql = String.format("DELETE FROM %s WHERE %s = '%d' ", tableName, idColName, key);
+            String sql = String.format("DELETE FROM %s WHERE %s = '%s' ", tableName, idColName, key.toString());
             try (Statement stmt = SessionDB.getSessionDB().getConn().createStatement()) {
                 rows = stmt.executeUpdate(sql);
                 deindex(key);
@@ -531,20 +635,14 @@ public class DataSource<V extends IPersistible> implements Globals {
         return rows;
     }
 
-    public int deleteSome(Set<V> toDelete) {
-        HashSet<Integer> idsToDelete = Sets.newHashSet();
-        toDelete.forEach(e -> idsToDelete.add(e.getId()));
-        return deleteSomeKeys(idsToDelete);
-    }
-
-    public int deleteSomeKeys(Set<Integer> keys) {
+    public int deleteSomeKeys(Set<I> keys) {
         int rows = 0;
         if (keys.size() > 0)
             if (SessionDB.getSessionDB().connect()) {
                 StringBuilder sql = new StringBuilder("DELETE FROM " + tableName + " WHERE " + idColName + " IN( ");
-                Iterator<Integer> iterator = keys.iterator();
+                Iterator<?> iterator = keys.iterator();
                 while (iterator.hasNext()) {
-                    sql.append(iterator.next());
+                    sql.append(iterator.next().toString());
                     if (iterator.hasNext()) {
                         sql.append(", ");
                     } else {

@@ -2,7 +2,7 @@ package app.control.editor;
 
 import app.data.DataStore;
 import app.data.SessionStore;
-import app.data.casteldao.daomodel.Persistible;
+import app.data.casteldao.model.AbstractPersistible;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
 import app.model.Caja;
@@ -134,7 +134,7 @@ public class VentaControl extends BorderPane {
         fxBoxSocios.getSelectionModel().select(venta.getSocio());
         fxFieldDate.setLocalDateTime(venta.getFechahora());
         listedVendidos.setAll(venta.getVendidos());
-        Persistible.backupList(listedVendidos);
+        AbstractPersistible.backupAll(listedVendidos);
     }
 
     public void setSocio(Socio socio) {
@@ -155,10 +155,7 @@ public class VentaControl extends BorderPane {
                 }
             }
             if (!exists) {
-                Vendido vendido = new Vendido();
-                vendido.setProducto(selected);
-                vendido.setCantidad(1);
-                vendido.setPrecioUnidad(selected.getPrecioVenta());
+                Vendido vendido = new Vendido(selected, 1, selected.getPrecioVenta());
                 if (venta != null)
                     vendido.setVenta(venta);
                 listedVendidos.add(vendido);
@@ -187,7 +184,7 @@ public class VentaControl extends BorderPane {
     void fxBtnVoid(ActionEvent event) {
         if (venta != null) {
             if (FxDialogs.showConfirmBoolean("Cuidado", "Deseas eliminar la orden " + venta.getId() + " ?")) {
-                DataStore.getVendidos().getDataSource().deleteSome(venta.getVendidos());
+                DataStore.getVendidos().getDao().deleteSome(venta.getVendidos());
                 boolean success = venta.deleteFromDb() == 1;
                 FxDialogs.showInfo("", "Venta Id " + venta.getId() + (success ? " " : "NO ") + "eliminado");
                 if (success) {
@@ -222,12 +219,12 @@ public class VentaControl extends BorderPane {
                 venta.setSocio(fxBoxSocios.getSelectionModel().getSelectedItem());
                 venta.setFechahora(LocalDateTime.now());
 
-                DataStore.getVentas().getDataSource().insert(venta);
+                DataStore.getVentas().getDao().insert(venta);
                 if (venta.getId() > 0) {
                     fxFieldId.setText(Integer.toString(venta.getId()));
                     fxFieldDate.setLocalDateTime(venta.getFechahora());
                     listedVendidos.forEach(vendido -> vendido.setVenta(venta));
-                    DataStore.getVendidos().getDataSource().insert(listedVendidos);
+                    DataStore.getVendidos().getDao().insert(listedVendidos);
                     FxDialogs.showInfo("Id: " + venta.getId(), "Venta guardada");
                 } else {
                     venta = null;
@@ -242,20 +239,20 @@ public class VentaControl extends BorderPane {
                 try {
                     venta.setBackup();
                     expected++;
-                    updated += DataStore.getVentas().getDataSource().update(venta);
+                    updated += DataStore.getVentas().getDao().update(venta);
                 } catch (CloneNotSupportedException e) {
                     Flogger.atSevere().withCause(e).log("Clone Fail");
                 }
             }
             Set<Vendido> toupdate = Sets.newHashSet(Sets.intersection(venta.getVendidos(), Sets.newHashSet(listedVendidos)));
-            updated += DataStore.getVendidos().getDataSource().update(toupdate);
+            updated += DataStore.getVendidos().getDao().update(toupdate);
 
             Set<Vendido> toremove = Sets.difference(venta.getVendidos(), Sets.newHashSet(listedVendidos));
-            updated += DataStore.getVendidos().getDataSource().deleteSome(toremove);
+            updated += DataStore.getVendidos().getDao().deleteSome(toremove);
 
             Set<Vendido> toadd = Sets.difference(Sets.newHashSet(listedVendidos), venta.getVendidos());
             toadd.forEach(vendido -> vendido.setVenta(venta));
-            updated += DataStore.getVendidos().getDataSource().insert(toadd);
+            updated += DataStore.getVendidos().getDao().insert(toadd);
 
             expected += toadd.size() + toremove.size() + toupdate.size();
             if (expected == 0)

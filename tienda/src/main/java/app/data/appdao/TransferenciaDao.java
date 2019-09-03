@@ -1,18 +1,18 @@
 package app.data.appdao;
 
-import app.data.casteldao.daomodel.IndexIdDao;
-import app.data.casteldao.index.MultiIndexPersistible;
+import app.data.casteldao.dao.IndexIdDataSourceImpl;
+import app.data.casteldao.index.SetMultiMapIndexImpl;
 import app.model.Producto;
 import app.model.Sede;
 import app.model.Transferencia;
 import app.model.Usuario;
 
-public class TransferenciaDao extends IndexIdDao<Transferencia> {
+public class TransferenciaDao extends IndexIdDataSourceImpl<Transferencia> {
 
-    private MultiIndexPersistible<Usuario, Transferencia> indexUsuario = new MultiIndexPersistible<>(getDataSource(), "idUsuario", Transferencia::getIdUsuario);
-    private MultiIndexPersistible<Sede, Transferencia> indexSedeOrigen = new MultiIndexPersistible<>(getDataSource(), "idSedeOrigen", Transferencia::getIdSedeOrigen);
-    private MultiIndexPersistible<Sede, Transferencia> indexSedeDestino = new MultiIndexPersistible<>(getDataSource(), "idSedeDestino", Transferencia::getIdSedeDestino);
-    private MultiIndexPersistible<Producto, Transferencia> indexProducto = new MultiIndexPersistible<>(getDataSource(), "idProducto", Transferencia::getIdProducto);
+    private SetMultiMapIndexImpl<Usuario, Transferencia> indexUsuario = new SetMultiMapIndexImpl<>(getDao(), "idUsuario", Transferencia::getUsuario);
+    private SetMultiMapIndexImpl<Sede, Transferencia> indexSedeOrigen = new SetMultiMapIndexImpl<>(getDao(), "idSedeOrigen", Transferencia::getSedeOrigen);
+    private SetMultiMapIndexImpl<Sede, Transferencia> indexSedeDestino = new SetMultiMapIndexImpl<>(getDao(), "idSedeDestino", Transferencia::getSedeDestino);
+    private SetMultiMapIndexImpl<Producto, Transferencia> indexProducto = new SetMultiMapIndexImpl<>(getDao(), "idProducto", Transferencia::getProducto);
 
     public TransferenciaDao() {
         super(Transferencia.TABLE_NAME, Transferencia.class);
@@ -22,19 +22,19 @@ public class TransferenciaDao extends IndexIdDao<Transferencia> {
         indexes.add(indexProducto);
     }
 
-    public MultiIndexPersistible<Usuario, Transferencia> getIndexUsuario() {
+    public SetMultiMapIndexImpl<Usuario, Transferencia> getIndexUsuario() {
         return indexUsuario;
     }
 
-    public MultiIndexPersistible<Sede, Transferencia> getIndexSedeOrigen() {
+    public SetMultiMapIndexImpl<Sede, Transferencia> getIndexSedeOrigen() {
         return indexSedeOrigen;
     }
 
-    public MultiIndexPersistible<Sede, Transferencia> getIndexSedeDestino() {
+    public SetMultiMapIndexImpl<Sede, Transferencia> getIndexSedeDestino() {
         return indexSedeDestino;
     }
 
-    public MultiIndexPersistible<Producto, Transferencia> getIndexProducto() {
+    public SetMultiMapIndexImpl<Producto, Transferencia> getIndexProducto() {
         return indexProducto;
     }
 }

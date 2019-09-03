@@ -1,5 +1,6 @@
 package app.data.casteldao.index.core.maps;
 
+import app.data.casteldao.model.IEntity;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.Multiset;
@@ -12,9 +13,9 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class SetIndexMultimap<K, V> implements IIndexMap<K, V> {
+public class SetIndexMultimap<K, E extends IEntity<?>> implements IIndexMap<K, E> {
 
-    private SetMultimap<K, V> map;
+    private SetMultimap<K, E> map;
 
     public SetIndexMultimap() {
         this.map = MultimapBuilder.SetMultimapBuilder.hashKeys().hashSetValues().build();
@@ -25,7 +26,7 @@ public class SetIndexMultimap<K, V> implements IIndexMap<K, V> {
     }
 
     @Override
-    public Set<V> get(@Nullable K key) {
+    public Set<E> get(@Nullable K key) {
         return map.get(key);
     }
 
@@ -40,12 +41,12 @@ public class SetIndexMultimap<K, V> implements IIndexMap<K, V> {
     }
 
     @Override
-    public Collection<V> values() {
+    public Collection<E> values() {
         return map.values();
     }
 
     @Override
-    public Set<V> removeAll(@Nullable Object key) {
+    public Set<E> removeAll(@Nullable Object key) {
         return map.removeAll(key);
     }
 
@@ -80,7 +81,7 @@ public class SetIndexMultimap<K, V> implements IIndexMap<K, V> {
     }
 
     @Override
-    public boolean put(@Nullable K key, @Nullable V value) {
+    public boolean put(@Nullable K key, @Nullable E value) {
         return map.put(key, value);
     }
 
@@ -97,40 +98,40 @@ public class SetIndexMultimap<K, V> implements IIndexMap<K, V> {
     }
 
     @Override
-    public boolean putAll(@Nullable K key, Iterable<? extends V> values) {
+    public boolean putAll(@Nullable K key, Iterable<? extends E> values) {
         return map.putAll(key, values);
     }
 
     @Override
-    public boolean putAll(Multimap<? extends K, ? extends V> multimap) {
+    public boolean putAll(Multimap<? extends K, ? extends E> multimap) {
         return map.putAll(multimap);
     }
 
     @Override
-    public Set<V> replaceValues(K key, Iterable<? extends V> values) {
+    public Set<E> replaceValues(K key, Iterable<? extends E> values) {
         return map.replaceValues(key, values);
     }
 
     @Override
-    public Set<Entry<K, V>> entries() {
+    public Set<Entry<K, E>> entries() {
         return map.entries();
     }
 
     @Override
-    public void forEach(BiConsumer<? super K, ? super V> action) {
+    public void forEach(BiConsumer<? super K, ? super E> action) {
         map.forEach(action);
     }
 
     @Override
-    public Map<K, Collection<V>> asMap() {
+    public Map<K, Collection<E>> asMap() {
         return map.asMap();
     }
 
     @Override
-    public V getValue(@Nullable K key) {
-        Set<V> values = get(key);
+    public E getValue(@Nullable K key) {
+        Set<E> values = get(key);
         if (values.size() > 0) {
-            Iterator<V> iterator = get(key).iterator();
+            Iterator<E> iterator = get(key).iterator();
             if (iterator.hasNext()) {
                 return iterator.next();
             }

@@ -2,8 +2,9 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.UsuarioDao;
-import app.data.casteldao.daomodel.Activable;
-import app.data.casteldao.daomodel.IPersistible;
+import app.data.casteldao.model.ActivableEntity;
+import app.data.casteldao.model.IEntity;
+import app.misc.Flogger;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Usuario extends Activable {
+public class Usuario extends ActivableEntity {
 
     public static final String TABLE_NAME = "usuarios";
     public static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso", "activo"));
@@ -28,49 +29,52 @@ public class Usuario extends Activable {
     private int idAcceso;
     private Acceso acceso;
 
-    public Usuario(int id, String username, int idAcceso) {
-        super(id);
-        setUsername(username);
-        setIdAcceso(idAcceso);
-    }
-
-    public Usuario(String username, int idAcceso) {
-        this(0, username, idAcceso);
-    }
-
     public Usuario(String username, Acceso acceso) {
         super(0);
         setUsername(username);
         setAcceso(acceso);
     }
 
-    public Usuario(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2), rs.getInt(9));
-        setPass(rs.getString(3));
-        setNombre(rs.getString(4));
-        setTelefono(rs.getString(5));
-        setEmail(rs.getString(6));
-        setDireccion(rs.getString(7));
-        setDescripcion(rs.getString(8));
-        setActivo(rs.getBoolean(10));
-    }
-
-
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setString(1, getUsername());
-        pst.setString(2, getPass());
-        pst.setString(3, getNombre());
-        pst.setString(4, getTelefono());
-        pst.setString(5, getEmail());
-        pst.setString(6, getDireccion());
-        pst.setString(7, getDescripcion());
-        pst.setInt(8, getIdAcceso());
-        pst.setBoolean(9, isActivo());
-    }
-
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean setEntity(@NonNull ResultSet rs) {
+        try {
+            setId(rs.getInt(1));
+            setUsername(rs.getString(2));
+            setPass(rs.getString(3));
+            setNombre(rs.getString(4));
+            setTelefono(rs.getString(5));
+            setEmail(rs.getString(6));
+            setDireccion(rs.getString(7));
+            setDescripcion(rs.getString(8));
+            setIdAcceso(rs.getInt(9));
+            setActive(rs.getBoolean(10));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
+    }
+
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setString(1, getUsername());
+            pst.setString(2, getPass());
+            pst.setString(3, getNombre());
+            pst.setString(4, getTelefono());
+            pst.setString(5, getEmail());
+            pst.setString(6, getDireccion());
+            pst.setString(7, getDescripcion());
+            pst.setInt(8, getIdAcceso());
+            pst.setBoolean(9, isActive());
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
+    }
+    @Override
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Usuario newValues = (Usuario) objectV;
             setUsername(newValues.getUsername());
             setPass(newValues.getPass());
@@ -80,7 +84,7 @@ public class Usuario extends Activable {
             setDireccion(newValues.getDireccion());
             setDescripcion(newValues.getDescripcion());
             setAcceso(newValues.getAcceso());
-            setActivo(newValues.isActivo());
+            setActive(newValues.isActive());
             return true;
         }
         return false;
@@ -158,8 +162,7 @@ public class Usuario extends Activable {
     }
 
     public void setIdAcceso(int idAcceso) {
-        this.idAcceso = idAcceso;
-        updateAcceso();
+        setAcceso(DataStore.getAccesos().getById().getCacheValue(idAcceso));
     }
 
     public Acceso getAcceso() {
@@ -171,11 +174,6 @@ public class Usuario extends Activable {
         this.idAcceso = getAcceso().getId();
     }
 
-    private void updateAcceso() {
-        setAcceso(DataStore.getAccesos().getById().getCacheValue(getIdAcceso()));
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -185,17 +183,15 @@ public class Usuario extends Activable {
             return false;
         }
         Usuario usuario = (Usuario) o;
-        return getId() == usuario.getId() && getIdAcceso() == usuario.getIdAcceso()
-               && Objects.equal(getUsername(), usuario.getUsername()) && Objects.equal(getPass(), usuario.getPass())
+        return getId().equals(usuario.getId())
+               && getIdAcceso() == usuario.getIdAcceso()
+               && Objects.equal(getUsername(), usuario.getUsername())
+               && Objects.equal(getPass(), usuario.getPass())
                && Objects.equal(getNombre(), usuario.getNombre())
-               && Objects.equal(getTelefono(), usuario.getTelefono()) && Objects.equal(getEmail(), usuario.getEmail())
+               && Objects.equal(getTelefono(), usuario.getTelefono())
+               && Objects.equal(getEmail(), usuario.getEmail())
                && Objects.equal(getDireccion(), usuario.getDireccion())
                && Objects.equal(getDescripcion(), usuario.getDescripcion());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId();
     }
 
     @Override
@@ -216,6 +212,8 @@ public class Usuario extends Activable {
 
     @Override
     public String toStringFormatted() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("username", username).toString();
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("username", username).toString();
     }
 }

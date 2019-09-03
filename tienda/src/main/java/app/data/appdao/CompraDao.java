@@ -1,17 +1,17 @@
 package app.data.appdao;
 
-import app.data.casteldao.daomodel.IndexIdDao;
-import app.data.casteldao.index.MultiIndexPersistible;
+import app.data.casteldao.dao.IndexIdDataSourceImpl;
+import app.data.casteldao.index.SetMultiMapIndexImpl;
 import app.model.Compra;
 import app.model.Proveedor;
 import app.model.Sede;
 import app.model.Usuario;
 
-public class CompraDao extends IndexIdDao<Compra> {
+public class CompraDao extends IndexIdDataSourceImpl<Compra> {
 
-    private MultiIndexPersistible<Usuario, Compra> indexUsuario = new MultiIndexPersistible<>(getDataSource(), "idUsuario", Compra::getIdUsuario);
-    private MultiIndexPersistible<Sede, Compra> indexSede = new MultiIndexPersistible<>(getDataSource(), "idSede", Compra::getIdSede);
-    private MultiIndexPersistible<Proveedor, Compra> indexProveedor = new MultiIndexPersistible<>(getDataSource(), "idProveedor", Compra::getIdProveedor);
+    private SetMultiMapIndexImpl<Usuario, Compra> indexUsuario = new SetMultiMapIndexImpl<>(getDao(), "idUsuario", Compra::getUsuario);
+    private SetMultiMapIndexImpl<Sede, Compra> indexSede = new SetMultiMapIndexImpl<>(getDao(), "idSede", Compra::getSede);
+    private SetMultiMapIndexImpl<Proveedor, Compra> indexProveedor = new SetMultiMapIndexImpl<>(getDao(), "idProveedor", Compra::getProveedor);
 
     public CompraDao() {
         super(Compra.TABLE_NAME, Compra.class);
@@ -20,15 +20,15 @@ public class CompraDao extends IndexIdDao<Compra> {
         indexes.add(indexProveedor);
     }
 
-    public MultiIndexPersistible<Usuario, Compra> getIndexUsuario() {
+    public SetMultiMapIndexImpl<Usuario, Compra> getIndexUsuario() {
         return indexUsuario;
     }
 
-    public MultiIndexPersistible<Sede, Compra> getIndexSede() {
+    public SetMultiMapIndexImpl<Sede, Compra> getIndexSede() {
         return indexSede;
     }
 
-    public MultiIndexPersistible<Proveedor, Compra> getIndexProveedor() {
+    public SetMultiMapIndexImpl<Proveedor, Compra> getIndexProveedor() {
         return indexProveedor;
     }
 }

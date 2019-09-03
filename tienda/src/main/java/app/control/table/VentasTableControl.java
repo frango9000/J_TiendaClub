@@ -2,7 +2,7 @@ package app.control.table;
 
 import app.control.editor.VentaControl;
 import app.data.DataStore;
-import app.data.casteldao.daomodel.IndexIdDao;
+import app.data.casteldao.dao.IndexIdDataSource;
 import app.misc.FXMLStage;
 import app.model.Caja;
 import app.model.Socio;
@@ -47,7 +47,7 @@ public class VentasTableControl extends TableControl<Venta> {
     }
 
     @Override
-    protected IndexIdDao<Venta> getDataOrigin() {
+    protected IndexIdDataSource<Venta> getDataOrigin() {
         return DataStore.getVentas();
     }
 

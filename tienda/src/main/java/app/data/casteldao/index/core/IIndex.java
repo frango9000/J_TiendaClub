@@ -1,46 +1,69 @@
 package app.data.casteldao.index.core;
 
+import app.data.casteldao.model.IEntity;
+import java.io.Serializable;
 import java.util.Optional;
 import java.util.Set;
 
-public interface IIndex<K, V> {
+public interface IIndex<K, E extends IEntity<I>, I extends Serializable> {
 
-    K indexKey(V value);
+    K indexKey(E entity);
 
-    void index(V value);
+    void index(E entity);
 
-    void deindex(int key);
+    void deindex(I key);
 
-    void deindex(V value);
+    void deindex(E entity);
 
-    void reindex(V value);
+    void reindex(E entity);
 
     Set<K> getKeys();
 
-    V getValue(K key);
+    E getValue(K key);
 
-    Optional<V> getValueOptional(K key);
+    Optional<E> getValueOptional(K key);
 
-    Set<V> getValues();
+    Set<E> getValues();
 
-    Set<V> getKeyValues(K key);
+    Set<E> getKeyValues(K key);
 
-    Set<V> getKeyValues(Set<K> keys);
+    Set<E> getKeyValues(Set<K> keys);
 
-    V getCacheValue(K key);
+    E getCacheValue(K key);
 
-    Optional<V> getCacheValueOptional(K key);
+    Optional<E> getCacheValueOptional(K key);
 
     Set<K> getCacheKeys();
 
-    Set<V> getCacheValues();
+    Set<E> getCacheValues();
 
-    Set<V> getCacheKeyValues(K key);
+    Set<E> getCacheKeyValues(K key);
 
-    Set<V> getCacheKeyValues(Set<K> keys);
+    Set<E> getCacheKeyValues(Set<K> keys);
 
     boolean cacheContainsKey(K key);
 
-    boolean cacheContainsValue(V value);
+    boolean cacheContainsValue(E entity);
+
+
+    int getCacheKeySize();
+
+    int getCacheKeySize(K key);
+
+    int getKeySize();
+
+    int getKeySize(K key);
+
+    Set<I> getIds();
+
+    Set<I> getIds(K key);
+
+    Set<I> getIds(Set<K> keys);
+
+    Set<I> getCachedIds();
+
+    Set<I> getCachedIds(K key);
+
+    Set<I> getCachedIds(Set<K> keys);
 
 }

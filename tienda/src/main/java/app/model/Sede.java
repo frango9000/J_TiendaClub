@@ -1,9 +1,10 @@
 package app.model;
 
 import app.data.DataStore;
-import app.data.casteldao.daomodel.Activable;
-import app.data.casteldao.daomodel.IPersistible;
-import app.data.casteldao.daomodel.IndexIdActiveDao;
+import app.data.casteldao.dao.IndexIdActiveDao;
+import app.data.casteldao.model.ActivableEntity;
+import app.data.casteldao.model.IEntity;
+import app.misc.Flogger;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Sede extends Activable {
+public class Sede extends ActivableEntity {
 
     public static final String TABLE_NAME = "sedes";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nombre", "telefono", "direccion", "activo"));
@@ -23,38 +24,46 @@ public class Sede extends Activable {
     protected String telefono;
     protected String direccion;
 
-    public Sede(int id, String nombre) {
-        super(id);
+    public Sede(String nombre) {
+        super(0);
         setNombre(nombre);
     }
 
-    public Sede(String nombre) {
-        this(0, nombre);
-    }
-
-    public Sede(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2));
-        setDireccion(rs.getString(3));
-        setTelefono(rs.getString(4));
-        setActivo(rs.getBoolean(5));
-    }
-
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setString(1, getNombre());
-        pst.setString(2, getTelefono());
-        pst.setString(3, getDireccion());
-        pst.setBoolean(4, isActivo());
+    public boolean setEntity(@NonNull ResultSet rs) {
+        try {
+            setId(rs.getInt(1));
+            setNombre(rs.getString(2));
+            setDireccion(rs.getString(3));
+            setTelefono(rs.getString(4));
+            setActive(rs.getBoolean(5));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
-
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setString(1, getNombre());
+            pst.setString(2, getTelefono());
+            pst.setString(3, getDireccion());
+            pst.setBoolean(4, isActive());
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
+    }
+    @Override
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Sede newValues = (Sede) objectV;
             setNombre(newValues.getNombre());
             setTelefono(newValues.getTelefono());
             setDireccion(newValues.getDireccion());
-            setActivo(newValues.isActivo());
+            setActive(newValues.isActive());
             return true;
         }
         return false;
@@ -111,14 +120,11 @@ public class Sede extends Activable {
             return false;
         }
         Sede sede = (Sede) o;
-        return getId() == sede.getId() && isActivo() == sede.isActivo() && Objects.equal(getNombre(), sede.getNombre())
+        return getId().equals(sede.getId())
+               && isActive() == sede.isActive()
+               && Objects.equal(getNombre(), sede.getNombre())
                && Objects.equal(getTelefono(), sede.getTelefono())
                && Objects.equal(getDireccion(), sede.getDireccion());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId();
     }
 
     @Override
@@ -128,7 +134,7 @@ public class Sede extends Activable {
                           .add("nombre", nombre)
                           .add("telefono", telefono)
                           .add("direccion", direccion)
-                          .add("activo", isActivo())
+                          .add("activo", isActive())
                           .toString();
     }
 

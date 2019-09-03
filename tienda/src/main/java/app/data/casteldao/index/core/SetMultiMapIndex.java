@@ -1,21 +1,22 @@
 package app.data.casteldao.index.core;
 
-import app.data.casteldao.DataSource;
+import app.data.casteldao.GenericDao;
 import app.data.casteldao.SessionDB;
-import app.data.casteldao.daomodel.IPersistible;
 import app.data.casteldao.index.core.maps.SetIndexMultimap;
+import app.data.casteldao.model.IEntity;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.function.Function;
 
-public abstract class SetMultiMapIndex<K, V extends IPersistible> extends AbstractIndex<K, V> {
+public abstract class SetMultiMapIndex<K, E extends IEntity<I>, I extends Serializable> extends AbstractIndex<K, E, I> {
 
-    public SetMultiMapIndex(DataSource<V> dataSource, String indexColumnName, Function<V, K> keyValueFunction) {
+    public SetMultiMapIndex(GenericDao<I, E> dataSource, String indexColumnName, Function<E, K> keyValueFunction) {
         super(dataSource, indexColumnName, keyValueFunction);
-        this.index = new SetIndexMultimap<K, V>();
+        this.index = new SetIndexMultimap<K, E>();
     }
 
     @Override
-    public Set<V> getKeyValues(K key) {
+    public Set<E> getKeyValues(K key) {
         if (!cacheContainsKey(key))
             dataSource.querySome(indexColumnName, key.toString());
         else
@@ -24,7 +25,7 @@ public abstract class SetMultiMapIndex<K, V extends IPersistible> extends Abstra
     }
 
     @Override
-    public Set<V> getKeyValues(Set<K> keys) {
+    public Set<E> getKeyValues(Set<K> keys) {
         if (keys.size() > 0) {
             SessionDB.getSessionDB().setAutoclose(false);
             try {

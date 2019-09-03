@@ -1,7 +1,7 @@
 package app.control.table;
 
 import app.data.DataStore;
-import app.data.casteldao.daomodel.IndexIdActiveDao;
+import app.data.casteldao.dao.IndexIdActiveDao;
 import app.model.Categoria;
 import app.model.Producto;
 import javafx.scene.control.TableColumn;

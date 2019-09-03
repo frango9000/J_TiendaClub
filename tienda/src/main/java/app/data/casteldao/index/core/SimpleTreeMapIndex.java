@@ -1,47 +1,48 @@
 package app.data.casteldao.index.core;
 
-import app.data.casteldao.DataSource;
-import app.data.casteldao.daomodel.Persistible;
+import app.data.casteldao.GenericDao;
 import app.data.casteldao.index.core.maps.TreeIndexMap;
+import app.data.casteldao.model.IEntity;
 import com.google.common.collect.Sets;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.function.Function;
 
-public class SimpleTreeMapIndex<K extends Comparable, V extends Persistible> extends SimpleMapIndex<K, V> {
+public class SimpleTreeMapIndex<K extends Comparable, E extends IEntity<I>, I extends Serializable> extends SimpleMapIndex<K, E, I> {
 
-    public SimpleTreeMapIndex(DataSource<V> dataSource, String indexColumnName, Function<V, K> keyValueFunction) {
+    public SimpleTreeMapIndex(GenericDao<I, E> dataSource, String indexColumnName, Function<E, K> keyValueFunction) {
         super(dataSource, indexColumnName, keyValueFunction);
-        this.index = new TreeIndexMap<K, V>();
+        this.index = new TreeIndexMap<K, E>();
     }
 
-    public TreeIndexMap<K, V> treeMap() {
-        return (TreeIndexMap<K, V>) index;
+    public TreeIndexMap<K, E> treeMap() {
+        return (TreeIndexMap<K, E>) index;
     }
 
-    public Set<V> getKeyLesserThanValues(K lesserThanThis, boolean inclusive) {
+    public Set<E> getKeyLesserThanValues(K lesserThanThis, boolean inclusive) {
         dataSource.queryGreaterLesser(indexColumnName, lesserThanThis.toString(), false, inclusive);
         return getCacheKeyLesserThanValues(lesserThanThis, inclusive);
     }
 
-    public Set<V> getKeyGreaterThanValues(K lesserThanThis, boolean inclusive) {
+    public Set<E> getKeyGreaterThanValues(K lesserThanThis, boolean inclusive) {
         dataSource.queryGreaterLesser(indexColumnName, lesserThanThis.toString(), true, inclusive);
         return Sets.newHashSet(treeMap().tailMap(lesserThanThis, inclusive).values());
     }
 
-    public Set<V> getKeyIntervalValues(K start, boolean fromInclusive, K end, boolean toInclusive) {
+    public Set<E> getKeyIntervalValues(K start, boolean fromInclusive, K end, boolean toInclusive) {
         dataSource.queryBetween(indexColumnName, start.toString(), end.toString(), true);
         return Sets.newHashSet(treeMap().subMap(start, fromInclusive, end, toInclusive).values());
     }
 
-    public Set<V> getCacheKeyLesserThanValues(K lesserThanThis, boolean inclusive) {
+    public Set<E> getCacheKeyLesserThanValues(K lesserThanThis, boolean inclusive) {
         return Sets.newHashSet(treeMap().headMap(lesserThanThis, inclusive).values());
     }
 
-    public Set<V> getCacheKeyGreaterThanValues(K lesserThanThis, boolean inclusive) {
+    public Set<E> getCacheKeyGreaterThanValues(K lesserThanThis, boolean inclusive) {
         return Sets.newHashSet(treeMap().tailMap(lesserThanThis, inclusive).values());
     }
 
-    public Set<V> getCacheKeyIntervalValues(K start, boolean fromInclusive, K end, boolean toInclusive) {
+    public Set<E> getCacheKeyIntervalValues(K start, boolean fromInclusive, K end, boolean toInclusive) {
         return Sets.newHashSet(treeMap().subMap(start, fromInclusive, end, toInclusive).values());
     }
 }

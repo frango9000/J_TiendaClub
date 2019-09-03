@@ -1,9 +1,10 @@
 package app.model;
 
 import app.data.DataStore;
-import app.data.casteldao.daomodel.Activable;
-import app.data.casteldao.daomodel.IPersistible;
-import app.data.casteldao.daomodel.IndexIdActiveDao;
+import app.data.casteldao.dao.IndexIdActiveDao;
+import app.data.casteldao.model.ActivableEntity;
+import app.data.casteldao.model.IEntity;
+import app.misc.Flogger;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Proveedor extends Activable {
+public class Proveedor extends ActivableEntity {
 
     public static final String TABLE_NAME = "proveedores";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nif", "nombre", "telefono", "email", "direccion", "descripcion", "activo"));
@@ -25,40 +26,49 @@ public class Proveedor extends Activable {
     protected String direccion;
     protected String descripcion;
 
-    public Proveedor(int id, String nif) {
-        super(id);
+    public Proveedor(String nif) {
+        super(0);
         setNif(nif);
     }
 
-    public Proveedor(String nif) {
-        this(0, nif);
-    }
-
-    public Proveedor(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2));
-        setNombre(rs.getString(3));
-        setTelefono(rs.getString(4));
-        setEmail(rs.getString(5));
-        setDireccion(rs.getString(6));
-        setDescripcion(rs.getString(7));
-        setActivo(rs.getBoolean(8));
+    @Override
+    public boolean setEntity(@NonNull ResultSet rs) {
+        try {
+            setId(rs.getInt(1));
+            setNif(rs.getString(2));
+            setNombre(rs.getString(3));
+            setTelefono(rs.getString(4));
+            setEmail(rs.getString(5));
+            setDireccion(rs.getString(6));
+            setDescripcion(rs.getString(7));
+            setActive(rs.getBoolean(8));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setString(1, getNif());
-        pst.setString(2, getNombre());
-        pst.setString(3, getTelefono());
-        pst.setString(4, getEmail());
-        pst.setString(5, getDireccion());
-        pst.setString(6, getDescripcion());
-        pst.setBoolean(7, isActivo());
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setString(1, getNif());
+            pst.setString(2, getNombre());
+            pst.setString(3, getTelefono());
+            pst.setString(4, getEmail());
+            pst.setString(5, getDireccion());
+            pst.setString(6, getDescripcion());
+            pst.setBoolean(7, isActive());
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
-
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Proveedor newValues = (Proveedor) objectV;
             setNif(newValues.getNif());
             setNombre(newValues.getNombre());
@@ -66,7 +76,7 @@ public class Proveedor extends Activable {
             setEmail(newValues.getEmail());
             setDireccion(newValues.getDireccion());
             setDescripcion(newValues.getDescripcion());
-            setActivo(newValues.isActivo());
+            setActive(newValues.isActive());
             return true;
         }
         return false;
@@ -140,17 +150,14 @@ public class Proveedor extends Activable {
             return false;
         }
         Proveedor proveedor = (Proveedor) o;
-        return getId() == proveedor.getId() && isActivo() == proveedor.isActivo()
-               && Objects.equal(getNif(), proveedor.getNif()) && Objects.equal(getNombre(), proveedor.getNombre())
+        return getId().equals(proveedor.getId())
+               && isActive() == proveedor.isActive()
+               && Objects.equal(getNif(), proveedor.getNif())
+               && Objects.equal(getNombre(), proveedor.getNombre())
                && Objects.equal(getTelefono(), proveedor.getTelefono())
                && Objects.equal(getEmail(), proveedor.getEmail())
                && Objects.equal(getDireccion(), proveedor.getDireccion())
                && Objects.equal(getDescripcion(), proveedor.getDescripcion());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId();
     }
 
     @Override
@@ -163,7 +170,7 @@ public class Proveedor extends Activable {
                           .add("email", email)
                           .add("direccion", direccion)
                           .add("descripcion", descripcion)
-                          .add("activo", isActivo())
+                          .add("activo", isActive())
                           .toString();
     }
 

@@ -60,7 +60,7 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
         editee.setDireccion(StaticHelpers.textInputEmptyToNull(fxDireccion));
         editee.setDescripcion(StaticHelpers.textInputEmptyToNull(fxDescripcion));
         editee.setAcceso(fxCbxAcceso.getSelectionModel().getSelectedItem());
-        editee.setActivo(fxCheckActivo.isSelected());
+        editee.setActive(fxCheckActivo.isSelected());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
         fxDireccion.setText(Strings.nullToEmpty(editee.getDireccion()));
         fxDescripcion.setText(Strings.nullToEmpty(editee.getDescripcion()));
         fxCbxAcceso.getSelectionModel().select(editee.getAcceso());
-        fxCheckActivo.setSelected(editee.isActivo());
+        fxCheckActivo.setSelected(editee.isActive());
     }
 
     public boolean validFields() {

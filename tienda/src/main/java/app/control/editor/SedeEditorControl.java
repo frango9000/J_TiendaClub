@@ -35,7 +35,7 @@ public class SedeEditorControl extends GridControl<Sede> {
         editee.setNombre(fxNombre.getText().trim());
         editee.setTelefono(StaticHelpers.textInputEmptyToNull(fxTelefono));
         editee.setDireccion(StaticHelpers.textInputEmptyToNull(fxDireccion));
-        editee.setActivo(fxCheckActivo.isSelected());
+        editee.setActive(fxCheckActivo.isSelected());
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SedeEditorControl extends GridControl<Sede> {
         fxNombre.setText(Strings.nullToEmpty(editee.getNombre()));
         fxTelefono.setText(Strings.nullToEmpty(editee.getTelefono()));
         fxDireccion.setText(Strings.nullToEmpty(editee.getDireccion()));
-        fxCheckActivo.setSelected(editee.isActivo());
+        fxCheckActivo.setSelected(editee.isActive());
     }
 
     @Override

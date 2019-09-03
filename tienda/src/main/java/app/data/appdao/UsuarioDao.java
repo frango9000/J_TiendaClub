@@ -1,15 +1,15 @@
 package app.data.appdao;
 
-import app.data.casteldao.daomodel.IndexIdActiveDao;
-import app.data.casteldao.index.MultiIndexPersistible;
+import app.data.casteldao.dao.IndexIdActiveDao;
+import app.data.casteldao.index.SetMultiMapIndexImpl;
 import app.data.casteldao.index.core.SimpleMapIndex;
 import app.model.Acceso;
 import app.model.Usuario;
 
 public class UsuarioDao extends IndexIdActiveDao<Usuario> {
 
-    private SimpleMapIndex<String, Usuario> usernameIndex = new SimpleMapIndex<String, Usuario>(getDataSource(), "username", Usuario::getUsername);
-    private MultiIndexPersistible<Acceso, Usuario> indexAcceso = new MultiIndexPersistible<>(getDataSource(), "idAcceso", Usuario::getIdAcceso);
+    private SimpleMapIndex<String, Usuario> usernameIndex = new SimpleMapIndex<>(getDao(), "username", Usuario::getUsername);
+    private SetMultiMapIndexImpl<Acceso, Usuario> indexAcceso = new SetMultiMapIndexImpl<>(getDao(), "idAcceso", Usuario::getAcceso);
 
     public UsuarioDao() {
         super(Usuario.TABLE_NAME, Usuario.class);
@@ -17,7 +17,7 @@ public class UsuarioDao extends IndexIdActiveDao<Usuario> {
         indexes.add(usernameIndex);
     }
 
-    public MultiIndexPersistible<Acceso, Usuario> getIndexAcceso() {
+    public SetMultiMapIndexImpl<Acceso, Usuario> getIndexAcceso() {
         return indexAcceso;
     }
 

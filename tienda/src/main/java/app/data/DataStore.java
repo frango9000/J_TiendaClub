@@ -11,8 +11,8 @@ import app.data.appdao.UsuarioDao;
 import app.data.appdao.VendidoDao;
 import app.data.appdao.VentaDao;
 import app.data.casteldao.SessionDB;
-import app.data.casteldao.daomodel.IndexIdActiveDao;
-import app.data.casteldao.daomodel.IndexIdDao;
+import app.data.casteldao.dao.IndexIdActiveDao;
+import app.data.casteldao.dao.IndexIdDataSource;
 import app.model.Acceso;
 import app.model.Categoria;
 import app.model.Proveedor;
@@ -20,7 +20,7 @@ import app.model.Sede;
 
 public class DataStore {
 
-    private static IndexIdDao<Acceso> accesos = new IndexIdDao<>(Acceso.TABLE_NAME, Acceso.class);
+    private static IndexIdDataSource<Acceso> accesos = new IndexIdDataSource<>(Acceso.TABLE_NAME, Acceso.class);
     private static IndexIdActiveDao<Sede> sedes = new IndexIdActiveDao<>(Sede.TABLE_NAME, Sede.class);
     private static CajaDao cajas = new CajaDao();
     private static IndexIdActiveDao<Categoria> categorias = new IndexIdActiveDao<>(Categoria.TABLE_NAME, Categoria.class);
@@ -35,7 +35,7 @@ public class DataStore {
     private static VendidoDao vendidos = new VendidoDao();
     private static VentaDao ventas = new VentaDao();
 
-    public static IndexIdDao<Acceso> getAccesos() {
+    public static IndexIdDataSource<Acceso> getAccesos() {
         return accesos;
     }
 
@@ -93,7 +93,7 @@ public class DataStore {
 
     public static void firstQuery() {
         SessionDB.getSessionDB().setAutoclose(false);
-        getAccesos().getDataSource().queryAll();
+        getAccesos().getDao().queryAll();
         getUsuarios().getAll();
         getProveedores().getAll();
         getSocios().getAll();

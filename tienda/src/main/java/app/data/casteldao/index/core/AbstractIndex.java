@@ -1,55 +1,57 @@
 package app.data.casteldao.index.core;
 
-import app.data.casteldao.DataSource;
-import app.data.casteldao.daomodel.IPersistible;
+import app.data.casteldao.GenericDao;
 import app.data.casteldao.index.core.maps.IIndexMap;
+import app.data.casteldao.model.IEntity;
 import com.google.common.collect.Sets;
+import java.io.Serializable;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex<K, V> {
+public abstract class AbstractIndex<K, E extends IEntity<I>, I extends Serializable> implements IIndex<K, E, I> {
 
-    protected IIndexMap<K, V> index;
+    protected IIndexMap<K, E> index;
 
-    protected DataSource<V> dataSource;
+    protected GenericDao<I, E> dataSource;
 
     protected String indexColumnName = "";
 
-    protected Function<V, K> keyValueFunction;
+    protected Function<E, K> keyValueFunction;
 
-    protected AbstractIndex(@NonNull DataSource<V> dataSource, String indexColumnName, Function<V, K> keyValueFunction) {
+    protected AbstractIndex(@NonNull GenericDao<I, E> dataSource, String indexColumnName, Function<E, K> keyValueFunction) {
         this.dataSource       = dataSource;
         this.indexColumnName  = indexColumnName;
         this.keyValueFunction = keyValueFunction;
     }
 
     @Override
-    public K indexKey(V value) {
-        return keyValueFunction.apply(value);
+    public K indexKey(E entity) {
+        return keyValueFunction.apply(entity);
     }
 
     @Override
-    public void index(V value) {
-        index.put(indexKey(value), value);
+    public void index(E entity) {
+        index.put(indexKey(entity), entity);
     }
 
     @Override
-    public void reindex(V value) {
-        index.entries().removeIf(kvEntry -> kvEntry.getValue() == value);
-        index(value);
+    public void reindex(E entity) {
+        index.entries().removeIf(kvEntry -> kvEntry.getValue() == entity);
+        index(entity);
     }
 
     @Override
-    public void deindex(V value) {
-        index.remove(indexKey(value), value);
+    public void deindex(E entity) {
+        index.remove(indexKey(entity), entity);
     }
 
     @Override
-    public void deindex(int idValue) {
-        index.entries().removeIf(kvEntry -> kvEntry.getValue().getId() == idValue);
+    public void deindex(I key) {
+        index.entries().removeIf(kvEntry -> kvEntry.getValue().getId().toString().equals(key.toString()));
     }
 
     @Override
@@ -59,19 +61,19 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
     }
 
     @Override
-    public Set<V> getValues() {
+    public Set<E> getValues() {
         dataSource.queryAll();
         return getCacheValues();
     }
 
     @Override
-    public Set<V> getKeyValues(K key) {
+    public Set<E> getKeyValues(K key) {
         dataSource.querySome(indexColumnName, key.toString());
         return getCacheKeyValues(key);
     }
 
     @Override
-    public Set<V> getKeyValues(Set<K> keys) {
+    public Set<E> getKeyValues(Set<K> keys) {
         dataSource.querySome(indexColumnName, keys);
         return getCacheKeyValues(keys);
     }
@@ -82,18 +84,18 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
     }
 
     @Override
-    public Set<V> getCacheValues() {
+    public Set<E> getCacheValues() {
         return Sets.newHashSet(index.values());
     }
 
     @Override
-    public Set<V> getCacheKeyValues(K key) {
+    public Set<E> getCacheKeyValues(K key) {
         return index.get(key);
     }
 
     @Override
-    public Set<V> getCacheKeyValues(Set<K> keys) {
-        Set<V> values = Sets.newHashSet();
+    public Set<E> getCacheKeyValues(Set<K> keys) {
+        Set<E> values = Sets.newHashSet();
         keys.forEach(e -> values.addAll(index.get(e)));
         return values;
     }
@@ -104,23 +106,23 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
     }
 
     @Override
-    public boolean cacheContainsValue(V value) {
-        return index.containsValue(value);
+    public boolean cacheContainsValue(E entity) {
+        return index.containsValue(entity);
     }
 
     @Override
-    public V getValue(K key) {
+    public E getValue(K key) {
         dataSource.querySome(indexColumnName, key.toString());
         return getCacheValue(key);
     }
 
     @Override
-    public V getCacheValue(K key) {
+    public E getCacheValue(K key) {
         return index.getValue(key);
     }
 
     @Override
-    public Optional<V> getValueOptional(K key) {
+    public Optional<E> getValueOptional(K key) {
         if (!cacheContainsKey(key)) {
             getKeyValues(key);
         }
@@ -128,7 +130,7 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
     }
 
     @Override
-    public Optional<V> getCacheValueOptional(K key) {
+    public Optional<E> getCacheValueOptional(K key) {
         if (cacheContainsKey(key)) {
             return Optional.of(getCacheValue(key));
         } else {
@@ -136,53 +138,54 @@ public abstract class AbstractIndex<K, V extends IPersistible> implements IIndex
         }
     }
 
+    @Override
     public int getCacheKeySize() {
         return getCacheKeys().size();
     }
 
+    @Override
     public int getCacheKeySize(K key) {
         return getCacheKeyValues(key).size();
     }
 
+    @Override
     public int getKeySize() {
         return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, "-1", false).size();
     }
 
+    @Override
     public int getKeySize(K key) {
         return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, key.toString()).size();
     }
 
-    public Set<Integer> getIds() {
-        return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, "0", false)
-                         .stream()
-                         .map(Integer::parseInt)
-                         .collect(Collectors.toSet());
+    @Override
+    public Set<I> getIds() {
+        return dataSource.getAllIds();
     }
 
-    public Set<Integer> getIds(K key) {
-        return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, key.toString())
-                         .stream()
-                         .map(Integer::parseInt)
-                         .collect(Collectors.toSet());
+    @Override
+    public Set<I> getIds(K key) {
+        return dataSource.getOnlyIds(indexColumnName, Collections.singletonList(key), true);
     }
 
-    public Set<Integer> getIds(Set<K> keys) {
-        return dataSource.queryOneColumn(dataSource.getIdColName(), indexColumnName, keys.toString())
-                         .stream()
-                         .map(Integer::parseInt)
-                         .collect(Collectors.toSet());
+    @Override
+    public Set<I> getIds(Set<K> keys) {
+        return dataSource.getOnlyIds(indexColumnName, keys, true);
     }
 
-    public Set<Integer> getCachedIds() {
-        return getCacheValues().stream().map(V::getId).collect(Collectors.toSet());
+    @Override
+    public Set<I> getCachedIds() {
+        return getCacheValues().stream().map(E::getId).collect(Collectors.toSet());
     }
 
-    public Set<Integer> getCachedIds(K key) {
-        return getCacheKeyValues(key).stream().map(V::getId).collect(Collectors.toSet());
+    @Override
+    public Set<I> getCachedIds(K key) {
+        return getCacheKeyValues(key).stream().map(E::getId).collect(Collectors.toSet());
     }
 
-    public Set<Integer> getCachedIds(Set<K> keys) {
-        return getCacheKeyValues(keys).stream().map(V::getId).collect(Collectors.toSet());
+    @Override
+    public Set<I> getCachedIds(Set<K> keys) {
+        return getCacheKeyValues(keys).stream().map(E::getId).collect(Collectors.toSet());
     }
 
 

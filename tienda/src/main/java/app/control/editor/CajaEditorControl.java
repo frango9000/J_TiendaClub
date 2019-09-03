@@ -32,14 +32,14 @@ public class CajaEditorControl extends GridControl<Caja> {
     public void updateEditee(Caja editee) {
         editee.setSede(fxCbxSede.getSelectionModel().getSelectedItem());
         editee.setNombre(StaticHelpers.textInputEmptyToNull(fxNombre));
-        editee.setActivo(fxCheckActivo.isSelected());
+        editee.setActive(fxCheckActivo.isSelected());
     }
 
     @Override
     public Caja buildNew() {
         Caja editee = new Caja(fxCbxSede.getSelectionModel()
                                         .getSelectedItem(), StaticHelpers.textInputEmptyToNull(fxNombre));
-        editee.setActivo(fxCheckActivo.isSelected());
+        editee.setActive(fxCheckActivo.isSelected());
         return editee;
     }
 
@@ -49,7 +49,7 @@ public class CajaEditorControl extends GridControl<Caja> {
             fxId.setText((Integer.toString(editee.getId())));
         fxCbxSede.getSelectionModel().select(editee.getSede());
         fxNombre.setText(Strings.nullToEmpty(editee.getNombre()));
-        fxCheckActivo.setSelected(editee.isActivo());
+        fxCheckActivo.setSelected(editee.isActive());
     }
 
     @Override

@@ -2,9 +2,10 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.CierreZDao;
-import app.data.casteldao.daomodel.IPersistible;
-import app.data.casteldao.daomodel.Persistible;
+import app.data.casteldao.model.EntityInt;
+import app.data.casteldao.model.IEntity;
 import app.misc.DateUtils;
+import app.misc.Flogger;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class CierreZ extends Persistible {
+public class CierreZ extends EntityInt {
 
     public static final String TABLE_NAME = "zs";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idCaja", "apertura", "cierre"));
@@ -41,21 +42,36 @@ public class CierreZ extends Persistible {
         this.apertura = apertura;
     }
 
-    public CierreZ(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getInt(2), DateUtils.toLocalDateTime(rs.getTimestamp(3)));
-        setCierre(DateUtils.toLocalDateTime(rs.getDate(4)));
+    @Override
+    public boolean setEntity(ResultSet resultSet) {
+        try {
+            setId(resultSet.getInt(1));
+            setIdCaja(resultSet.getInt(2));
+            setApertura(DateUtils.toLocalDateTime(resultSet.getTimestamp(3)));
+            setCierre(DateUtils.toLocalDateTime(resultSet.getDate(4)));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setInt(1, getId());
-        pst.setTimestamp(2, DateUtils.toTimestamp(getApertura()));
-        pst.setTimestamp(3, DateUtils.toTimestamp(getCierre()));
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setInt(1, getId());
+            pst.setTimestamp(2, DateUtils.toTimestamp(getApertura()));
+            pst.setTimestamp(3, DateUtils.toTimestamp(getCierre()));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
 
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             CierreZ newValues = (CierreZ) objectV;
             setCaja(newValues.getCaja());
             setApertura(newValues.getApertura());
@@ -77,8 +93,7 @@ public class CierreZ extends Persistible {
     }
 
     public void setIdCaja(int idCaja) {
-        this.idCaja = idCaja;
-        updateCaja();
+        setCaja(DataStore.getCajas().getById().getCacheValue(idCaja));
     }
 
     public LocalDateTime getApertura() {
@@ -106,11 +121,6 @@ public class CierreZ extends Persistible {
         this.idCaja = getCaja().getId();
     }
 
-    private void updateCaja() {
-        setCaja(DataStore.getCajas().getById().getCacheValue(getIdCaja()));
-    }
-
-
     @Override
     public ArrayList<String> getColumnNames() {
         return COLUMN_NAMES;
@@ -128,11 +138,6 @@ public class CierreZ extends Persistible {
         return getId() == cierreZ.getId() && getIdCaja() == cierreZ.getIdCaja()
                && Objects.equal(getCaja(), cierreZ.getCaja()) && Objects.equal(getApertura(), cierreZ.getApertura())
                && Objects.equal(getCierre(), cierreZ.getCierre());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId();
     }
 
     @Override

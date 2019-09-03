@@ -1,7 +1,7 @@
 package app.control.table;
 
-import app.data.casteldao.daomodel.Activable;
-import app.data.casteldao.daomodel.IndexIdActiveDao;
+import app.data.casteldao.dao.IndexIdActiveDao;
+import app.data.casteldao.model.ActivableEntity;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public abstract class ActiveTableControl<T extends Activable> extends TableControl<T> {
+public abstract class ActiveTableControl<T extends ActivableEntity> extends TableControl<T> {
 
     protected boolean showInactive = false;
 
@@ -36,7 +36,7 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     protected void fxBtnDisableAction(ActionEvent actionEvent) {
         T selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            boolean isActive = selected.isActivo();
+            boolean isActive = selected.isActive();
             if (FxDialogs.showConfirmBoolean("Cuidado",
                                              "Deseas " + (isActive ? "des" : "") + "activar el id " + selected.getId() +
                                              " ?")) {
@@ -45,14 +45,14 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
                 } catch (CloneNotSupportedException e) {
                     Flogger.atSevere().withCause(e).log("Clone Fail: " + selected.toString());
                 }
-                selected.toggleActivo();
+                selected.toggleActive();
                 boolean success = selected.updateOnDb() == 1;
                 FxDialogs.showInfo("",
                                    "Usuario " + selected.getId() + (success ? " " : " NO ") + (isActive ? "des" : "")
                                    + "activado");
                 if (!success) {
-                    selected.toggleActivo();
-                } else if (!showInactive && !selected.isActivo()) {
+                    selected.toggleActive();
+                } else if (!showInactive && !selected.isActive()) {
                     listedObjects.remove(selected);
                 }
             }
@@ -90,7 +90,7 @@ public abstract class ActiveTableControl<T extends Activable> extends TableContr
     protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
         super.fxBtnEditAction(actionEvent);
         T selected = fxTable.getSelectionModel().getSelectedItem();
-        if (selected != null && !showInactive && !selected.isActivo()) {
+        if (selected != null && !showInactive && !selected.isActive()) {
             listedObjects.remove(selected);
         }
     }

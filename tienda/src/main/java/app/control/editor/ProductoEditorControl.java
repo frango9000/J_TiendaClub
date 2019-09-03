@@ -45,7 +45,7 @@ public class ProductoEditorControl extends GridControl<Producto> {
         editee.setIva(fxIva.getText().trim().length() > 0 ? Integer.parseInt(fxIva.getText().trim()) : 0);
         editee.setCategoria(fxCbxCategoria.getSelectionModel().getSelectedItem());
         editee.setDescripcion(StaticHelpers.textInputEmptyToNull(fxDescripcion));
-        editee.setActivo(fxCheckActivo.isSelected());
+        editee.setActive(fxCheckActivo.isSelected());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ProductoEditorControl extends GridControl<Producto> {
         fxIva.setText(Integer.toString(editee.getIva()));
         fxCbxCategoria.getSelectionModel().select(editee.getCategoria());
         fxDescripcion.setText(Strings.nullToEmpty(editee.getDescripcion()));
-        fxCheckActivo.setSelected(editee.isActivo());
+        fxCheckActivo.setSelected(editee.isActive());
     }
 
     public boolean validFields() {

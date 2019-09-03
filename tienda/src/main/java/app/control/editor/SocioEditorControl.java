@@ -51,7 +51,7 @@ public class SocioEditorControl extends GridControl<Socio> {
         editee.setDescripcion(StaticHelpers.textInputEmptyToNull(fxDescripcion));
         editee.setFechaIn(
             fxPickerFechaIn.getText().length() < 1 ? LocalDateTime.now() : fxPickerFechaIn.getLocalDateTime());
-        editee.setActivo(fxCheckActivo.isSelected());
+        editee.setActive(fxCheckActivo.isSelected());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class SocioEditorControl extends GridControl<Socio> {
         fxDireccion.setText(Strings.nullToEmpty(editee.getDireccion()));
         fxDescripcion.setText(Strings.nullToEmpty(editee.getDescripcion()));
         fxPickerFechaIn.setLocalDateTime(editee.getFechaIn());
-        fxCheckActivo.setSelected(editee.isActivo());
+        fxCheckActivo.setSelected(editee.isActive());
     }
 
     @Override

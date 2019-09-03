@@ -1,20 +1,20 @@
 package app.data.appdao;
 
-import app.data.casteldao.daomodel.IndexIdDao;
-import app.data.casteldao.index.MultiIndexPersistible;
-import app.data.casteldao.index.core.SimpleTreeMapIndex;
+import app.data.casteldao.dao.IndexIdDataSourceImpl;
+import app.data.casteldao.index.SetMultiMapIndexImpl;
+import app.data.casteldao.index.TreeMapIndexImpl;
 import app.model.Caja;
 import app.model.Socio;
 import app.model.Usuario;
 import app.model.Venta;
 import java.time.LocalDateTime;
 
-public class VentaDao extends IndexIdDao<Venta> {
+public class VentaDao extends IndexIdDataSourceImpl<Venta> {
 
-    private MultiIndexPersistible<Usuario, Venta> indexUsuario = new MultiIndexPersistible<>(getDataSource(), "idUsuario", Venta::getIdUsuario);
-    private MultiIndexPersistible<Caja, Venta> indexCaja = new MultiIndexPersistible<>(getDataSource(), "idCaja", Venta::getIdCaja);
-    private MultiIndexPersistible<Socio, Venta> indexSocio = new MultiIndexPersistible<>(getDataSource(), "idSocio", Venta::getIdSocio);
-    private SimpleTreeMapIndex<LocalDateTime, Venta> indexFecha = new SimpleTreeMapIndex<>(getDataSource(), "fechahora", Venta::getFechahora);
+    private SetMultiMapIndexImpl<Usuario, Venta> indexUsuario = new SetMultiMapIndexImpl<>(getDao(), "idUsuario", Venta::getUsuario);
+    private SetMultiMapIndexImpl<Caja, Venta> indexCaja = new SetMultiMapIndexImpl<>(getDao(), "idCaja", Venta::getCaja);
+    private SetMultiMapIndexImpl<Socio, Venta> indexSocio = new SetMultiMapIndexImpl<>(getDao(), "idSocio", Venta::getSocio);
+    private TreeMapIndexImpl<LocalDateTime, Venta> indexFecha = new TreeMapIndexImpl<>(getDao(), "fechahora", Venta::getFechahora);
 
     public VentaDao() {
         super(Venta.TABLE_NAME, Venta.class);
@@ -23,19 +23,19 @@ public class VentaDao extends IndexIdDao<Venta> {
         indexes.add(indexSocio);
     }
 
-    public MultiIndexPersistible<Usuario, Venta> getIndexUsuario() {
+    public SetMultiMapIndexImpl<Usuario, Venta> getIndexUsuario() {
         return indexUsuario;
     }
 
-    public MultiIndexPersistible<Caja, Venta> getIndexCaja() {
+    public SetMultiMapIndexImpl<Caja, Venta> getIndexCaja() {
         return indexCaja;
     }
 
-    public MultiIndexPersistible<Socio, Venta> getIndexSocio() {
+    public SetMultiMapIndexImpl<Socio, Venta> getIndexSocio() {
         return indexSocio;
     }
 
-    public SimpleTreeMapIndex<LocalDateTime, Venta> getIndexFecha() {
+    public TreeMapIndexImpl<LocalDateTime, Venta> getIndexFecha() {
         return indexFecha;
     }
 }

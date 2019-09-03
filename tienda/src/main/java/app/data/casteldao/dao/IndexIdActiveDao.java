@@ -1,15 +1,16 @@
-package app.data.casteldao.daomodel;
+package app.data.casteldao.dao;
 
 import app.data.casteldao.index.MultiIndexActive;
+import app.data.casteldao.model.ActivableEntity;
 
-public class IndexIdActiveDao<V extends Activable> extends IndexIdDao<V> {
+public class IndexIdActiveDao<V extends ActivableEntity> extends IndexIdDataSourceImpl<V> {
 
 
     private MultiIndexActive<V> indexActive;
 
     public IndexIdActiveDao(String tableName, Class<V> clazz) {
         super(tableName, clazz);
-        indexActive = new MultiIndexActive<>(dataSource);
+        indexActive = new MultiIndexActive<>(dao);
         indexes.add(indexActive);
     }
 

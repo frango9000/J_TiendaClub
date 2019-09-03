@@ -1,13 +1,13 @@
 package app.data.appdao;
 
-import app.data.casteldao.daomodel.IndexIdDao;
-import app.data.casteldao.index.MultiIndexPersistible;
+import app.data.casteldao.dao.IndexIdDataSourceImpl;
+import app.data.casteldao.index.SetMultiMapIndexImpl;
 import app.model.Vendido;
 import app.model.Venta;
 
-public class VendidoDao extends IndexIdDao<Vendido> {
+public class VendidoDao extends IndexIdDataSourceImpl<Vendido> {
 
-    private MultiIndexPersistible<Venta, Vendido> indexVenta = new MultiIndexPersistible<>(getDataSource(), "idVenta", Vendido::getIdVenta);
+    private SetMultiMapIndexImpl<Venta, Vendido> indexVenta = new SetMultiMapIndexImpl<>(getDao(), "idVenta", Vendido::getVenta);
     //private MultiIndexPersistible<Producto, Vendido> indexProducto = new MultiIndexPersistible<>(getDataSource(), "idProducto", Vendido::getIdProducto);
 
     public VendidoDao() {
@@ -16,7 +16,7 @@ public class VendidoDao extends IndexIdDao<Vendido> {
         //indexes.add(indexProducto);
     }
 
-    public MultiIndexPersistible<Venta, Vendido> getIndexVenta() {
+    public SetMultiMapIndexImpl<Venta, Vendido> getIndexVenta() {
         return indexVenta;
     }
 }

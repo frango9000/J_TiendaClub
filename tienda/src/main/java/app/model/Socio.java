@@ -2,9 +2,10 @@ package app.model;
 
 import app.data.DataStore;
 import app.data.appdao.SocioDao;
-import app.data.casteldao.daomodel.Activable;
-import app.data.casteldao.daomodel.IPersistible;
+import app.data.casteldao.model.ActivableEntity;
+import app.data.casteldao.model.IEntity;
 import app.misc.DateUtils;
+import app.misc.Flogger;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class Socio extends Activable {
+public class Socio extends ActivableEntity {
 
     public static final String TABLE_NAME = "socios";
     private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("dni", "nombre", "telefono", "email", "direccion", "descripcion", "fecha_in", "activo"));
@@ -38,32 +39,44 @@ public class Socio extends Activable {
         this(0, dni);
     }
 
-    public Socio(ResultSet rs) throws SQLException {
-        this(rs.getInt(1), rs.getString(2));
-        setNombre(rs.getString(3));
-        setTelefono(rs.getString(4));
-        setEmail(rs.getString(5));
-        setDireccion(rs.getString(6));
-        setDescripcion(rs.getString(7));
-        setFechaIn(DateUtils.toLocalDateTime(rs.getTimestamp(8)));
-        setActivo(rs.getBoolean(9));
-    }
-
     @Override
-    public void buildStatement(@NonNull PreparedStatement pst) throws SQLException {
-        pst.setString(1, getDni());
-        pst.setString(2, getNombre());
-        pst.setString(3, getTelefono());
-        pst.setString(4, getEmail());
-        pst.setString(5, getDireccion());
-        pst.setString(6, getDescripcion());
-        pst.setTimestamp(7, DateUtils.toTimestamp(getFechaIn()));
-        pst.setBoolean(8, isActivo());
+    public boolean setEntity(@NonNull ResultSet rs) {
+        try {
+            setId(rs.getInt(1));
+            setDni(rs.getString(2));
+            setNombre(rs.getString(3));
+            setTelefono(rs.getString(4));
+            setEmail(rs.getString(5));
+            setDireccion(rs.getString(6));
+            setDescripcion(rs.getString(7));
+            setFechaIn(DateUtils.toLocalDateTime(rs.getTimestamp(8)));
+            setActive(rs.getBoolean(9));
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
     }
-
     @Override
-    public <V extends IPersistible> boolean restoreFrom(@NonNull V objectV) {
-        if (getId() == objectV.getId() && !this.equals(objectV)) {
+    public boolean buildStatement(@NonNull PreparedStatement pst) {
+        try {
+            pst.setString(1, getDni());
+            pst.setString(2, getNombre());
+            pst.setString(3, getTelefono());
+            pst.setString(4, getEmail());
+            pst.setString(5, getDireccion());
+            pst.setString(6, getDescripcion());
+            pst.setTimestamp(7, DateUtils.toTimestamp(getFechaIn()));
+            pst.setBoolean(8, isActive());
+            return true;
+        } catch (SQLException e) {
+            Flogger.atWarning().withCause(e).log();
+            return false;
+        }
+    }
+    @Override
+    public boolean restoreFrom(@NonNull IEntity objectV) {
+        if (objectV.getClass().equals(getClass()) && getId() == objectV.getId() && !this.equals(objectV)) {
             Socio newValues = (Socio) objectV;
             setDni(newValues.getDni());
             setNombre(newValues.getNombre());
@@ -72,7 +85,7 @@ public class Socio extends Activable {
             setDireccion(newValues.getDireccion());
             setDescripcion(newValues.getDescripcion());
             setFechaIn(newValues.getFechaIn());
-            setActivo(newValues.isActivo());
+            setActive(newValues.isActive());
             return true;
         }
         return false;
@@ -154,18 +167,15 @@ public class Socio extends Activable {
             return false;
         }
         Socio socio = (Socio) o;
-        return getId() == socio.getId() && isActivo() == socio.isActivo() && Objects.equal(getDni(), socio.getDni())
+        return getId().equals(socio.getId())
+               && isActive() == socio.isActive()
+               && Objects.equal(getDni(), socio.getDni())
                && Objects.equal(getNombre(), socio.getNombre())
                && Objects.equal(getTelefono(), socio.getTelefono())
                && Objects.equal(getEmail(), socio.getEmail())
                && Objects.equal(getDireccion(), socio.getDireccion())
                && Objects.equal(getDescripcion(), socio.getDescripcion())
                && Objects.equal(getFechaIn(), socio.getFechaIn());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
     }
 
     @Override
@@ -179,7 +189,7 @@ public class Socio extends Activable {
                           .add("direccion", direccion)
                           .add("descripcion", descripcion)
                           .add("fechaIn", fechaIn)
-                          .add("activo", isActivo())
+                          .add("activo", isActive())
                           .toString();
     }
 
