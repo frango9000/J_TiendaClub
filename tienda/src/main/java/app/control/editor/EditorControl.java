@@ -1,7 +1,7 @@
 package app.control.editor;
 
-import app.data.casteldao.dao.DataSource;
-import app.data.casteldao.model.AbstractPersistible;
+import app.data.casteldao.dao.DataSourceIdImpl;
+import app.data.casteldao.model.EntityInt;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
 import com.google.common.flogger.StackSize;
@@ -14,7 +14,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
-public class EditorControl<T extends AbstractPersistible> extends BorderPane {
+public class EditorControl<T extends EntityInt> extends BorderPane {
 
     @FXML
     public BorderPane fxGenericEditorBorderPane;
@@ -23,7 +23,7 @@ public class EditorControl<T extends AbstractPersistible> extends BorderPane {
     protected T editee;
     protected boolean creating = true;
     protected GridControl<T> gridControl;
-    protected DataSource<T> dataOrigin;
+    protected DataSourceIdImpl<T> dataOrigin;
 
     {
         try {
@@ -36,7 +36,7 @@ public class EditorControl<T extends AbstractPersistible> extends BorderPane {
         }
     }
 
-    public EditorControl(T editee, DataSource<T> dataOrigin, GridControl<T> gridControl, Pane gridpane) {
+    public EditorControl(T editee, DataSourceIdImpl<T> dataOrigin, GridControl<T> gridControl, Pane gridpane) {
         this.dataOrigin  = dataOrigin;
         this.gridControl = gridControl;
         setCenter(gridpane);

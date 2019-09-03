@@ -11,6 +11,7 @@ public abstract class AbstractEntity<I extends Serializable> implements IEntity<
 
     protected AbstractEntity<I> backup;
 
+
     public AbstractEntity() {
     }
 

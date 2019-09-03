@@ -11,8 +11,8 @@ import app.data.appdao.UsuarioDao;
 import app.data.appdao.VendidoDao;
 import app.data.appdao.VentaDao;
 import app.data.casteldao.SessionDB;
-import app.data.casteldao.dao.IndexIdActiveDao;
-import app.data.casteldao.dao.IndexIdDataSource;
+import app.data.casteldao.dao.DataSourceIdActive;
+import app.data.casteldao.dao.DataSourceIdImpl;
 import app.model.Acceso;
 import app.model.Categoria;
 import app.model.Proveedor;
@@ -20,26 +20,26 @@ import app.model.Sede;
 
 public class DataStore {
 
-    private static IndexIdDataSource<Acceso> accesos = new IndexIdDataSource<>(Acceso.TABLE_NAME, Acceso.class);
-    private static IndexIdActiveDao<Sede> sedes = new IndexIdActiveDao<>(Sede.TABLE_NAME, Sede.class);
+    private static DataSourceIdImpl<Acceso> accesos = new DataSourceIdImpl<>(Acceso.TABLE_NAME, Acceso.class);
+    private static DataSourceIdActive<Sede> sedes = new DataSourceIdActive<>(Sede.TABLE_NAME, Sede.class);
     private static CajaDao cajas = new CajaDao();
-    private static IndexIdActiveDao<Categoria> categorias = new IndexIdActiveDao<>(Categoria.TABLE_NAME, Categoria.class);
+    private static DataSourceIdActive<Categoria> categorias = new DataSourceIdActive<>(Categoria.TABLE_NAME, Categoria.class);
     private static CierreZDao cierreZs = new CierreZDao();
     private static CompraDao compras = new CompraDao();
     private static CompradoDao comprados = new CompradoDao();
     private static ProductoDao productos = new ProductoDao();
-    private static IndexIdActiveDao<Proveedor> proveedores = new IndexIdActiveDao<>(Proveedor.TABLE_NAME, Proveedor.class);
+    private static DataSourceIdActive<Proveedor> proveedores = new DataSourceIdActive<>(Proveedor.TABLE_NAME, Proveedor.class);
     private static SocioDao socios = new SocioDao();
     private static TransferenciaDao transferencias = new TransferenciaDao();
     private static UsuarioDao usuarios = new UsuarioDao();
     private static VendidoDao vendidos = new VendidoDao();
     private static VentaDao ventas = new VentaDao();
 
-    public static IndexIdDataSource<Acceso> getAccesos() {
+    public static DataSourceIdImpl<Acceso> getAccesos() {
         return accesos;
     }
 
-    public static IndexIdActiveDao<Sede> getSedes() {
+    public static DataSourceIdActive<Sede> getSedes() {
         return sedes;
     }
 
@@ -47,7 +47,7 @@ public class DataStore {
         return cajas;
     }
 
-    public static IndexIdActiveDao<Categoria> getCategorias() {
+    public static DataSourceIdActive<Categoria> getCategorias() {
         return categorias;
     }
 
@@ -67,7 +67,7 @@ public class DataStore {
         return productos;
     }
 
-    public static IndexIdActiveDao<Proveedor> getProveedores() {
+    public static DataSourceIdActive<Proveedor> getProveedores() {
         return proveedores;
     }
 

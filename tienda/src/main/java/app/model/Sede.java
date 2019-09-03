@@ -1,7 +1,7 @@
 package app.model;
 
 import app.data.DataStore;
-import app.data.casteldao.dao.IndexIdActiveDao;
+import app.data.casteldao.dao.DataSourceIdActive;
 import app.data.casteldao.model.ActivableEntity;
 import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
@@ -76,7 +76,7 @@ public class Sede extends ActivableEntity {
 
     @Override
     @SuppressWarnings("unchecked")
-    public IndexIdActiveDao<Sede> getDataStore() {
+    public DataSourceIdActive<Sede> getDataStore() {
         return DataStore.getSedes();
     }
 

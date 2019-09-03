@@ -1,17 +1,17 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.IndexIdDataSourceImpl;
-import app.data.casteldao.index.SetMultiMapIndexImpl;
+import app.data.casteldao.dao.DataSourceIdImpl;
+import app.data.casteldao.index.SetMultiMapIndexEntityImpl;
 import app.model.Compra;
 import app.model.Proveedor;
 import app.model.Sede;
 import app.model.Usuario;
 
-public class CompraDao extends IndexIdDataSourceImpl<Compra> {
+public class CompraDao extends DataSourceIdImpl<Compra> {
 
-    private SetMultiMapIndexImpl<Usuario, Compra> indexUsuario = new SetMultiMapIndexImpl<>(getDao(), "idUsuario", Compra::getUsuario);
-    private SetMultiMapIndexImpl<Sede, Compra> indexSede = new SetMultiMapIndexImpl<>(getDao(), "idSede", Compra::getSede);
-    private SetMultiMapIndexImpl<Proveedor, Compra> indexProveedor = new SetMultiMapIndexImpl<>(getDao(), "idProveedor", Compra::getProveedor);
+    private SetMultiMapIndexEntityImpl<Usuario, Compra> indexUsuario = new SetMultiMapIndexEntityImpl<>(getDao(), "idUsuario", Compra::getIdUsuario);
+    private SetMultiMapIndexEntityImpl<Sede, Compra> indexSede = new SetMultiMapIndexEntityImpl<>(getDao(), "idSede", Compra::getIdSede);
+    private SetMultiMapIndexEntityImpl<Proveedor, Compra> indexProveedor = new SetMultiMapIndexEntityImpl<>(getDao(), "idProveedor", Compra::getIdProveedor);
 
     public CompraDao() {
         super(Compra.TABLE_NAME, Compra.class);
@@ -20,15 +20,15 @@ public class CompraDao extends IndexIdDataSourceImpl<Compra> {
         indexes.add(indexProveedor);
     }
 
-    public SetMultiMapIndexImpl<Usuario, Compra> getIndexUsuario() {
+    public SetMultiMapIndexEntityImpl<Usuario, Compra> getIndexUsuario() {
         return indexUsuario;
     }
 
-    public SetMultiMapIndexImpl<Sede, Compra> getIndexSede() {
+    public SetMultiMapIndexEntityImpl<Sede, Compra> getIndexSede() {
         return indexSede;
     }
 
-    public SetMultiMapIndexImpl<Proveedor, Compra> getIndexProveedor() {
+    public SetMultiMapIndexEntityImpl<Proveedor, Compra> getIndexProveedor() {
         return indexProveedor;
     }
 }

@@ -1,6 +1,6 @@
 package app.control.table;
 
-import app.data.casteldao.dao.IndexIdActiveDao;
+import app.data.casteldao.dao.DataSourceIdActive;
 import app.data.casteldao.model.ActivableEntity;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
@@ -11,14 +11,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public abstract class ActiveTableControl<T extends ActivableEntity> extends TableControl<T> {
+public abstract class ActiveTableControl<E extends ActivableEntity> extends TableControl<E> {
 
     protected boolean showInactive = false;
 
     @Override
     void initialize() {
-        fxColumnId.setCellValueFactory(new PropertyValueFactory<T, Integer>("id"));
-        fxColumnIsActive.setCellValueFactory(f -> f.getValue().activeProperty());
+        fxColumnId.setCellValueFactory(new PropertyValueFactory<E, Integer>("id"));
+        fxColumnIsActive.setCellValueFactory(new PropertyValueFactory<>("active"));
         fxColumnIsActive.setCellFactory(tc -> new CheckBoxTableCell<>());
     }
 
@@ -34,7 +34,7 @@ public abstract class ActiveTableControl<T extends ActivableEntity> extends Tabl
 
     @FXML
     protected void fxBtnDisableAction(ActionEvent actionEvent) {
-        T selected = fxTable.getSelectionModel().getSelectedItem();
+        E selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             boolean isActive = selected.isActive();
             if (FxDialogs.showConfirmBoolean("Cuidado",
@@ -60,11 +60,11 @@ public abstract class ActiveTableControl<T extends ActivableEntity> extends Tabl
     }
 
     @Override
-    protected abstract IndexIdActiveDao<T> getDataOrigin();
+    protected abstract DataSourceIdActive<E> getDataOrigin();
 
     @Override
     protected void addContent(boolean clean) {
-        Set<T> list = null;
+        Set<E> list = null;
         if (showInactive) {
             list = getDataOrigin().getById().getCacheValues();
             fxBtnShowHide.setText("Todos");
@@ -89,7 +89,7 @@ public abstract class ActiveTableControl<T extends ActivableEntity> extends Tabl
     @Override
     protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
         super.fxBtnEditAction(actionEvent);
-        T selected = fxTable.getSelectionModel().getSelectedItem();
+        E selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null && !showInactive && !selected.isActive()) {
             listedObjects.remove(selected);
         }

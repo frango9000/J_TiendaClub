@@ -1,7 +1,7 @@
 package app.model;
 
 import app.data.DataStore;
-import app.data.casteldao.dao.IndexIdActiveDao;
+import app.data.casteldao.dao.DataSourceIdActive;
 import app.data.casteldao.model.ActivableEntity;
 import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
@@ -65,7 +65,7 @@ public class Categoria extends ActivableEntity {
 
     @Override
     @SuppressWarnings("unchecked")
-    public IndexIdActiveDao<Categoria> getDataStore() {
+    public DataSourceIdActive<Categoria> getDataStore() {
         return DataStore.getCategorias();
     }
 

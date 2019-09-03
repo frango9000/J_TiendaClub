@@ -1,18 +1,18 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.IndexIdDataSourceImpl;
-import app.data.casteldao.index.SetMultiMapIndexImpl;
+import app.data.casteldao.dao.DataSourceIdImpl;
+import app.data.casteldao.index.SetMultiMapIndexEntityImpl;
 import app.model.Producto;
 import app.model.Sede;
 import app.model.Transferencia;
 import app.model.Usuario;
 
-public class TransferenciaDao extends IndexIdDataSourceImpl<Transferencia> {
+public class TransferenciaDao extends DataSourceIdImpl<Transferencia> {
 
-    private SetMultiMapIndexImpl<Usuario, Transferencia> indexUsuario = new SetMultiMapIndexImpl<>(getDao(), "idUsuario", Transferencia::getUsuario);
-    private SetMultiMapIndexImpl<Sede, Transferencia> indexSedeOrigen = new SetMultiMapIndexImpl<>(getDao(), "idSedeOrigen", Transferencia::getSedeOrigen);
-    private SetMultiMapIndexImpl<Sede, Transferencia> indexSedeDestino = new SetMultiMapIndexImpl<>(getDao(), "idSedeDestino", Transferencia::getSedeDestino);
-    private SetMultiMapIndexImpl<Producto, Transferencia> indexProducto = new SetMultiMapIndexImpl<>(getDao(), "idProducto", Transferencia::getProducto);
+    private SetMultiMapIndexEntityImpl<Usuario, Transferencia> indexUsuario = new SetMultiMapIndexEntityImpl<>(getDao(), "idUsuario", Transferencia::getIdUsuario);
+    private SetMultiMapIndexEntityImpl<Sede, Transferencia> indexSedeOrigen = new SetMultiMapIndexEntityImpl<>(getDao(), "idSedeOrigen", Transferencia::getIdSedeOrigen);
+    private SetMultiMapIndexEntityImpl<Sede, Transferencia> indexSedeDestino = new SetMultiMapIndexEntityImpl<>(getDao(), "idSedeDestino", Transferencia::getIdSedeDestino);
+    private SetMultiMapIndexEntityImpl<Producto, Transferencia> indexProducto = new SetMultiMapIndexEntityImpl<>(getDao(), "idProducto", Transferencia::getIdProducto);
 
     public TransferenciaDao() {
         super(Transferencia.TABLE_NAME, Transferencia.class);
@@ -22,19 +22,19 @@ public class TransferenciaDao extends IndexIdDataSourceImpl<Transferencia> {
         indexes.add(indexProducto);
     }
 
-    public SetMultiMapIndexImpl<Usuario, Transferencia> getIndexUsuario() {
+    public SetMultiMapIndexEntityImpl<Usuario, Transferencia> getIndexUsuario() {
         return indexUsuario;
     }
 
-    public SetMultiMapIndexImpl<Sede, Transferencia> getIndexSedeOrigen() {
+    public SetMultiMapIndexEntityImpl<Sede, Transferencia> getIndexSedeOrigen() {
         return indexSedeOrigen;
     }
 
-    public SetMultiMapIndexImpl<Sede, Transferencia> getIndexSedeDestino() {
+    public SetMultiMapIndexEntityImpl<Sede, Transferencia> getIndexSedeDestino() {
         return indexSedeDestino;
     }
 
-    public SetMultiMapIndexImpl<Producto, Transferencia> getIndexProducto() {
+    public SetMultiMapIndexEntityImpl<Producto, Transferencia> getIndexProducto() {
         return indexProducto;
     }
 }

@@ -1,20 +1,20 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.IndexIdDataSourceImpl;
-import app.data.casteldao.index.SetMultiMapIndexImpl;
-import app.data.casteldao.index.TreeMapIndexImpl;
+import app.data.casteldao.dao.DataSourceIdImpl;
+import app.data.casteldao.index.SetMultiMapIndexEntityImpl;
+import app.data.casteldao.index.SimpleTreeMapIndexImpl;
 import app.model.Caja;
 import app.model.Socio;
 import app.model.Usuario;
 import app.model.Venta;
 import java.time.LocalDateTime;
 
-public class VentaDao extends IndexIdDataSourceImpl<Venta> {
+public class VentaDao extends DataSourceIdImpl<Venta> {
 
-    private SetMultiMapIndexImpl<Usuario, Venta> indexUsuario = new SetMultiMapIndexImpl<>(getDao(), "idUsuario", Venta::getUsuario);
-    private SetMultiMapIndexImpl<Caja, Venta> indexCaja = new SetMultiMapIndexImpl<>(getDao(), "idCaja", Venta::getCaja);
-    private SetMultiMapIndexImpl<Socio, Venta> indexSocio = new SetMultiMapIndexImpl<>(getDao(), "idSocio", Venta::getSocio);
-    private TreeMapIndexImpl<LocalDateTime, Venta> indexFecha = new TreeMapIndexImpl<>(getDao(), "fechahora", Venta::getFechahora);
+    private SetMultiMapIndexEntityImpl<Usuario, Venta> indexUsuario = new SetMultiMapIndexEntityImpl<>(getDao(), "idUsuario", Venta::getIdUsuario);
+    private SetMultiMapIndexEntityImpl<Caja, Venta> indexCaja = new SetMultiMapIndexEntityImpl<>(getDao(), "idCaja", Venta::getIdCaja);
+    private SetMultiMapIndexEntityImpl<Socio, Venta> indexSocio = new SetMultiMapIndexEntityImpl<>(getDao(), "idSocio", Venta::getIdSocio);
+    private SimpleTreeMapIndexImpl<LocalDateTime, Venta> indexFecha = new SimpleTreeMapIndexImpl<>(getDao(), "fechahora", Venta::getFechahora);
 
     public VentaDao() {
         super(Venta.TABLE_NAME, Venta.class);
@@ -23,19 +23,19 @@ public class VentaDao extends IndexIdDataSourceImpl<Venta> {
         indexes.add(indexSocio);
     }
 
-    public SetMultiMapIndexImpl<Usuario, Venta> getIndexUsuario() {
+    public SetMultiMapIndexEntityImpl<Usuario, Venta> getIndexUsuario() {
         return indexUsuario;
     }
 
-    public SetMultiMapIndexImpl<Caja, Venta> getIndexCaja() {
+    public SetMultiMapIndexEntityImpl<Caja, Venta> getIndexCaja() {
         return indexCaja;
     }
 
-    public SetMultiMapIndexImpl<Socio, Venta> getIndexSocio() {
+    public SetMultiMapIndexEntityImpl<Socio, Venta> getIndexSocio() {
         return indexSocio;
     }
 
-    public TreeMapIndexImpl<LocalDateTime, Venta> getIndexFecha() {
+    public SimpleTreeMapIndexImpl<LocalDateTime, Venta> getIndexFecha() {
         return indexFecha;
     }
 }

@@ -2,9 +2,8 @@ package app.control.table;
 
 import app.control.editor.EditorControl;
 import app.control.editor.GridControl;
-import app.data.casteldao.dao.DataSource;
-import app.data.casteldao.dao.IndexIdDataSource;
-import app.data.casteldao.model.AbstractPersistible;
+import app.data.casteldao.dao.DataSourceIdImpl;
+import app.data.casteldao.model.EntityInt;
 import app.misc.FXMLStage;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
@@ -21,7 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
-public abstract class TableControl<T extends AbstractPersistible> extends BorderPane {
+public abstract class TableControl<T extends EntityInt> extends BorderPane {
 
     protected final ObservableList<T> listedObjects = FXCollections.observableArrayList();
 
@@ -138,7 +137,7 @@ public abstract class TableControl<T extends AbstractPersistible> extends Border
         addContent(false);
     }
 
-    public <T extends AbstractPersistible> EditorControl<T> getEditorControl(String fxml, T editee, DataSource<T> dataOrigin) {
+    public <T extends EntityInt> EditorControl<T> getEditorControl(String fxml, T editee, DataSourceIdImpl<T> dataOrigin) {
         FXMLLoader loader = new FXMLLoader(TableControl.class.getResource(fxml));
         Pane pane = null;
         GridControl<T> tGridControl = null;
@@ -154,5 +153,5 @@ public abstract class TableControl<T extends AbstractPersistible> extends Border
 
     protected abstract String fxmlLocation();
 
-    protected abstract IndexIdDataSource<T> getDataOrigin();
+    protected abstract DataSourceIdImpl<T> getDataOrigin();
 }

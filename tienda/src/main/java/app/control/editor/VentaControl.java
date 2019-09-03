@@ -2,7 +2,7 @@ package app.control.editor;
 
 import app.data.DataStore;
 import app.data.SessionStore;
-import app.data.casteldao.model.AbstractPersistible;
+import app.data.casteldao.model.IEntity;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
 import app.model.Caja;
@@ -134,7 +134,7 @@ public class VentaControl extends BorderPane {
         fxBoxSocios.getSelectionModel().select(venta.getSocio());
         fxFieldDate.setLocalDateTime(venta.getFechahora());
         listedVendidos.setAll(venta.getVendidos());
-        AbstractPersistible.backupAll(listedVendidos);
+        IEntity.backupAll(listedVendidos);
     }
 
     public void setSocio(Socio socio) {

@@ -1,7 +1,7 @@
 package app.control.table;
 
 import app.data.DataStore;
-import app.data.casteldao.dao.IndexIdActiveDao;
+import app.data.casteldao.dao.DataSourceIdActive;
 import app.model.Proveedor;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -39,7 +39,7 @@ public class ProveedoresTableControl extends ActiveTableControl<Proveedor> {
 
 
     @Override
-    protected IndexIdActiveDao<Proveedor> getDataOrigin() {
+    protected DataSourceIdActive<Proveedor> getDataOrigin() {
         return DataStore.getProveedores();
     }
 

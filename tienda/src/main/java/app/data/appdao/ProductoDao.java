@@ -1,20 +1,20 @@
 package app.data.appdao;
 
-import app.data.casteldao.dao.IndexIdActiveDao;
-import app.data.casteldao.index.SetMultiMapIndexImpl;
+import app.data.casteldao.dao.DataSourceIdActive;
+import app.data.casteldao.index.SetMultiMapIndexEntityImpl;
 import app.model.Categoria;
 import app.model.Producto;
 
-public class ProductoDao extends IndexIdActiveDao<Producto> {
+public class ProductoDao extends DataSourceIdActive<Producto> {
 
-    private SetMultiMapIndexImpl<Categoria, Producto> indexCategoria = new SetMultiMapIndexImpl<>(getDao(), "idCategoria", Producto::getCategoria);
+    private SetMultiMapIndexEntityImpl<Categoria, Producto> indexCategoria = new SetMultiMapIndexEntityImpl<>(getDao(), "idCategoria", Producto::getIdCategoria);
 
     public ProductoDao() {
         super(Producto.TABLE_NAME, Producto.class);
         indexes.add(indexCategoria);
     }
 
-    public SetMultiMapIndexImpl<Categoria, Producto> getIndexCategoria() {
+    public SetMultiMapIndexEntityImpl<Categoria, Producto> getIndexCategoria() {
         return indexCategoria;
     }
 }

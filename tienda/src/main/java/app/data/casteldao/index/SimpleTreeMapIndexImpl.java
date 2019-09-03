@@ -5,9 +5,9 @@ import app.data.casteldao.index.core.SimpleTreeMapIndex;
 import app.data.casteldao.model.IEntity;
 import java.util.function.Function;
 
-public class TreeMapIndexImpl<K extends Comparable, E extends IEntity<Integer>> extends SimpleTreeMapIndex<K, E, Integer> {
+public class SimpleTreeMapIndexImpl<K extends Comparable, E extends IEntity<Integer>> extends SimpleTreeMapIndex<K, E, Integer> {
 
-    public TreeMapIndexImpl(GenericDao<Integer, E> dataSource, String indexColumnName, Function<E, K> keyValueFunction) {
+    public SimpleTreeMapIndexImpl(GenericDao<Integer, E> dataSource, String indexColumnName, Function<E, K> keyValueFunction) {
         super(dataSource, indexColumnName, keyValueFunction);
     }
 }

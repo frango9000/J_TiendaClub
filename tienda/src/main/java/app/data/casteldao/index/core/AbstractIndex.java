@@ -51,7 +51,7 @@ public abstract class AbstractIndex<K, E extends IEntity<I>, I extends Serializa
 
     @Override
     public void deindex(I key) {
-        index.entries().removeIf(kvEntry -> kvEntry.getValue().getId().toString().equals(key.toString()));
+        index.entries().removeIf(kvEntry -> kvEntry.getValue().getId().equals(key));
     }
 
     @Override

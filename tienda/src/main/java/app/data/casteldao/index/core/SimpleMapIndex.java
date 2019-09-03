@@ -16,6 +16,18 @@ public class SimpleMapIndex<K, E extends IEntity<I>, I extends Serializable> ext
         this.index = new HashIndexMap<K, E>();
     }
 
+
+    @Override
+    public void reindex(E entity) {
+        deindex(entity);
+        index(entity);
+    }
+
+    @Override
+    public void deindex(E entity) {
+        this.deindex(entity.getId());
+    }
+
     @Override
     public Set<E> getKeyValues(K key) {
         if (!cacheContainsKey(key)) {

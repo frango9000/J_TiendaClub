@@ -39,6 +39,7 @@ public interface IEntity<I extends Serializable> extends IIdentifiable<I> {
         return getDataStore().getDao().delete(this);
     }
 
+    IEntity<I> clone();
 
     IEntity getBackup();
 

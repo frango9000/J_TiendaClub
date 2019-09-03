@@ -1,14 +1,13 @@
 package app.data.casteldao.index;
 
 import app.data.casteldao.GenericDao;
-import app.data.casteldao.index.core.SetMultiMapIndex;
 import app.data.casteldao.index.core.maps.SetIndexMultimap;
 import app.data.casteldao.model.ActivableEntity;
 import java.util.Set;
 
-public class MultiIndexActive<E extends ActivableEntity> extends SetMultiMapIndex<Boolean, E, Integer> {
+public class SetMultiMapIndexActiveImpl<E extends ActivableEntity> extends SetMultiMapIndexImpl<Boolean, E> {
 
-    public MultiIndexActive(GenericDao<Integer, E> dataSource) {
+    public SetMultiMapIndexActiveImpl(GenericDao<Integer, E> dataSource) {
         super(dataSource, "active", ActivableEntity::isActive);
         this.index = new SetIndexMultimap<>(2);
     }
