@@ -2,6 +2,7 @@ package app.control;
 
 import app.control.table.CajasTableControl;
 import app.control.table.CategoriasTableControl;
+import app.control.table.ComprasTableControl;
 import app.control.table.ProductosTableControl;
 import app.control.table.ProveedoresTableControl;
 import app.control.table.SedesTableControl;
@@ -19,12 +20,20 @@ import org.controlsfx.control.StatusBar;
 
 public class MainPaneControl {
 
+    @FXML
     public MenuItem fxMenuUsuarios;
+    @FXML
     public MenuItem fxMenuProveedores;
+    @FXML
     public MenuItem fxMenuSocios;
+    @FXML
     public MenuItem fxMenuProductos;
+    @FXML
     public MenuItem fxMenuCategorias;
+    @FXML
     public MenuItem fxMenuVentas;
+    @FXML
+    public MenuItem fxMenuCompras;
     @FXML
     private MenuItem menuUsuarios;
     @FXML
@@ -96,6 +105,11 @@ public class MainPaneControl {
 
     public void fxMenuVentasAction(ActionEvent actionEvent) {
         VentasTableControl u = new VentasTableControl();
+        mainPane.setCenter(u);
+    }
+
+    public void fxMenuComprasAction(ActionEvent actionEvent) {
+        ComprasTableControl u = new ComprasTableControl();
         mainPane.setCenter(u);
     }
 }

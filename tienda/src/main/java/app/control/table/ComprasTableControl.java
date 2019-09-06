@@ -1,12 +1,12 @@
 package app.control.table;
 
-import app.control.editor.VentaControl;
+import app.control.editor.CompraControl;
 import app.data.DataStore;
 import app.misc.FXMLStage;
-import app.model.Caja;
+import app.model.Compra;
+import app.model.Sede;
 import app.model.Socio;
 import app.model.Usuario;
-import app.model.Venta;
 import casteldao.datasource.DataSourceIdImpl;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -14,25 +14,25 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class VentasTableControl extends TableControl<Venta> {
+public class ComprasTableControl extends TableControl<Compra> {
 
 
     @Override
     public void initialize() {
         super.initialize();
-        TableColumn<Venta, Usuario> fxColumnUsuario = new TableColumn<>("Usuario");
+        TableColumn<Compra, Usuario> fxColumnUsuario = new TableColumn<>("Usuario");
         fxColumnUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
         fxTable.getColumns().add(fxColumnUsuario);
 
-        TableColumn<Venta, Caja> fxColumnCaja = new TableColumn<>("Caja");
-        fxColumnCaja.setCellValueFactory(new PropertyValueFactory<>("caja"));
-        fxTable.getColumns().add(fxColumnCaja);
+        TableColumn<Compra, Sede> fxColumnSede = new TableColumn<>("Sede");
+        fxColumnSede.setCellValueFactory(new PropertyValueFactory<>("sede"));
+        fxTable.getColumns().add(fxColumnSede);
 
-        TableColumn<Venta, Socio> fxColumnSocio = new TableColumn<>("Socio");
-        fxColumnSocio.setCellValueFactory(new PropertyValueFactory<>("socio"));
-        fxTable.getColumns().add(fxColumnSocio);
+        TableColumn<Compra, Socio> fxColumnProveedor = new TableColumn<>("Proveedor");
+        fxColumnProveedor.setCellValueFactory(new PropertyValueFactory<>("proveedor"));
+        fxTable.getColumns().add(fxColumnProveedor);
 
-        TableColumn<Venta, LocalDateTime> fxColumnFechaHora = new TableColumn<>("Fecha");
+        TableColumn<Compra, LocalDateTime> fxColumnFechaHora = new TableColumn<>("Fecha");
         fxColumnFechaHora.setCellValueFactory(new PropertyValueFactory<>("fechahora"));
         fxTable.getColumns().add(fxColumnFechaHora);
 
@@ -47,14 +47,14 @@ public class VentasTableControl extends TableControl<Venta> {
     }
 
     @Override
-    protected DataSourceIdImpl<Venta> getDataOrigin() {
-        return DataStore.getSessionStore().getVentas();
+    protected DataSourceIdImpl<Compra> getDataOrigin() {
+        return DataStore.getSessionStore().getCompras();
     }
 
     @Override
     protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
-        VentaControl ventaControl = new VentaControl();
-        FXMLStage stage = new FXMLStage(ventaControl, "Creator");
+        CompraControl compraControl = new CompraControl();
+        FXMLStage stage = new FXMLStage(compraControl, "Creator");
         stage.showAndWait();
         fxTable.refresh();
         addContent();
@@ -62,10 +62,10 @@ public class VentasTableControl extends TableControl<Venta> {
 
     @Override
     protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
-        Venta selected = fxTable.getSelectionModel().getSelectedItem();
+        Compra selected = fxTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            VentaControl ventaControl = new VentaControl(selected);
-            FXMLStage stage = new FXMLStage(ventaControl, "Editor");
+            CompraControl compraControl = new CompraControl(selected);
+            FXMLStage stage = new FXMLStage(compraControl, "Editor");
             stage.showAndWait();
             fxTable.refresh();
             addContent();

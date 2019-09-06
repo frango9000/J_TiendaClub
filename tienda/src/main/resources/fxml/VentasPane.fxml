@@ -25,10 +25,10 @@
         <GridPane hgap="5.0">
           <children>
             <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER"
-              maxWidth="1.7976931348623157E308" fx:id="fxBoxSocios"/>
-            <Label GridPane.rowIndex="1" layoutX="10.0" layoutY="19.0" text="Socio"/>
+              maxWidth="1.7976931348623157E308" fx:id="fxBoxExchangee"/>
+            <Label GridPane.rowIndex="1" layoutX="10.0" layoutY="19.0" text="Socio" fx:id="fxLabelExchangee"/>
             <Label GridPane.rowIndex="2" text="Fecha"/>
-            <Label text="Orden"/>
+            <Label text="Orden" fx:id="fxLabelType"/>
             <LocalDateTimeTextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
               GridPane.vgrow="NEVER" editable="false" fx:id="fxFieldDate"/>
             <TextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" editable="false"
@@ -52,7 +52,7 @@
               disable="true" maxWidth="1.7976931348623157E308" fx:id="fxBoxCajas"/>
             <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="NEVER"
               disable="true" maxWidth="1.7976931348623157E308" fx:id="fxBoxUsuarios"/>
-            <Label GridPane.rowIndex="1" layoutX="10.0" layoutY="19.0" text="Caja"/>
+            <Label GridPane.rowIndex="1" layoutX="10.0" layoutY="19.0" text="Caja" fx:id="fxLabelCaja"/>
             <Label GridPane.rowIndex="2" text="Usuario"/>
             <Label text="Sede"/>
           </children>
@@ -109,13 +109,13 @@
         </HBox>
         <TableView fx:id="fxTableVendidos" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
           <columns>
-            <TableColumn maxWidth="50.0" minWidth="30.0" prefWidth="-1.0" text="Id" fx:id="fxColVendidoId"/>
+            <TableColumn maxWidth="50.0" minWidth="30.0" prefWidth="-1.0" text="Id" fx:id="fxColServidoId"/>
             <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Producto"
-              fx:id="fxColVendidoNombre"/>
+              fx:id="fxColServidoNombre"/>
             <TableColumn maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="-1.0" text="Cantidad"
-              fx:id="fxColVendidoCantidad"/>
+              fx:id="fxColServidoCantidad"/>
             <TableColumn maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="-1.0" text="Precio U"
-              fx:id="fxColVendidoPrecio"/>
+              fx:id="fxColServidoPrecio"/>
           </columns>
         </TableView>
       </children>

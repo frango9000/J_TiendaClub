@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class Compra extends EntityInt {
@@ -159,6 +160,10 @@ public class Compra extends EntityInt {
     public void setSede(Sede sede) {
         this.sede   = sede;
         this.idSede = getSede().getId();
+    }
+
+    public Set<Comprado> getComprados() {
+        return DataStore.getSessionStore().getComprados().getIndexCompra().getCacheKeyValues(this);
     }
 
     @Override
