@@ -1,10 +1,11 @@
 package app.data.appdao;
 
+import app.data.SessionDB;
 import app.model.Compra;
 import app.model.Proveedor;
 import app.model.Sede;
 import app.model.Usuario;
-import casteldao.dao.DataSourceIdImpl;
+import casteldao.datasource.DataSourceIdImpl;
 import casteldao.index.SetMultiMapIndexEntityImpl;
 
 public class CompraDao extends DataSourceIdImpl<Compra> {
@@ -14,7 +15,7 @@ public class CompraDao extends DataSourceIdImpl<Compra> {
     private SetMultiMapIndexEntityImpl<Proveedor, Compra> indexProveedor = new SetMultiMapIndexEntityImpl<>(getDao(), "idProveedor", Compra::getIdProveedor);
 
     public CompraDao() {
-        super(Compra.TABLE_NAME, Compra.class);
+        super(SessionDB.getSession(), Compra.TABLE_NAME, Compra.class);
         indexes.add(indexUsuario);
         indexes.add(indexSede);
         indexes.add(indexProveedor);

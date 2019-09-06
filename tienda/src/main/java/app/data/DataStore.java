@@ -11,88 +11,144 @@ import app.data.appdao.UsuarioDao;
 import app.data.appdao.VendidoDao;
 import app.data.appdao.VentaDao;
 import app.model.Acceso;
+import app.model.Caja;
 import app.model.Categoria;
 import app.model.Proveedor;
 import app.model.Sede;
-import casteldao.SessionDB;
-import casteldao.dao.DataSourceIdActive;
-import casteldao.dao.DataSourceIdImpl;
+import app.model.Usuario;
+import casteldao.datasource.DataSourceIdActive;
+import casteldao.datasource.DataSourceIdImpl;
 
 public class DataStore {
 
-    private static DataSourceIdImpl<Acceso> accesos = new DataSourceIdImpl<>(Acceso.TABLE_NAME, Acceso.class);
-    private static DataSourceIdActive<Sede> sedes = new DataSourceIdActive<>(Sede.TABLE_NAME, Sede.class);
-    private static CajaDao cajas = new CajaDao();
-    private static DataSourceIdActive<Categoria> categorias = new DataSourceIdActive<>(Categoria.TABLE_NAME, Categoria.class);
-    private static CierreZDao cierreZs = new CierreZDao();
-    private static CompraDao compras = new CompraDao();
-    private static CompradoDao comprados = new CompradoDao();
-    private static ProductoDao productos = new ProductoDao();
-    private static DataSourceIdActive<Proveedor> proveedores = new DataSourceIdActive<>(Proveedor.TABLE_NAME, Proveedor.class);
-    private static SocioDao socios = new SocioDao();
-    private static TransferenciaDao transferencias = new TransferenciaDao();
-    private static UsuarioDao usuarios = new UsuarioDao();
-    private static VendidoDao vendidos = new VendidoDao();
-    private static VentaDao ventas = new VentaDao();
+    //Synchronized Singleton
+    private static DataStore instance;
+    //DB Session connection
+    private SessionDB sessionDB = SessionDB.getSession();
+    //Active User Session Details
+    private Caja caja;
+    private Sede sede;
+    private Usuario usuario;
+    //Object DataStore
+    private DataSourceIdImpl<Acceso> accesos = new DataSourceIdImpl<>(getSessionDB(), Acceso.TABLE_NAME, Acceso.class);
+    private DataSourceIdActive<Sede> sedes = new DataSourceIdActive<>(getSessionDB(), Sede.TABLE_NAME, Sede.class);
+    private CajaDao cajas = new CajaDao();
+    private DataSourceIdActive<Categoria> categorias = new DataSourceIdActive<>(getSessionDB(), Categoria.TABLE_NAME, Categoria.class);
+    private CierreZDao cierreZs = new CierreZDao();
+    private CompraDao compras = new CompraDao();
+    private CompradoDao comprados = new CompradoDao();
+    private ProductoDao productos = new ProductoDao();
+    private DataSourceIdActive<Proveedor> proveedores = new DataSourceIdActive<>(getSessionDB(), Proveedor.TABLE_NAME, Proveedor.class);
+    private SocioDao socios = new SocioDao();
+    private TransferenciaDao transferencias = new TransferenciaDao();
+    private UsuarioDao usuarios = new UsuarioDao();
+    private VendidoDao vendidos = new VendidoDao();
+    private VentaDao ventas = new VentaDao();
 
-    public static DataSourceIdImpl<Acceso> getAccesos() {
+    private DataStore() {
+    }
+
+    public static DataStore getSessionStore() {
+        if (instance == null) {
+            synchronized (DataStore.class) {
+                if (instance == null) {
+                    instance = new DataStore();
+                }
+            }
+        }
+        return instance;
+    }
+
+    private SessionDB getSessionDB() {
+        return sessionDB;
+    }
+
+    public void setSessionDB(SessionDB sessionDB) {
+        this.sessionDB = sessionDB;
+    }
+
+    public Caja getCaja() {
+        return caja;
+    }
+
+    public void setCaja(Caja caja) {
+        this.caja = caja;
+    }
+
+    public Sede getSede() {
+        return sede;
+    }
+
+    public void setSede(Sede sede) {
+        this.sede = sede;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public DataSourceIdImpl<Acceso> getAccesos() {
         return accesos;
     }
 
-    public static DataSourceIdActive<Sede> getSedes() {
+    public DataSourceIdActive<Sede> getSedes() {
         return sedes;
     }
 
-    public static CajaDao getCajas() {
+    public CajaDao getCajas() {
         return cajas;
     }
 
-    public static DataSourceIdActive<Categoria> getCategorias() {
+    public DataSourceIdActive<Categoria> getCategorias() {
         return categorias;
     }
 
-    public static CierreZDao getCierreZs() {
+    public CierreZDao getCierreZs() {
         return cierreZs;
     }
 
-    public static CompraDao getCompras() {
+    public CompraDao getCompras() {
         return compras;
     }
 
-    public static CompradoDao getComprados() {
+    public CompradoDao getComprados() {
         return comprados;
     }
 
-    public static ProductoDao getProductos() {
+    public ProductoDao getProductos() {
         return productos;
     }
 
-    public static DataSourceIdActive<Proveedor> getProveedores() {
+    public DataSourceIdActive<Proveedor> getProveedores() {
         return proveedores;
     }
 
-    public static SocioDao getSocios() {
+    public SocioDao getSocios() {
         return socios;
     }
 
-    public static TransferenciaDao getTransferencias() {
+    public TransferenciaDao getTransferencias() {
         return transferencias;
     }
 
-    public static UsuarioDao getUsuarios() {
+    public UsuarioDao getUsuarios() {
         return usuarios;
     }
 
-    public static VendidoDao getVendidos() {
+    public VendidoDao getVendidos() {
         return vendidos;
     }
 
-    public static VentaDao getVentas() {
+    public VentaDao getVentas() {
         return ventas;
     }
 
-    public static void firstQuery() {
-        SessionDB.getSessionDB().setAutoclose(false);
+    public void firstQuery() {
+        getSessionDB().setAutoclose(false);
         getAccesos().getDao().queryAll();
         getUsuarios().getAll();
         getProveedores().getAll();
@@ -103,7 +159,8 @@ public class DataStore {
         getProductos().getAll();
         getVentas().getAll();
         getVendidos().getAll();
-        SessionDB.getSessionDB().setAutoclose(true);
+        getSessionDB().setAutoclose(true);
     }
+
 
 }

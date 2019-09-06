@@ -102,7 +102,7 @@ public class Socio extends ActivablePropertyEntity {
     @Override
     @SuppressWarnings("unchecked")
     public SocioDao getDataStore() {
-        return DataStore.getSocios();
+        return DataStore.getSessionStore().getSocios();
     }
 
     public String getDni() {

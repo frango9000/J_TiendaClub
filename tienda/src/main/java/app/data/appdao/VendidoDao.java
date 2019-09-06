@@ -1,8 +1,9 @@
 package app.data.appdao;
 
+import app.data.SessionDB;
 import app.model.Vendido;
 import app.model.Venta;
-import casteldao.dao.DataSourceIdImpl;
+import casteldao.datasource.DataSourceIdImpl;
 import casteldao.index.SetMultiMapIndexEntityImpl;
 
 public class VendidoDao extends DataSourceIdImpl<Vendido> {
@@ -11,7 +12,7 @@ public class VendidoDao extends DataSourceIdImpl<Vendido> {
     //private MultiIndexPersistible<Producto, Vendido> indexProducto = new MultiIndexPersistible<>(getDataSource(), "idProducto", Vendido::getIdProducto);
 
     public VendidoDao() {
-        super(Vendido.TABLE_NAME, Vendido.class);
+        super(SessionDB.getSession(), Vendido.TABLE_NAME, Vendido.class);
         indexes.add(indexVenta);
         //indexes.add(indexProducto);
     }

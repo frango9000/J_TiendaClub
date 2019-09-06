@@ -73,7 +73,7 @@ public class Caja extends ActivablePropertyEntity {
     @Override
     @SuppressWarnings("unchecked")
     public CajaDao getDataStore() {
-        return DataStore.getCajas();
+        return DataStore.getSessionStore().getCajas();
     }
 
     public String getNombre() {
@@ -89,7 +89,7 @@ public class Caja extends ActivablePropertyEntity {
     }
 
     public void setIdSede(int idSede) {
-        setSede(DataStore.getSedes().getById().getCacheValue(idSede));
+        setSede(DataStore.getSessionStore().getSedes().getById().getCacheValue(idSede));
     }
 
     public Sede getSede() {

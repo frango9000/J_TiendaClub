@@ -2,7 +2,7 @@ package app.model;
 
 import app.data.DataStore;
 import app.misc.Flogger;
-import casteldao.dao.DataSourceIdImpl;
+import casteldao.datasource.DataSourceIdImpl;
 import casteldao.model.EntityInt;
 import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
@@ -45,7 +45,7 @@ public class Acceso extends EntityInt {
     @Override
     @SuppressWarnings("unchecked")
     public DataSourceIdImpl<Acceso> getDataStore() {
-        return DataStore.getAccesos();
+        return DataStore.getSessionStore().getAccesos();
     }
 
     @Override

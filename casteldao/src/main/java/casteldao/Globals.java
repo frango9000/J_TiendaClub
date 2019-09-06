@@ -15,7 +15,7 @@ public interface Globals {
     boolean DEBUG = true;
     boolean SQL_DEBUG = false;
     boolean SQL_CONN = false;
-    boolean VERBOSE_FACTORY = true;
+    boolean VERBOSE_FACTORY = false;
 
     Level LOG_LEVEL = Level.ALL;
 

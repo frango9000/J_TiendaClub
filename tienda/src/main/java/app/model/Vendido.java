@@ -87,7 +87,7 @@ public class Vendido extends EntityInt {
     @Override
     @SuppressWarnings("unchecked")
     public VendidoDao getDataStore() {
-        return DataStore.getVendidos();
+        return DataStore.getSessionStore().getVendidos();
     }
 
     public int getIdProducto() {
@@ -95,7 +95,7 @@ public class Vendido extends EntityInt {
     }
 
     public void setIdProducto(int idProducto) {
-        setProducto(DataStore.getProductos().getById().getCacheValue(idProducto));
+        setProducto(DataStore.getSessionStore().getProductos().getById().getCacheValue(idProducto));
     }
 
     public int getIdVenta() {
@@ -103,7 +103,7 @@ public class Vendido extends EntityInt {
     }
 
     public void setIdVenta(int idVenta) {
-        setVenta(DataStore.getVentas().getById().getCacheValue(idVenta));
+        setVenta(DataStore.getSessionStore().getVentas().getById().getCacheValue(idVenta));
     }
 
     public int getCantidad() {

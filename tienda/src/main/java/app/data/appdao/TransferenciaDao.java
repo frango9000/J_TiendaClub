@@ -1,10 +1,11 @@
 package app.data.appdao;
 
+import app.data.SessionDB;
 import app.model.Producto;
 import app.model.Sede;
 import app.model.Transferencia;
 import app.model.Usuario;
-import casteldao.dao.DataSourceIdImpl;
+import casteldao.datasource.DataSourceIdImpl;
 import casteldao.index.SetMultiMapIndexEntityImpl;
 
 public class TransferenciaDao extends DataSourceIdImpl<Transferencia> {
@@ -15,7 +16,7 @@ public class TransferenciaDao extends DataSourceIdImpl<Transferencia> {
     private SetMultiMapIndexEntityImpl<Producto, Transferencia> indexProducto = new SetMultiMapIndexEntityImpl<>(getDao(), "idProducto", Transferencia::getIdProducto);
 
     public TransferenciaDao() {
-        super(Transferencia.TABLE_NAME, Transferencia.class);
+        super(SessionDB.getSession(), Transferencia.TABLE_NAME, Transferencia.class);
         indexes.add(indexUsuario);
         indexes.add(indexSedeOrigen);
         indexes.add(indexSedeDestino);

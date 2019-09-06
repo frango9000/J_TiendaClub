@@ -101,7 +101,7 @@ public class Usuario extends ActivablePropertyEntity {
     @Override
     @SuppressWarnings("unchecked")
     public UsuarioDao getDataStore() {
-        return DataStore.getUsuarios();
+        return DataStore.getSessionStore().getUsuarios();
     }
 
     public String getUsername() {
@@ -165,7 +165,7 @@ public class Usuario extends ActivablePropertyEntity {
     }
 
     public void setIdAcceso(int idAcceso) {
-        setAcceso(DataStore.getAccesos().getById().getCacheValue(idAcceso));
+        setAcceso(DataStore.getSessionStore().getAccesos().getById().getCacheValue(idAcceso));
     }
 
     public Acceso getAcceso() {

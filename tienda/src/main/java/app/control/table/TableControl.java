@@ -5,7 +5,7 @@ import app.control.editor.GridControl;
 import app.misc.FXMLStage;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
-import casteldao.dao.DataSourceIdImpl;
+import casteldao.datasource.DataSourceIdImpl;
 import casteldao.model.EntityInt;
 import java.io.IOException;
 import javafx.collections.FXCollections;

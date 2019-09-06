@@ -4,7 +4,7 @@ module casteldao {
     requires org.checkerframework.checker.qual;
     requires flogger;
     exports casteldao;
-    exports casteldao.dao;
+    exports casteldao.datasource;
     exports casteldao.index;
     exports casteldao.index.core;
     exports casteldao.index.core.maps;

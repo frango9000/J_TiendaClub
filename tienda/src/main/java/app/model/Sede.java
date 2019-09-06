@@ -2,7 +2,7 @@ package app.model;
 
 import app.data.DataStore;
 import app.misc.Flogger;
-import casteldao.dao.DataSourceIdActive;
+import casteldao.datasource.DataSourceIdActive;
 import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -80,7 +80,7 @@ public class Sede extends ActivablePropertyEntity {
     @Override
     @SuppressWarnings("unchecked")
     public DataSourceIdActive<Sede> getDataStore() {
-        return DataStore.getSedes();
+        return DataStore.getSessionStore().getSedes();
     }
 
     public String getNombre() {
@@ -108,7 +108,7 @@ public class Sede extends ActivablePropertyEntity {
     }
 
     public Set<Caja> getCajas() {
-        return DataStore.getCajas().getIndexSede().getCacheKeyValues(this);
+        return DataStore.getSessionStore().getCajas().getIndexSede().getCacheKeyValues(this);
     }
 
     @Override

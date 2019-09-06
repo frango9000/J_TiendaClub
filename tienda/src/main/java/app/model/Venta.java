@@ -85,7 +85,7 @@ public class Venta extends EntityInt {
     @Override
     @SuppressWarnings("unchecked")
     public VentaDao getDataStore() {
-        return DataStore.getVentas();
+        return DataStore.getSessionStore().getVentas();
     }
 
     public int getIdUsuario() {
@@ -93,7 +93,7 @@ public class Venta extends EntityInt {
     }
 
     public void setIdUsuario(int idUsuario) {
-        setUsuario(DataStore.getUsuarios().getById().getCacheValue(idUsuario));
+        setUsuario(DataStore.getSessionStore().getUsuarios().getById().getCacheValue(idUsuario));
     }
 
     public int getIdCaja() {
@@ -101,7 +101,7 @@ public class Venta extends EntityInt {
     }
 
     public void setIdCaja(int idCaja) {
-        setCaja(DataStore.getCajas().getById().getCacheValue(idCaja));
+        setCaja(DataStore.getSessionStore().getCajas().getById().getCacheValue(idCaja));
     }
 
     public int getIdSocio() {
@@ -109,7 +109,7 @@ public class Venta extends EntityInt {
     }
 
     public void setIdSocio(int idSocio) {
-        setSocio(DataStore.getSocios().getById().getCacheValue(idSocio));
+        setSocio(DataStore.getSessionStore().getSocios().getById().getCacheValue(idSocio));
     }
 
     public Usuario getUsuario() {
@@ -148,7 +148,7 @@ public class Venta extends EntityInt {
     }
 
     public Set<Vendido> getVendidos() {
-        return DataStore.getVendidos().getIndexVenta().getCacheKeyValues(this);
+        return DataStore.getSessionStore().getVendidos().getIndexVenta().getCacheKeyValues(this);
     }
     @Override
     public boolean equals(Object o) {

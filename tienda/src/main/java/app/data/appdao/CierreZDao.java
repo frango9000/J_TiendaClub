@@ -1,8 +1,9 @@
 package app.data.appdao;
 
+import app.data.SessionDB;
 import app.model.Caja;
 import app.model.CierreZ;
-import casteldao.dao.DataSourceIdImpl;
+import casteldao.datasource.DataSourceIdImpl;
 import casteldao.index.SetMultiMapIndexEntityImpl;
 
 public class CierreZDao extends DataSourceIdImpl<CierreZ> {
@@ -10,7 +11,7 @@ public class CierreZDao extends DataSourceIdImpl<CierreZ> {
     private SetMultiMapIndexEntityImpl<Caja, CierreZ> indexCaja = new SetMultiMapIndexEntityImpl<>(getDao(), "idCaja", CierreZ::getIdCaja);
 
     public CierreZDao() {
-        super(CierreZ.TABLE_NAME, CierreZ.class);
+        super(SessionDB.getSession(), CierreZ.TABLE_NAME, CierreZ.class);
         indexes.add(indexCaja);
     }
 

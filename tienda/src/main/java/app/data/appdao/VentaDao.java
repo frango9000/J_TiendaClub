@@ -1,10 +1,11 @@
 package app.data.appdao;
 
+import app.data.SessionDB;
 import app.model.Caja;
 import app.model.Socio;
 import app.model.Usuario;
 import app.model.Venta;
-import casteldao.dao.DataSourceIdImpl;
+import casteldao.datasource.DataSourceIdImpl;
 import casteldao.index.SetMultiMapIndexEntityImpl;
 import casteldao.index.SimpleTreeMapIndexImpl;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public class VentaDao extends DataSourceIdImpl<Venta> {
     private SimpleTreeMapIndexImpl<LocalDateTime, Venta> indexFecha = new SimpleTreeMapIndexImpl<>(getDao(), "fechahora", Venta::getFechahora);
 
     public VentaDao() {
-        super(Venta.TABLE_NAME, Venta.class);
+        super(SessionDB.getSession(), Venta.TABLE_NAME, Venta.class);
         indexes.add(indexUsuario);
         indexes.add(indexCaja);
         indexes.add(indexSocio);

@@ -2,7 +2,7 @@ package app.control.table;
 
 import app.data.DataStore;
 import app.model.Socio;
-import casteldao.dao.DataSourceIdActive;
+import casteldao.datasource.DataSourceIdActive;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -40,6 +40,6 @@ public class SociosTableControl extends ActiveTableControl<Socio> {
 
     @Override
     protected DataSourceIdActive<Socio> getDataOrigin() {
-        return DataStore.getSocios();
+        return DataStore.getSessionStore().getSocios();
     }
 }

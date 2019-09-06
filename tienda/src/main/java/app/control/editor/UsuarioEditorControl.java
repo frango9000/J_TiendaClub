@@ -1,7 +1,6 @@
 package app.control.editor;
 
 import app.data.DataStore;
-import app.data.SessionStore;
 import app.misc.FxDialogs;
 import app.misc.StaticHelpers;
 import app.misc.TabTraversalEventHandler;
@@ -46,8 +45,8 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
         btnPassword = new MenuItem("Password");
         btnPassword.setVisible(false);
 
-        fxCbxAcceso.getItems().addAll(DataStore.getAccesos().getById().getCacheValues());
-        fxCbxAcceso.getSelectionModel().select(SessionStore.getUsuario().getAcceso());
+        fxCbxAcceso.getItems().addAll(DataStore.getSessionStore().getAccesos().getById().getCacheValues());
+        fxCbxAcceso.getSelectionModel().select(DataStore.getSessionStore().getUsuario().getAcceso());
         fxDireccion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());
         fxDescripcion.addEventFilter(KeyEvent.KEY_PRESSED, new TabTraversalEventHandler());
     }
@@ -95,7 +94,7 @@ public class UsuarioEditorControl extends GridControl<Usuario> {
         if (fxUsername.getText().trim().length() < 1) {
             return false;
         }
-        return fxCbxAcceso.getSelectionModel().getSelectedItem().getId() >= SessionStore.getUsuario().getIdAcceso();
+        return fxCbxAcceso.getSelectionModel().getSelectedItem().getId() >= DataStore.getSessionStore().getUsuario().getIdAcceso();
     }
 
     public void fxBtnPasswordAction(Usuario editee) {

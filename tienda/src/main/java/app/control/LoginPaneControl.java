@@ -1,7 +1,6 @@
 package app.control;
 
 import app.data.DataStore;
-import app.data.SessionStore;
 import app.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,7 +42,7 @@ public class LoginPaneControl extends BorderPane {
 
     @FXML
     private void loginOnAct(ActionEvent actionEvent) {
-        Usuario user = DataStore.getUsuarios().getUsernameIndex().getValue(usernameTextField.getText().trim());
+        Usuario user = DataStore.getSessionStore().getUsuarios().getUsernameIndex().getValue(usernameTextField.getText().trim());
         if (user == null) {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("User not found");
@@ -54,7 +53,7 @@ public class LoginPaneControl extends BorderPane {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("Account Locked");
         } else {
-            SessionStore.setUsuario(user);
+            DataStore.getSessionStore().setUsuario(user);
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
         }
     }

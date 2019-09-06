@@ -1,5 +1,6 @@
 package casteldao;
 
+import com.google.common.base.MoreObjects;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,36 +19,20 @@ import java.util.Scanner;
  *
  * @author fsancheztemprano
  */
-public final class SessionDB implements Globals {
+public class DataSession implements Globals {
 
-    private static SessionDB instance;
 
-    private SessionDB() {
-    }
+    protected Connection conn;
 
-    public static SessionDB getSessionDB() {
-        if (instance == null) {
-            synchronized (SessionDB.class) {
-                if (instance == null) {
-                    instance = new SessionDB();
-                }
-            }
-        }
-        return instance;
-    }
+    protected String jdbcDriver = "";
+    protected String jdbcIP = "";
+    protected String jdbcPort = "";
+    protected String jdbcCatalog = "";
 
-    private Connection conn;
+    protected String jdbcUser = "";
+    protected String jdbcPassword = "";
 
-    private String jdbcDriver = "jdbc:mysql://";
-    private String jdbcIP = "";
-    private String jdbcPort = "";
-    private String jdbcCatalog = "";
-
-    private String jdbcUser = "";
-    private String jdbcPassword = "";
-
-    private static boolean autoclose = true;
-
+    private boolean autoclose = true;
 
     /**
      * Getter para la clase Conexion
@@ -106,32 +91,19 @@ public final class SessionDB implements Globals {
         this.jdbcPassword = jdbcPassword;
     }
 
-    public void setValues(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser,
-                          String jdbcPassword) {
-        setJdbcIP(jdbcIP);
-        setJdbcPort(jdbcPort);
-        setJdbcCatalog(jdbcCatalog);
-        setJdbcUser(jdbcUser);
-        setJdbcPassword(jdbcPassword);
-    }
-
 
     /**
      * establece la conexion a la DB
      *
      * @return true si la conexion fue establecida correctamente
      */
-    public boolean connect(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser,
-                           String jdbcPassword) {
+    public boolean connect(String jdbcIP, String jdbcPort, String jdbcCatalog, String jdbcUser, String jdbcPassword) {
         boolean success = false;
         try {
             if (conn == null || conn.isClosed()) {
-                conn = DriverManager.getConnection(
-                    jdbcDriver + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog, jdbcUser, jdbcPassword);
+                conn = DriverManager.getConnection(jdbcDriver + jdbcIP + ":" + jdbcPort + "/" + jdbcCatalog, jdbcUser, jdbcPassword);
                 if (Globals.SQL_CONN) {
-                    System.out.println(
-                        "Connection to " + conn.getMetaData().getDriverName() + " has been established. Catalog: "
-                        + conn.getCatalog());
+                    System.out.println("Connection to " + conn.getMetaData().getDriverName() + " has been established. Catalog: " + conn.getCatalog());
                 }
             } else {
                 if (Globals.SQL_CONN) {
@@ -157,8 +129,9 @@ public final class SessionDB implements Globals {
         return connect(jdbcIP, jdbcPort, "", jdbcUser, jdbcPassword);
     }
 
-    public boolean isConnValid() {
+    public boolean isLinkValid() {
         boolean valid = false;
+        System.out.println(toString());
         if (connectTry()) {
             try {
                 valid = conn.isValid(30);
@@ -216,11 +189,11 @@ public final class SessionDB implements Globals {
      */
     public void setAutoclose(boolean autoclose, String catalog) {
         if (autoclose) {
-            SessionDB.autoclose = autoclose;
+            this.autoclose = autoclose;
             close();
         } else {
             connect(catalog);
-            SessionDB.autoclose = autoclose;
+            this.autoclose = autoclose;
         }
         if (Globals.SQL_CONN) {
             System.out.println("Autoclose? " + autoclose);
@@ -231,33 +204,16 @@ public final class SessionDB implements Globals {
         setAutoclose(autoclose, jdbcCatalog);
     }
 
-    public boolean isRoot() {
-        boolean isRoot = false;
-        String sql = "SHOW DATABASES like 'admtdc_%'";
-        if (connectTry()) {
-            try (Statement stmt = conn.createStatement()) {
-                isRoot = stmt.execute(sql);
-                if (Globals.SQL_DEBUG) {
-                    System.out.println(sql);
-                }
-            } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log();
-            } finally {
-                close();
-            }
-        }
-        return isRoot;
-    }
 
     /**
      * Devuelve Una lista con los nombres de las tablas en una DB
      *
      * @return
      */
-    public ArrayList<String> listTables(String catalog) {
+    public ArrayList<String> listTables(String catalogName) {
         String sql = "SHOW TABLES";
         ArrayList<String> tableNames = new ArrayList<>();
-        if (connect(catalog)) {
+        if (connect(catalogName)) {
             try (Statement stmt = conn.createStatement()) {
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
@@ -279,22 +235,15 @@ public final class SessionDB implements Globals {
         return listTables(jdbcCatalog);
     }
 
-    public int numOfTables(String catalog) {
-        return listTables(catalog).size();
+    public int numOfTables(String catalogName) {
+        return listTables(catalogName).size();
     }
 
     public int numOfTables() {
         return numOfTables(jdbcCatalog);
     }
 
-    public void printTables(String catalog) {
-        ArrayList<String> tablenames = listTables(catalog);
-        tablenames.forEach((name) -> System.out.println(name));
-    }
 
-    public void printTables() {
-        printTables(jdbcCatalog);
-    }
 
 
     /**
@@ -303,7 +252,16 @@ public final class SessionDB implements Globals {
      * @return
      */
     public ArrayList<String> listCatalogs() {
-        String sql = "SHOW DATABASES like '" + Globals.DB_PREFIX + "%'";
+        return listPrefixedCatalogs("");
+    }
+
+    /**
+     * Devuelve Una lista con los nombres de las tablas en una DB
+     *
+     * @return
+     */
+    public ArrayList<String> listPrefixedCatalogs(String catalogPrefix) {
+        String sql = "SHOW DATABASES like '" + catalogPrefix + "%'";
         ArrayList<String> dbNames = new ArrayList<>();
         if (connectTry()) {
             try (Statement stmt = conn.createStatement()) {
@@ -323,55 +281,61 @@ public final class SessionDB implements Globals {
         return dbNames;
     }
 
-    public int numOfCatalogs() {
-        return listCatalogs().size();
-    }
-
-    public void printCatalogs() {
-        ArrayList<String> catalogs = listCatalogs();
-        catalogs.forEach((name) -> System.out.println(name));
-    }
-
-    public ArrayList<String> listValidCatalogs() {
-        setAutoclose(false);
-        ArrayList<String> list = listCatalogs();
-        ArrayList<String> validList = new ArrayList<>();
-        for (String catalog : list) {
-            if (isCatalogValid(catalog)) {
-                validList.add(catalog);
-            }
-        }
-        setAutoclose(true);
-        return validList;
-    }
 
     /**
      * devuelve true si la estructura de la DB activa es valida (coincide con la inicializada)
      *
      * @return true si es valida
      */
-    public boolean isCatalogValid(String catalog) {
-        ArrayList<String> tables = listTables(catalog);
+    public boolean isCatalogValid(String catalogName, String catalogModel) {
+        ArrayList<String> tables = listTables(catalogName);
         StringBuilder tablesString = new StringBuilder();
         tables.forEach(cnsmr -> tablesString.append(cnsmr).append("\n"));
-        String model =
-            "accesos\n" + "cajas\n" + "categorias\n" + "comprados\n" + "compras\n" + "monedero\n" + "productos\n"
-            + "proveedores\n" + "sedes\n" + "socios\n" + "stock\n" + "transferencias\n" + "usuarios\n"
-            + "vendidos\n" + "ventas\n" + "zs\n";
         if (Globals.SQL_DEBUG)
             System.out.println(tablesString.toString());
-        Flogger.atInfo().log("Valid Schema: " + catalog + "->" + model.matches(tablesString.toString()));
-        return model.matches(tablesString.toString());
+        Flogger.atInfo().log("Valid Schema: " + catalogName + "->" + catalogModel.matches(tablesString.toString()));
+        return catalogModel.matches(tablesString.toString());
     }
 
-    public boolean isCatalogValid() {
-        return isCatalogValid(getJdbcCatalog());
+    public boolean isCatalogValid(String catalogModel) {
+        return isCatalogValid(getJdbcCatalog(), catalogModel);
     }
 
-    public boolean createCatalog(String dbname) {
+    public ArrayList<String> listValidCatalogs(String catalogModel) {
+        setAutoclose(false);
+        ArrayList<String> list = listCatalogs();
+        ArrayList<String> validList = new ArrayList<>();
+        for (String catalogName : list) {
+            if (isCatalogValid(catalogName, catalogModel)) {
+                validList.add(catalogName);
+            }
+        }
+        setAutoclose(true);
+        return validList;
+    }
+
+    public boolean createCatalog(String catalogName) {
         boolean success = false;
-        if (connectTry() && dbname.length() > 1) {
-            String sql = "CREATE DATABASE " + Globals.DB_PREFIX + dbname;
+        if (connectTry() && catalogName.length() > 1) {
+            String sql = "CREATE DATABASE " + catalogName;
+            try (Statement statement = conn.createStatement()) {
+                success = statement.executeUpdate(sql) > 0;
+                if (Globals.SQL_DEBUG) {
+                    System.out.println(sql);
+                }
+            } catch (SQLException e) {
+                Flogger.atSevere().withCause(e).log(sql);
+            } finally {
+                close();
+            }
+        }
+        return success;
+    }
+
+    public boolean dropCatalog(String catalogName) {
+        boolean success = false;
+        if (connectTry() && catalogName.trim().length() > 1) {
+            String sql = "DROP DATABASE " + catalogName;
             try (Statement statement = conn.createStatement()) {
                 success = statement.executeUpdate(sql) > 0;
                 if (Globals.SQL_DEBUG) {
@@ -386,28 +350,28 @@ public final class SessionDB implements Globals {
         return success;
     }
 
-    public boolean dropCatalog(String dbname) {
-        boolean success = false;
-        if (connectTry() && dbname.length() > 1) {
-            String sql = "DROP DATABASE " + dbname;
-            try (Statement statement = conn.createStatement()) {
-                success = statement.executeUpdate(sql) > 0;
-                if (Globals.SQL_DEBUG) {
-                    System.out.println(sql);
-                }
-            } catch (SQLException e) {
-                Flogger.atSevere().withCause(e).log();
-            } finally {
-                close();
-            }
-        }
-        return success;
-    }
-
-    public boolean hasCatalog(String dbname) {
+    public boolean hasCatalog(String catalogName) {
         boolean hasCatalog = false;
-        if (connectTry() && dbname.length() > 1) {
-            String sql = "SHOW DATABASES like '" + Globals.DB_PREFIX + dbname.trim() + "'";
+        if (connectTry() && catalogName.trim().length() > 1) {
+            String sql = "SHOW DATABASES like '" + catalogName.trim() + "'";
+            try (Statement statement = conn.createStatement()) {
+                hasCatalog = statement.execute(sql);
+                if (Globals.SQL_DEBUG) {
+                    System.out.println(sql);
+                }
+            } catch (SQLException e) {
+                Flogger.atSevere().withCause(e).log();
+            } finally {
+                close();
+            }
+        }
+        return hasCatalog;
+    }
+
+    public boolean useCatalog(String catalogName) {
+        boolean hasCatalog = false;
+        if (connectTry() && catalogName.trim().length() > 1) {
+            String sql = "USE '" + catalogName.trim() + "'";
             try (Statement statement = conn.createStatement()) {
                 hasCatalog = statement.execute(sql);
                 if (Globals.SQL_DEBUG) {
@@ -424,9 +388,9 @@ public final class SessionDB implements Globals {
 
     //Catalog Creation Code
 
-    public int createTables() {
+    public int createTables(String filepath) {
         int rows = 0;
-        File sqlFile = new File(SessionDB.class.getResource("/sql/tables.sql").getPath());
+        File sqlFile = new File(filepath);
         StringBuilder sqlcmd = new StringBuilder();
         try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
             while (scan.hasNext()) {
@@ -447,7 +411,8 @@ public final class SessionDB implements Globals {
                     }
                 }
             }
-        } catch (FileNotFoundException ignored) {
+        } catch (FileNotFoundException e) {
+            Flogger.atSevere().withCause(e).log();
         } finally {
             if (Globals.SQL_DEBUG) {
                 System.out.println("Tables created: " + rows);
@@ -457,9 +422,9 @@ public final class SessionDB implements Globals {
         return rows;
     }
 
-    public int createViews() {
+    public int createViews(String filepath) {
         int rows = 0;
-        File sqlFile = new File(SessionDB.class.getResource("/sql/views.sql").getPath());
+        File sqlFile = new File(filepath);
         StringBuilder sqlcmd = new StringBuilder();
         try (Scanner scan = new Scanner(new BufferedInputStream(new FileInputStream(sqlFile)))) {
             while (scan.hasNext()) {
@@ -513,7 +478,8 @@ public final class SessionDB implements Globals {
                     }
                 }
             }
-        } catch (FileNotFoundException ignored) {
+        } catch (FileNotFoundException e) {
+            Flogger.atSevere().withCause(e).log();
         } finally {
             if (Globals.SQL_DEBUG) {
                 System.out.println("Inserts: " + rows);
@@ -523,19 +489,16 @@ public final class SessionDB implements Globals {
         return rows;
     }
 
-    public int insertData() {
-        return insertData(SessionDB.class.getResource("/sql/data.sql").getPath());
-    }
-
-    public int insertDemoData() {
-        return insertData(SessionDB.class.getResource("/sql/demodata.sql").getPath());
-    }
-
-    public int createFullStructure() {
-        int rows = 0;
-        rows += createTables();
-        rows += createViews();
-        insertData();
-        return rows;
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                          .add("jdbcDriver", jdbcDriver)
+                          .add("jdbcIP", jdbcIP)
+                          .add("jdbcPort", jdbcPort)
+                          .add("jdbcCatalog", jdbcCatalog)
+                          .add("jdbcUser", jdbcUser)
+                          .add("jdbcPassword", jdbcPassword)
+                          .add("autoclose", autoclose)
+                          .toString();
     }
 }

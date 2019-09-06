@@ -2,7 +2,7 @@ package app.control.table;
 
 import app.data.DataStore;
 import app.model.Proveedor;
-import casteldao.dao.DataSourceIdActive;
+import casteldao.datasource.DataSourceIdActive;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -40,7 +40,7 @@ public class ProveedoresTableControl extends ActiveTableControl<Proveedor> {
 
     @Override
     protected DataSourceIdActive<Proveedor> getDataOrigin() {
-        return DataStore.getProveedores();
+        return DataStore.getSessionStore().getProveedores();
     }
 
 }
