@@ -1,5 +1,6 @@
-package casteldao.dao;
+package casteldao.datasource;
 
+import casteldao.DataSession;
 import casteldao.GenericDao;
 import casteldao.index.core.SimpleMapIndex;
 import casteldao.model.IEntity;
@@ -10,8 +11,8 @@ public class DataSourceId<V extends IEntity<I>, I extends Serializable> extends 
 
     private SimpleMapIndex<I, V, I> idIndex;
 
-    public DataSourceId(String tableName, Class<V> clazz) {
-        this.dao     = new GenericDao<>(tableName, getIndexes(), clazz);
+    public DataSourceId(DataSession session, String tableName, Class<V> clazz) {
+        this.dao = new GenericDao<>(session, tableName, getIndexes(), clazz);
     }
 
     protected void setIdIndex(SimpleMapIndex<I, V, I> idIndex) {

@@ -89,7 +89,7 @@ public class CierreZ extends EntityInt {
     @Override
     @SuppressWarnings("unchecked")
     public CierreZDao getDataStore() {
-        return DataStore.getCierreZs();
+        return DataStore.getSessionStore().getCierreZs();
     }
 
     public int getIdCaja() {
@@ -97,7 +97,7 @@ public class CierreZ extends EntityInt {
     }
 
     public void setIdCaja(int idCaja) {
-        setCaja(DataStore.getCajas().getById().getCacheValue(idCaja));
+        setCaja(DataStore.getSessionStore().getCajas().getById().getCacheValue(idCaja));
     }
 
     public LocalDateTime getApertura() {

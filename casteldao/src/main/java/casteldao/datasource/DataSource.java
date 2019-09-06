@@ -1,4 +1,4 @@
-package casteldao.dao;
+package casteldao.datasource;
 
 import casteldao.GenericDao;
 import casteldao.Globals;

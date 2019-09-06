@@ -3,7 +3,7 @@ package app.control.table;
 import app.data.DataStore;
 import app.model.Caja;
 import app.model.Sede;
-import casteldao.dao.DataSourceIdActive;
+import casteldao.datasource.DataSourceIdActive;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -34,7 +34,7 @@ public class CajasTableControl extends ActiveTableControl<Caja> {
 
     @Override
     protected DataSourceIdActive<Caja> getDataOrigin() {
-        return DataStore.getCajas();
+        return DataStore.getSessionStore().getCajas();
     }
 
 

@@ -32,7 +32,7 @@ public class Producto extends ActivablePropertyEntity {
     public Producto(String nombre, Categoria categoria) {
         super(0);
         setNombre(nombre);
-        setIdCategoria(idCategoria);
+        setCategoria(categoria);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class Producto extends ActivablePropertyEntity {
     @Override
     @SuppressWarnings("unchecked")
     public ProductoDao getDataStore() {
-        return DataStore.getProductos();
+        return DataStore.getSessionStore().getProductos();
     }
 
     public String getNombre() {
@@ -130,7 +130,7 @@ public class Producto extends ActivablePropertyEntity {
     }
 
     public void setIdCategoria(int idCategoria) {
-        setCategoria(DataStore.getCategorias().getById().getCacheValue(idCategoria));
+        setCategoria(DataStore.getSessionStore().getCategorias().getById().getCacheValue(idCategoria));
     }
 
     public Categoria getCategoria() {

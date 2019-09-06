@@ -2,7 +2,7 @@ package app.control.table;
 
 import app.misc.Flogger;
 import app.misc.FxDialogs;
-import casteldao.dao.DataSourceIdActive;
+import casteldao.datasource.DataSourceIdActive;
 import casteldao.model.ActivableEntity;
 import java.io.IOException;
 import java.util.Set;

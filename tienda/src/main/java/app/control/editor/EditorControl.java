@@ -2,7 +2,7 @@ package app.control.editor;
 
 import app.misc.Flogger;
 import app.misc.FxDialogs;
-import casteldao.dao.DataSourceIdImpl;
+import casteldao.datasource.DataSourceIdImpl;
 import casteldao.model.EntityInt;
 import com.google.common.flogger.StackSize;
 import java.io.IOException;

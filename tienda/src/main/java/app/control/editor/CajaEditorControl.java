@@ -24,7 +24,7 @@ public class CajaEditorControl extends GridControl<Caja> {
 
     @FXML
     void initialize() {
-        fxCbxSede.getItems().addAll(DataStore.getSedes().getById().getCacheValues());
+        fxCbxSede.getItems().addAll(DataStore.getSessionStore().getSedes().getById().getCacheValues());
         fxCbxSede.getSelectionModel().select(0);
     }
 
@@ -37,8 +37,7 @@ public class CajaEditorControl extends GridControl<Caja> {
 
     @Override
     public Caja buildNew() {
-        Caja editee = new Caja(fxCbxSede.getSelectionModel()
-                                        .getSelectedItem(), StaticHelpers.textInputEmptyToNull(fxNombre));
+        Caja editee = new Caja(fxCbxSede.getSelectionModel().getSelectedItem(), StaticHelpers.textInputEmptyToNull(fxNombre));
         editee.setActive(fxCheckActivo.isSelected());
         return editee;
     }

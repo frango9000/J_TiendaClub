@@ -2,7 +2,7 @@ package app.model;
 
 import app.data.DataStore;
 import app.misc.Flogger;
-import casteldao.dao.DataSourceIdActive;
+import casteldao.datasource.DataSourceIdActive;
 import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -93,7 +93,7 @@ public class Proveedor extends ActivablePropertyEntity {
     @Override
     @SuppressWarnings("unchecked")
     public DataSourceIdActive<Proveedor> getDataStore() {
-        return DataStore.getProveedores();
+        return DataStore.getSessionStore().getProveedores();
     }
 
     public String getNif() {

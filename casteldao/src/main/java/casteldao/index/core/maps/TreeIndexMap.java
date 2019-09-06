@@ -8,13 +8,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.function.BiFunction;
 
 public class TreeIndexMap<K extends Comparable, E extends IEntity<?>> extends AbstractIndexMap<K, E> {
-
 
     public TreeIndexMap() {
         this.map = Maps.newTreeMap();
@@ -24,10 +23,17 @@ public class TreeIndexMap<K extends Comparable, E extends IEntity<?>> extends Ab
         return (TreeMap<K, E>) map;
     }
 
+    /**
+     * @return
+     * @see TreeMap#comparator()
+     */
     public Comparator<? super K> comparator() {
         return getMap().comparator();
     }
 
+    /**
+     * @throws NoSuchElementException {@inheritDoc}
+     */
     public K firstKey() {
         return getMap().firstKey();
     }
@@ -136,7 +142,4 @@ public class TreeIndexMap<K extends Comparable, E extends IEntity<?>> extends Ab
         return getMap().replace(key, value);
     }
 
-    public void replaceAll(BiFunction<? super K, ? super E, ? extends E> function) {
-        getMap().replaceAll(function);
-    }
 }

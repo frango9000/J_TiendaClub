@@ -99,7 +99,7 @@ public class Compra extends EntityInt {
     @Override
     @SuppressWarnings("unchecked")
     public CompraDao getDataStore() {
-        return DataStore.getCompras();
+        return DataStore.getSessionStore().getCompras();
     }
 
     public int getIdUsuario() {
@@ -107,7 +107,7 @@ public class Compra extends EntityInt {
     }
 
     public void setIdUsuario(int idUsuario) {
-        setUsuario(DataStore.getUsuarios().getById().getCacheValue(idUsuario));
+        setUsuario(DataStore.getSessionStore().getUsuarios().getById().getCacheValue(idUsuario));
     }
 
     public int getIdSede() {
@@ -115,7 +115,7 @@ public class Compra extends EntityInt {
     }
 
     public void setIdSede(int idSede) {
-        setSede(DataStore.getSedes().getById().getCacheValue(idSede));
+        setSede(DataStore.getSessionStore().getSedes().getById().getCacheValue(idSede));
     }
 
     public int getIdProveedor() {
@@ -123,7 +123,7 @@ public class Compra extends EntityInt {
     }
 
     public void setIdProveedor(int idProveedor) {
-        setProveedor(DataStore.getProveedores().getById().getCacheValue(idProveedor));
+        setProveedor(DataStore.getSessionStore().getProveedores().getById().getCacheValue(idProveedor));
     }
 
     public Usuario getUsuario() {

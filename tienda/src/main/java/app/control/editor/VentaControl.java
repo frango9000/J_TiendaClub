@@ -1,7 +1,6 @@
 package app.control.editor;
 
 import app.data.DataStore;
-import app.data.SessionStore;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
 import app.model.Caja;
@@ -93,23 +92,20 @@ public class VentaControl extends BorderPane {
         fxColProductoNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         fxColProductoCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         fxColProductoPrecioU.setCellValueFactory(new PropertyValueFactory<>("precioVenta"));
-        listedProductos.addAll(DataStore.getProductos().getById().getCacheValues());
+        listedProductos.addAll(DataStore.getSessionStore().getProductos().getById().getCacheValues());
 
-        fxBoxUsuarios.getItems().setAll(DataStore.getUsuarios().getAllCache());
-        fxBoxUsuarios.getSelectionModel().select(SessionStore.getUsuario());
+        fxBoxUsuarios.getItems().setAll(DataStore.getSessionStore().getUsuarios().getAllCache());
+        fxBoxUsuarios.getSelectionModel().select(DataStore.getSessionStore().getUsuario());
 
-        fxBoxSedes.getItems().addAll(DataStore.getSedes().getAllCache());
-        fxBoxSedes.setOnAction(event -> fxBoxCajas.getItems()
-                                                  .setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas()));
-        fxBoxSedes.getSelectionModel().select(SessionStore.getSede());
-        fxBoxCajas.getSelectionModel().select(SessionStore.getCaja());
+        fxBoxSedes.getItems().addAll(DataStore.getSessionStore().getSedes().getAllCache());
+        fxBoxSedes.setOnAction(event -> fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas()));
+        fxBoxSedes.getSelectionModel().select(DataStore.getSessionStore().getSede());
+        fxBoxCajas.getSelectionModel().select(DataStore.getSessionStore().getCaja());
 
-        fxBoxCategorias.getItems().addAll(DataStore.getCategorias().getAllCache());
-        fxBoxCategorias.setOnAction(event -> listedProductos.setAll(fxBoxCategorias.getSelectionModel()
-                                                                                   .getSelectedItem()
-                                                                                   .getProductos()));
+        fxBoxCategorias.getItems().addAll(DataStore.getSessionStore().getCategorias().getAllCache());
+        fxBoxCategorias.setOnAction(event -> listedProductos.setAll(fxBoxCategorias.getSelectionModel().getSelectedItem().getProductos()));
 
-        fxBoxSocios.getItems().addAll(DataStore.getSocios().getAllCache());
+        fxBoxSocios.getItems().addAll(DataStore.getSessionStore().getSocios().getAllCache());
     }
 
     public VentaControl() {
@@ -184,7 +180,7 @@ public class VentaControl extends BorderPane {
     void fxBtnVoid(ActionEvent event) {
         if (venta != null) {
             if (FxDialogs.showConfirmBoolean("Cuidado", "Deseas eliminar la orden " + venta.getId() + " ?")) {
-                DataStore.getVendidos().getDao().deleteSome(venta.getVendidos());
+                DataStore.getSessionStore().getVendidos().getDao().deleteSome(venta.getVendidos());
                 boolean success = venta.deleteFromDb() == 1;
                 FxDialogs.showInfo("", "Venta Id " + venta.getId() + (success ? " " : "NO ") + "eliminado");
                 if (success) {
@@ -214,17 +210,17 @@ public class VentaControl extends BorderPane {
         if (venta == null) {
             if (listedVendidos.size() > 0) {
                 this.venta = new Venta();
-                venta.setUsuario(SessionStore.getUsuario());
-                venta.setCaja(SessionStore.getCaja());
+                venta.setUsuario(DataStore.getSessionStore().getUsuario());
+                venta.setCaja(DataStore.getSessionStore().getCaja());
                 venta.setSocio(fxBoxSocios.getSelectionModel().getSelectedItem());
                 venta.setFechahora(LocalDateTime.now());
 
-                DataStore.getVentas().getDao().insert(venta);
+                DataStore.getSessionStore().getVentas().getDao().insert(venta);
                 if (venta.getId() > 0) {
                     fxFieldId.setText(Integer.toString(venta.getId()));
                     fxFieldDate.setLocalDateTime(venta.getFechahora());
                     listedVendidos.forEach(vendido -> vendido.setVenta(venta));
-                    DataStore.getVendidos().getDao().insert(listedVendidos);
+                    DataStore.getSessionStore().getVendidos().getDao().insert(listedVendidos);
                     FxDialogs.showInfo("Id: " + venta.getId(), "Venta guardada");
                 } else {
                     venta = null;
@@ -239,20 +235,20 @@ public class VentaControl extends BorderPane {
                 try {
                     venta.setBackup();
                     expected++;
-                    updated += DataStore.getVentas().getDao().update(venta);
+                    updated += DataStore.getSessionStore().getVentas().getDao().update(venta);
                 } catch (CloneNotSupportedException e) {
                     Flogger.atSevere().withCause(e).log("Clone Fail");
                 }
             }
             Set<Vendido> toupdate = Sets.newHashSet(Sets.intersection(venta.getVendidos(), Sets.newHashSet(listedVendidos)));
-            updated += DataStore.getVendidos().getDao().update(toupdate);
+            updated += DataStore.getSessionStore().getVendidos().getDao().update(toupdate);
 
             Set<Vendido> toremove = Sets.difference(venta.getVendidos(), Sets.newHashSet(listedVendidos));
-            updated += DataStore.getVendidos().getDao().deleteSome(toremove);
+            updated += DataStore.getSessionStore().getVendidos().getDao().deleteSome(toremove);
 
             Set<Vendido> toadd = Sets.difference(Sets.newHashSet(listedVendidos), venta.getVendidos());
             toadd.forEach(vendido -> vendido.setVenta(venta));
-            updated += DataStore.getVendidos().getDao().insert(toadd);
+            updated += DataStore.getSessionStore().getVendidos().getDao().insert(toadd);
 
             expected += toadd.size() + toremove.size() + toupdate.size();
             if (expected == 0)

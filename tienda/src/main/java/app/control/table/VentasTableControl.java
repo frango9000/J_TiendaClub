@@ -7,7 +7,7 @@ import app.model.Caja;
 import app.model.Socio;
 import app.model.Usuario;
 import app.model.Venta;
-import casteldao.dao.DataSourceIdImpl;
+import casteldao.datasource.DataSourceIdImpl;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import javafx.event.ActionEvent;
@@ -48,7 +48,7 @@ public class VentasTableControl extends TableControl<Venta> {
 
     @Override
     protected DataSourceIdImpl<Venta> getDataOrigin() {
-        return DataStore.getVentas();
+        return DataStore.getSessionStore().getVentas();
     }
 
     @Override

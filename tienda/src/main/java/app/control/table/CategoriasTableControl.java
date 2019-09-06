@@ -2,7 +2,7 @@ package app.control.table;
 
 import app.data.DataStore;
 import app.model.Categoria;
-import casteldao.dao.DataSourceIdActive;
+import casteldao.datasource.DataSourceIdActive;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -29,7 +29,7 @@ public class CategoriasTableControl extends ActiveTableControl<Categoria> {
 
     @Override
     protected DataSourceIdActive<Categoria> getDataOrigin() {
-        return DataStore.getCategorias();
+        return DataStore.getSessionStore().getCategorias();
     }
 
 

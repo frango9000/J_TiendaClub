@@ -72,7 +72,7 @@ public class Transferencia extends EntityInt {
     @Override
     @SuppressWarnings("unchecked")
     public TransferenciaDao getDataStore() {
-        return DataStore.getTransferencias();
+        return DataStore.getSessionStore().getTransferencias();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class Transferencia extends EntityInt {
     }
 
     public void setIdUsuario(int idUsuario) {
-        setUsuario(DataStore.getUsuarios().getById().getCacheValue(idUsuario));
+        setUsuario(DataStore.getSessionStore().getUsuarios().getById().getCacheValue(idUsuario));
     }
 
     public int getIdSedeOrigen() {
@@ -118,7 +118,7 @@ public class Transferencia extends EntityInt {
     }
 
     public void setIdSedeOrigen(int idSedeOrigen) {
-        setSedeOrigen(DataStore.getSedes().getById().getCacheValue(idSedeOrigen));
+        setSedeOrigen(DataStore.getSessionStore().getSedes().getById().getCacheValue(idSedeOrigen));
     }
 
     public int getIdSedeDestino() {
@@ -126,7 +126,7 @@ public class Transferencia extends EntityInt {
     }
 
     public void setIdSedeDestino(int idSedeDestino) {
-        setSedeDestino(DataStore.getSedes().getById().getCacheValue(idSedeDestino));
+        setSedeDestino(DataStore.getSessionStore().getSedes().getById().getCacheValue(idSedeDestino));
     }
 
     public int getIdProducto() {
@@ -134,7 +134,7 @@ public class Transferencia extends EntityInt {
     }
 
     public void setIdProducto(int idProducto) {
-        setProducto(DataStore.getProductos().getById().getCacheValue(idProducto));
+        setProducto(DataStore.getSessionStore().getProductos().getById().getCacheValue(idProducto));
     }
 
 

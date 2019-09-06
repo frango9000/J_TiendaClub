@@ -1,14 +1,14 @@
 package app;
 
-import app.control.PropsLoader;
 import app.data.DataStore;
+import app.data.SessionDB;
+import app.misc.PropsLoader;
 import app.model.Caja;
 import app.model.Categoria;
 import app.model.Producto;
 import app.model.Proveedor;
 import app.model.Sede;
 import app.model.Socio;
-import casteldao.SessionDB;
 import java.time.LocalDateTime;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -18,22 +18,25 @@ public class TestFX extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         PropsLoader.loadProps();
-        DataStore.firstQuery();
-        DataStore.getVentas().getIndexCaja().getValues().forEach(System.out::println);
-
+        DataStore sessionStore = DataStore.getSessionStore();
+        sessionStore.firstQuery();
+//        sessionStore.getVentas().getIndexCaja().getValues().forEach(System.out::println);
+        createMockData(true);
+        System.exit(0);
 
     }
 
     private void createMockData(boolean clean) {
-        SessionDB.getSessionDB().setAutoclose(false);
+        DataStore sessionStore = DataStore.getSessionStore();
+        SessionDB.getSession().setAutoclose(false);
 
         if (clean) {
-            DataStore.getProductos().getDao().deleteSome(DataStore.getProductos().getAllCache());
-            DataStore.getProveedores().getDao().deleteSome(DataStore.getProveedores().getAllCache());
-            DataStore.getSocios().getDao().deleteSome(DataStore.getSocios().getAllCache());
-            DataStore.getCategorias().getDao().deleteSome(DataStore.getCategorias().getAllCache());
-            DataStore.getCajas().getDao().deleteSome(DataStore.getCajas().getAllCache());
-            DataStore.getSedes().getDao().deleteSome(DataStore.getSedes().getAllCache());
+            sessionStore.getProductos().getDao().deleteSome(sessionStore.getProductos().getAllCache());
+            sessionStore.getProveedores().getDao().deleteSome(sessionStore.getProveedores().getAllCache());
+            sessionStore.getSocios().getDao().deleteSome(sessionStore.getSocios().getAllCache());
+            sessionStore.getCategorias().getDao().deleteSome(sessionStore.getCategorias().getAllCache());
+            sessionStore.getCajas().getDao().deleteSome(sessionStore.getCajas().getAllCache());
+            sessionStore.getSedes().getDao().deleteSome(sessionStore.getSedes().getAllCache());
         }
         for (int i = 0; i < 10; i++) {
             Categoria categoria = new Categoria("Cat " + i);
@@ -60,6 +63,6 @@ public class TestFX extends Application {
                 caja.insertIntoDB();
             }
         }
-        SessionDB.getSessionDB().setAutoclose(true);
+        SessionDB.getSession().setAutoclose(true);
     }
 }

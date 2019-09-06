@@ -2,7 +2,7 @@ package app.model;
 
 import app.data.DataStore;
 import app.misc.Flogger;
-import casteldao.dao.DataSourceIdActive;
+import casteldao.datasource.DataSourceIdActive;
 import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -69,11 +69,11 @@ public class Categoria extends ActivablePropertyEntity {
     @Override
     @SuppressWarnings("unchecked")
     public DataSourceIdActive<Categoria> getDataStore() {
-        return DataStore.getCategorias();
+        return DataStore.getSessionStore().getCategorias();
     }
 
     public Set<Producto> getProductos() {
-        return DataStore.getProductos().getIndexCategoria().getCacheKeyValues(this);
+        return DataStore.getSessionStore().getProductos().getIndexCategoria().getCacheKeyValues(this);
     }
 
     public String getNombre() {

@@ -26,23 +26,28 @@ public class SimpleTreeMapIndex<K extends Comparable, E extends IEntity<I>, I ex
 
     public Set<E> getKeyGreaterThanValues(K lesserThanThis, boolean inclusive) {
         dataSource.queryGreaterLesser(indexColumnName, lesserThanThis.toString(), true, inclusive);
-        return Sets.newHashSet(treeMap().tailMap(lesserThanThis, inclusive).values());
+        return getCacheKeyGreaterThanValues(lesserThanThis, inclusive);
     }
 
     public Set<E> getKeyIntervalValues(K start, boolean fromInclusive, K end, boolean toInclusive) {
         dataSource.queryBetween(indexColumnName, start.toString(), end.toString(), true);
-        return Sets.newHashSet(treeMap().subMap(start, fromInclusive, end, toInclusive).values());
+        return getCacheKeyIntervalValues(start, fromInclusive, end, toInclusive);
     }
 
     public Set<E> getCacheKeyLesserThanValues(K lesserThanThis, boolean inclusive) {
         return Sets.newHashSet(treeMap().headMap(lesserThanThis, inclusive).values());
     }
 
-    public Set<E> getCacheKeyGreaterThanValues(K lesserThanThis, boolean inclusive) {
-        return Sets.newHashSet(treeMap().tailMap(lesserThanThis, inclusive).values());
+    public Set<E> getCacheKeyGreaterThanValues(K greaterThanThis, boolean inclusive) {
+        return Sets.newHashSet(treeMap().tailMap(greaterThanThis, inclusive).values());
     }
 
     public Set<E> getCacheKeyIntervalValues(K start, boolean fromInclusive, K end, boolean toInclusive) {
         return Sets.newHashSet(treeMap().subMap(start, fromInclusive, end, toInclusive).values());
     }
+
+//    public Optional<E> getTopEntity(){
+//        //asd
+//        return treeMap().f
+//    }
 }

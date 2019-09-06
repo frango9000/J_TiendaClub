@@ -1,7 +1,6 @@
 package casteldao.index.core;
 
 import casteldao.GenericDao;
-import casteldao.SessionDB;
 import casteldao.index.core.maps.SetIndexMultimap;
 import casteldao.model.IEntity;
 import java.io.Serializable;
@@ -27,7 +26,7 @@ public abstract class SetMultiMapIndex<K, E extends IEntity<I>, I extends Serial
     @Override
     public Set<E> getKeyValues(Set<K> keys) {
         if (keys.size() > 0) {
-            SessionDB.getSessionDB().setAutoclose(false);
+            dataSource.getSession().setAutoclose(false);
             try {
                 for (K key : keys) {
                     if (!cacheContainsKey(key))
@@ -36,7 +35,7 @@ public abstract class SetMultiMapIndex<K, E extends IEntity<I>, I extends Serial
                         dataSource.querySome(getCachedIds(key), false);
                 }
             } finally {
-                SessionDB.getSessionDB().setAutoclose(true);
+                dataSource.getSession().setAutoclose(true);
             }
         }
         return getCacheKeyValues(keys);
