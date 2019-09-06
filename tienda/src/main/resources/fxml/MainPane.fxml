@@ -69,6 +69,8 @@
                   fx:id="fxMenuCategorias"/>
                 <MenuItem mnemonicParsing="false" onAction="#fxMenuVentasAction" text="Ventas" fx:id="fxMenuVentas"/>
                 <MenuItem mnemonicParsing="false" onAction="#fxMenuComprasAction" text="Compras" fx:id="fxMenuCompras"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuTransferenciasAction" text="Compras"
+                  fx:id="fxMenuTransferencias"/>
                 <SeparatorMenuItem mnemonicParsing="false"/>
               </items>
             </Menu>

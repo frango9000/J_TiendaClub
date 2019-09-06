@@ -148,11 +148,6 @@ public class CompraControl extends BorderPane {
         updateFxPrice();
     }
 
-    public void setProveedor(Proveedor proveedor) {
-        if (fxBoxExchangee.getItems().contains(proveedor))
-            fxBoxExchangee.getSelectionModel().select(proveedor);
-    }
-
     @FXML
     void fxBtnAdd(ActionEvent event) {
         Producto selected = fxTableProductos.getSelectionModel().getSelectedItem();

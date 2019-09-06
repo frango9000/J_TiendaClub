@@ -40,8 +40,10 @@ public class LoginPaneControl extends BorderPane {
         fxBoxSedes.setOnAction(event -> fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas()));
         fxBoxSedes.getSelectionModel().select(1);
 
-        fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas());
-        fxBoxCajas.getSelectionModel().select(1);
+        if (fxBoxSedes.getSelectionModel().getSelectedItem() != null) {
+            fxBoxCajas.getItems().addAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas());
+            fxBoxCajas.getSelectionModel().select(1);
+        }
 
         loginButton.setDisable(true);
         usernameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -68,7 +70,8 @@ public class LoginPaneControl extends BorderPane {
         } else if (!user.isActive()) {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("Account Locked");
-        } else if (user.getAcceso().getId() > 2 && (fxBoxCajas.getSelectionModel().getSelectedItem() == null || fxBoxSedes.getSelectionModel().getSelectedItem() == null)) {
+        } else if (user.getAcceso().getId() > 2 && (fxBoxCajas.getSelectionModel().getSelectedItem() == null ||
+                                                    fxBoxSedes.getSelectionModel().getSelectedItem() == null)) {
             FxDialogs.showError(null, "Unset Values");
         } else {
             DataStore.getSessionStore().setSede(fxBoxSedes.getSelectionModel().getSelectedItem());

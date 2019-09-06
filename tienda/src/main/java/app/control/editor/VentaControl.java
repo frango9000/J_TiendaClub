@@ -150,11 +150,6 @@ public class VentaControl extends BorderPane {
         updateFxPrice();
     }
 
-    public void setSocio(Socio socio) {
-        if (fxBoxExchangee.getItems().contains(socio))
-            fxBoxExchangee.getSelectionModel().select(socio);
-    }
-
     @FXML
     void fxBtnAdd(ActionEvent event) {
         Producto selected = fxTableProductos.getSelectionModel().getSelectedItem();

@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `transferencias`
     `idSedeOrigen`  TINYINT(3) UNSIGNED  NOT NULL,
     `idSedeDestino` TINYINT(3) UNSIGNED  NOT NULL,
     `idProducto`    SMALLINT(6) UNSIGNED NOT NULL,
-    `Cantidad`      INT(6) UNSIGNED      NOT NULL,
+    `cantidad`      INT(6) UNSIGNED      NOT NULL,
     `fechahora`     DATETIME             NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `FK_transferencias_sedes` (`idSedeOrigen`),

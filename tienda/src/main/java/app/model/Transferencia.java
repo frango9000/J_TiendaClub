@@ -37,8 +37,7 @@ public class Transferencia extends EntityInt {
         super(0);
     }
 
-    public Transferencia(Usuario usuario, Sede sedeOrigen, Sede sedeDestino, Producto producto, int cantidad,
-                         LocalDateTime fechahora) {
+    public Transferencia(Usuario usuario, Sede sedeOrigen, Sede sedeDestino, Producto producto, int cantidad, LocalDateTime fechahora) {
         super(0);
         setUsuario(usuario);
         setSedeOrigen(sedeOrigen);

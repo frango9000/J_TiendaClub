@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import jfxtras.scene.control.LocalDateTimeTextField?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1"
+  fx:controller="app.control.editor.TransferenciaEditorControl">
+  <children>
+    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200.0" fx:id="fxBoxUsuario"/>
+    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="200.0" fx:id="fxBoxSedeOrigen"/>
+    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="3" prefWidth="200.0" fx:id="fxBoxSedeDestino"/>
+    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="5" prefWidth="200.0" fx:id="fxBoxProducto"/>
+    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="4" prefWidth="200.0" fx:id="fxBoxCategoria"/>
+    <Label text="ID"/>
+    <Label GridPane.rowIndex="1" text="Usuario"/>
+    <Label GridPane.rowIndex="6" text="Cantidad"/>
+    <Label GridPane.rowIndex="2" text="Sede Origen"/>
+    <Label GridPane.rowIndex="3" text="Sede Destino"/>
+    <Label GridPane.rowIndex="5" text="Producto"/>
+    <Label GridPane.rowIndex="4" text="Categoria"/>
+    <Label GridPane.rowIndex="7" text="Fecha"/>
+    <LocalDateTimeTextField GridPane.columnIndex="1" GridPane.rowIndex="7" editable="false" fx:id="fxFieldDate"/>
+    <TextField GridPane.columnIndex="1" editable="false" layoutX="80.0" layoutY="70.0" fx:id="fxId"/>
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" fx:id="fxCantidad"/>
+  </children>
+  <columnConstraints>
+    <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="100.0" minWidth="70.0" prefWidth="70.0"/>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0"/>
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
+      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
+      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
+      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
+      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
+      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
+      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
+      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
+      vgrow="NEVER"/>
+  </rowConstraints>
+</GridPane>

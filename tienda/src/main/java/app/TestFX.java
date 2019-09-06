@@ -21,9 +21,17 @@ public class TestFX extends Application {
         DataStore sessionStore = DataStore.getSessionStore();
         sessionStore.firstQuery();
 //        sessionStore.getVentas().getIndexCaja().getValues().forEach(System.out::println);
+        reinitDB();
         createMockData(true);
         System.exit(0);
 
+    }
+
+    private void reinitDB() {
+        SessionDB sessionDB = SessionDB.getSession();
+        sessionDB.dropCatalog(sessionDB.getJdbcCatalog());
+        sessionDB.createCatalog(sessionDB.getJdbcCatalog());
+        sessionDB.createFullStructure();
     }
 
     private void createMockData(boolean clean) {
@@ -38,27 +46,27 @@ public class TestFX extends Application {
             sessionStore.getCajas().getDao().deleteSome(sessionStore.getCajas().getAllCache());
             sessionStore.getSedes().getDao().deleteSome(sessionStore.getSedes().getAllCache());
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 8; i++) {
             Categoria categoria = new Categoria("Cat " + i);
             categoria.insertIntoDB();
             Proveedor proveedor = new Proveedor("B000000" + i);
             proveedor.setNombre("Prov " + i);
             proveedor.insertIntoDB();
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 4; j++) {
                 Producto producto = new Producto("Pro C" + i + "P" + j, categoria);
                 producto.setPrecioVenta(i);
                 producto.insertIntoDB();
                 Socio socio = new Socio("0000" + i + "0" + j);
-                socio.setNombre("Soc " + i);
+                socio.setNombre("Soc " + i + " " + j);
                 socio.setFechaIn(LocalDateTime.now());
                 socio.insertIntoDB();
             }
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             Sede sede = new Sede("Sede " + i);
             sede.insertIntoDB();
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < 2; j++) {
                 Caja caja = new Caja(sede, "Caja S" + i + "C" + j);
                 caja.insertIntoDB();
             }

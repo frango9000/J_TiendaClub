@@ -7,6 +7,7 @@ import app.control.table.ProductosTableControl;
 import app.control.table.ProveedoresTableControl;
 import app.control.table.SedesTableControl;
 import app.control.table.SociosTableControl;
+import app.control.table.TransferenciasTableControl;
 import app.control.table.UsuariosTableControl;
 import app.control.table.VentasTableControl;
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class MainPaneControl {
     public MenuItem fxMenuVentas;
     @FXML
     public MenuItem fxMenuCompras;
+    public MenuItem fxMenuTransferencias;
     @FXML
     private MenuItem menuUsuarios;
     @FXML
@@ -83,33 +85,45 @@ public class MainPaneControl {
         mainPane.setCenter(u);
     }
 
+    @FXML
     public void fxMenuProveedoresAction(ActionEvent actionEvent) {
         ProveedoresTableControl u = new ProveedoresTableControl();
         mainPane.setCenter(u);
     }
 
+    @FXML
     public void fxMenuSociosAction(ActionEvent actionEvent) {
         SociosTableControl u = new SociosTableControl();
         mainPane.setCenter(u);
     }
 
+    @FXML
     public void fxMenuCategoriasAction(ActionEvent actionEvent) {
         CategoriasTableControl u = new CategoriasTableControl();
         mainPane.setCenter(u);
     }
 
+    @FXML
     public void fxMenuProductosAction(ActionEvent actionEvent) {
         ProductosTableControl u = new ProductosTableControl();
         mainPane.setCenter(u);
     }
 
+    @FXML
     public void fxMenuVentasAction(ActionEvent actionEvent) {
         VentasTableControl u = new VentasTableControl();
         mainPane.setCenter(u);
     }
 
+    @FXML
     public void fxMenuComprasAction(ActionEvent actionEvent) {
         ComprasTableControl u = new ComprasTableControl();
+        mainPane.setCenter(u);
+    }
+
+    @FXML
+    public void fxMenuTransferenciasAction(ActionEvent actionEvent) {
+        TransferenciasTableControl u = new TransferenciasTableControl();
         mainPane.setCenter(u);
     }
 }
