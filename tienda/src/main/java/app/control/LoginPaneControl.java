@@ -1,11 +1,15 @@
 package app.control;
 
 import app.data.DataStore;
+import app.misc.FxDialogs;
+import app.model.Caja;
+import app.model.Sede;
 import app.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -17,6 +21,10 @@ import javafx.scene.layout.BorderPane;
 public class LoginPaneControl extends BorderPane {
 
     @FXML
+    public ComboBox<Sede> fxBoxSedes;
+    @FXML
+    public ComboBox<Caja> fxBoxCajas;
+    @FXML
     private TextField usernameTextField;
     @FXML
     private PasswordField passwordTextField;
@@ -27,6 +35,14 @@ public class LoginPaneControl extends BorderPane {
 
     @FXML
     public void initialize() {
+
+        fxBoxSedes.getItems().addAll(DataStore.getSessionStore().getSedes().getAllCache());
+        fxBoxSedes.setOnAction(event -> fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas()));
+        fxBoxSedes.getSelectionModel().select(1);
+
+        fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas());
+        fxBoxCajas.getSelectionModel().select(1);
+
         loginButton.setDisable(true);
         usernameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             loginButton.setDisable(newValue.trim().isEmpty() || passwordTextField.getText().trim().isEmpty());
@@ -52,7 +68,11 @@ public class LoginPaneControl extends BorderPane {
         } else if (!user.isActive()) {
             alertMsg.setStyle("-fx-text-fill: red");
             alertMsg.setText("Account Locked");
+        } else if (user.getAcceso().getId() > 2 && (fxBoxCajas.getSelectionModel().getSelectedItem() == null || fxBoxSedes.getSelectionModel().getSelectedItem() == null)) {
+            FxDialogs.showError(null, "Unset Values");
         } else {
+            DataStore.getSessionStore().setSede(fxBoxSedes.getSelectionModel().getSelectedItem());
+            DataStore.getSessionStore().setCaja(fxBoxCajas.getSelectionModel().getSelectedItem());
             DataStore.getSessionStore().setUsuario(user);
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
         }

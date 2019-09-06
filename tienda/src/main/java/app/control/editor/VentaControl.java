@@ -69,6 +69,8 @@ public class VentaControl extends BorderPane {
     private TextField fxFieldId;
     @FXML
     private LocalDateTimeTextField fxFieldDate;
+    @FXML
+    private TextField fxFieldTotal;
 
     private Venta venta;
 
@@ -80,6 +82,11 @@ public class VentaControl extends BorderPane {
             fxmlLoader.load();
         } catch (final IOException e) {
             Flogger.atSevere().withCause(e).log();
+        }
+        if (DataStore.getSessionStore().getUsuario().getAcceso().getId() <= 2) {
+            fxBoxSedes.setDisable(false);
+            fxBoxCajas.setDisable(false);
+            fxBoxUsuarios.setDisable(false);
         }
         fxTableVendidos.setItems(listedVendidos);
         fxTableProductos.setItems(listedProductos);
@@ -100,6 +107,8 @@ public class VentaControl extends BorderPane {
         fxBoxSedes.getItems().addAll(DataStore.getSessionStore().getSedes().getAllCache());
         fxBoxSedes.setOnAction(event -> fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas()));
         fxBoxSedes.getSelectionModel().select(DataStore.getSessionStore().getSede());
+
+        fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas());
         fxBoxCajas.getSelectionModel().select(DataStore.getSessionStore().getCaja());
 
         fxBoxCategorias.getItems().addAll(DataStore.getSessionStore().getCategorias().getAllCache());
@@ -131,6 +140,7 @@ public class VentaControl extends BorderPane {
         fxFieldDate.setLocalDateTime(venta.getFechahora());
         listedVendidos.setAll(venta.getVendidos());
         IEntity.backupAll(listedVendidos);
+        updateFxPrice();
     }
 
     public void setSocio(Socio socio) {
@@ -144,7 +154,7 @@ public class VentaControl extends BorderPane {
         if (selected != null) {
             boolean exists = false;
             for (Vendido vendido : listedVendidos) {
-                if (vendido.getProducto().getId() == (selected.getId())) {
+                if (vendido.getProducto().getId().equals(selected.getId())) {
                     vendido.setCantidad(vendido.getCantidad() + 1);
                     exists = true;
                     break;
@@ -157,7 +167,12 @@ public class VentaControl extends BorderPane {
                 listedVendidos.add(vendido);
             }
             fxTableVendidos.refresh();
+            updateFxPrice();
         }
+    }
+
+    private void updateFxPrice() {
+        fxFieldTotal.setText(listedVendidos.stream().mapToInt(value -> value.getCantidad() * value.getPrecioUnidad()).sum() + "");
     }
 
     @FXML
@@ -174,6 +189,7 @@ public class VentaControl extends BorderPane {
     void fxBtnRemoveAll(ActionEvent event) {
         if (FxDialogs.showConfirmBoolean("Cuidado", "Deseas eliminar todos los productos de la orden ?"))
             listedVendidos.clear();
+        updateFxPrice();
     }
 
     @FXML
@@ -196,17 +212,28 @@ public class VentaControl extends BorderPane {
         Vendido selected = fxTableVendidos.getSelectionModel().getSelectedItem();
         if (selected != null) {
             if (FxDialogs.showConfirmBoolean("Cuidado", "Deseas eliminar el Id " + selected.getId() + " ?")) {
-                boolean success = selected.deleteFromDb() == 1;
-                FxDialogs.showInfo("", "Id " + selected.getId() + (success ? " " : "NO ") + "eliminado");
-                if (success) {
+                if (selected.getId() != 0) {
+                    boolean success = selected.deleteFromDb() == 1;
+                    FxDialogs.showInfo("", "Id " + selected.getId() + (success ? " " : "NO ") + "eliminado");
+                    if (success) {
+                        listedVendidos.remove(selected);
+                    }
+                } else
                     listedVendidos.remove(selected);
-                }
+                updateFxPrice();
             }
         }
     }
 
     @FXML
     void fxBtnSave(ActionEvent event) {
+        if (fxBoxSocios.getSelectionModel().getSelectedItem() == null ||
+            fxBoxUsuarios.getSelectionModel().getSelectedItem() == null ||
+            fxBoxCajas.getSelectionModel().getSelectedItem() == null ||
+            fxBoxSedes.getSelectionModel().getSelectedItem() == null) {
+            FxDialogs.showError(null, "Unset Values");
+            return;
+        }
         if (venta == null) {
             if (listedVendidos.size() > 0) {
                 this.venta = new Venta();
@@ -231,14 +258,19 @@ public class VentaControl extends BorderPane {
         } else {
             int updated = 0;
             int expected = 0;
-            if (!venta.getFechahora().isEqual(fxFieldDate.getLocalDateTime())) {
-                try {
-                    venta.setBackup();
+            try {
+                venta.setBackup();
+                venta.setUsuario(DataStore.getSessionStore().getUsuario());
+                venta.setCaja(DataStore.getSessionStore().getCaja());
+                venta.setSocio(fxBoxSocios.getSelectionModel().getSelectedItem());
+                venta.setFechahora(fxFieldDate.getLocalDateTime());
+                if (!venta.equals(venta.getBackup())) {
                     expected++;
                     updated += DataStore.getSessionStore().getVentas().getDao().update(venta);
-                } catch (CloneNotSupportedException e) {
-                    Flogger.atSevere().withCause(e).log("Clone Fail");
-                }
+                } else
+                    venta.commit();
+            } catch (CloneNotSupportedException e) {
+                Flogger.atSevere().withCause(e).log("Clone Fail");
             }
             Set<Vendido> toupdate = Sets.newHashSet(Sets.intersection(venta.getVendidos(), Sets.newHashSet(listedVendidos)));
             updated += DataStore.getSessionStore().getVendidos().getDao().update(toupdate);
@@ -252,12 +284,13 @@ public class VentaControl extends BorderPane {
 
             expected += toadd.size() + toremove.size() + toupdate.size();
             if (expected == 0)
-                event.consume();
+                FxDialogs.showInfo("Id: " + venta.getId(), "Nada que modificar");
             else if (expected == updated)
                 FxDialogs.showInfo("Id: " + venta.getId(), "Venta guardada correctamente");
             else
-                FxDialogs.showInfo("Id: " + venta.getId(), "Venta guardada incompleta " + updated + "/" + expected);
+                FxDialogs.showInfo("Id: " + venta.getId(), "Venta guardada incompleta y/o con errores " + updated + "/" + expected);
         }
+        fxTableVendidos.refresh();
         setFields();
     }
 }

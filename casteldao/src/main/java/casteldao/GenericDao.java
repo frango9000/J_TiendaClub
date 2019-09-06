@@ -1,6 +1,8 @@
 package casteldao;
 
 import casteldao.index.core.IIndex;
+import casteldao.misc.Flogger;
+import casteldao.misc.Globals;
 import casteldao.model.IEntity;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;

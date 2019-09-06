@@ -1,5 +1,7 @@
 package casteldao;
 
+import casteldao.misc.Flogger;
+import casteldao.misc.Globals;
 import com.google.common.base.MoreObjects;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -112,7 +114,7 @@ public class DataSession implements Globals {
             }
             success = true;
         } catch (SQLException e) {
-            Flogger.atSevere().withCause(e).log();
+            Flogger.atSevere().withCause(e).log(toString());
         }
         return success;
     }

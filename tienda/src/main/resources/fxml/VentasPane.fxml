@@ -14,10 +14,111 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import jfxtras.scene.control.LocalDateTimeTextField?>
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" type="BorderPane"
-  xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+  type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1">
   <center>
     <GridPane hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
+      <BorderPane.margin>
+        <Insets/>
+      </BorderPane.margin>
+      <children>
+        <GridPane hgap="5.0">
+          <children>
+            <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER"
+              maxWidth="1.7976931348623157E308" fx:id="fxBoxSocios"/>
+            <Label GridPane.rowIndex="1" layoutX="10.0" layoutY="19.0" text="Socio"/>
+            <Label GridPane.rowIndex="2" text="Fecha"/>
+            <Label text="Orden"/>
+            <LocalDateTimeTextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
+              GridPane.vgrow="NEVER" editable="false" fx:id="fxFieldDate"/>
+            <TextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" editable="false"
+              fx:id="fxFieldId"/>
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="NEVER"/>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="300.0"/>
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+          </rowConstraints>
+        </GridPane>
+        <GridPane hgap="5.0" GridPane.columnIndex="1">
+          <children>
+            <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER" disable="true"
+              maxWidth="1.7976931348623157E308" fx:id="fxBoxSedes"/>
+            <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER"
+              disable="true" maxWidth="1.7976931348623157E308" fx:id="fxBoxCajas"/>
+            <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="NEVER"
+              disable="true" maxWidth="1.7976931348623157E308" fx:id="fxBoxUsuarios"/>
+            <Label GridPane.rowIndex="1" layoutX="10.0" layoutY="19.0" text="Caja"/>
+            <Label GridPane.rowIndex="2" text="Usuario"/>
+            <Label text="Sede"/>
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="NEVER"/>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="250.0"/>
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+          </rowConstraints>
+        </GridPane>
+        <HBox spacing="10.0" GridPane.rowIndex="1">
+          <children>
+            <TableView fx:id="fxTableProductos" HBox.hgrow="ALWAYS">
+              <columns>
+                <TableColumn maxWidth="50.0" minWidth="30.0" prefWidth="-1.0" text="Id" fx:id="fxColProductoId"/>
+                <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Producto"
+                  fx:id="fxColProductoNombre"/>
+                <TableColumn prefWidth="75.0" text="Categoria" fx:id="fxColProductoCategoria"/>
+                <TableColumn minWidth="60.0" prefWidth="-1.0" text="Precio U" fx:id="fxColProductoPrecioU"/>
+              </columns>
+            </TableView>
+            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" spacing="10.0">
+              <children>
+                <Button VBox.vgrow="ALWAYS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  mnemonicParsing="false" onAction="#fxBtnAdd" text="Agregar"/>
+                <Button VBox.vgrow="ALWAYS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  mnemonicParsing="false" onAction="#fxBtnEdit" text="Editar"/>
+                <Button VBox.vgrow="ALWAYS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  mnemonicParsing="false" onAction="#fxBtnRemove" text="Quitar"/>
+                <Button VBox.vgrow="ALWAYS" layoutX="10.0" layoutY="284.0" maxHeight="1.7976931348623157E308"
+                  maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#fxBtnRemoveAll" text="Limpiar"/>
+                <ComboBox VBox.vgrow="ALWAYS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  promptText="Categorias" fx:id="fxBoxCategorias"/>
+              </children>
+            </VBox>
+          </children>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="2">
+          <children>
+            <Button minWidth="100.0" mnemonicParsing="false" onAction="#fxBtnVoid" text="Anular"/>
+            <Button minWidth="100.0" mnemonicParsing="false" onAction="#fxBtnDiscard" text="Descartar"/>
+            <Button minWidth="100.0" mnemonicParsing="false" onAction="#fxBtnSave" text="Guardar"/>
+          </children>
+        </HBox>
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" alignment="CENTER_RIGHT" prefHeight="100.0"
+          prefWidth="200.0" spacing="10.0">
+          <children>
+            <Label text="Total"/>
+            <TextField editable="false" fx:id="fxFieldTotal"/>
+          </children>
+        </HBox>
+        <TableView fx:id="fxTableVendidos" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+          <columns>
+            <TableColumn maxWidth="50.0" minWidth="30.0" prefWidth="-1.0" text="Id" fx:id="fxColVendidoId"/>
+            <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Producto"
+              fx:id="fxColVendidoNombre"/>
+            <TableColumn maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="-1.0" text="Cantidad"
+              fx:id="fxColVendidoCantidad"/>
+            <TableColumn maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="-1.0" text="Precio U"
+              fx:id="fxColVendidoPrecio"/>
+          </columns>
+        </TableView>
+      </children>
       <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" percentWidth="55.0" prefWidth="360.0"/>
         <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" percentWidth="45.0"
@@ -28,108 +129,6 @@
         <RowConstraints minHeight="-Infinity" prefHeight="200.0" vgrow="ALWAYS"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER"/>
       </rowConstraints>
-      <children>
-        <GridPane hgap="5.0">
-          <columnConstraints>
-            <ColumnConstraints hgrow="NEVER"/>
-            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="300.0"/>
-          </columnConstraints>
-          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-          </rowConstraints>
-          <children>
-            <Label text="Orden"/>
-            <TextField fx:id="fxFieldId" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
-              GridPane.vgrow="NEVER"/>
-            <Label layoutX="10.0" layoutY="19.0" text="Socio" GridPane.rowIndex="1"/>
-            <Label text="Fecha" GridPane.rowIndex="2"/>
-            <LocalDateTimeTextField fx:id="fxFieldDate" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
-              GridPane.rowIndex="2" GridPane.vgrow="NEVER"/>
-            <ComboBox fx:id="fxBoxSocios" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-              GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER"/>
-          </children>
-        </GridPane>
-        <GridPane hgap="5.0" GridPane.columnIndex="1">
-          <columnConstraints>
-            <ColumnConstraints hgrow="NEVER"/>
-            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="250.0"/>
-          </columnConstraints>
-          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-          </rowConstraints>
-          <children>
-            <Label layoutX="10.0" layoutY="19.0" text="Caja" GridPane.rowIndex="1"/>
-            <Label text="Usuario" GridPane.rowIndex="2"/>
-            <Label text="Sede"/>
-            <ComboBox fx:id="fxBoxSedes" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-              GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER"/>
-            <ComboBox fx:id="fxBoxCajas" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-              GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER"/>
-            <ComboBox fx:id="fxBoxUsuarios" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-              GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="NEVER"/>
-          </children>
-        </GridPane>
-        <HBox spacing="10.0" GridPane.rowIndex="1">
-          <children>
-            <TableView fx:id="fxTableProductos" HBox.hgrow="ALWAYS">
-              <columns>
-                <TableColumn fx:id="fxColProductoId" maxWidth="50.0" minWidth="30.0" prefWidth="-1.0" text="Id"/>
-                <TableColumn fx:id="fxColProductoNombre" maxWidth="1.7976931348623157E308" minWidth="100.0"
-                  prefWidth="-1.0" text="Producto"/>
-                <TableColumn fx:id="fxColProductoCategoria" prefWidth="75.0" text="Categoria"/>
-                <TableColumn fx:id="fxColProductoPrecioU" minWidth="60.0" prefWidth="-1.0" text="Precio U"/>
-              </columns>
-            </TableView>
-            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" spacing="10.0">
-              <children>
-                <ComboBox fx:id="fxBoxCategorias" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                  promptText="Categorias" VBox.vgrow="ALWAYS"/>
-                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                  onAction="#fxBtnAdd" text="Agregar" VBox.vgrow="ALWAYS"/>
-                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                  onAction="#fxBtnEdit" text="Editar" VBox.vgrow="ALWAYS"/>
-                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                  onAction="#fxBtnRemove" text="Quitar" VBox.vgrow="ALWAYS"/>
-                <Button layoutX="10.0" layoutY="284.0" maxHeight="1.7976931348623157E308"
-                  maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#fxBtnRemoveAll" text="Limpiar"
-                  VBox.vgrow="ALWAYS"/>
-              </children>
-            </VBox>
-          </children>
-        </HBox>
-        <TableView fx:id="fxTableVendidos" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-          <columns>
-            <TableColumn fx:id="fxColVendidoId" maxWidth="50.0" minWidth="30.0" prefWidth="-1.0" text="Id"/>
-            <TableColumn fx:id="fxColVendidoNombre" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0"
-              text="Producto"/>
-            <TableColumn fx:id="fxColVendidoCantidad" maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="-1.0"
-              text="Cantidad"/>
-            <TableColumn fx:id="fxColVendidoPrecio" maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="-1.0"
-              text="Precio U"/>
-          </columns>
-        </TableView>
-        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="2">
-          <children>
-            <Button minWidth="100.0" mnemonicParsing="false" onAction="#fxBtnVoid" text="Anular"/>
-            <Button minWidth="100.0" mnemonicParsing="false" onAction="#fxBtnDiscard" text="Descartar"/>
-            <Button minWidth="100.0" mnemonicParsing="false" onAction="#fxBtnSave" text="Guardar"/>
-          </children>
-        </HBox>
-        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1"
-          GridPane.rowIndex="2">
-          <children>
-            <Label text="Total"/>
-            <TextField fx:id="fxFieldTotal"/>
-          </children>
-        </HBox>
-      </children>
-      <BorderPane.margin>
-        <Insets/>
-      </BorderPane.margin>
     </GridPane>
   </center>
   <padding>

@@ -1,4 +1,4 @@
-package casteldao;
+package casteldao.misc;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.FluentLogger.Api;

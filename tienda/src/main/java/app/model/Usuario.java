@@ -16,7 +16,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class Usuario extends ActivablePropertyEntity {
 
     public static final String TABLE_NAME = "usuarios";
-    public static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso", "activo"));
+    public static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("username", "pass", "nombre", "telefono", "email", "direccion", "descripcion", "idAcceso", "active"));
 
     private String username;
     private String pass;

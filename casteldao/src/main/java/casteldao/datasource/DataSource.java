@@ -1,8 +1,8 @@
 package casteldao.datasource;
 
 import casteldao.GenericDao;
-import casteldao.Globals;
 import casteldao.index.core.IIndex;
+import casteldao.misc.Globals;
 import casteldao.model.IEntity;
 import java.io.Serializable;
 import java.util.ArrayList;

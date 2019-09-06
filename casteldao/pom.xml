@@ -71,5 +71,11 @@
       <scope>test</scope>
       <version>1.0</version>
     </dependency>
+    <dependency>
+      <artifactId>h2</artifactId>
+      <groupId>com.h2database</groupId>
+      <version>1.4.199</version>
+    </dependency>
+
   </dependencies>
 </project>

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -10,16 +11,14 @@
 <?import org.controlsfx.control.textfield.CustomPasswordField?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-  minWidth="-Infinity" xmlns="http://javafx.com/javafx/11"
-  fx:controller="app.control.LoginPaneControl">
+  minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="app.control.LoginPaneControl">
   <bottom>
     <BorderPane BorderPane.alignment="CENTER">
       <left>
         <Label BorderPane.alignment="CENTER" minHeight="30.0" minWidth="30.0" fx:id="alertMsg"/>
       </left>
       <right>
-        <Button BorderPane.alignment="CENTER" defaultButton="true" mnemonicParsing="false"
-          onAction="#loginOnAct"
+        <Button BorderPane.alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#loginOnAct"
           text="Login" fx:id="loginButton">
           <BorderPane.margin>
             <Insets top="10.0"/>
@@ -31,18 +30,24 @@
   <center>
     <GridPane BorderPane.alignment="CENTER" hgap="5.0" vgap="3.0">
       <children>
-        <CustomPasswordField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"
-          minWidth="150.0" fx:id="passwordTextField"/>
-        <CustomTextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" minWidth="150.0"
+        <ComboBox GridPane.columnIndex="1" prefWidth="150.0" fx:id="fxBoxSedes"/>
+        <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="150.0" fx:id="fxBoxCajas"/>
+        <CustomPasswordField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" minWidth="150.0"
+          fx:id="passwordTextField"/>
+        <CustomTextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" minWidth="150.0"
           fx:id="usernameTextField"/>
-        <Label text="Username"/>
-        <Label GridPane.rowIndex="1" layoutX="10.0" layoutY="50.0" text="Password"/>
+        <Label GridPane.rowIndex="2" text="Username"/>
+        <Label GridPane.rowIndex="3" layoutX="10.0" layoutY="50.0" text="Password"/>
+        <Label text="Sede"/>
+        <Label GridPane.rowIndex="1" text="Caja"/>
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="NEVER" minWidth="10.0"/>
         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0"/>
       </columnConstraints>
       <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
       </rowConstraints>

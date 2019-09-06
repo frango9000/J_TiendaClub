@@ -4,13 +4,8 @@ import app.control.MainPaneControl;
 import app.data.DataStore;
 import app.data.SessionDB;
 import app.misc.FXMLStage;
-import app.misc.FxDialogs;
 import app.misc.Globals;
 import app.misc.PropsLoader;
-import app.model.Caja;
-import app.model.Sede;
-import java.util.Collection;
-import java.util.Set;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -64,25 +59,6 @@ public class MainFX extends Application {
             loginStage.showAndWait();
 
             primaryStage.show();
-
-            Set<Sede> sedes = sessionStore.getSedes().getById().getCacheValues();
-            if (sedes.size() == 0) {
-                FxDialogs.showWarning("No Sede", "Debes crear una sede y una caja");
-            } else {
-                if (sedes.size() == 1) {
-                    sessionStore.setSede(sedes.iterator().next());
-                } else {
-                    sessionStore.setSede(FxDialogs.showChoices("Sede:", "Sedes:", null, sedes));
-                }
-                Collection<Caja> cajas = sessionStore.getCajas().getIndexSede().getCacheKeyValues(sessionStore.getSede());
-                if (cajas.size() == 0) {
-                    FxDialogs.showWarning("No caja", "Debes crear una caja");
-                } else if (cajas.size() == 1) {
-                    sessionStore.setCaja(cajas.iterator().next());
-                } else {
-                    sessionStore.setCaja(FxDialogs.showChoices("Caja:", "Cajas:", null, cajas));
-                }
-            }
         }
     }
 }

@@ -1,6 +1,6 @@
 package casteldao.model;
 
-import casteldao.Flogger;
+import casteldao.misc.Flogger;
 import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.Objects;

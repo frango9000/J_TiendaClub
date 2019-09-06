@@ -16,7 +16,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class Producto extends ActivablePropertyEntity {
 
     public static final String TABLE_NAME = "productos";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nombre", "descripcion", "precio_venta", "iva", "idCategoria", "activo"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("nombre", "descripcion", "precio_venta", "iva", "idCategoria", "active"));
 
     protected String nombre;
     protected String descripcion;
@@ -170,7 +170,7 @@ public class Producto extends ActivablePropertyEntity {
                           .add("iva", iva)
                           .add("idCategoria", idCategoria)
                           .add("categoria", categoria.toString())
-                          .add("activo", isActive())
+                          .add("active", isActive())
                           .toString();
     }
 

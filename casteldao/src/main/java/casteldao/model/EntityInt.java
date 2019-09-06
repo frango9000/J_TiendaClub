@@ -1,7 +1,7 @@
 package casteldao.model;
 
 
-import casteldao.Flogger;
+import casteldao.misc.Flogger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

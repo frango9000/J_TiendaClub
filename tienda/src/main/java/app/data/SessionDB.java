@@ -1,14 +1,14 @@
 package app.data;
 
+import app.misc.Flogger;
+import app.misc.Globals;
 import casteldao.DataSession;
-import casteldao.Flogger;
-import casteldao.Globals;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SessionDB extends DataSession {
 
-    //Syncronize Singleton
+    //Syncronized Singleton
     private static SessionDB instance;
 
     private SessionDB() {

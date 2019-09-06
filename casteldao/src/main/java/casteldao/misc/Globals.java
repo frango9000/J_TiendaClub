@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package casteldao;
+package casteldao.misc;
 
 import java.util.logging.Level;
 
@@ -13,9 +13,9 @@ import java.util.logging.Level;
 public interface Globals {
 
     boolean DEBUG = true;
-    boolean SQL_DEBUG = false;
-    boolean SQL_CONN = false;
-    boolean VERBOSE_FACTORY = false;
+    boolean SQL_DEBUG = true;
+    boolean SQL_CONN = true;
+    boolean VERBOSE_FACTORY = true;
 
     Level LOG_LEVEL = Level.ALL;
 
