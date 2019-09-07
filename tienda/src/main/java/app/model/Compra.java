@@ -35,26 +35,6 @@ public class Compra extends EntityInt {
         super(0);
     }
 
-    public Compra(int id, int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
-        super(id);
-        setIdUsuario(idUsuario);
-        setIdSede(idSede);
-        setIdProveedor(idProveedor);
-        setFechahora(fechahora);
-    }
-
-    public Compra(int idUsuario, int idSede, int idProveedor, LocalDateTime fechahora) {
-        this(0, idUsuario, idSede, idProveedor, fechahora);
-    }
-
-    public Compra(Usuario usuario, Sede sede, Proveedor proveedor, LocalDateTime fechahora) {
-        super(0);
-        setUsuario(usuario);
-        setSede(sede);
-        setProveedor(proveedor);
-        setFechahora(fechahora);
-    }
-
     @Override
     public boolean setEntity(@NonNull ResultSet rs) {
         try {

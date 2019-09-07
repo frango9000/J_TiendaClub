@@ -1,16 +1,12 @@
 package app.control.table;
 
-import app.control.editor.CompraControl;
 import app.data.DataStore;
-import app.misc.FXMLStage;
 import app.model.Compra;
 import app.model.Sede;
 import app.model.Socio;
 import app.model.Usuario;
 import casteldao.datasource.DataSourceIdImpl;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import javafx.event.ActionEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -43,7 +39,7 @@ public class ComprasTableControl extends TableControl<Compra> {
 
     @Override
     protected String fxmlLocation() {
-        return "";
+        return "/fxml/editor/CompraEditorGridPane.fxml";
     }
 
     @Override
@@ -51,24 +47,24 @@ public class ComprasTableControl extends TableControl<Compra> {
         return DataStore.getSessionStore().getCompras();
     }
 
-    @Override
-    protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
-        CompraControl compraControl = new CompraControl();
-        FXMLStage stage = new FXMLStage(compraControl, "Creator");
-        stage.showAndWait();
-        fxTable.refresh();
-        addContent();
-    }
-
-    @Override
-    protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
-        Compra selected = fxTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            CompraControl compraControl = new CompraControl(selected);
-            FXMLStage stage = new FXMLStage(compraControl, "Editor");
-            stage.showAndWait();
-            fxTable.refresh();
-            addContent();
-        }
-    }
+//    @Override
+//    protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
+//        CompraControl compraControl = new CompraControl();
+//        FXMLStage stage = new FXMLStage(compraControl, "Creator");
+//        stage.showAndWait();
+//        fxTable.refresh();
+//        addContent();
+//    }
+//
+//    @Override
+//    protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
+//        Compra selected = fxTable.getSelectionModel().getSelectedItem();
+//        if (selected != null) {
+//            CompraControl compraControl = new CompraControl(selected);
+//            FXMLStage stage = new FXMLStage(compraControl, "Editor");
+//            stage.showAndWait();
+//            fxTable.refresh();
+//            addContent();
+//        }
+//    }
 }

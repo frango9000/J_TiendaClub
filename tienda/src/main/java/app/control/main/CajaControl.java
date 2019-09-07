@@ -1,4 +1,4 @@
-package app.control;
+package app.control.main;
 
 import app.data.DataStore;
 import app.misc.Flogger;

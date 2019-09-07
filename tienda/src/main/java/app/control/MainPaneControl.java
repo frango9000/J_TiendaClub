@@ -1,5 +1,6 @@
 package app.control;
 
+import app.control.main.CajaControl;
 import app.control.table.CajasTableControl;
 import app.control.table.CategoriasTableControl;
 import app.control.table.CierreZTableControl;

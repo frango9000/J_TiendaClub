@@ -7,34 +7,30 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<GridPane alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1"
   fx:controller="app.control.editor.SedeEditorControl">
   <children>
+    <CheckBox GridPane.columnIndex="1" GridPane.rowIndex="4" mnemonicParsing="false" fx:id="fxCheckActivo"/>
     <Label text="ID"/>
-    <Label text="activo" GridPane.rowIndex="4"/>
-    <Label text="Nombre" GridPane.rowIndex="1"/>
-    <Label text="Telefono" GridPane.rowIndex="2"/>
-    <Label text="Direccion" GridPane.rowIndex="3"/>
-    <TextField fx:id="fxId" editable="false" layoutX="80.0" layoutY="70.0" GridPane.columnIndex="1"/>
-    <TextField fx:id="fxNombre" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-    <TextField fx:id="fxTelefono" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-    <TextArea fx:id="fxDireccion" prefHeight="20.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
-      GridPane.rowIndex="3" GridPane.vgrow="ALWAYS"/>
-    <CheckBox fx:id="fxCheckActivo" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <Label GridPane.rowIndex="4" text="activo"/>
+    <Label GridPane.rowIndex="1" text="Nombre"/>
+    <Label GridPane.rowIndex="2" text="Telefono"/>
+    <Label GridPane.rowIndex="3" text="Direccion"/>
+    <TextArea GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS"
+      prefHeight="20.0" fx:id="fxDireccion"/>
+    <TextField GridPane.columnIndex="1" editable="false" layoutX="80.0" layoutY="70.0" fx:id="fxId"/>
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="fxNombre"/>
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="fxTelefono"/>
   </children>
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="100.0" minWidth="70.0" prefWidth="70.0"/>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0"/>
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
-      vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
-      vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
-      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
     <RowConstraints maxHeight="1.7976931348623157E308" valignment="CENTER" vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
-      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
   </rowConstraints>
 </GridPane>

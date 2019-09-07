@@ -22,8 +22,8 @@
     <Label GridPane.rowIndex="6" text="descripcion"/>
     <Label GridPane.rowIndex="7" layoutX="15.0" layoutY="232.0" text="fechaIn"/>
     <Label GridPane.rowIndex="8" text="activo"/>
-    <LocalDateTimeTextField GridPane.columnIndex="1" GridPane.rowIndex="7" allowNull="false" editable="false"
-      pickerShowing="true" fx:id="fxPickerFechaIn"/>
+    <LocalDateTimeTextField GridPane.columnIndex="1" GridPane.rowIndex="7" allowNull="false" pickerShowing="true"
+      fx:id="fxPickerFechaIn"/>
     <TextArea style="-fx-wrap-text: true;" GridPane.columnIndex="1" GridPane.rowIndex="5" minHeight="-Infinity"
       prefHeight="40.0" fx:id="fxDireccion">
       <GridPane.margin>
@@ -59,14 +59,14 @@
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0"/>
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
-    <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
-    <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
-    <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
-    <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
     <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES"/>
     <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="70.0" vgrow="SOMETIMES"/>
-    <RowConstraints minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER"/>
-    <RowConstraints minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
   </rowConstraints>
 </GridPane>

@@ -23,7 +23,7 @@
     <Label GridPane.rowIndex="5" text="Producto"/>
     <Label GridPane.rowIndex="4" text="Categoria"/>
     <Label GridPane.rowIndex="7" text="Fecha"/>
-    <LocalDateTimeTextField GridPane.columnIndex="1" GridPane.rowIndex="7" editable="false" fx:id="fxFieldDate"/>
+    <LocalDateTimeTextField GridPane.columnIndex="1" GridPane.rowIndex="7" fx:id="fxFieldDate"/>
     <TextField GridPane.columnIndex="1" editable="false" layoutX="80.0" layoutY="70.0" fx:id="fxId"/>
     <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" fx:id="fxCantidad"/>
   </children>
@@ -32,21 +32,13 @@
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0"/>
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
-      vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
-      vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
-      vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
-      vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
-      vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
-      vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" valignment="CENTER"
-      vgrow="NEVER"/>
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" prefHeight="30.0" valignment="CENTER"
-      vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
   </rowConstraints>
 </GridPane>
