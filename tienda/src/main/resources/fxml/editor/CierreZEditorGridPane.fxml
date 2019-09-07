@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import jfxtras.scene.control.LocalDateTimeTextField?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1"
+  fx:controller="app.control.editor.CierreZEditorControl">
+  <children>
+    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="1.7976931348623157E308" fx:id="fxBoxCaja"/>
+    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="1.7976931348623157E308" fx:id="fxBoxSede"/>
+    <Label text="ID"/>
+    <Label GridPane.rowIndex="2" text="Caja"/>
+    <Label GridPane.rowIndex="3" layoutX="15.0" layoutY="232.0" text="Apertura"/>
+    <Label GridPane.rowIndex="4" text="Fecha Cierre"/>
+    <Label GridPane.rowIndex="1" text="Sede"/>
+    <LocalDateTimeTextField GridPane.columnIndex="1" GridPane.rowIndex="3" allowNull="false" editable="false"
+      pickerShowing="true" fx:id="fxDateApertura"/>
+    <LocalDateTimeTextField GridPane.columnIndex="1" GridPane.rowIndex="4" editable="false" pickerShowing="true"
+      fx:id="fxDateCierre"/>
+    <TextField GridPane.columnIndex="1" editable="false" layoutX="80.0" layoutY="70.0" fx:id="fxId"/>
+  </children>
+  <columnConstraints>
+    <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="100.0" minWidth="70.0" prefWidth="70.0"/>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0"/>
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER"/>
+    <RowConstraints minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER"/>
+  </rowConstraints>
+</GridPane>

@@ -10,14 +10,6 @@
         <module name="tienda" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="11">
-      <module name="asd" target="11.0.4" />
-      <module name="asdad" target="1.5" />
-    </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="tiendaclub" options="" />
-    </option>
+    <bytecodeTargetLevel target="11" />
   </component>
 </project>

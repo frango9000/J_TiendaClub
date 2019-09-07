@@ -38,11 +38,11 @@ public class LoginPaneControl extends BorderPane {
 
         fxBoxSedes.getItems().addAll(DataStore.getSessionStore().getSedes().getAllCache());
         fxBoxSedes.setOnAction(event -> fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas()));
-        fxBoxSedes.getSelectionModel().select(1);
+        fxBoxSedes.getSelectionModel().select(0);
 
         if (fxBoxSedes.getSelectionModel().getSelectedItem() != null) {
             fxBoxCajas.getItems().addAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas());
-            fxBoxCajas.getSelectionModel().select(1);
+            fxBoxCajas.getSelectionModel().select(0);
         }
 
         loginButton.setDisable(true);

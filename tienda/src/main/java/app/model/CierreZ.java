@@ -30,16 +30,6 @@ public class CierreZ extends EntityInt {
         super(0);
     }
 
-    public CierreZ(int id, int idCaja, LocalDateTime apertura) {
-        super(id);
-        setIdCaja(idCaja);
-        setApertura(apertura);
-    }
-
-    public CierreZ(int idCaja, LocalDateTime apertura) {
-        this(0, idCaja, apertura);
-    }
-
     public CierreZ(Caja caja, LocalDateTime apertura) {
         super(0);
         this.caja     = caja;
@@ -63,7 +53,7 @@ public class CierreZ extends EntityInt {
     @Override
     public boolean buildStatement(@NonNull PreparedStatement pst) {
         try {
-            pst.setInt(1, getId());
+            pst.setInt(1, getCaja().getId());
             pst.setTimestamp(2, DateUtils.toTimestamp(getApertura()));
             pst.setTimestamp(3, DateUtils.toTimestamp(getCierre()));
             return true;

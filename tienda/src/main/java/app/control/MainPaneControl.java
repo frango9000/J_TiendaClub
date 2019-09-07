@@ -2,6 +2,7 @@ package app.control;
 
 import app.control.table.CajasTableControl;
 import app.control.table.CategoriasTableControl;
+import app.control.table.CierreZTableControl;
 import app.control.table.ComprasTableControl;
 import app.control.table.ProductosTableControl;
 import app.control.table.ProveedoresTableControl;
@@ -10,16 +11,18 @@ import app.control.table.SociosTableControl;
 import app.control.table.TransferenciasTableControl;
 import app.control.table.UsuariosTableControl;
 import app.control.table.VentasTableControl;
+import app.data.DataStore;
+import app.misc.FXMLStage;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.StatusBar;
 
-public class MainPaneControl {
+public class MainPaneControl extends BorderPane {
 
     @FXML
     public MenuItem fxMenuUsuarios;
@@ -35,7 +38,13 @@ public class MainPaneControl {
     public MenuItem fxMenuVentas;
     @FXML
     public MenuItem fxMenuCompras;
+    @FXML
     public MenuItem fxMenuTransferencias;
+    @FXML
+    public MenuItem fxMenuStatus;
+    public MenuItem fxMenuCierres;
+    public MenuItem fxMenuCaja;
+    public MenuItem fxMenuCajaDetail;
     @FXML
     private MenuItem menuUsuarios;
     @FXML
@@ -48,22 +57,20 @@ public class MainPaneControl {
     private MenuItem fxMenuCajas;
 
     public static Pane loadFXML() {
-        String url = "/fxml/MainPane.fxml";
-        Pane pane = null;
-        try {
-            pane = FXMLLoader.load(MainPaneControl.class.getResource(url));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return pane;
+        return FXMLStage.getPane("/fxml/MainPane.fxml");
     }
 
-    public BorderPane getMainPane() {
-        return mainPane;
+    public void resetStatusPane() {
+        Node pane = StatusControl.loadFXML();
+        System.out.println(mainPane != null);
+        System.out.println(pane != null);
+        mainPane.setCenter(pane);
     }
+
 
     @FXML
     public void initialize() {
+        resetStatusPane();
 
     }
 
@@ -125,5 +132,23 @@ public class MainPaneControl {
     public void fxMenuTransferenciasAction(ActionEvent actionEvent) {
         TransferenciasTableControl u = new TransferenciasTableControl();
         mainPane.setCenter(u);
+    }
+
+    @FXML
+    public void fxMenuStatusAction(ActionEvent actionEvent) {
+        resetStatusPane();
+    }
+
+    public void fxMenuCierreAction(ActionEvent actionEvent) {
+        CierreZTableControl u = new CierreZTableControl();
+        mainPane.setCenter(u);
+    }
+
+    public void fxMenuCajaAction(ActionEvent actionEvent) {
+        CajaControl cajaControl = new CajaControl(DataStore.getSessionStore().getCaja());
+        mainPane.setCenter(cajaControl);
+    }
+
+    public void fxMenuCajaDetailAction(ActionEvent actionEvent) {
     }
 }

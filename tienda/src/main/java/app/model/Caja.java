@@ -6,11 +6,15 @@ import app.misc.Flogger;
 import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.Sets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 
@@ -100,6 +104,20 @@ public class Caja extends ActivablePropertyEntity {
         this.sede   = sede;
         this.idSede = getSede().getId();
     }
+
+    public Set<CierreZ> getCierreZs() {
+        return DataStore.getSessionStore().getCierreZs().getIndexCaja().getCacheKeyValues(this);
+    }
+
+    public TreeSet<CierreZ> getTreeCierreZs() {
+        TreeSet<CierreZ> treeSet = Sets.newTreeSet(Comparator.comparing(CierreZ::getApertura));
+        treeSet.addAll(getCierreZs());
+        System.out.println(getCierreZs().size());
+        System.out.println(treeSet.size());
+        return treeSet;
+    }
+
+
 
     @Override
     public ArrayList<String> getColumnNames() {

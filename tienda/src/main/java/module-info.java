@@ -8,6 +8,7 @@ module tienda {
     requires flogger;
     requires jfxtras.controls;
     requires java.sql;
+    requires org.apache.commons.lang3;
 
     opens app.model to javafx.base, casteldao;
     opens app to javafx.graphics;

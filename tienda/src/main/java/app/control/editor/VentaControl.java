@@ -3,6 +3,7 @@ package app.control.editor;
 import app.data.DataStore;
 import app.misc.Flogger;
 import app.misc.FxDialogs;
+import app.misc.FxUtilTest;
 import app.model.Caja;
 import app.model.Categoria;
 import app.model.Producto;
@@ -34,6 +35,7 @@ public class VentaControl extends BorderPane {
 
     protected final ObservableList<Producto> listedProductos = FXCollections.observableArrayList();
     protected final ObservableList<Vendido> listedVendidos = FXCollections.observableArrayList();
+
 
     @FXML
     public ComboBox<Socio> fxBoxExchangee;
@@ -96,6 +98,8 @@ public class VentaControl extends BorderPane {
             fxBoxUsuarios.setDisable(false);
         }
         fxBoxExchangee.getItems().addAll(DataStore.getSessionStore().getSocios().getAllCache());
+        FxUtilTest.autoCompleteComboBoxPlus(fxBoxExchangee, (typedText, itemToCompare) -> itemToCompare.getNombre().toLowerCase().contains(typedText.toLowerCase()));
+
 
         fxBoxSedes.getItems().addAll(DataStore.getSessionStore().getSedes().getAllCache());
         fxBoxSedes.setOnAction(event -> fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas()));

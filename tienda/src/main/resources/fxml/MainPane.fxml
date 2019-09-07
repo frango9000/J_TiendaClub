@@ -28,7 +28,9 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Caja">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuCajaAction" text="Ver Caja" fx:id="fxMenuCaja"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuCajaDetailAction" text="Ver Dia"
+                  fx:id="fxMenuCajaDetail"/>
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Clientes">
@@ -69,8 +71,10 @@
                   fx:id="fxMenuCategorias"/>
                 <MenuItem mnemonicParsing="false" onAction="#fxMenuVentasAction" text="Ventas" fx:id="fxMenuVentas"/>
                 <MenuItem mnemonicParsing="false" onAction="#fxMenuComprasAction" text="Compras" fx:id="fxMenuCompras"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuTransferenciasAction" text="Compras"
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuTransferenciasAction" text="Transferencias"
                   fx:id="fxMenuTransferencias"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuStatusAction" text="Status" fx:id="fxMenuStatus"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuCierreAction" text="Cierres" fx:id="fxMenuCierres"/>
                 <SeparatorMenuItem mnemonicParsing="false"/>
               </items>
             </Menu>

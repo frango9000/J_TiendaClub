@@ -149,7 +149,7 @@ public class DataStore {
 
     public void firstQuery() {
         getSessionDB().setAutoclose(false);
-        getAccesos().getDao().queryAll();
+        getAccesos().getAll();
         getUsuarios().getAll();
         getProveedores().getAll();
         getSocios().getAll();
@@ -159,6 +159,10 @@ public class DataStore {
         getProductos().getAll();
         getVentas().getAll();
         getVendidos().getAll();
+        getCompras().getAll();
+        getComprados().getAll();
+        getTransferencias().getAll();
+        getCierreZs().getAll();
         getSessionDB().setAutoclose(true);
     }
 
