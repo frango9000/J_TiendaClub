@@ -48,8 +48,16 @@ public class TestSession extends DataSession {
         return success;
     }
 
-    public int init() {
+    public int createTables() {
         return createTables(TestSession.class.getResource("/test/tables.sql").getPath());
+    }
+
+    public int insertData() {
+        return createTables(TestSession.class.getResource("/test/data.sql").getPath());
+    }
+
+    public int init() {
+        return createTables() + insertData();
     }
 
 }

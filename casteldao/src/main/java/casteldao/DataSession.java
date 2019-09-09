@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -93,6 +94,11 @@ public class DataSession implements Globals {
         this.jdbcPassword = jdbcPassword;
     }
 
+    public static void printSql(Object sql) {
+        if (Globals.SQL_DEBUG) {
+            Flogger.atInfo().log(sql.toString());
+        }
+    }
 
     /**
      * establece la conexion a la DB
@@ -217,15 +223,13 @@ public class DataSession implements Globals {
         ArrayList<String> tableNames = new ArrayList<>();
         if (connect(catalogName)) {
             try (Statement stmt = conn.createStatement()) {
+                printSql(sql);
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     tableNames.add(rs.getString(1));
                 }
-                if (Globals.SQL_DEBUG) {
-                    System.out.println(sql);
-                }
             } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log();
+                Flogger.atSevere().withCause(ex).log(sql);
             } finally {
                 close();
             }
@@ -267,15 +271,13 @@ public class DataSession implements Globals {
         ArrayList<String> dbNames = new ArrayList<>();
         if (connectTry()) {
             try (Statement stmt = conn.createStatement()) {
+                printSql(sql);
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     dbNames.add(rs.getString(1));
                 }
-                if (Globals.SQL_DEBUG) {
-                    System.out.println(sql);
-                }
             } catch (SQLException ex) {
-                Flogger.atSevere().withCause(ex).log();
+                Flogger.atSevere().withCause(ex).log(sql);
             } finally {
                 close();
             }
@@ -293,8 +295,7 @@ public class DataSession implements Globals {
         ArrayList<String> tables = listTables(catalogName);
         StringBuilder tablesString = new StringBuilder();
         tables.forEach(cnsmr -> tablesString.append(cnsmr).append("\n"));
-        if (Globals.SQL_DEBUG)
-            System.out.println(tablesString.toString());
+        printSql(tablesString);
         Flogger.atInfo().log("Valid Schema: " + catalogName + "->" + catalogModel.matches(tablesString.toString()));
         return catalogModel.matches(tablesString.toString());
     }
@@ -321,10 +322,8 @@ public class DataSession implements Globals {
         if (connectTry() && catalogName.length() > 1) {
             String sql = "CREATE DATABASE " + catalogName;
             try (Statement statement = conn.createStatement()) {
+                printSql(sql);
                 success = statement.executeUpdate(sql) > 0;
-                if (Globals.SQL_DEBUG) {
-                    System.out.println(sql);
-                }
             } catch (SQLException e) {
                 Flogger.atSevere().withCause(e).log(sql);
             } finally {
@@ -334,17 +333,19 @@ public class DataSession implements Globals {
         return success;
     }
 
+    public boolean createCatalog() {
+        return createCatalog(getJdbcCatalog());
+    }
+
     public boolean dropCatalog(String catalogName) {
         boolean success = false;
         if (connectTry() && catalogName.trim().length() > 1) {
             String sql = "DROP DATABASE " + catalogName;
             try (Statement statement = conn.createStatement()) {
+                printSql(sql);
                 success = statement.executeUpdate(sql) > 0;
-                if (Globals.SQL_DEBUG) {
-                    System.out.println(sql);
-                }
             } catch (SQLException e) {
-                Flogger.atSevere().withCause(e).log();
+                Flogger.atSevere().withCause(e).log(sql);
             } finally {
                 close();
             }
@@ -352,17 +353,18 @@ public class DataSession implements Globals {
         return success;
     }
 
+    public boolean dropCatalog() {
+        return createCatalog(getJdbcCatalog());
+    }
     public boolean hasCatalog(String catalogName) {
         boolean hasCatalog = false;
         if (connectTry() && catalogName.trim().length() > 1) {
             String sql = "SHOW DATABASES like '" + catalogName.trim() + "'";
             try (Statement statement = conn.createStatement()) {
+                printSql(sql);
                 hasCatalog = statement.execute(sql);
-                if (Globals.SQL_DEBUG) {
-                    System.out.println(sql);
-                }
             } catch (SQLException e) {
-                Flogger.atSevere().withCause(e).log();
+                Flogger.atSevere().withCause(e).log(sql);
             } finally {
                 close();
             }
@@ -375,12 +377,10 @@ public class DataSession implements Globals {
         if (connectTry() && catalogName.trim().length() > 1) {
             String sql = "USE '" + catalogName.trim() + "'";
             try (Statement statement = conn.createStatement()) {
+                printSql(sql);
                 hasCatalog = statement.execute(sql);
-                if (Globals.SQL_DEBUG) {
-                    System.out.println(sql);
-                }
             } catch (SQLException e) {
-                Flogger.atSevere().withCause(e).log();
+                Flogger.atSevere().withCause(e).log(sql);
             } finally {
                 close();
             }
@@ -403,22 +403,18 @@ public class DataSession implements Globals {
             if (connect()) {
                 for (String sql : cmds) {
                     try (Statement stmt = getConn().createStatement()) {
+                        printSql(sql);
                         stmt.executeUpdate(sql.trim());
                         rows++;
-                        if (Globals.SQL_DEBUG) {
-                            System.out.println(sql);
-                        }
                     } catch (SQLException ex) {
                         Flogger.atSevere().withCause(ex).log(sql);
                     }
                 }
             }
         } catch (FileNotFoundException e) {
-            Flogger.atSevere().withCause(e).log();
+            Flogger.atSevere().withCause(e).log(sqlcmd.toString());
         } finally {
-            if (Globals.SQL_DEBUG) {
-                System.out.println("Tables created: " + rows);
-            }
+            printSql("Tables created: " + rows);
             close();
         }
         return rows;
@@ -437,18 +433,16 @@ public class DataSession implements Globals {
             if (connect()) {
                 for (String sql : cmds) {
                     try (Statement stmt = getConn().createStatement()) {
+                        printSql(sql);
                         stmt.executeUpdate(sql.trim());
                         rows++;
-                        if (Globals.SQL_DEBUG) {
-                            System.out.println(sql);
-                        }
                     } catch (SQLException ex) {
                         Flogger.atSevere().withCause(ex).log(sql);
                     }
                 }
             }
         } catch (FileNotFoundException e) {
-            Flogger.atSevere().withCause(e).log();
+            Flogger.atSevere().withCause(e).log(sqlcmd.toString());
         } finally {
             if (Globals.SQL_DEBUG) {
                 System.out.println("Views created: " + rows);
@@ -471,17 +465,15 @@ public class DataSession implements Globals {
             if (connect()) {
                 for (String sql : cmds) {
                     try (Statement stmt = conn.createStatement()) {
+                        printSql(sql);
                         rows += stmt.executeUpdate(sql.trim());
-                        if (Globals.SQL_DEBUG) {
-                            System.out.println(sql);
-                        }
                     } catch (SQLException ex) {
                         Flogger.atSevere().withCause(ex).log(sql);
                     }
                 }
             }
         } catch (FileNotFoundException e) {
-            Flogger.atSevere().withCause(e).log();
+            Flogger.atSevere().withCause(e).log(sqlcmd.toString());
         } finally {
             if (Globals.SQL_DEBUG) {
                 System.out.println("Inserts: " + rows);
@@ -490,6 +482,32 @@ public class DataSession implements Globals {
         }
         return rows;
     }
+
+    public boolean dropTable(String tableName) {
+        boolean droped = false;
+        if (connect() && tableName.trim().length() > 1) {
+            String sql = "DROP TABLE '" + tableName.trim() + "'";
+            try (Statement statement = conn.createStatement()) {
+                printSql(sql);
+                droped = statement.execute(sql);
+            } catch (SQLException e) {
+                Flogger.atSevere().withCause(e).log(sql);
+            } finally {
+                close();
+            }
+        }
+        return droped;
+    }
+
+    public int dropTables(List<String> tables) {
+        int rows = 0;
+        for (String table : tables) {
+            if (dropTable(table))
+                rows++;
+        }
+        return rows;
+    }
+
 
     @Override
     public String toString() {
