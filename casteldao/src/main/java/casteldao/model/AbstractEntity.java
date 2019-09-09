@@ -83,4 +83,5 @@ public abstract class AbstractEntity<I extends Serializable> implements IEntity<
                           .add("id", id)
                           .toString();
     }
+
 }

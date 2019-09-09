@@ -105,11 +105,17 @@ public class Categoria extends ActivablePropertyEntity {
 
 
     @Override
-    public String toString() {
+    public String fullToString() {
         return MoreObjects.toStringHelper(this)
                           .add("id", id)
                           .add("nombre", nombre)
                           .add("active", isActive())
                           .toString();
+    }
+
+
+    @Override
+    public String toString() {
+        return getId() + " " + getNombre();
     }
 }

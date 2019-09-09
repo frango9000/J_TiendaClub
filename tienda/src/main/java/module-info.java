@@ -13,6 +13,7 @@ module tienda {
     opens app.model to javafx.base, casteldao;
     opens app to javafx.graphics;
     opens app.control to javafx.fxml;
+    opens app.control.main to javafx.fxml;
     opens app.control.table to javafx.fxml;
     opens app.control.editor to javafx.fxml;
 }

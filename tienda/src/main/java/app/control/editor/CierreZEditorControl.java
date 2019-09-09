@@ -4,6 +4,7 @@ import app.data.DataStore;
 import app.model.Caja;
 import app.model.CierreZ;
 import app.model.Sede;
+import app.model.Usuario;
 import java.time.LocalDateTime;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -20,7 +21,11 @@ public class CierreZEditorControl extends GridControl<CierreZ> {
     @FXML
     public LocalDateTimeTextField fxDateApertura;
     @FXML
+    public ComboBox<Usuario> fxBoxUsuarioApertura;
+    @FXML
     public LocalDateTimeTextField fxDateCierre;
+    @FXML
+    public ComboBox<Usuario> fxBoxUsuarioCierre;
     @FXML
     private TextField fxId;
 
@@ -28,6 +33,8 @@ public class CierreZEditorControl extends GridControl<CierreZ> {
     public void initialize() {
         fxBoxSede.getItems().addAll(DataStore.getSessionStore().getSedes().getAllCache());
         fxBoxSede.setOnAction(event -> fxBoxCaja.getItems().setAll(fxBoxSede.getSelectionModel().getSelectedItem().getCajas()));
+        fxBoxUsuarioApertura.getItems().addAll(DataStore.getSessionStore().getUsuarios().getAllCache());
+        fxBoxUsuarioCierre.getItems().addAll(fxBoxUsuarioApertura.getItems());
 
     }
 
@@ -36,13 +43,14 @@ public class CierreZEditorControl extends GridControl<CierreZ> {
     public void updateEditee(CierreZ editee) {
         editee.setCaja(fxBoxCaja.getSelectionModel().getSelectedItem());
         editee.setApertura(fxDateApertura.getText().length() < 1 ? LocalDateTime.now() : fxDateApertura.getLocalDateTime());
+        editee.setUsuarioApertura(fxBoxUsuarioApertura.getSelectionModel().getSelectedItem());
         editee.setCierre(fxDateCierre.getText().length() < 1 ? null : fxDateCierre.getLocalDateTime());
+        editee.setUsuarioCierre(fxBoxUsuarioCierre.getSelectionModel().getSelectedItem());
     }
 
     @Override
     public CierreZ buildNew() {
-        CierreZ editee = new CierreZ(fxBoxCaja.getSelectionModel().getSelectedItem(),
-                                     fxDateApertura.getText().length() < 1 ? LocalDateTime.now() : fxDateApertura.getLocalDateTime());
+        CierreZ editee = new CierreZ();
         updateEditee(editee);
         return editee;
     }
@@ -52,13 +60,17 @@ public class CierreZEditorControl extends GridControl<CierreZ> {
         if (editee.getId() > 0)
             fxId.setText((Integer.toString(editee.getId())));
         fxBoxSede.getSelectionModel().select(editee.getCaja().getSede());
+        fxBoxCaja.getItems().setAll(editee.getCaja().getSede().getCajas());
         fxBoxCaja.getSelectionModel().select(editee.getCaja());
         fxDateApertura.setLocalDateTime(editee.getApertura());
+        fxBoxUsuarioApertura.getSelectionModel().select(editee.getUsuarioApertura());
         fxDateCierre.setLocalDateTime(editee.getCierre());
+        fxBoxUsuarioCierre.getSelectionModel().select(editee.getUsuarioCierre());
     }
 
     @Override
     public boolean validFields() {
-        return fxBoxCaja.getSelectionModel().getSelectedItem() != null;
+        return fxBoxCaja.getSelectionModel().getSelectedItem() != null &&
+               fxBoxUsuarioApertura.getSelectionModel().getSelectedItem() != null;
     }
 }

@@ -198,7 +198,7 @@ public class Usuario extends ActivablePropertyEntity {
     }
 
     @Override
-    public String toString() {
+    public String fullToString() {
         return MoreObjects.toStringHelper(this)
                           .add("id", id)
                           .add("username", username)
@@ -214,9 +214,7 @@ public class Usuario extends ActivablePropertyEntity {
     }
 
     @Override
-    public String toStringFormatted() {
-        return MoreObjects.toStringHelper(this)
-                          .add("id", id)
-                          .add("username", username).toString();
+    public String toString() {
+        return getId() + " " + getUsername();
     }
 }

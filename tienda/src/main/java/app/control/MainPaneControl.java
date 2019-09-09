@@ -14,10 +14,10 @@ import app.control.table.UsuariosTableControl;
 import app.control.table.VentasTableControl;
 import app.data.DataStore;
 import app.misc.FXMLStage;
-import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -25,131 +25,198 @@ import org.controlsfx.control.StatusBar;
 
 public class MainPaneControl extends BorderPane {
 
-    @FXML
-    public MenuItem fxMenuUsuarios;
+    private static BorderPane staticMain;
     @FXML
     public MenuItem fxMenuProveedores;
     @FXML
-    public MenuItem fxMenuSocios;
+    public MenuItem fxMenuEditorUsuarios;
     @FXML
-    public MenuItem fxMenuProductos;
+    public MenuItem fxMenuEditorSocios;
     @FXML
-    public MenuItem fxMenuCategorias;
+    public MenuItem fxMenuEditorProductos;
     @FXML
-    public MenuItem fxMenuVentas;
+    public MenuItem fxMenuEditorCategorias;
     @FXML
-    public MenuItem fxMenuCompras;
+    public MenuItem fxMenuEditorVentas;
     @FXML
-    public MenuItem fxMenuTransferencias;
+    public MenuItem fxMenuEditorCompras;
     @FXML
     public MenuItem fxMenuStatus;
-    public MenuItem fxMenuCierres;
+    @FXML
+    public MenuItem fxMenuEditorTransferencias;
+    @FXML
+    public MenuItem fxMenuEditorCierres;
+    @FXML
     public MenuItem fxMenuCaja;
+    @FXML
     public MenuItem fxMenuCajaDetail;
     @FXML
-    private MenuItem menuUsuarios;
+    public Menu fxMenuSede;
     @FXML
-    private StatusBar mainStatusBar;
+    public MenuItem fxMenuVerSede;
+    @FXML
+    public MenuItem fxMenuVerInventario;
+    @FXML
+    public MenuItem fxMenuNuevaCompra;
+    @FXML
+    public MenuItem fxMenuNuevaTransferencia;
+    @FXML
+    public MenuItem fxMenuVerCaja;
+    @FXML
+    public MenuItem fxMenuCajaNuevaVenta;
+    @FXML
+    public Menu fxMenuClientes;
+    @FXML
+    public MenuItem fxMenuNuevoSocio;
+    @FXML
+    public MenuItem fxMenuListaSocios;
+    @FXML
+    public MenuItem fxMenuNuevoProveedor;
+    @FXML
+    public MenuItem fxMenuListaProveedores;
+    @FXML
+    public Menu fxMenuEditores;
+    @FXML
+    public MenuItem fxMenuEditorSedes;
+    @FXML
+    public MenuItem fxMenuEditorCajas;
+    @FXML
+    public MenuItem fxMenuEditorProveedores;
     @FXML
     private BorderPane mainPane;
     @FXML
-    private MenuItem fxMenuSedes;
-    @FXML
-    private MenuItem fxMenuCajas;
+    private StatusBar mainStatusBar;
+
+    public static void setCenter(Pane pane) {
+        staticMain.setCenter(pane);
+    }
 
     public static Pane loadFXML() {
         return FXMLStage.getPane("/fxml/MainPane.fxml");
     }
 
+    @FXML
+    public void initialize() {
+        staticMain = mainPane;
+        resetStatusPane();
+    }
+
     public void resetStatusPane() {
         Node pane = StatusControl.loadFXML();
-        System.out.println(mainPane != null);
-        System.out.println(pane != null);
         mainPane.setCenter(pane);
     }
 
-
     @FXML
-    public void initialize() {
-        resetStatusPane();
-
-    }
-
-    @FXML
-    private void fxMenuUsuariosAction(ActionEvent actionEvent) throws IOException {
-        UsuariosTableControl u = new UsuariosTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    private void fxMenuSedesAction(ActionEvent actionEvent) throws IOException {
-        SedesTableControl u = new SedesTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    private void fxMenuCajasAction(ActionEvent actionEvent) {
-        CajasTableControl u = new CajasTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    public void fxMenuProveedoresAction(ActionEvent actionEvent) {
-        ProveedoresTableControl u = new ProveedoresTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    public void fxMenuSociosAction(ActionEvent actionEvent) {
-        SociosTableControl u = new SociosTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    public void fxMenuCategoriasAction(ActionEvent actionEvent) {
-        CategoriasTableControl u = new CategoriasTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    public void fxMenuProductosAction(ActionEvent actionEvent) {
-        ProductosTableControl u = new ProductosTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    public void fxMenuVentasAction(ActionEvent actionEvent) {
-        VentasTableControl u = new VentasTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    public void fxMenuComprasAction(ActionEvent actionEvent) {
-        ComprasTableControl u = new ComprasTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    public void fxMenuTransferenciasAction(ActionEvent actionEvent) {
-        TransferenciasTableControl u = new TransferenciasTableControl();
-        mainPane.setCenter(u);
-    }
-
-    @FXML
-    public void fxMenuStatusAction(ActionEvent actionEvent) {
-        resetStatusPane();
-    }
-
-    public void fxMenuCierreAction(ActionEvent actionEvent) {
-        CierreZTableControl u = new CierreZTableControl();
-        mainPane.setCenter(u);
-    }
-
     public void fxMenuCajaAction(ActionEvent actionEvent) {
         CajaControl cajaControl = new CajaControl(DataStore.getSessionStore().getCaja());
         mainPane.setCenter(cajaControl);
     }
 
+    @FXML
     public void fxMenuCajaDetailAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuListaProveedoresAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuNuevoProveedorAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuListaSociosAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuNuevoSocioAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuNuevaVentaAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuNuevaTransferenciaAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuNuevaCompraAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuVerInventarioAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuVerSedeAction(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void fxMenuExit(ActionEvent actionEvent) {
+    }
+
+    //Editor Menu Items
+    @FXML
+    private void fxMenuEditorUsuariosAction(ActionEvent actionEvent) {
+        UsuariosTableControl u = new UsuariosTableControl();
+        mainPane.setCenter(u);
+    }
+    @FXML
+    private void fxMenuEditorSedesAction(ActionEvent actionEvent) {
+        SedesTableControl u = new SedesTableControl();
+        mainPane.setCenter(u);
+    }
+    @FXML
+    private void fxMenuEditorCajasAction(ActionEvent actionEvent) {
+        CajasTableControl u = new CajasTableControl();
+        mainPane.setCenter(u);
+    }
+    @FXML
+    public void fxMenuEditorProveedoresAction(ActionEvent actionEvent) {
+        ProveedoresTableControl u = new ProveedoresTableControl();
+        mainPane.setCenter(u);
+    }
+    @FXML
+    public void fxMenuEditorSociosAction(ActionEvent actionEvent) {
+        SociosTableControl u = new SociosTableControl();
+        mainPane.setCenter(u);
+    }
+    @FXML
+    public void fxMenuEditorCategoriasAction(ActionEvent actionEvent) {
+        CategoriasTableControl u = new CategoriasTableControl();
+        mainPane.setCenter(u);
+    }
+    @FXML
+    public void fxMenuEditorProductosAction(ActionEvent actionEvent) {
+        ProductosTableControl u = new ProductosTableControl();
+        mainPane.setCenter(u);
+    }
+    @FXML
+    public void fxMenuEditorVentasAction(ActionEvent actionEvent) {
+        VentasTableControl u = new VentasTableControl();
+        mainPane.setCenter(u);
+    }
+    @FXML
+    public void fxMenuEditorComprasAction(ActionEvent actionEvent) {
+        ComprasTableControl u = new ComprasTableControl();
+        mainPane.setCenter(u);
+    }
+    @FXML
+    public void fxMenuEditorTransferenciasAction(ActionEvent actionEvent) {
+        TransferenciasTableControl u = new TransferenciasTableControl();
+        mainPane.setCenter(u);
+    }
+
+    @FXML
+    public void fxMenuEditorCierreAction(ActionEvent actionEvent) {
+        CierreZTableControl u = new CierreZTableControl();
+        mainPane.setCenter(u);
+    }
+
+
+    @FXML
+    public void fxMenuStatusAction(ActionEvent actionEvent) {
+        resetStatusPane();
     }
 }

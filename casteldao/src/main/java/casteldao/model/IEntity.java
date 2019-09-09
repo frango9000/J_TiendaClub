@@ -62,7 +62,4 @@ public interface IEntity<I extends Serializable> extends IIdentifiable<I> {
     void commit();
 
 
-    default String toStringFormatted() {
-        return getId().toString();
-    }
 }

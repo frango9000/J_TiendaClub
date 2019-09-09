@@ -22,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -53,6 +54,8 @@ public class VentaControl extends BorderPane {
     public Label fxLabelType;
     @FXML
     public Label fxLabelCaja;
+    @FXML
+    public Button fxBtnNew;
 
     @FXML
     private TableView<Vendido> fxTableVendidos;
@@ -98,7 +101,6 @@ public class VentaControl extends BorderPane {
             fxBoxUsuarios.setDisable(false);
         }
         fxBoxExchangee.getItems().addAll(DataStore.getSessionStore().getSocios().getAllCache());
-        FxUtilTest.autoCompleteComboBoxPlus(fxBoxExchangee, (typedText, itemToCompare) -> itemToCompare.getNombre().toLowerCase().contains(typedText.toLowerCase()));
 
         fxBoxSedes.getItems().addAll(DataStore.getSessionStore().getSedes().getAllCache());
         fxBoxSedes.setOnAction(event -> fxBoxCajas.getItems().setAll(fxBoxSedes.getSelectionModel().getSelectedItem().getCajas()));
@@ -135,8 +137,6 @@ public class VentaControl extends BorderPane {
         if (venta != null) {
             this.venta = venta;
             setFields();
-        } else {
-
         }
     }
 
@@ -244,7 +244,7 @@ public class VentaControl extends BorderPane {
                 this.venta = new Venta();
                 venta.setUsuario(DataStore.getSessionStore().getUsuario());
                 venta.setCaja(DataStore.getSessionStore().getCaja());
-                venta.setSocio(fxBoxExchangee.getSelectionModel().getSelectedItem());
+                venta.setSocio(FxUtilTest.getComboBoxValue(fxBoxExchangee));
                 venta.setFechahora(LocalDateTime.now());
 
                 DataStore.getSessionStore().getVentas().getDao().insert(venta);
@@ -296,6 +296,17 @@ public class VentaControl extends BorderPane {
                 FxDialogs.showInfo("Id: " + venta.getId(), "Venta guardada incompleta y/o con errores " + updated + "/" + expected);
         }
         fxTableVendidos.refresh();
-        setFields();
+        if (venta != null)
+            setFields();
     }
+
+    @FXML
+    void fxBtnNewAction(ActionEvent event) {
+        venta = null;
+        fxFieldId.setText("");
+        fxBoxExchangee.getSelectionModel().select(null);
+        fxFieldDate.setLocalDateTime(null);
+        listedVendidos.clear();
+    }
+
 }

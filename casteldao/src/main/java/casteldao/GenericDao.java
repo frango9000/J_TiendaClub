@@ -58,9 +58,9 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         this(session, tableName, indexes, null);
     }
 
-    public static void printSql(String sql) {
+    public static void printSql(Object sql) {
         if (Globals.SQL_DEBUG) {
-            Flogger.atInfo().log(sql);
+            Flogger.atInfo().log(sql.toString());
         }
     }
 
@@ -171,16 +171,15 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         Optional<E> objecT = Optional.empty();
         if (getSession().connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s'", tableName, colName, unique.toString());
-            try (Statement ps = getSession()
-                .getConn()
-                .createStatement(); ResultSet rs = ps.executeQuery(sql)) {
+            printSql(sql);
+            try (Statement ps = getSession().getConn().createStatement();
+                 ResultSet rs = ps.executeQuery(sql)) {
                 if (rs.next()) {
                     objecT = buildObject(rs);
                     if (indexOn) {
                         objecT.ifPresent(this::index);
                     }
                 }
-                printSql(sql);
             } catch (SQLException ex) {
                 Flogger.atSevere().withCause(ex).log(sql);
             } finally {
@@ -212,8 +211,9 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                         sql.append(" )");
                     }
                 }
-                try (Statement ps = getSession().getConn()
-                                                .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                printSql(sql.toString());
+                try (Statement ps = getSession().getConn().createStatement();
+                     ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
                         Optional<E> objecT = buildObject(rs);
                         if (objecT.isPresent()) {
@@ -221,7 +221,6 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                             returnSet.add(objecT.get());
                         }
                     }
-                    printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
@@ -266,13 +265,12 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                         sql.append(" )");
                     }
                 }
-                try (Statement ps = getSession()
-                    .getConn()
-                    .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                printSql(sql.toString());
+                try (Statement ps = getSession().getConn().createStatement();
+                     ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
                         returnSet.add(mapToId().apply(rs.getString(1)));
                     }
-                    printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
@@ -298,21 +296,22 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                     if (iterator.hasNext()) {
                         sql.append(", ");
                     } else {
-                        sql.append(" )");
+                        sql.append(" ) ");
                     }
                 }
-                sql.append(String.format("AND %s %s IN( ", colName2, isIn ? "" : "NOT"));
+                sql.append(String.format(" AND %s %s IN( ", colName2, isIn ? "" : "NOT"));
                 Iterator iterator2 = search2.iterator();
-                while (iterator.hasNext()) {
-                    sql.append("'").append(iterator.next().toString()).append("'");
-                    if (iterator.hasNext()) {
+                while (iterator2.hasNext()) {
+                    sql.append("'").append(iterator2.next().toString()).append("'");
+                    if (iterator2.hasNext()) {
                         sql.append(", ");
                     } else {
-                        sql.append(" )");
+                        sql.append(" ) ");
                     }
                 }
-                try (Statement ps = getSession().getConn()
-                                                .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                printSql(sql.toString());
+                try (Statement ps = getSession().getConn().createStatement();
+                     ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
                         Optional<E> objecT = buildObject(rs);
                         if (objecT.isPresent()) {
@@ -320,7 +319,6 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                             returnSet.add(objecT.get());
                         }
                     }
-                    printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
@@ -335,9 +333,9 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         Set<E> returnSet = null;
         if (getSession().connect()) {
             String sql = String.format("SELECT * FROM %s", tableName);
-            try (Statement ps = getSession()
-                .getConn()
-                .createStatement(); ResultSet rs = ps.executeQuery(sql)) {
+            printSql(sql);
+            try (Statement ps = getSession().getConn().createStatement();
+                 ResultSet rs = ps.executeQuery(sql)) {
                 returnSet = Sets.newHashSetWithExpectedSize(rs.getFetchSize());
                 while (rs.next()) {
                     Optional<E> objecT = buildObject(rs);
@@ -346,7 +344,6 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                         returnSet.add(objecT.get());
                     }
                 }
-                printSql(sql);
             } catch (SQLException ex) {
                 returnSet = Set.of();
                 Flogger.atSevere().withCause(ex).log(sql);
@@ -362,9 +359,8 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         HashSet<E> returnSet = Sets.newHashSet();
         if (string != null && string.length() > 0)
             if (getSession().connect()) {
-                StringBuilder sql = new StringBuilder(
-                    "SELECT * FROM " + tableName + " WHERE " + colName + (like ? " " : " NOT ") + "LIKE '" + string +
-                    "'");
+                StringBuilder sql = new StringBuilder("SELECT * FROM " + tableName + " WHERE " + colName + (like ? " " : " NOT ") + "LIKE '" + string + "'");
+                printSql(sql.toString());
                 try (Statement ps = getSession().getConn().createStatement();
                      ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
@@ -374,7 +370,6 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                             returnSet.add(objecT.get());
                         }
                     }
-                    printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
@@ -392,11 +387,10 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         HashSet<E> returnSet = Sets.newHashSet();
         if (string != null && string.length() > 0)
             if (getSession().connect()) {
-                StringBuilder sql = new StringBuilder(
-                    String.format("SELECT * FROM %s WHERE %s %s%s '%s'", tableName, colName, greaterThan ? ">" : "<", inclusive ? "=" : "", string));
-                try (Statement ps = getSession()
-                    .getConn()
-                    .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                StringBuilder sql = new StringBuilder(String.format("SELECT * FROM %s WHERE %s %s%s '%s'", tableName, colName, greaterThan ? ">" : "<", inclusive ? "=" : "", string));
+                printSql(sql.toString());
+                try (Statement ps = getSession().getConn().createStatement();
+                     ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
                         Optional<E> objecT = buildObject(rs);
                         if (objecT.isPresent()) {
@@ -404,7 +398,6 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                             returnSet.add(objecT.get());
                         }
                     }
-                    printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
@@ -434,11 +427,10 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         HashSet<E> returnSet = Sets.newHashSet();
         if (start != null && start.length() > 0)
             if (getSession().connect()) {
-                StringBuilder sql = new StringBuilder(
-                    "SELECT * FROM " + tableName + " WHERE " + colName + (in ? " " : " NOT ") + "BETWEEN '" + start
-                    + "' AND '" + end + "'");
-                try (Statement ps = getSession().getConn()
-                                                .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+                StringBuilder sql = new StringBuilder("SELECT * FROM " + tableName + " WHERE " + colName + (in ? " " : " NOT ") + "BETWEEN '" + start + "' AND '" + end + "'");
+                printSql(sql.toString());
+                try (Statement ps = getSession().getConn().createStatement();
+                     ResultSet rs = ps.executeQuery(sql.toString())) {
                     while (rs.next()) {
                         Optional<E> objecT = buildObject(rs);
                         if (objecT.isPresent()) {
@@ -446,7 +438,6 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                             returnSet.add(objecT.get());
                         }
                     }
-                    printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {
@@ -460,8 +451,7 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         return queryBetween(colName, start, end, true);
     }
 
-    public Set<String> queryOneColumn(String returnColName, String whereColName, Collection<? extends String> equalsCondition,
-                                      boolean isIn) {
+    public Set<String> queryOneColumn(String returnColName, String whereColName, Collection<? extends String> equalsCondition, boolean isIn) {
         Set<String> strings = Sets.newHashSet();
         if (getSession().connect()) {
             StringBuilder sql = new StringBuilder(String.format("SELECT %s FROM %s WHERE %s %s IN( ", returnColName, tableName, whereColName, isIn ? "" : "NOT"));
@@ -474,13 +464,12 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                     sql.append(" )");
                 }
             }
-            try (Statement ps = getSession()
-                .getConn()
-                .createStatement(); ResultSet rs = ps.executeQuery(sql.toString())) {
+            printSql(sql.toString());
+            try (Statement ps = getSession().getConn().createStatement();
+                 ResultSet rs = ps.executeQuery(sql.toString())) {
                 while (rs.next()) {
                     strings.add(rs.getString(1));
                 }
-                printSql(sql.toString());
             } catch (SQLException ex) {
                 Flogger.atSevere().withCause(ex).log(sql.toString());
             } finally {
@@ -502,9 +491,9 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         Optional<E> objecT = Optional.empty();
         if (getSession().connect()) {
             String sql = String.format("SELECT * FROM %s WHERE %s = '%s' AND %s = '%s'", tableName, col1Name, uni, col2Name, que);
-            try (Statement ps = getSession()
-                .getConn()
-                .createStatement(); ResultSet rs = ps.executeQuery(sql)) {
+            printSql(sql);
+            try (Statement statement = getSession().getConn().createStatement();
+                 ResultSet rs = statement.executeQuery(sql)) {
                 if (rs.next()) {
                     objecT = buildObject(rs);
                     if (objecT.isPresent()) {
@@ -512,7 +501,6 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                         return objecT;
                     }
                 }
-                printSql(sql);
             } catch (SQLException ex) {
                 Flogger.atSevere().withCause(ex).log(sql);
             } finally {
@@ -528,16 +516,16 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         if (objectV.getId().toString().equals(newObjectId)) {
             if (getSession().connect()) {
                 String sql = String.format("INSERT INTO %s VALUES %s", tableName, getInsertString(objectV.getColumnNames().size()));
-                try (PreparedStatement pstmt = getSession().getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                    objectV.buildStatement(pstmt);
-                    rows = pstmt.executeUpdate();
-                    try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                try (PreparedStatement statement = getSession().getConn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                    objectV.buildStatement(statement);
+                    printSql(sql = statement.toString());
+                    rows = statement.executeUpdate();
+                    try (ResultSet rs = statement.getGeneratedKeys()) {
                         if (rs.next()) {
                             objectV.setId(rs);
                             index(objectV);
                         }
                     }
-                    printSql(sql);
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql);
                 } finally {
@@ -567,13 +555,13 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         if (!Globals.SAFE_UPDATE || objectV.getBackup() != null) {
             if (getSession().connect()) {
                 String sql = String.format("UPDATE %s SET %s WHERE %s = '%s'", tableName, getUpdateString(objectV.getColumnNames().iterator()), idColName, objectV.getId().toString());
-                try (PreparedStatement pstmt = getSession().getConn().prepareStatement(sql)) {
-                    objectV.buildStatement(pstmt);
-                    rows = pstmt.executeUpdate();
+                try (PreparedStatement statement = getSession().getConn().prepareStatement(sql)) {
+                    objectV.buildStatement(statement);
+                    printSql(sql = statement.toString());
+                    rows = statement.executeUpdate();
                     if (rows > 0) {
                         reindex(objectV);
                     }
-                    printSql(sql);
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql);
                     Flogger.atSevere().log("Reverting object to backup");
@@ -639,10 +627,10 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
         int rows = 0;
         if (getSession().connect()) {
             String sql = String.format("DELETE FROM %s WHERE %s = '%s' ", tableName, idColName, key.toString());
-            try (Statement stmt = getSession().getConn().createStatement()) {
-                rows = stmt.executeUpdate(sql);
-                deindex(key);
+            try (Statement statement = getSession().getConn().createStatement()) {
                 printSql(sql);
+                rows = statement.executeUpdate(sql);
+                deindex(key);
             } catch (SQLException ex) {
                 Flogger.atSevere().withCause(ex).log(sql);
             } finally {
@@ -668,6 +656,7 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                 }
                 try (Statement ps = getSession().getConn().createStatement()) {
                     getSession().getConn().setAutoCommit(false);
+                    printSql(sql.toString());
                     rows = ps.executeUpdate(sql.toString());
                     if (rows == keys.size()) {
                         getSession().getConn().commit();
@@ -676,7 +665,6 @@ public class GenericDao<I extends Serializable, E extends IEntity<I>> implements
                         getSession().getConn().rollback();
                     }
                     getSession().getConn().setAutoCommit(true);
-                    printSql(sql.toString());
                 } catch (SQLException ex) {
                     Flogger.atSevere().withCause(ex).log(sql.toString());
                 } finally {

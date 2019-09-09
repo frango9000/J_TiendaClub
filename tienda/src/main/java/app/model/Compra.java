@@ -169,7 +169,7 @@ public class Compra extends EntityInt {
 
 
     @Override
-    public String toString() {
+    public String fullToString() {
         return MoreObjects.toStringHelper(this)
                           .add("id", id)
                           .add("idUsuario", idUsuario)
@@ -180,5 +180,11 @@ public class Compra extends EntityInt {
                           .add("proveedor", proveedor.toString())
                           .add("fechahora", fechahora)
                           .toString();
+    }
+
+
+    @Override
+    public String toString() {
+        return getId() + " " + idUsuario + " " + idSede + " " + idProveedor;
     }
 }

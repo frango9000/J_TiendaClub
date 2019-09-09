@@ -99,7 +99,7 @@ public class Acceso extends EntityInt {
     }
 
     @Override
-    public String toString() {
+    public String fullToString() {
         return MoreObjects.toStringHelper(this)
                           .add("id", id)
                           .add("nivel", nivel)
@@ -107,7 +107,7 @@ public class Acceso extends EntityInt {
     }
 
     @Override
-    public String toStringFormatted() {
+    public String toString() {
         return getId() + " " + getNivel();
     }
 }

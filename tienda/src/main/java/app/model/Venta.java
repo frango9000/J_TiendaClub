@@ -6,6 +6,7 @@ import app.misc.DateUtils;
 import app.misc.Flogger;
 import casteldao.model.EntityInt;
 import casteldao.model.IEntity;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -164,5 +165,22 @@ public class Venta extends EntityInt {
                && getIdCaja() == venta.getIdCaja()
                && getIdSocio() == venta.getIdSocio()
                && Objects.equal(getFechahora(), venta.getFechahora());
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                          .add("id", id)
+                          .add("fechahora", fechahora)
+                          .add("usuario", usuario)
+                          .add("caja", caja)
+                          .add("socio", socio)
+                          .toString();
+    }
+
+
+    @Override
+    public String fullToString() {
+        return getId() + " " + idUsuario + " " + idCaja + " " + idSocio;
     }
 }

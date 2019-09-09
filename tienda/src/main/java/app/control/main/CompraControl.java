@@ -292,4 +292,14 @@ public class CompraControl extends BorderPane {
         fxTableVendidos.refresh();
         setFields();
     }
+
+
+    @FXML
+    void fxBtnNewAction(ActionEvent event) {
+        compra = null;
+        fxFieldId.setText("");
+        fxBoxExchangee.setItems(null);
+        fxFieldDate.setLocalDateTime(null);
+    }
+
 }

@@ -169,4 +169,9 @@ public class Vendido extends EntityInt {
                           .add("precioUnidad", precioUnidad)
                           .toString();
     }
+
+    @Override
+    public String fullToString() {
+        return toString();
+    }
 }

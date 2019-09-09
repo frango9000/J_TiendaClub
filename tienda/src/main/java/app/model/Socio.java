@@ -182,7 +182,7 @@ public class Socio extends ActivablePropertyEntity {
     }
 
     @Override
-    public String toString() {
+    public String fullToString() {
         return MoreObjects.toStringHelper(this)
                           .add("id", id)
                           .add("dni", dni)
@@ -197,7 +197,7 @@ public class Socio extends ActivablePropertyEntity {
     }
 
     @Override
-    public String toStringFormatted() {
-        return getId() + " " + getDni();
+    public String toString() {
+        return getId() + " " + getNombre();
     }
 }

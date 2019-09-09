@@ -167,4 +167,9 @@ public class Comprado extends EntityInt {
                           .add("precioUnidad", precioUnidad)
                           .toString();
     }
+
+    @Override
+    public String fullToString() {
+        return toString();
+    }
 }

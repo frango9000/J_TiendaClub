@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `socios`
     `email`       VARCHAR(50)          NULL     DEFAULT NULL,
     `direccion`   VARCHAR(50)          NULL     DEFAULT NULL,
     `descripcion` VARCHAR(127)         NULL     DEFAULT NULL,
-    `fecha_in`    DATETIME             NOT NULL DEFAULT current_timestamp(),
+    `fecha_in`    DATETIME(2)          NOT NULL DEFAULT current_timestamp(),
     `activo`      TINYINT(1)           NOT NULL DEFAULT 1,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `dni` (`dni`)
@@ -75,20 +75,28 @@ CREATE TABLE IF NOT EXISTS `cajas`
     CONSTRAINT `FK_cajas_sedes` FOREIGN KEY (`idSede`) REFERENCES `sedes` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `zs`
+CREATE TABLE `zs`
 (
-    `id`       INT(10) UNSIGNED     NOT NULL AUTO_INCREMENT,
-    `idCaja`   SMALLINT(5) UNSIGNED NOT NULL,
-    `apertura` DATETIME             NOT NULL,
-    `cierre`   DATETIME             NULL DEFAULT NULL,
+    `id`                INT(10) UNSIGNED     NOT NULL AUTO_INCREMENT,
+    `idCaja`            SMALLINT(5) UNSIGNED NOT NULL,
+    `apertura`          DATETIME(2)          NOT NULL DEFAULT current_timestamp(),
+    `idUsuarioApertura` TINYINT(3) UNSIGNED  NOT NULL DEFAULT 0,
+    `cierre`            DATETIME(2)          NULL     DEFAULT NULL,
+    `idUsuarioCierre`   TINYINT(3) UNSIGNED  NULL     DEFAULT NULL,
     PRIMARY KEY (`id`),
     INDEX `FK_zs_cajas` (`idCaja`),
-    CONSTRAINT `FK_zs_cajas` FOREIGN KEY (`idCaja`) REFERENCES `cajas` (`id`)
+    INDEX `FK_zs_usuarios` (`idUsuarioApertura`),
+    INDEX `FK_zs_usuarios_2` (`idUsuarioCierre`),
+    CONSTRAINT `FK_zs_cajas` FOREIGN KEY (`idCaja`) REFERENCES `cajas` (`id`),
+    CONSTRAINT `FK_zs_usuarios` FOREIGN KEY (`idUsuarioApertura`) REFERENCES `usuarios` (`id`),
+    CONSTRAINT `FK_zs_usuarios_2` FOREIGN KEY (`idUsuarioCierre`) REFERENCES `usuarios` (`id`)
 );
+
+
 
 CREATE TABLE IF NOT EXISTS `categorias`
 (
-    `id`     TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT },
+    `id`     TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(20)         NOT NULL,
     `activo` TINYINT(1)          NOT NULL DEFAULT 1,
     PRIMARY KEY (`id`),
@@ -115,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `compras`
     `idUsuario`   TINYINT(3) UNSIGNED   NOT NULL,
     `idSede`      TINYINT(3) UNSIGNED   NOT NULL,
     `idProveedor` SMALLINT(5) UNSIGNED  NOT NULL,
-    `fechahora`   DATETIME              NOT NULL DEFAULT current_timestamp(),
+    `fechahora`   DATETIME(2)           NOT NULL DEFAULT current_timestamp(),
     PRIMARY KEY (`id`),
     INDEX `FK_compras_usuarios` (`idUsuario`),
     INDEX `FK_compras_proveedores` (`idProveedor`),
@@ -145,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `ventas`
     `idUsuario` TINYINT(3) UNSIGNED   NOT NULL,
     `idCaja`    SMALLINT(5) UNSIGNED  NOT NULL,
     `idSocio`   SMALLINT(5) UNSIGNED  NOT NULL,
-    `fechahora` DATETIME              NOT NULL DEFAULT current_timestamp(),
+    `fechahora` DATETIME(2)           NOT NULL DEFAULT current_timestamp(),
     PRIMARY KEY (`id`),
     INDEX `FK_compras_usuarios` (`idUsuario`),
     INDEX `FK_compras_proveedores` (`idSocio`),
@@ -177,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `transferencias`
     `idSedeDestino` TINYINT(3) UNSIGNED  NOT NULL,
     `idProducto`    SMALLINT(6) UNSIGNED NOT NULL,
     `cantidad`      INT(6) UNSIGNED      NOT NULL,
-    `fechahora`     DATETIME             NOT NULL,
+    `fechahora`     DATETIME(2)          NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `FK_transferencias_sedes` (`idSedeOrigen`),
     INDEX `FK_transferencias_sedes_2` (`idSedeDestino`),

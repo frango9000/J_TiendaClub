@@ -131,7 +131,7 @@ public class Sede extends ActivablePropertyEntity {
     }
 
     @Override
-    public String toString() {
+    public String fullToString() {
         return MoreObjects.toStringHelper(this)
                           .add("id", id)
                           .add("nombre", nombre)
@@ -142,7 +142,7 @@ public class Sede extends ActivablePropertyEntity {
     }
 
     @Override
-    public String toStringFormatted() {
+    public String toString() {
         return getId() + " " + getNombre();
     }
 }

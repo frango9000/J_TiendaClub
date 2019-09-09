@@ -19,7 +19,7 @@ public class TestFX extends Application {
     public void start(Stage primaryStage) throws Exception {
         PropsLoader.loadProps();
         DataStore sessionStore = DataStore.getSessionStore();
-        sessionStore.firstQuery();
+//        sessionStore.firstQuery();
 //        sessionStore.getVentas().getIndexCaja().getValues().forEach(System.out::println);
         reinitDB();
         createMockData(true);
@@ -46,13 +46,13 @@ public class TestFX extends Application {
             sessionStore.getCajas().getDao().deleteSome(sessionStore.getCajas().getAllCache());
             sessionStore.getSedes().getDao().deleteSome(sessionStore.getSedes().getAllCache());
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 1; i < 8; i++) {
             Categoria categoria = new Categoria("Cat " + i);
             categoria.insertIntoDB();
             Proveedor proveedor = new Proveedor("B000000" + i);
             proveedor.setNombre("Prov " + i);
             proveedor.insertIntoDB();
-            for (int j = 0; j < 4; j++) {
+            for (int j = 1; j < 4; j++) {
                 Producto producto = new Producto("Pro C" + i + "P" + j, categoria);
                 producto.setPrecioVenta(i);
                 producto.insertIntoDB();
@@ -63,10 +63,10 @@ public class TestFX extends Application {
             }
         }
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 1; i < 4; i++) {
             Sede sede = new Sede("Sede " + i);
             sede.insertIntoDB();
-            for (int j = 0; j < 2; j++) {
+            for (int j = 1; j < 3; j++) {
                 Caja caja = new Caja(sede, "Caja S" + i + "C" + j);
                 caja.insertIntoDB();
             }

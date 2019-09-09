@@ -10,60 +10,91 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-  minHeight="-Infinity" minWidth="-Infinity" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1">
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import jfxtras.scene.control.LocalDateTimeTextField?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1">
   <center>
-    <GridPane BorderPane.alignment="CENTER" hgap="5.0" vgap="5.0">
+    <StackPane BorderPane.alignment="CENTER" prefHeight="200.0">
+      <BorderPane.margin>
+        <Insets top="10.0" />
+      </BorderPane.margin>
       <children>
-        <Button GridPane.columnIndex="5" GridPane.rowIndex="1" disable="true" mnemonicParsing="false"
-          onAction="#fxBtnOpenAction" prefWidth="55.0" text="Abrir" fx:id="fxBtnOpen"/>
-        <Button GridPane.columnIndex="5" GridPane.rowIndex="2" disable="true" mnemonicParsing="false"
-          onAction="#fxBtnCloseAction" prefWidth="55.0" text="Cerrar" fx:id="fxBtnClose"/>
-        <Button GridPane.columnIndex="5" mnemonicParsing="false" onAction="#fxBtnDetailAction" prefWidth="55.0"
-          text="Detalle"/>
-        <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" maxHeight="1.7976931348623157E308"
-          maxWidth="1.7976931348623157E308" prefWidth="150.0" fx:id="fxBoxCaja"/>
-        <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"
-          maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" fx:id="fxBoxSede"/>
-        <Label text="Caja"/>
-        <Label GridPane.rowIndex="1" text="Sede"/>
-        <Label GridPane.columnIndex="3" text="Estado"/>
-        <Label GridPane.columnIndex="3" GridPane.rowIndex="2" text="Cierre"/>
-        <Label GridPane.columnIndex="3" GridPane.rowIndex="1" layoutX="250.0" layoutY="52.0" text="Apertura"/>
-        <Label GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" maxHeight="1.7976931348623157E308"
-          maxWidth="1.7976931348623157E308" text="&lt;status&gt;" fx:id="fxLabelStatus"/>
-        <Label GridPane.columnSpan="2" GridPane.rowIndex="2" text="Actividad reciente:"/>
-        <TableView GridPane.columnSpan="6" GridPane.rowIndex="3" prefHeight="200.0" fx:id="fxTableCierres">
+        <TableView maxWidth="1.7976931348623157E308" prefHeight="200.0" fx:id="fxTableCierreZs">
           <columns>
-            <TableColumn prefWidth="75.0" text="ID" fx:id="fxColumnId"/>
-            <TableColumn prefWidth="75.0" text="Caja" fx:id="fxColumnCaja"/>
-            <TableColumn prefWidth="75.0" text="Apertura" fx:id="fxColumnApertura"/>
-            <TableColumn prefWidth="75.0" text="Cierre" fx:id="fxColumnCierre"/>
+            <TableColumn editable="false" prefWidth="30.0" text="ID" fx:id="fxColumnCierreZId" />
+            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Caja" fx:id="fxColumnCierreZCaja" />
+            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Apertura" fx:id="fxColumnCierreZApertura" />
+            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Usuario" fx:id="fxColumnCierreZUsuarioApertura" />
+            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Cierre" fx:id="fxColumnCierreZCierre" />
+            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Usuario" fx:id="fxColumnCierreZUsuarioCierre" />
+            <TableColumn prefWidth="75.0" text="Abrir" fx:id="fxColumnCierreZAbrir" />
           </columns>
         </TableView>
-        <TextField GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" editable="false"
-          maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" fx:id="fxFieldCierre"/>
-        <TextField GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" editable="false"
-          maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" fx:id="fxFieldApertura"/>
+        <VBox prefWidth="100.0" fx:id="fxPaneVentas">
+          <children>
+            <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" spacing="10.0">
+              <children>
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#fxBtnVentaVolverAction" text="Volver" fx:id="fxBtnVentaVolver" />
+                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Total" textAlignment="CENTER" />
+                <TextField maxWidth="1.7976931348623157E308" fx:id="fxFieldVentaTotal" />
+              </children>
+              <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+              </padding>
+            </HBox>
+            <TableView fx:id="fxTableVentas">
+              <columns>
+                <TableColumn editable="false" prefWidth="50.0" text="ID" fx:id="fxTableColumnVentaId" />
+                <TableColumn editable="false" prefWidth="50.0" text="Usuario" fx:id="fxTableColumnVentaUsuario" />
+                <TableColumn editable="false" prefWidth="50.0" text="Caja" fx:id="fxTableColumnVentaCaja" />
+                <TableColumn editable="false" prefWidth="50.0" text="Socio" fx:id="fxTableColumnVentaSocio" />
+                <TableColumn editable="false" prefWidth="50.0" text="Fecha" fx:id="fxTableColumnVentaFecha" />
+                <TableColumn editable="false" prefWidth="50.0" text="Total" fx:id="fxTableColumnVentaTotal" />
+                <TableColumn prefWidth="50.0" text="Abrir" fx:id="fxTableColumnVentaAbrir" />
+              </columns>
+            </TableView>
+          </children>
+        </VBox>
       </children>
-      <columnConstraints>
-        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="50.0"/>
-        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="30.0"/>
-        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="50.0"/>
-        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="55.0"/>
-      </columnConstraints>
-      <rowConstraints>
-        <RowConstraints minHeight="10.0" vgrow="NEVER"/>
-        <RowConstraints minHeight="10.0" vgrow="NEVER"/>
-        <RowConstraints minHeight="10.0" vgrow="NEVER"/>
-        <RowConstraints minHeight="10.0" vgrow="ALWAYS"/>
-      </rowConstraints>
-    </GridPane>
+    </StackPane>
   </center>
   <padding>
-    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
   </padding>
+  <top>
+    <GridPane BorderPane.alignment="CENTER" hgap="5.0" vgap="5.0">
+      <children>
+        <Button GridPane.columnIndex="3" GridPane.rowIndex="1" disable="true" mnemonicParsing="false" onAction="#fxBtnOpenAction" prefWidth="55.0" text="Abrir" fx:id="fxBtnCierreZOpen" />
+        <Button GridPane.columnIndex="3" GridPane.rowIndex="2" disable="true" mnemonicParsing="false" onAction="#fxBtnCloseAction" prefWidth="55.0" text="Cerrar" fx:id="fxBtnCierreZClose" />
+        <Button GridPane.columnIndex="3" mnemonicParsing="false" onAction="#fxBtnDetailAction" prefWidth="55.0" text="Detalle" />
+        <Button GridPane.columnIndex="5" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#fxBtnNuevaVentaAction" text="Nueva Venta" fx:id="fxBtnVentaNueva" />
+        <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" fx:id="fxBoxCaja" />
+        <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" fx:id="fxBoxSede" />
+        <ComboBox GridPane.columnIndex="5" GridPane.rowIndex="1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" fx:id="fxBoxCierreZUsuarioApertura" />
+        <ComboBox GridPane.columnIndex="5" GridPane.rowIndex="2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" fx:id="fxBoxCierreZUsuarioCierre" />
+        <Label text="Caja" />
+        <Label GridPane.rowIndex="1" text="Sede" />
+        <Label GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="&lt;status&gt;" fx:id="fxLabelCierreZStatus" />
+        <Label GridPane.columnSpan="2" GridPane.rowIndex="2" text="Actividad reciente:" />
+        <LocalDateTimeTextField GridPane.columnIndex="4" GridPane.rowIndex="1" fx:id="fxDateCierreZApertura" />
+        <LocalDateTimeTextField GridPane.columnIndex="4" GridPane.rowIndex="2" fx:id="fxDateCierreZCierre" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="ALWAYS" prefWidth="100.0" />
+        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="55.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="150.0" />
+        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" vgrow="NEVER" />
+      </rowConstraints>
+    </GridPane>
+  </top>
 </fx:root>

@@ -7,14 +7,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.StatusBar?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
-  fx:controller="app.control.MainPaneControl" fx:id="mainPane">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="app.control.MainPaneControl"
+            fx:id="mainPane">
   <bottom>
-    <StatusBar BorderPane.alignment="CENTER" fx:id="mainStatusBar"/>
+    <StatusBar BorderPane.alignment="CENTER" fx:id="mainStatusBar" />
   </bottom>
   <center>
-    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"/>
+    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" />
   </center>
   <top>
     <BorderPane BorderPane.alignment="CENTER">
@@ -23,29 +22,38 @@
           <menus>
             <Menu mnemonicParsing="false" text="Inicio">
               <items>
-                <MenuItem mnemonicParsing="false" text="Close"/>
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuExit" text="Close" />
               </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Caja">
+            <Menu mnemonicParsing="false" text="Tienda">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuCajaAction" text="Ver Caja" fx:id="fxMenuCaja"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuCajaDetailAction" text="Ver Dia"
-                  fx:id="fxMenuCajaDetail"/>
-              </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Clientes">
-              <items>
-                <MenuItem mnemonicParsing="false"/>
-              </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Proveedores">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1"/>
-              </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Reportes">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1"/>
+                <Menu mnemonicParsing="false" text="Sede" fx:id="fxMenuSede">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuVerSedeAction" text="Ver Sede" fx:id="fxMenuVerSede" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuVerInventarioAction" text="Ver Inventario" fx:id="fxMenuVerInventario" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuNuevaCompraAction" text="Nueva Compra" fx:id="fxMenuNuevaCompra" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuNuevaTransferenciaAction" text="Transferencia" fx:id="fxMenuNuevaTransferencia" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Caja" fx:id="fxMenuCaja">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuCajaAction" text="Ver Caja" fx:id="fxMenuVerCaja" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuCajaDetailAction" text="Ver Dia" fx:id="fxMenuCajaDetail" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuNuevaVentaAction" text="Nueva Venta" fx:id="fxMenuCajaNuevaVenta" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Clientes" fx:id="fxMenuClientes">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuNuevoSocioAction" text="Nuevo Socio" fx:id="fxMenuNuevoSocio" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuListaSociosAction" text="Lista de Socios" fx:id="fxMenuListaSocios" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Proveedores" fx:id="fxMenuProveedores">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuNuevoProveedorAction" text="Nuevo Proveedor" fx:id="fxMenuNuevoProveedor" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuListaProveedoresAction" text="Lista de Proveedores" fx:id="fxMenuListaProveedores" />
+                  </items>
+                </Menu>
               </items>
             </Menu>
           </menus>
@@ -56,31 +64,35 @@
           <menus>
             <Menu mnemonicParsing="false" text="Admin">
               <items>
-                <MenuItem mnemonicParsing="false" text="DB"/>
-                <MenuItem mnemonicParsing="false" text="Config"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuUsuariosAction" text="Usuarios"
-                  fx:id="fxMenuUsuarios"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuSedesAction" text="Sedes" fx:id="fxMenuSedes"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuCajasAction" text="Cajas" fx:id="fxMenuCajas"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuProveedoresAction" text="Proveedores"
-                  fx:id="fxMenuProveedores"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuSociosAction" text="Socios" fx:id="fxMenuSocios"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuProductosAction" text="Productos"
-                  fx:id="fxMenuProductos"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuCategoriasAction" text="Categorias"
-                  fx:id="fxMenuCategorias"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuVentasAction" text="Ventas" fx:id="fxMenuVentas"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuComprasAction" text="Compras" fx:id="fxMenuCompras"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuTransferenciasAction" text="Transferencias"
-                  fx:id="fxMenuTransferencias"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuStatusAction" text="Status" fx:id="fxMenuStatus"/>
-                <MenuItem mnemonicParsing="false" onAction="#fxMenuCierreAction" text="Cierres" fx:id="fxMenuCierres"/>
-                <SeparatorMenuItem mnemonicParsing="false"/>
+                <Menu mnemonicParsing="false" text="Reportes">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Action 1" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Editores" fx:id="fxMenuEditores">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorUsuariosAction" text="Usuarios" fx:id="fxMenuEditorUsuarios" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorSedesAction" text="Sedes" fx:id="fxMenuEditorSedes" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorCajasAction" text="Cajas" fx:id="fxMenuEditorCajas" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorProveedoresAction" text="Proveedores" fx:id="fxMenuEditorProveedores" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorSociosAction" text="Socios" fx:id="fxMenuEditorSocios" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorProductosAction" text="Productos" fx:id="fxMenuEditorProductos" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorCategoriasAction" text="Categorias" fx:id="fxMenuEditorCategorias" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorVentasAction" text="Ventas" fx:id="fxMenuEditorVentas" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorComprasAction" text="Compras" fx:id="fxMenuEditorCompras" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorTransferenciasAction" text="Transferencias" fx:id="fxMenuEditorTransferencias" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorCierreAction" text="Cierres" fx:id="fxMenuEditorCierres" />
+                  </items>
+                </Menu>
+                <MenuItem mnemonicParsing="false" text="DB" />
+                <MenuItem mnemonicParsing="false" onAction="#fxMenuStatusAction" text="Status" fx:id="fxMenuStatus" />
+                <MenuItem mnemonicParsing="false" text="Config" />
+                <SeparatorMenuItem mnemonicParsing="false" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
               <items>
-                <MenuItem mnemonicParsing="false" text="About"/>
+                <MenuItem mnemonicParsing="false" text="About" />
               </items>
             </Menu>
           </menus>

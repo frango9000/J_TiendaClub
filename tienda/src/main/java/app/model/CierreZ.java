@@ -14,26 +14,26 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class CierreZ extends EntityInt {
 
     public static final String TABLE_NAME = "zs";
-    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idCaja", "apertura", "cierre"));
+    private static final ArrayList<String> COLUMN_NAMES = new ArrayList<>(Arrays.asList("idCaja", "apertura", "idUsuarioApertura", "cierre", "idUsuarioCierre"));
 
     protected int idCaja;
     protected LocalDateTime apertura;
+    protected int idUsuarioApertura;
+    protected Usuario usuarioApertura;
     protected LocalDateTime cierre;
+    protected Integer idUsuarioCierre;
+    protected Usuario usuarioCierre;
     private Caja caja;
 
     public CierreZ() {
         super(0);
-    }
-
-    public CierreZ(Caja caja, LocalDateTime apertura) {
-        super(0);
-        this.caja     = caja;
-        this.apertura = apertura;
     }
 
     @Override
@@ -42,7 +42,9 @@ public class CierreZ extends EntityInt {
             setId(resultSet.getInt(1));
             setIdCaja(resultSet.getInt(2));
             setApertura(DateUtils.toLocalDateTime(resultSet.getTimestamp(3)));
-            setCierre(DateUtils.toLocalDateTime(resultSet.getDate(4)));
+            setIdUsuarioApertura(resultSet.getInt(4));
+            setCierre(DateUtils.toLocalDateTime(resultSet.getDate(5)));
+            setIdUsuarioCierre(resultSet.getInt(6));
             return true;
         } catch (SQLException e) {
             Flogger.atWarning().withCause(e).log();
@@ -55,7 +57,9 @@ public class CierreZ extends EntityInt {
         try {
             pst.setInt(1, getCaja().getId());
             pst.setTimestamp(2, DateUtils.toTimestamp(getApertura()));
-            pst.setTimestamp(3, DateUtils.toTimestamp(getCierre()));
+            pst.setInt(3, getIdUsuarioApertura());
+            pst.setTimestamp(4, DateUtils.toTimestamp(getCierre()));
+            pst.setObject(5, getIdUsuarioCierre());
             return true;
         } catch (SQLException e) {
             Flogger.atWarning().withCause(e).log();
@@ -69,7 +73,9 @@ public class CierreZ extends EntityInt {
             CierreZ newValues = (CierreZ) objectV;
             setCaja(newValues.getCaja());
             setApertura(newValues.getApertura());
+            setUsuarioApertura(newValues.getUsuarioApertura());
             setCierre(newValues.getCierre());
+            setUsuarioCierre(newValues.getUsuarioCierre());
             return true;
         }
         return false;
@@ -115,6 +121,50 @@ public class CierreZ extends EntityInt {
         this.idCaja = getCaja().getId();
     }
 
+    public int getIdUsuarioApertura() {
+        return idUsuarioApertura;
+    }
+
+    public void setIdUsuarioApertura(int idUsuarioApertura) {
+        setUsuarioApertura(DataStore.getSessionStore().getUsuarios().getById().getCacheValue(idUsuarioApertura));
+    }
+
+    public Usuario getUsuarioApertura() {
+        return usuarioApertura;
+    }
+
+    public void setUsuarioApertura(Usuario usuarioApertura) {
+        this.usuarioApertura   = usuarioApertura;
+        this.idUsuarioApertura = getUsuarioApertura().getId();
+    }
+
+    public Integer getIdUsuarioCierre() {
+        return idUsuarioCierre;
+    }
+
+    public void setIdUsuarioCierre(Integer idUsuarioCierre) {
+        setUsuarioCierre(DataStore.getSessionStore().getUsuarios().getById().getCacheValue(idUsuarioCierre));
+    }
+
+    public Usuario getUsuarioCierre() {
+        return usuarioCierre;
+    }
+
+    public void setUsuarioCierre(Usuario usuarioCierre) {
+        this.usuarioCierre = usuarioCierre;
+        if (usuarioCierre != null)
+            this.idUsuarioCierre = getUsuarioCierre().getId();
+    }
+
+    public Set<Venta> getVentas() {
+        Set<Venta> ventas;
+        if (getCierre() == null)
+            ventas = DataStore.getSessionStore().getVentas().getIndexFecha().getCacheKeyGreaterThanValues(getApertura(), true);
+        else
+            ventas = DataStore.getSessionStore().getVentas().getIndexFecha().getCacheKeyIntervalValues(getApertura(), true, getCierre(), true);
+        return ventas.stream().filter(venta -> venta.getCaja().equals(this.getCaja())).collect(Collectors.toSet());
+    }
+
     @Override
     public ArrayList<String> getColumnNames() {
         return COLUMN_NAMES;
@@ -135,18 +185,21 @@ public class CierreZ extends EntityInt {
     }
 
     @Override
-    public String toString() {
+    public String fullToString() {
         return MoreObjects.toStringHelper(this)
                           .add("id", id)
-                          .add("idCaja", idCaja)
-                          .add("caja", caja.toString())
+                          .add("caja", caja)
                           .add("apertura", apertura)
+                          .add("usuarioApertura", usuarioApertura.fullToString())
                           .add("cierre", cierre)
+                          .add("usuarioCierre", usuarioCierre)
                           .toString();
     }
 
     @Override
-    public String toStringFormatted() {
-        return getId() + " " + getIdCaja();
+    public String toString() {
+        return getId() + " C:" + getIdCaja() + " " + apertura.toString();
     }
+
+
 }

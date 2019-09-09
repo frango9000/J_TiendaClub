@@ -22,6 +22,7 @@ public class VentaDao extends DataSourceIdImpl<Venta> {
         indexes.add(indexUsuario);
         indexes.add(indexCaja);
         indexes.add(indexSocio);
+        indexes.add(indexFecha);
     }
 
     public SetMultiMapIndexEntityImpl<Usuario, Venta> getIndexUsuario() {

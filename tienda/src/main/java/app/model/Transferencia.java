@@ -225,4 +225,9 @@ public class Transferencia extends EntityInt {
                           .add("fechahora", fechahora)
                           .toString();
     }
+
+    @Override
+    public String fullToString() {
+        return toString();
+    }
 }
