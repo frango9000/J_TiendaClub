@@ -56,6 +56,8 @@ public class CajaControl extends BorderPane {
     @FXML
     public TableColumn<CierreZ, Usuario> fxColumnCierreZUsuarioCierre;
     @FXML
+    public TableColumn<CierreZ, Integer> fxColumnCierreZTotal;
+    @FXML
     public TableColumn<CierreZ, String> fxColumnCierreZAbrir;
     @FXML
     public Button fxBtnCierreZOpen;
@@ -108,23 +110,21 @@ public class CajaControl extends BorderPane {
             Flogger.atSevere().withCause(e).log();
         }
         fxBtnVentaNueva.disableProperty().bind(fxBtnCierreZClose.disableProperty());
-        fxPaneVentas.setVisible(false);
-
-
-
 
         fxBoxSede.getItems().addAll(DataStore.getSessionStore().getSedes().getAllCache());
+        fxBoxSede.setOnAction(event -> fxBoxCaja.getItems().setAll(fxBoxSede.getSelectionModel().getSelectedItem().getCajas()));
         fxBoxCaja.getItems().addAll(DataStore.getSessionStore().getCajas().getAllCache());
         fxBoxCierreZUsuarioApertura.getItems().addAll(DataStore.getSessionStore().getUsuarios().getAllCache());
         fxBoxCierreZUsuarioCierre.setItems(fxBoxCierreZUsuarioApertura.getItems());
 
         fxColumnCierreZId.setSortType(SortType.DESCENDING);
-        fxColumnCierreZId.setCellValueFactory(new PropertyValueFactory<CierreZ, Integer>("id"));
-        fxColumnCierreZCaja.setCellValueFactory(new PropertyValueFactory<CierreZ, Caja>("caja"));
-        fxColumnCierreZApertura.setCellValueFactory(new PropertyValueFactory<CierreZ, LocalDateTime>("apertura"));
-        fxColumnCierreZUsuarioApertura.setCellValueFactory(new PropertyValueFactory<CierreZ, Usuario>("usuarioApertura"));
-        fxColumnCierreZCierre.setCellValueFactory(new PropertyValueFactory<CierreZ, LocalDateTime>("cierre"));
-        fxColumnCierreZUsuarioCierre.setCellValueFactory(new PropertyValueFactory<CierreZ, Usuario>("usuarioCierre"));
+        fxColumnCierreZId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        fxColumnCierreZCaja.setCellValueFactory(new PropertyValueFactory<>("caja"));
+        fxColumnCierreZApertura.setCellValueFactory(new PropertyValueFactory<>("apertura"));
+        fxColumnCierreZUsuarioApertura.setCellValueFactory(new PropertyValueFactory<>("usuarioApertura"));
+        fxColumnCierreZCierre.setCellValueFactory(new PropertyValueFactory<>("cierre"));
+        fxColumnCierreZUsuarioCierre.setCellValueFactory(new PropertyValueFactory<>("usuarioCierre"));
+        fxColumnCierreZTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
         fxColumnCierreZAbrir.setCellValueFactory(new PropertyValueFactory<>(""));
         fxColumnCierreZAbrir.setCellFactory(getCierreZAbrirCallback());
 
@@ -137,7 +137,7 @@ public class CajaControl extends BorderPane {
         fxTableColumnVentaCaja.setCellValueFactory(new PropertyValueFactory<>("caja"));
         fxTableColumnVentaSocio.setCellValueFactory(new PropertyValueFactory<>("socio"));
         fxTableColumnVentaFecha.setCellValueFactory(new PropertyValueFactory<>("fechahora"));
-//        fxTableColumnVentaTotal.setCellValueFactory(new PropertyValueFactory<>(""));
+        fxTableColumnVentaTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
         fxTableColumnVentaAbrir.setCellValueFactory(new PropertyValueFactory<>(""));
         fxTableColumnVentaAbrir.setCellFactory(getVentaAbrirCallback());
 
@@ -146,9 +146,18 @@ public class CajaControl extends BorderPane {
     }
 
     public CajaControl(Caja caja) {
-        if (caja != null) {
-            setCaja(caja);
-        }
+        setCaja(caja);
+        fxPaneVentas.setVisible(false);
+        if (caja.getCierreZs().size() > 0) {
+            setCierreZ(caja.getLastCierreZ());
+        } else
+            fxBtnCierreZOpen.setDisable(false);
+    }
+
+    public CajaControl(CierreZ cierreZ) {
+        setCaja(cierreZ.getCaja());
+        setCierreZ(cierreZ);
+        abrirCierreZ(cierreZ);
     }
 
     public void setCaja(Caja caja) {
@@ -157,14 +166,10 @@ public class CajaControl extends BorderPane {
         fxBoxCaja.getSelectionModel().select(caja);
         listedCierreZs.setAll(caja.getCierreZs());
         fxTableCierreZs.sort();
-        if (caja.getCierreZs().size() > 0) {
-            setCierreZ(caja.getTreeCierreZs().last());
-            setFieldsCierre();
-        } else
-            fxBtnCierreZOpen.setDisable(false);
     }
 
-    private void setFieldsCierre() {
+    private void setCierreZ(CierreZ cierreZ) {
+        this.cierreZ = cierreZ;
         fxDateCierreZApertura.setLocalDateTime(cierreZ.getApertura());
         fxBoxCierreZUsuarioApertura.getSelectionModel().select(cierreZ.getUsuarioApertura());
 
@@ -183,10 +188,6 @@ public class CajaControl extends BorderPane {
         }
     }
 
-    private void setCierreZ(CierreZ cierreZ) {
-        this.cierreZ = cierreZ;
-    }
-
     @FXML
     public void fxBtnOpenAction(ActionEvent actionEvent) {
         if (cierreZ == null || cierreZ.getUsuarioCierre() != null && cierreZ.getCierre() != null) {
@@ -195,9 +196,10 @@ public class CajaControl extends BorderPane {
             cierreZ.setApertura(LocalDateTime.now());
             cierreZ.setUsuarioApertura(DataStore.getSessionStore().getUsuario());
             if (cierreZ.insertIntoDB() == 1) {
-                setFieldsCierre();
+                setCierreZ(cierreZ);
                 listedCierreZs.add(cierreZ);
                 fxTableCierreZs.sort();
+                listedVentas.clear();
                 return;
             }
         }
@@ -216,12 +218,13 @@ public class CajaControl extends BorderPane {
             } catch (CloneNotSupportedException e) {
                 Flogger.atWarning().withCause(e).log("Clone Error");
             }
-            setFieldsCierre();
+            setCierreZ(cierreZ);
         }
     }
 
     @FXML
     public void fxBtnDetailAction(ActionEvent actionEvent) {
+        abrirCierreZ(cierreZ);
     }
 
     @FXML
@@ -229,11 +232,6 @@ public class CajaControl extends BorderPane {
         fxTableCierreZs.setVisible(true);
         fxPaneVentas.setVisible(false);
     }
-
-    @FXML
-    public void fxBtnVentaAbrirAction(ActionEvent actionEvent) {
-    }
-
 
     @FXML
     public void fxBtnNuevaVentaAction(ActionEvent actionEvent) {
@@ -244,7 +242,7 @@ public class CajaControl extends BorderPane {
 
     private void abrirCierreZ(CierreZ cierreZ) {
         listedVentas.setAll(cierreZ.getVentas());
-        fxFieldVentaTotal.setText(listedVentas.stream().mapToInt(venta -> venta.getVendidos().stream().mapToInt(vendido -> (vendido.getPrecioUnidad() * vendido.getCantidad())).sum()).sum() + "");
+        fxFieldVentaTotal.setText(Integer.toString(listedVentas.stream().mapToInt(Venta::getTotal).sum()));
 
         fxTableCierreZs.setVisible(false);
         fxPaneVentas.setVisible(true);

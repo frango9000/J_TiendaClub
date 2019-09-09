@@ -32,6 +32,10 @@ public class VentasTableControl extends TableControl<Venta> {
         fxColumnFechaHora.setCellValueFactory(new PropertyValueFactory<>("fechahora"));
         fxTable.getColumns().add(fxColumnFechaHora);
 
+        TableColumn<Venta, Integer> fxColumnTotal = new TableColumn<>("Total");
+        fxColumnTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        fxTable.getColumns().add(fxColumnTotal);
+
         fxTable.setItems(listedObjects);
         addContent();
     }

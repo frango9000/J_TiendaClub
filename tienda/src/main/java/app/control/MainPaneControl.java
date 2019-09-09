@@ -1,6 +1,9 @@
 package app.control;
 
 import app.control.main.CajaControl;
+import app.control.main.CompraControl;
+import app.control.main.SedeControl;
+import app.control.main.VentaControl;
 import app.control.table.CajasTableControl;
 import app.control.table.CategoriasTableControl;
 import app.control.table.CierreZTableControl;
@@ -114,6 +117,8 @@ public class MainPaneControl extends BorderPane {
 
     @FXML
     public void fxMenuCajaDetailAction(ActionEvent actionEvent) {
+        CajaControl cajaControl = new CajaControl(DataStore.getSessionStore().getCaja().getLastCierreZ());
+        mainPane.setCenter(cajaControl);
     }
 
     @FXML
@@ -134,6 +139,8 @@ public class MainPaneControl extends BorderPane {
 
     @FXML
     public void fxMenuNuevaVentaAction(ActionEvent actionEvent) {
+        VentaControl ventaControl = new VentaControl();
+        mainPane.setCenter(ventaControl);
     }
 
     @FXML
@@ -142,6 +149,8 @@ public class MainPaneControl extends BorderPane {
 
     @FXML
     public void fxMenuNuevaCompraAction(ActionEvent actionEvent) {
+        CompraControl compraControl = new CompraControl();
+        mainPane.setCenter(compraControl);
     }
 
     @FXML
@@ -150,6 +159,8 @@ public class MainPaneControl extends BorderPane {
 
     @FXML
     public void fxMenuVerSedeAction(ActionEvent actionEvent) {
+        SedeControl u = new SedeControl(DataStore.getSessionStore().getSede());
+        mainPane.setCenter(u);
     }
 
     @FXML

@@ -30,6 +30,7 @@
             <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Usuario" fx:id="fxColumnCierreZUsuarioApertura" />
             <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Cierre" fx:id="fxColumnCierreZCierre" />
             <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Usuario" fx:id="fxColumnCierreZUsuarioCierre" />
+            <TableColumn prefWidth="75.0" text="Total" fx:id="fxColumnCierreZTotal" />
             <TableColumn prefWidth="75.0" text="Abrir" fx:id="fxColumnCierreZAbrir" />
           </columns>
         </TableView>

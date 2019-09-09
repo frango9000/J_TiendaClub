@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1">
+  <center>
+    <TableView BorderPane.alignment="CENTER" prefHeight="150.0" fx:id="fxTableCompras">
+      <BorderPane.margin>
+        <Insets top="10.0" />
+      </BorderPane.margin>
+      <columns>
+        <TableColumn editable="false" prefWidth="50.0" text="ID" fx:id="fxTableColumnCompraId" />
+        <TableColumn editable="false" prefWidth="50.0" text="Usuario" fx:id="fxTableColumnCompraUsuario" />
+        <TableColumn editable="false" prefWidth="50.0" text="Sede" fx:id="fxTableColumnCompraSede" />
+        <TableColumn editable="false" prefWidth="46.0" text="Proveedor" fx:id="fxTableColumnCompraProveedor" />
+        <TableColumn editable="false" prefWidth="54.0" text="Fecha" fx:id="fxTableColumnCompraFecha" />
+        <TableColumn editable="false" prefWidth="50.0" text="Total" fx:id="fxTableColumnCompraTotal" />
+        <TableColumn prefWidth="34.0" text="Abrir" fx:id="fxTableColumnCompraAbrir" />
+      </columns>
+    </TableView>
+  </center>
+  <padding>
+    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+  </padding>
+  <top>
+    <GridPane BorderPane.alignment="CENTER" hgap="8.0" vgap="8.0">
+      <children>
+        <Button GridPane.columnIndex="2" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#fxBtnNuevaCompraAction" text="Nueva Compra" fx:id="fxBtnNuevaCompra" />
+        <Button GridPane.columnIndex="2" GridPane.rowIndex="1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#fxBtnInventarioAction" text="Inventario" fx:id="fxBtnInventario" />
+        <Button GridPane.columnIndex="2" GridPane.rowIndex="2" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#fxBtnVerCajaAction" text="Ver Caja" fx:id="fxBtnVerCaja" />
+        <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" fx:id="fxBoxUsuario" />
+        <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" fx:id="fxBoxCajas" />
+        <ComboBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" fx:id="fxBoxSede" />
+        <Label GridPane.rowIndex="2" text="Cajas" />
+        <Label GridPane.rowIndex="1" text="Sede" />
+        <Label text="Usuario" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" vgrow="NEVER" />
+      </rowConstraints>
+    </GridPane>
+  </top>
+</fx:root>

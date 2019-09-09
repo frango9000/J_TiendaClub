@@ -112,11 +112,13 @@ public class Caja extends ActivablePropertyEntity {
     public TreeSet<CierreZ> getTreeCierreZs() {
         TreeSet<CierreZ> treeSet = Sets.newTreeSet(Comparator.comparing(CierreZ::getApertura));
         treeSet.addAll(getCierreZs());
-        System.out.println(getCierreZs().size());
-        System.out.println(treeSet.size());
         return treeSet;
     }
 
+
+    public CierreZ getLastCierreZ() {
+        return getTreeCierreZs().last();
+    }
 
 
     @Override

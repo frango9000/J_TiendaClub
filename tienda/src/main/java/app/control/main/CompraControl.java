@@ -298,8 +298,9 @@ public class CompraControl extends BorderPane {
     void fxBtnNewAction(ActionEvent event) {
         compra = null;
         fxFieldId.setText("");
-        fxBoxExchangee.setItems(null);
+        fxBoxExchangee.getSelectionModel().select(null);
         fxFieldDate.setLocalDateTime(null);
+        listedComprados.clear();
     }
 
 }

@@ -31,6 +31,7 @@ public class Venta extends EntityInt {
     private Caja caja;
     private Socio socio;
 
+
     public Venta() {
         super(0);
     }
@@ -151,6 +152,11 @@ public class Venta extends EntityInt {
     public Set<Vendido> getVendidos() {
         return DataStore.getSessionStore().getVendidos().getIndexVenta().getCacheKeyValues(this);
     }
+
+    public int getTotal() {
+        return getVendidos().stream().mapToInt(vendido -> vendido.getCantidad() * vendido.getPrecioUnidad()).sum();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

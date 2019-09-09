@@ -111,6 +111,10 @@ public class Sede extends ActivablePropertyEntity {
         return DataStore.getSessionStore().getCajas().getIndexSede().getCacheKeyValues(this);
     }
 
+    public Set<Compra> getCompras() {
+        return DataStore.getSessionStore().getCompras().getIndexSede().getCacheKeyValues(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

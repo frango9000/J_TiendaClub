@@ -165,6 +165,10 @@ public class CierreZ extends EntityInt {
         return ventas.stream().filter(venta -> venta.getCaja().equals(this.getCaja())).collect(Collectors.toSet());
     }
 
+    public int getTotal() {
+        return getVentas().stream().mapToInt(Venta::getTotal).sum();
+    }
+
     @Override
     public ArrayList<String> getColumnNames() {
         return COLUMN_NAMES;
