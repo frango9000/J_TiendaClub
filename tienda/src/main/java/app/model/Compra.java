@@ -146,6 +146,10 @@ public class Compra extends EntityInt {
         return DataStore.getSessionStore().getComprados().getIndexCompra().getCacheKeyValues(this);
     }
 
+    public int getTotal() {
+        return getComprados().stream().mapToInt(vendido -> vendido.getCantidad() * vendido.getPrecioUnidad()).sum();
+    }
+
     @Override
     public ArrayList<String> getColumnNames() {
         return COLUMN_NAMES;

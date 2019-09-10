@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class Acceso extends EntityInt {
@@ -109,5 +110,9 @@ public class Acceso extends EntityInt {
     @Override
     public String toString() {
         return getId() + " " + getNivel();
+    }
+
+    public Set<Usuario> getUsuarios() {
+        return DataStore.getSessionStore().getUsuarios().getIndexAcceso().getCacheKeyValues(this);
     }
 }

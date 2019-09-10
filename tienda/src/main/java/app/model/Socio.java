@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class Socio extends ActivablePropertyEntity {
@@ -199,5 +200,9 @@ public class Socio extends ActivablePropertyEntity {
     @Override
     public String toString() {
         return getId() + " " + getNombre();
+    }
+
+    public Set<Venta> getVentas() {
+        return DataStore.getSessionStore().getVentas().getIndexSocio().getCacheKeyValues(this);
     }
 }

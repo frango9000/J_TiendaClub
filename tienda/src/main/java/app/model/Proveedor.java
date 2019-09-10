@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class Proveedor extends ActivablePropertyEntity {
@@ -180,5 +181,9 @@ public class Proveedor extends ActivablePropertyEntity {
     @Override
     public String toString() {
         return getId() + " " + getNombre();
+    }
+
+    public Set<Compra> getCompras() {
+        return DataStore.getSessionStore().getCompras().getIndexProveedor().getCacheKeyValues(this);
     }
 }

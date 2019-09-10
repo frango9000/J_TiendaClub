@@ -1,17 +1,19 @@
 package app.control.table;
 
+import app.control.MainPaneControl;
 import app.data.DataStore;
 import app.model.Socio;
 import casteldao.datasource.DataSourceIdActive;
+import javafx.event.ActionEvent;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class SociosTableControl extends ActiveTableControl<Socio> {
 
+    private MenuItem menuItemVerVentas = new MenuItem("Ver Ventas");
 
-    @Override
-    public void initialize() {
-        super.initialize();
+    {
         TableColumn<Socio, String> fxColumnNif = new TableColumn<>("DNI");
         fxTable.getColumns().add(fxColumnNif);
         fxColumnNif.setCellValueFactory(new PropertyValueFactory<Socio, String>("dni"));
@@ -29,7 +31,22 @@ public class SociosTableControl extends ActiveTableControl<Socio> {
         fxColumnEmail.setCellValueFactory(new PropertyValueFactory<Socio, String>("email"));
 
         fxTable.setItems(listedObjects);
+
+        fxBtnMenu.getItems().add(menuItemVerVentas);
+        menuItemVerVentas.setOnAction(event -> menuItemVerVentasAction(event));
+    }
+
+    public SociosTableControl() {
         addContent();
+    }
+
+
+    private void menuItemVerVentasAction(ActionEvent event) {
+        Socio selected = fxTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            VentasTableControl ventaControl = new VentasTableControl(selected);
+            MainPaneControl.setCenter(ventaControl);
+        }
     }
 
     @Override

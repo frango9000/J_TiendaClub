@@ -2,6 +2,7 @@ package app.control.table;
 
 import app.data.DataStore;
 import app.model.Compra;
+import app.model.Proveedor;
 import app.model.Sede;
 import app.model.Socio;
 import app.model.Usuario;
@@ -13,9 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class ComprasTableControl extends TableControl<Compra> {
 
 
-    @Override
-    public void initialize() {
-        super.initialize();
+    {
         TableColumn<Compra, Usuario> fxColumnUsuario = new TableColumn<>("Usuario");
         fxColumnUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
         fxTable.getColumns().add(fxColumnUsuario);
@@ -33,9 +32,23 @@ public class ComprasTableControl extends TableControl<Compra> {
         fxTable.getColumns().add(fxColumnFechaHora);
 
         fxTable.setItems(listedObjects);
+    }
+
+    public ComprasTableControl() {
         addContent();
     }
 
+    public ComprasTableControl(Usuario usuario) {
+        listedObjects.addAll(usuario.getCompras());
+    }
+
+    public ComprasTableControl(Sede sede) {
+        listedObjects.addAll(sede.getCompras());
+    }
+
+    public ComprasTableControl(Proveedor proveedor) {
+        listedObjects.addAll(proveedor.getCompras());
+    }
 
     @Override
     protected String fxmlLocation() {
@@ -46,25 +59,4 @@ public class ComprasTableControl extends TableControl<Compra> {
     protected DataSourceIdImpl<Compra> getDataOrigin() {
         return DataStore.getSessionStore().getCompras();
     }
-
-//    @Override
-//    protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
-//        CompraControl compraControl = new CompraControl();
-//        FXMLStage stage = new FXMLStage(compraControl, "Creator");
-//        stage.showAndWait();
-//        fxTable.refresh();
-//        addContent();
-//    }
-//
-//    @Override
-//    protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
-//        Compra selected = fxTable.getSelectionModel().getSelectedItem();
-//        if (selected != null) {
-//            CompraControl compraControl = new CompraControl(selected);
-//            FXMLStage stage = new FXMLStage(compraControl, "Editor");
-//            stage.showAndWait();
-//            fxTable.refresh();
-//            addContent();
-//        }
-//    }
 }

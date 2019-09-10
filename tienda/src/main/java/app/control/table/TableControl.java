@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -34,8 +35,10 @@ public abstract class TableControl<T extends EntityInt> extends BorderPane {
     protected Button fxBtnDisable;
     @FXML
     protected Button fxBtnShowHide;
+    @FXML
+    protected MenuButton fxBtnMenu;
 
-    public TableControl() {
+    {
         try {
             final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tables/GenericActivableTablePane.fxml"));
             fxmlLoader.setRoot(this);
@@ -44,15 +47,19 @@ public abstract class TableControl<T extends EntityInt> extends BorderPane {
         } catch (final IOException e) {
             Flogger.atSevere().withCause(e).log();
         }
-    }
 
-    @FXML
-    void initialize() {
         fxTable.getColumns().remove(fxColumnIsActive);
         fxBtnDisable.setVisible(false);
         fxBtnShowHide.setVisible(false);
 
         fxColumnId.setCellValueFactory(new PropertyValueFactory<T, Integer>("id"));
+    }
+
+    public TableControl() {
+    }
+
+    @FXML
+    void initialize() {
     }
 
     @FXML

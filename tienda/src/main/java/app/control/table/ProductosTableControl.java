@@ -10,9 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class ProductosTableControl extends ActiveTableControl<Producto> {
 
 
-    @Override
-    public void initialize() {
-        super.initialize();
+    {
         TableColumn<Producto, String> fxColumnName = new TableColumn<>("Nombre");
         fxColumnName.setCellValueFactory(new PropertyValueFactory<Producto, String>("nombre"));
         fxTable.getColumns().add(fxColumnName);
@@ -26,7 +24,14 @@ public class ProductosTableControl extends ActiveTableControl<Producto> {
         fxTable.getColumns().add(fxColumnPrecio);
 
         fxTable.setItems(listedObjects);
+    }
+
+    public ProductosTableControl() {
         addContent();
+    }
+
+    public ProductosTableControl(Categoria categoria) {
+        listedObjects.addAll(categoria.getProductos());
     }
 
     @Override

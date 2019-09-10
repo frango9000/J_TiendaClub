@@ -156,4 +156,8 @@ public class Caja extends ActivablePropertyEntity {
     public String toString() {
         return getId() + " " + getNombre();
     }
+
+    public Set<Venta> getVentas() {
+        return DataStore.getSessionStore().getVentas().getIndexCaja().getCacheKeyValues(this);
+    }
 }

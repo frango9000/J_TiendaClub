@@ -15,8 +15,7 @@ public abstract class ActiveTableControl<E extends ActivableEntity> extends Tabl
 
     protected boolean showInactive = false;
 
-    @Override
-    void initialize() {
+    {
         fxColumnId.setCellValueFactory(new PropertyValueFactory<E, Integer>("id"));
         fxColumnIsActive.setCellValueFactory(new PropertyValueFactory<>("active"));
         fxColumnIsActive.setCellFactory(tc -> new CheckBoxTableCell<>());

@@ -6,11 +6,13 @@ import app.misc.Flogger;
 import casteldao.model.IEntity;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.Sets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class Usuario extends ActivablePropertyEntity {
@@ -216,5 +218,25 @@ public class Usuario extends ActivablePropertyEntity {
     @Override
     public String toString() {
         return getId() + " " + getUsername();
+    }
+
+    public Set<Venta> getVentas() {
+        return DataStore.getSessionStore().getVentas().getIndexUsuario().getCacheKeyValues(this);
+    }
+
+    public Set<CierreZ> getCierreZs() {
+        return Sets.union(getCierreZsApertura(), getCierreZsCierre());
+    }
+
+    public Set<CierreZ> getCierreZsApertura() {
+        return DataStore.getSessionStore().getCierreZs().getIndexUsuarioApertura().getCacheKeyValues(this);
+    }
+
+    public Set<CierreZ> getCierreZsCierre() {
+        return DataStore.getSessionStore().getCierreZs().getIndexUsuarioCierre().getCacheKeyValues(this);
+    }
+
+    public Set<Compra> getCompras() {
+        return DataStore.getSessionStore().getCompras().getIndexUsuario().getCacheKeyValues(this);
     }
 }

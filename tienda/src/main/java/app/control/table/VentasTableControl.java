@@ -1,5 +1,7 @@
 package app.control.table;
 
+import app.control.MainPaneControl;
+import app.control.main.VentaControl;
 import app.data.DataStore;
 import app.model.Caja;
 import app.model.Socio;
@@ -7,14 +9,19 @@ import app.model.Usuario;
 import app.model.Venta;
 import casteldao.datasource.DataSourceIdImpl;
 import java.time.LocalDateTime;
+import javafx.event.ActionEvent;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class VentasTableControl extends TableControl<Venta> {
 
 
-    @Override
-    public void initialize() {
+    private MenuItem menuItemVerVendidos = new MenuItem("Ver Vendidos");
+    private MenuItem menuItemVerVentaUI = new MenuItem("Ver Venta");
+    private MenuItem menuItemNuevaVentaUI = new MenuItem("Nueva Venta");
+
+    {
         super.initialize();
         TableColumn<Venta, Usuario> fxColumnUsuario = new TableColumn<>("Usuario");
         fxColumnUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
@@ -37,7 +44,46 @@ public class VentasTableControl extends TableControl<Venta> {
         fxTable.getColumns().add(fxColumnTotal);
 
         fxTable.setItems(listedObjects);
+
+        fxBtnMenu.getItems().addAll(menuItemNuevaVentaUI, menuItemVerVentaUI, menuItemVerVendidos);
+        menuItemVerVendidos.setOnAction(event -> menuItemVerVendidosAction(event));
+        menuItemVerVentaUI.setOnAction(event -> menuItemVerVentaUIAction(event));
+        menuItemNuevaVentaUI.setOnAction(event -> menuItemNuevaVentaUIAction(event));
+    }
+
+    public VentasTableControl() {
         addContent();
+    }
+
+    public VentasTableControl(Usuario usuario) {
+        listedObjects.addAll(usuario.getVentas());
+    }
+
+    public VentasTableControl(Socio socio) {
+        listedObjects.addAll(socio.getVentas());
+    }
+
+    public VentasTableControl(Caja caja) {
+        listedObjects.addAll(caja.getVentas());
+    }
+
+
+    private void menuItemNuevaVentaUIAction(ActionEvent event) {
+        VentaControl ventaControl = new VentaControl();
+        MainPaneControl.setCenter(ventaControl);
+
+    }
+
+    private void menuItemVerVentaUIAction(ActionEvent event) {
+        Venta venta = fxTable.getSelectionModel().getSelectedItem();
+        if (venta != null) {
+            VentaControl ventaControl = new VentaControl(venta);
+            MainPaneControl.setCenter(ventaControl);
+        }
+    }
+
+    private void menuItemVerVendidosAction(ActionEvent event) {
+
     }
 
 
@@ -51,24 +97,4 @@ public class VentasTableControl extends TableControl<Venta> {
         return DataStore.getSessionStore().getVentas();
     }
 
-//    @Override
-//    protected void fxBtnAddAction(ActionEvent actionEvent) throws IOException {
-//        VentaControl ventaControl = new VentaControl();
-//        FXMLStage stage = new FXMLStage(ventaControl, "Creator");
-//        stage.showAndWait();
-//        fxTable.refresh();
-//        addContent();
-//    }
-//
-//    @Override
-//    protected void fxBtnEditAction(ActionEvent actionEvent) throws IOException {
-//        Venta selected = fxTable.getSelectionModel().getSelectedItem();
-//        if (selected != null) {
-//            VentaControl ventaControl = new VentaControl(selected);
-//            FXMLStage stage = new FXMLStage(ventaControl, "Editor");
-//            stage.showAndWait();
-//            fxTable.refresh();
-//            addContent();
-//        }
-//    }
 }
