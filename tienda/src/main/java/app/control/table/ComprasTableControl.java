@@ -1,5 +1,7 @@
 package app.control.table;
 
+import app.control.MainPaneControl;
+import app.control.main.CompraControl;
 import app.data.DataStore;
 import app.model.Compra;
 import app.model.Proveedor;
@@ -8,12 +10,17 @@ import app.model.Socio;
 import app.model.Usuario;
 import casteldao.datasource.DataSourceIdImpl;
 import java.time.LocalDateTime;
+import javafx.event.ActionEvent;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ComprasTableControl extends TableControl<Compra> {
 
 
+    private MenuItem menuItemVerComprados = new MenuItem("Ver Comprados");
+    private MenuItem menuItemVerCompraUI = new MenuItem("Ver Compra");
+    private MenuItem menuItemNuevaCompraUI = new MenuItem("Nueva Compra");
     {
         TableColumn<Compra, Usuario> fxColumnUsuario = new TableColumn<>("Usuario");
         fxColumnUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
@@ -32,6 +39,10 @@ public class ComprasTableControl extends TableControl<Compra> {
         fxTable.getColumns().add(fxColumnFechaHora);
 
         fxTable.setItems(listedObjects);
+        fxBtnMenu.getItems().addAll(menuItemNuevaCompraUI, menuItemVerCompraUI, menuItemVerComprados);
+        menuItemVerComprados.setOnAction(event -> menuItemVerCompradosAction(event));
+        menuItemVerCompraUI.setOnAction(event -> menuItemVerCompraUIAction(event));
+        menuItemNuevaCompraUI.setOnAction(event -> menuItemNuevaCompraUIAction(event));
     }
 
     public ComprasTableControl() {
@@ -50,6 +61,26 @@ public class ComprasTableControl extends TableControl<Compra> {
         listedObjects.addAll(proveedor.getCompras());
     }
 
+    private void menuItemNuevaCompraUIAction(ActionEvent event) {
+        CompraControl control = new CompraControl();
+        MainPaneControl.setCenter(control);
+    }
+
+    private void menuItemVerCompraUIAction(ActionEvent event) {
+        Compra compra = fxTable.getSelectionModel().getSelectedItem();
+        if (compra != null) {
+            CompraControl control = new CompraControl(compra);
+            MainPaneControl.setCenter(control);
+        }
+    }
+
+    private void menuItemVerCompradosAction(ActionEvent event) {
+        Compra compra = fxTable.getSelectionModel().getSelectedItem();
+        if (compra != null) {
+            CompradosTableControl control = new CompradosTableControl(compra);
+            MainPaneControl.setCenter(control);
+        }
+    }
     @Override
     protected String fxmlLocation() {
         return "/fxml/editor/CompraEditorGridPane.fxml";

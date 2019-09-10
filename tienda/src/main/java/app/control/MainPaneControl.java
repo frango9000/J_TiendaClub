@@ -7,6 +7,7 @@ import app.control.main.VentaControl;
 import app.control.table.CajasTableControl;
 import app.control.table.CategoriasTableControl;
 import app.control.table.CierreZTableControl;
+import app.control.table.CompradosTableControl;
 import app.control.table.ComprasTableControl;
 import app.control.table.ProductosTableControl;
 import app.control.table.ProveedoresTableControl;
@@ -14,6 +15,7 @@ import app.control.table.SedesTableControl;
 import app.control.table.SociosTableControl;
 import app.control.table.TransferenciasTableControl;
 import app.control.table.UsuariosTableControl;
+import app.control.table.VendidosTableControl;
 import app.control.table.VentasTableControl;
 import app.data.DataStore;
 import app.misc.FXMLStage;
@@ -85,6 +87,10 @@ public class MainPaneControl extends BorderPane {
     public MenuItem fxMenuEditorCajas;
     @FXML
     public MenuItem fxMenuEditorProveedores;
+    @FXML
+    public MenuItem fxMenuEditorVendidos;
+    @FXML
+    public MenuItem fxMenuEditorComprados;
     @FXML
     private BorderPane mainPane;
     @FXML
@@ -229,5 +235,15 @@ public class MainPaneControl extends BorderPane {
     @FXML
     public void fxMenuStatusAction(ActionEvent actionEvent) {
         resetStatusPane();
+    }
+
+    public void fxMenuEditorVendidosAction(ActionEvent actionEvent) {
+        VendidosTableControl u = new VendidosTableControl();
+        mainPane.setCenter(u);
+    }
+
+    public void fxMenuEditorCompradosAction(ActionEvent actionEvent) {
+        CompradosTableControl u = new CompradosTableControl();
+        mainPane.setCenter(u);
     }
 }

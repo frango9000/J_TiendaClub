@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="app.control.editor.VendidoEditorControl">
+  <children>
+    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="1.7976931348623157E308" fx:id="fxBoxVenta" />
+    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="1.7976931348623157E308" fx:id="fxBoxProducto" />
+    <Label GridPane.rowIndex="1" text="Venta" />
+    <Label text="ID" />
+    <Label GridPane.rowIndex="2" text="Producto" />
+    <Label GridPane.rowIndex="3" text="Cantidad" />
+    <Label GridPane.rowIndex="4" text="Prec.Unidad" />
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="fxFieldCantidad" />
+    <TextField GridPane.columnIndex="1" editable="false" layoutX="80.0" layoutY="70.0" fx:id="fxId" />
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" fx:id="fxFieldPrecioUnidad" />
+  </children>
+  <columnConstraints>
+    <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="100.0" minWidth="70.0" prefWidth="70.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER" />
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER" />
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER" />
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER" />
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="25.0" valignment="CENTER" vgrow="NEVER" />
+  </rowConstraints>
+</GridPane>

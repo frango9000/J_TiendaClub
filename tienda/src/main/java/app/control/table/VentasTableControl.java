@@ -71,7 +71,6 @@ public class VentasTableControl extends TableControl<Venta> {
     private void menuItemNuevaVentaUIAction(ActionEvent event) {
         VentaControl ventaControl = new VentaControl();
         MainPaneControl.setCenter(ventaControl);
-
     }
 
     private void menuItemVerVentaUIAction(ActionEvent event) {
@@ -83,7 +82,11 @@ public class VentasTableControl extends TableControl<Venta> {
     }
 
     private void menuItemVerVendidosAction(ActionEvent event) {
-
+        Venta venta = fxTable.getSelectionModel().getSelectedItem();
+        if (venta != null) {
+            VendidosTableControl control = new VendidosTableControl(venta);
+            MainPaneControl.setCenter(control);
+        }
     }
 
 

@@ -279,7 +279,7 @@ public class CajaControl extends BorderPane {
     private Callback<TableColumn<Venta, String>, TableCell<Venta, String>> getVentaAbrirCallback() {
         return new Callback<TableColumn<Venta, String>, TableCell<Venta, String>>() {
             @Override
-            public TableCell call(final TableColumn<Venta, String> param) {
+            public TableCell<Venta, String> call(final TableColumn<Venta, String> param) {
                 return new TableCell<Venta, String>() {
                     final Button btn = new Button("Abrir");
 

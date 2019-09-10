@@ -51,7 +51,6 @@ public class CompraEditorControl extends GridControl<Compra> {
     public void setFields(Compra editee) {
         if (editee.getId() > 0)
             fxId.setText((Integer.toString(editee.getId())));
-
         fxBoxUsuario.getSelectionModel().select(editee.getUsuario());
         fxBoxSede.getSelectionModel().select(editee.getSede());
         fxBoxProveedor.getSelectionModel().select(editee.getProveedor());

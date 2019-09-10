@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.StatusBar?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="app.control.MainPaneControl"
-            fx:id="mainPane">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="app.control.MainPaneControl" fx:id="mainPane">
   <bottom>
     <StatusBar BorderPane.alignment="CENTER" fx:id="mainStatusBar" />
   </bottom>
@@ -82,6 +81,8 @@
                     <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorComprasAction" text="Compras" fx:id="fxMenuEditorCompras" />
                     <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorTransferenciasAction" text="Transferencias" fx:id="fxMenuEditorTransferencias" />
                     <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorCierreAction" text="Cierres" fx:id="fxMenuEditorCierres" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorVendidosAction" text="Vendidos" fx:id="fxMenuEditorVendidos" />
+                    <MenuItem mnemonicParsing="false" onAction="#fxMenuEditorCompradosAction" text="Comprados" fx:id="fxMenuEditorComprados" />
                   </items>
                 </Menu>
                 <MenuItem mnemonicParsing="false" text="DB" />
