@@ -81,7 +81,7 @@
       <artifactId>junit</artifactId>
       <groupId>junit</groupId>
       <scope>test</scope>
-      <version>4.13-beta-3</version>
+      <version>4.13.1</version>
     </dependency>
     <dependency>
       <artifactId>mockito-core</artifactId>
